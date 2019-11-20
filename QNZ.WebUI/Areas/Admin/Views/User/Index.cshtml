@@ -1,0 +1,276 @@
+﻿@using PagedList.Core.Mvc
+@using QNZ.Model.Admin.ViewModel.Identity
+@using SIG.Resources.Admin
+@model UserListVM
+
+
+@{
+    var modelName = EntityNames.User;
+    ViewBag.PageTitle = modelName;
+    ViewBag.Title = ViewBag.PageTitle + "_安全";
+}
+
+@section header{
+
+}
+<div class="row">
+    <div class="col-auto mr-auto">
+        <form asp-controller="User" asp-action="Index" method="get" class="form-inline mb-2">
+            <label class="sr-only" for="Username">用户名</label>
+            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "用户名" } })
+
+            <label class="sr-only" for="StartDate">开始日期</label>
+
+            <input asp-for="StartDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="开始日期" type="date" />
+            <label class="sr-only" for="EndDate">结束日期</label>
+            <input asp-for="EndDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="结束日期" type="date" />          
+
+            @Html.DropDownListFor(model => model.RoleId, (IEnumerable<SelectListItem>)ViewBag.Roles, string.Format("--{0}--", EntityNames.Role), new { @class = "form-control mb-2 mr-sm-2 mb-sm-0" })
+
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+    <div class="col-auto">
+        <a asp-controller="User" asp-action="Create" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+           data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i>创建新用户</a>
+
+    </div>
+</div>
+
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th></th>
+            <th>头像</th>
+            <th>
+                用户名
+            </th>
+            <th>
+                邮箱
+            </th>
+            <th>
+                姓名
+            </th>
+            <th>
+                手机
+            </th>
+
+            <th>
+                激活？
+            </th>
+            <th>
+                创建日期
+            </th>
+
+        </tr>
+    </thead>
+    <tbody id="tbList">
+        @foreach (var item in Model.Users)
+        {          
+            <partial name="_UserItem" model="item" />
+        }
+    </tbody>
+</table>
+
+
+
+
+<div class="panel-footer">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <pager class="pager-container" list="@Model.Users" LinkToPreviousPageFormat="前页" ,
+                   LinkToNextPageFormat="下页"
+                   options="@PagedListRenderOptions.Bootstrap4Full"
+                    
+                   asp-action="Index" asp-controller="User" asp-route-keyword="@Model.Keyword" asp-route-roleid="@Model.RoleId" asp-route-startdate="@Model.StartDate" asp-route-enddate="@Model.EndDate" />
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="edit-container">
+</div>
+<div id="role-container">
+</div>
+<div id="pwd-container">
+</div>
+
+<form id="anti-form" method="post">
+    @Html.AntiForgeryToken()
+</form>
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+        var modelName = "@EntityNames.User";
+
+        function onBegin() {
+            var iconEl = $(this).find("i.fa");
+            var icon = iconEl.attr("data-icon");
+            iconEl.removeClass(icon).addClass("fa-spinner fa-spin");
+        }
+        function onComplete() {
+            var iconEl = $(this).find("i.fa");
+            var icon = iconEl.attr("data-icon");
+            iconEl.removeClass("fa-spinner fa-spin").addClass(icon);
+            $('#ModalEdit').modal();
+        }
+        function onSuccess(data) {
+
+        }
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function OnSuccessLink(data) {
+            Common.ShowBox(data.Status, data.Message, "操作");
+        }
+
+        function onAjaxComplete() {
+            $('#ModalEdit').modal();
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save")
+        }
+
+
+        function onSuccessSave(data) {
+            var title = '@ViewBag.PageTitle';
+            Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+        function submitSuccess(id, htmlData) {
+            $('#ModalEdit').modal('hide');
+
+            if (id === "0" ) {
+                //  var cid = "container" + id;
+                //   $("#" + cid).replaceWith(htmlData);
+                var url = "@Url.Action("Index")";
+                $.get(url,
+                    function (result) {
+
+                        //$("#" + cid).replaceWith(result);
+                        $("#tbList").html(result);
+                    });
+            }
+            else {
+
+                var cid = "container" + id;
+                //   $("#" + cid).replaceWith(htmlData);
+                var url = "@Url.Action("GetUserForItem")/" + id;
+                $.get(url,
+                    function (result) {
+                        console.log(result);
+                        $("#" + cid).replaceWith(result);
+                    });
+            }
+        }
+
+
+
+        //========== edit user ===========
+        function onAjaxEditComplete() {
+            $('#ModalEdit').modal();
+
+            $.validator.addMethod('qq', function (value, element) {
+                if (value.length > 0)
+                    return /^[1-9][0-9]{4,9}$/.test(value);
+                return true;
+            });
+            $.validator.unobtrusive.adapters.addBool("qq");
+
+            $.validator.addMethod('chinamobile', function (value, element) {
+                if (value.length > 0)
+                    return /^0{0,1}(13[0-9]|15[7-9]|153|156|170|178|18[0-9])[0-9]{8}$/.test(value)
+                return true;
+            });
+
+            $.validator.unobtrusive.adapters.addBool("chinamobile");
+        }
+
+
+
+
+        //========== edit user ===========
+
+        function SetPasswordSuccess(data) {
+            Common.ShowBoxWithFunc(data, "重设密码", funcRestPwdOK);
+            @*switch (data.Status) {
+                case 2:
+                    toastr.error(data.Message, '@modelName');
+                    break;
+                case 1:
+                    toastr.success("操作成功", '@modelName');
+                    $('#ModalUserPwd').modal('hide');
+                    break;
+                case 4:
+                    toastr.warning(data.Message, modelName)
+                    break;
+            }*@
+        }
+
+        function funcRestPwdOK() {
+            $('#ModalEdit').modal('hide');
+        }
+        //========== end edit user ===========
+
+
+        $(function () {
+
+            $(document).on("change", '#PageSize', function (e) {
+                e.preventDefault();
+
+                var url = "@Url.Action("PageSizeSet")", title = "分页设置", pageSize = $(this).val();
+                Common.PageSizeSet(url, title, pageSize, setPageSizeFunc);
+
+            });
+            function setPageSizeFunc() {
+                location.reload();
+            }
+
+            //确认框默认语言
+            bootbox.setDefaults({
+                locale: "zh_CN"
+            });
+
+
+            //delete
+            $(document).on("click", '.delete-item', function (e) {
+                e.preventDefault();
+
+                var url = $(this).attr('data-url');
+                var that = $(this);
+                bootbox.setLocale("zh_CN");
+                bootbox.confirm("你确定要删除此项吗？", function (result) {
+                    if (result) {
+                        /*DELETE*/
+                        var title = "@ViewBag.PageTitle";
+                        Common.DeleteItem(url, title, that);
+                    }
+                });
+
+            });
+
+
+
+        });
+    </script>
+}

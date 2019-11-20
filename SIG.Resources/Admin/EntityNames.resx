@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Agent" xml:space="preserve">
+    <value>代理商</value>
+  </data>
+  <data name="Album" xml:space="preserve">
+    <value>相册</value>
+  </data>
+  <data name="Announcement" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>新闻</value>
+  </data>
+  <data name="ArticleCategory" xml:space="preserve">
+    <value>文章分类</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>轮播图</value>
+  </data>
+  <data name="Cart" xml:space="preserve">
+    <value>购物车</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="Chronicle" xml:space="preserve">
+    <value>纪事</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>区县</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>邮件</value>
+  </data>
+  <data name="EmailAccount" xml:space="preserve">
+    <value>邮箱帐号</value>
+  </data>
+  <data name="EmailTemplate" xml:space="preserve">
+    <value>邮件模板</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>仪器设备</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>反馈意见</value>
+  </data>
+  <data name="FeedbackType" xml:space="preserve">
+    <value>反馈类型</value>
+  </data>
+  <data name="FilterTemplate" xml:space="preserve">
+    <value>采集模板</value>
+  </data>
+  <data name="Goods" xml:space="preserve">
+    <value>货品</value>
+  </data>
+  <data name="GoodsCategory" xml:space="preserve">
+    <value>货品分类</value>
+  </data>
+  <data name="GoodsPhoto" xml:space="preserve">
+    <value>货品图片</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>人才招聘</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="LinkCategory" xml:space="preserve">
+    <value>链接分类</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>菜单</value>
+  </data>
+  <data name="MenuCategory" xml:space="preserve">
+    <value>栏目分类</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>订单</value>
+  </data>
+  <data name="OrderDetail" xml:space="preserve">
+    <value>订单明细</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>页面</value>
+  </data>
+  <data name="PageMeta" xml:space="preserve">
+    <value>页面注释</value>
+  </data>
+  <data name="Permission" xml:space="preserve">
+    <value>权限</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>广告位</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>博文</value>
+  </data>
+  <data name="PostCategory" xml:space="preserve">
+    <value>博文分类</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>产品</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>产品分类</value>
+  </data>
+  <data name="ProductPhoto" xml:space="preserve">
+    <value>产品图片</value>
+  </data>
+  <data name="Province" xml:space="preserve">
+    <value>省份</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>常见问题</value>
+  </data>
+  <data name="QuestionCategory" xml:space="preserve">
+    <value>问题分类</value>
+  </data>
+  <data name="RecipientInfo" xml:space="preserve">
+    <value>收件信息</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>解决方案</value>
+  </data>
+  <data name="Store" xml:space="preserve">
+    <value>门店</value>
+  </data>
+  <data name="Story" xml:space="preserve">
+    <value>企业故事</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>团队</value>
+  </data>
+  <data name="Technology" xml:space="preserve">
+    <value>工艺</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="UserSafety" xml:space="preserve">
+    <value>用户安全</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>视频</value>
+  </data>
+  <data name="Work" xml:space="preserve">
+    <value>案例</value>
+  </data>
+  <data name="WorkCategory" xml:space="preserve">
+    <value>案例分类</value>
+  </data>
+</root>

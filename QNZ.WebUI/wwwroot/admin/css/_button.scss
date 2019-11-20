@@ -1,0 +1,13 @@
+.btn {
+    .iconfont {
+        font-size: 14px;
+    }
+
+
+
+    &.btn-primary {
+        background-color: $colorPrimary;
+        border-color: $colorPrimary;
+    }
+}
+

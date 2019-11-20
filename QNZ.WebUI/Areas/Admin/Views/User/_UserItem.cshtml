@@ -1,0 +1,95 @@
+﻿@using QNZ.Data
+@using SIG.Infrastructure.Configs
+@using SIG.Resources.Admin
+@model User
+
+<tr class="item-container" id="@string.Format("container{0}",Model.Id)">
+    <td>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                操作
+            </button>
+            <div class="dropdown-menu">
+                <a asp-controller="User" asp-action="Details"  class="dropdown-item" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+                   data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-eye fa-fw" data-icon="fa-eye"></i>查看</a>
+                <a asp-controller="User" asp-action="Edit" class="dropdown-item" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+                   data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-edit fa-fw"></i>编辑</a>
+                <div class="dropdown-divider"></div>
+                <a asp-controller="User" asp-action="SetRole"  class="dropdown-item" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+                   data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-user-secret fa-fw"></i>角色设置</a>
+                <a asp-controller="User" asp-action="SetPassword" class="dropdown-item" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+                   data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-ellipsis-h fa-fw"></i>重设密码</a>
+                
+                @{
+                    var tooltip = Model.IsActive ? "锁定" : "激活";
+                    tooltip = tooltip + EntityNames.User;
+                }
+                <a asp-controller="User" asp-action="IsActive" class="dropdown-item" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccessSave"
+                   data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" title="@tooltip">
+                    @Html.Raw(Model.IsActive ? "<i class='fa fa-lock fa-fw'></i>锁定" : "<i class='fa fa-unlock fa-fw'></i>激活")
+                </a>
+               
+
+                <div class="dropdown-divider"></div>
+                <a href="#" data-url="@Url.Action("Delete", new {id = Model.Id,area="Admin"})" class="dropdown-item delete-item" title="删除用户">
+                    <i class="fa fa-trash-o fa-fw"></i>删除
+                </a>
+            </div>
+        </div>
+
+      
+                    
+                    @*@Ajax.RawActionLink("<i class='fa fa-eye fa-fw'></i>查看",
+                        "Details", "User",
+                        new {id = Model.Id},
+                        new AjaxOptions {HttpMethod = "Get", UpdateTargetId = "edit-container", OnComplete = "onAjaxComplete", OnSuccess = "OnSuccessLink"},
+                        new {title = "查看用户资料"})*@
+
+                    @*@Ajax.RawActionLink("<i class='fa fa-edit fa-fw'></i>编辑",
+                        "Edit", "User",
+                        new {id = Model.Id},
+                        new AjaxOptions {HttpMethod = "Get", UpdateTargetId = "edit-container", OnComplete = "onAjaxComplete", OnSuccess = "OnSuccessLink"},
+                        new {title = "编辑用户资料"})*@
+             
+                   
+                    @*@Ajax.RawActionLink("<i class='fa fa-user-secret fa-fw'></i>角色设置",
+                        "SetRole", "User",
+                        new {id = Model.Id},
+                        new AjaxOptions {HttpMethod = "Get", UpdateTargetId = "edit-container", OnComplete = "onAjaxComplete", OnSuccess = "OnSuccessLink"},
+                        new {title = "角色设置"})*@
+              
+                   
+                    @*@Ajax.RawActionLink("<i class='fa fa-ellipsis-h fa-fw'></i>重设密码",
+                        "SetPassword", "User",
+                        new {id = Model.Id},
+                        new AjaxOptions {HttpMethod = "Get", UpdateTargetId = "edit-container", OnComplete = "onAjaxComplete", OnSuccess = "OnSuccessLink"},
+                        new {title = "重设密码"})*@
+            
+       
+
+    </td>
+    <td>
+        <img src="@(string.IsNullOrEmpty(Model.PhotoUrl)? SettingsManager.User.DefaultAvatar :Model.PhotoUrl)" alt="@Model.UserName" class="rounded-circle" style="height:40px;" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.UserName)
+
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.RealName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Mobile)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => Model.IsActive)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.CreateDate)
+    </td>
+</tr>
+

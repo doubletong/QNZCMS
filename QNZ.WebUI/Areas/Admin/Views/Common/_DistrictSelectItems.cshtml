@@ -1,0 +1,6 @@
+﻿@model IEnumerable<QNZ.Data.District>
+<option>--请选择区/县--</option>
+@foreach (var item in Model)
+{
+    <option value="@item.Name">@item.Name</option>
+}

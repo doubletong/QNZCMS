@@ -1,0 +1,77 @@
+﻿@using QNZ.Data.Entity.Identity
+@model IEnumerable<Menu>
+
+@ShowTree(Model)
+
+@helper ShowTree(IEnumerable<Menu> menus,bool isExpand = true)
+{
+    <ul class="menuTree @(isExpand ? "" : "hidden")">
+        @foreach (var item in menus)
+        {
+            <li class="item-container @(item.ChildMenus.Any() ? "hasMenus" : "")">                
+                <div>
+                    @if (item.ChildMenus.Any())
+                    {
+                        if (item.IsExpand)
+                        {
+                            <a href="#" class="expmenu expandmenu" data-url="@Url.Action("IsExpand",new { id = item.Id})">
+                                <span class="glyphicon glyphicon-minus-sign"></span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" class="expmenu" data-url="@Url.Action("IsExpand",new { id = item.Id})">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </a>
+                        }
+
+                    }
+                 
+                  @item.Title
+                    <a href="@Url.Action("UpDownMove", new { id = item.Id, isUp = true,categoryId = item.CategoryId})" class="moveMenu" title="向上" data-id="@item.Id" data-categoryid="@item.CategoryId"><i class="fa fa-chevron-up"></i></a>
+                    <a href="@Url.Action("UpDownMove", new { id = item.Id, isUp = false,categoryId = item.CategoryId})" class="moveMenu" title="向下" data-id="@item.Id" data-categoryid="@item.CategoryId"><i class="fa fa-chevron-down"></i></a>
+                    
+                    @Ajax.RawActionLink("<i class='fa fa-chevron-right'></i>",
+                        "MoveMenu", "Menu",
+                        new { id = item.Id },
+                        new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "edit-container", OnBegin = "onAjaxBegin", OnComplete = "onAjaxComplete" },
+                        new { title = "移动菜单" })
+                    @*<a href="#" title="新增子菜单" class="menuAdd" data-categoryid="@item.CategoryId" data-parentid="@item.Id" data-toggle="modal" data-target="#ModalMenuForm"><i class="fa fa-plus"></i></a>*@
+                   
+                    @Ajax.RawActionLink("<i class='fa fa-plus'></i>",
+                        "CreateMenu", "Menu",
+                        new { categoryId = item.CategoryId, parentId = item.Id },
+                        new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "edit-container", OnBegin = "onAjaxBegin", OnComplete = "onAjaxComplete" },
+                        new { title = "新增子菜单" })
+
+                    @Ajax.RawActionLink("<i class='fa fa-pencil'></i>",
+                        "EditMenu", "Menu",
+                        new { id = item.Id },
+                        new AjaxOptions { HttpMethod = "Get", UpdateTargetId = "edit-container", OnBegin = "onAjaxBegin", OnComplete = "onAjaxComplete" },
+                        new { title = "编辑菜单" })
+
+                    @if (item.Active)
+                    {
+                        <a href="#" data-url="@Url.Action("IsActive", new {id = item.Id})" class="active-item" title="锁定" data-action="激活">
+                            <i class="fa fa-eye-slash"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" data-url="@Url.Action("IsActive", new {id = item.Id})" class="active-item" title="激活" data-action="锁定">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                       
+                    }
+
+                    <a href="#" data-url="@Url.Action("Delete", new { id = item.Id})" class="delete-item" title="移除菜单" data-id="@item.Id" data-categoryid="@item.CategoryId"><i class="fa fa-trash"></i></a>
+                   
+                </div>
+                @if (item.ChildMenus.Any())
+                {
+                    @ShowTree(item.ChildMenus.OrderBy(c=>c.Importance),item.IsExpand)
+                }
+            </li>
+        }
+    </ul>
+}

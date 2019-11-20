@@ -1,0 +1,6 @@
+﻿@model IEnumerable<QNZ.Data.City>
+<option>--请选择城市--</option>
+@foreach (var item in Model)
+{
+    <option value="@item.Name">@item.Name</option>
+}

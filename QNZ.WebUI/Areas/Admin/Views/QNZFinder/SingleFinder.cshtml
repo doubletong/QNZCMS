@@ -1,0 +1,138 @@
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration config;
+@{
+    Layout = null;
+    var _rootDirectory = config.GetValue<string>("QNZFinder:RootDirectory");
+
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/admin/fonts/iconfont.css" rel="stylesheet" />
+    <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+    <title>QNZFinder</title>
+
+</head>
+<body>
+    <div id="container-file" class="container-media">
+        <input type="hidden" id="rootDir" value="@_rootDirectory" />
+        <div id="dircol">
+            <nav class="qnz-navbar">
+                <button type="button" class="btn btn-outline-primary navbar-btn btn-sm" id="btnRoot">
+                    <i class="iconfont icon-home"></i>
+                </button>
+                @*<%--                <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
+                    <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-trash"></span></button>--%>*@
+            </nav>
+            <aside id="dirbody">
+                <ul class="list-unstyled" id="dirTree"></ul>
+
+                <nav id="context-menu" class="context-menu">
+                    <ul class="context-menu__items">
+                        <li class="context-menu__item">
+                            <a href="#" class="context-menu__link" data-action="create"><i class="iconfont icon-plus"></i> 创建目录</a>
+                        </li>
+                        <li class="context-menu__item">
+                            <a href="#" class="context-menu__link" data-action="rename"><i class="iconfont icon-edit"></i> 重命名</a>
+                        </li>
+                        <li class="context-menu__item">
+                            <a href="#" class="context-menu__link" data-action="delete"><i class="iconfont icon-delete"></i> 删除目录</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+        </div>
+        <div id="filecol">
+            <nav class="qnz-navbar">
+                <div class="qnz-toolbar">
+                    <div class="filePath" id="filePath">
+                        @_rootDirectory
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="btn btn-primary navbar-btn btn-sm" id="btnUpload"><i class="iconfont icon-upload fa-fw"></i> 上传</button>
+                        <button type="button" class="btn btn-outline-primary navbar-btn btn-sm" id="btnRefresh" data-dir="@_rootDirectory"><i class="iconfont icon-sync"></i> 刷新</button>
+                        @*              <button type="button" class="btn btn-default navbar-btn btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                            <div class="btn-group  btn-group-sm navbar-btn" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    设置
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">按日期</a></li>
+                                    <li><a href="#">按大小</a></li>
+                                </ul>
+                            </div>*@
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Modal -->
+            <div class="uploadFile" id="uploadFile">
+                <header>
+                    <button type="button" class="close" id="btnClose"><span aria-hidden="true">&times;</span></button>
+                </header>
+
+                <div id="uploader" class="wu-example">
+
+                    <input type="file" name="file" multiple id="FileInput" />
+                    <button id="btnUploadFiles" class="btn btn-primary">上传</button>
+                    <div id="thelist" class="uploader-list"></div>
+
+                </div>
+
+
+            </div>
+
+            <div id="fileList" class="row">
+            </div>
+
+        </div>
+    </div>
+
+
+    <footer class="text-right tinymce-footer">
+        <small>注：双击选取文件</small>
+    </footer>
+
+
+
+    <script src="~/admin/js/jquery-3.2.1.min.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="/Plugins/SigFinder/FileManager.js"></script>
+
+    <script>
+
+        function selectImage(fileUrl) {
+            //  console.log(fileUrl);
+            window.opener.QNZ.elFinderCallback(fileUrl);     
+            window.close();            
+        }
+        $(function () {
+
+            $("body").delegate("#fileList .itembox .item", "dblclick", function (e) {
+                e.preventDefault();
+                var fileUrl = $(this).attr("data-file");
+                selectImage(fileUrl);
+
+            });
+
+
+            $("#selectImage").on("click", function () {
+                var fileUrl = $("#fileList .item.active").attr("data-file");
+                selectImage(fileUrl);
+            })
+
+
+        })
+
+
+
+    </script>
+</body>
+</html>
+

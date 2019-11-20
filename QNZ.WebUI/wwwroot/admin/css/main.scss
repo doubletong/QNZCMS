@@ -1,0 +1,77 @@
+﻿
+@import "_variables.scss";
+@import "themes/_default.scss";
+
+@import "_mixin.scss";
+@import "_common.scss";
+@import "_bootstrap_ext.scss";
+@import "_loading.scss";
+@import "_layout.scss";
+
+@import "_left.scss";
+@import "_box.scss";
+@import "_tree.scss";
+@import "_table.scss";
+@import "_form.scss";
+@import "_button.scss";
+@import "_card.scss";
+@import "_pagination.scss";
+@import "_tag.scss";
+@import "_animate.scss";
+@import "_modal.scss";
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background: #333;
+    font-size: .875rem;
+    color: #666666;
+    font-family: "Microsoft YaHei", 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
+}
+
+a {
+    color: $colorPrimary;
+}
+
+a:hover {
+    text-decoration: none;
+    color: $colorAssistant;
+}
+
+.user-avater {
+    padding-top: 8px;
+    margin-right: 15px;
+    img {
+        height: 34px;
+    }
+}
+
+footer.page-footer {
+    text-align: center;
+    height: 35px;
+    line-height: 35px;
+    font-size: 11px;
+}
+
+.badge-primary {
+    background-color: $colorAssistant;
+    font-weight: normal;
+}
+
+.dl-horizontal {
+    dt {
+        width: 80px;
+        float: left;
+        text-align: right;
+        padding: 5px 10px;
+        background-color: #f7f7f7;
+        min-height: 30px;
+    }
+    dd {
+        margin-left: 100px;
+        padding: 5px 0;
+        min-height: 30px;
+    }
+}

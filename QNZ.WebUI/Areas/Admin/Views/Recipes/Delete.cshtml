@@ -1,0 +1,86 @@
+﻿@model QNZ.Model.RecipesDetailVM
+
+@{
+    ViewData["Title"] = "删除" + Model.Title;
+}
+
+
+<h3>您确定要删除此营养套餐吗？</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            主题
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+
+        <dt>
+            营养师
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt>
+            创建时间
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt>
+            吃法说明
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+
+    <table class="table table-striped" style="max-width:700px;">
+        <thead>
+            <tr>
+                <th>
+                    菜品
+                </th>
+                <th>
+                    数量
+                </th>
+                <th>
+                    单价
+                </th>
+                <th>
+                    小计
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.RecipesItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @string.Format("{0:c}", item.Price * item.Quantity)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="删除" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-outline-secondary">返回列表</a>
+    </form>
+</div>

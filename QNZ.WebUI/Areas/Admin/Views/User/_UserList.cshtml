@@ -1,0 +1,7 @@
+﻿@using QNZ.Data
+@model IEnumerable<User>
+@foreach (var item in Model)
+{
+   
+    <partial name="_UserItem" model="item" />
+}

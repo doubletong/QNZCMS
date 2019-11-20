@@ -1,0 +1,115 @@
+﻿@model QNZ.Model.ViewModel.MenuCategoryIM
+@{
+    ViewData["Title"] = "创建分类";
+}
+
+
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="SaveCategory" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+              data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+              data-ajax="true" data-ajax-method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" type="hidden" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+     
+
+            <div class="form-group">
+                <label asp-for="Importance" class="control-label"></label>
+                <input asp-for="Importance" class="form-control" />
+                <span asp-validation-for="Importance" class="text-danger"></span>
+            </div>
+        
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> 保存</button>
+                <a asp-action="Index" class="btn btn-secondary">返回</a>
+            </div>
+        </form>
+    </div>
+
+    
+</div>
+
+
+
+
+@section header{
+    <style>
+        .thumb {
+            height: 160px;
+            margin: 0 auto 1rem;
+            padding-top: 3.5rem;
+            cursor: pointer;
+            background-color: #ddd;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+        }
+    </style>
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+
+
+     
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save");
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                var url = "@Url.Action("Index")";
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+
+          
+
+
+
+           
+
+
+        });
+    </script>
+}

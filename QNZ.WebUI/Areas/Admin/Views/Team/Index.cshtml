@@ -1,0 +1,123 @@
+@model TeamPageVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{ 
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = "团队";
+}
+
+<div class="m-b-15">
+    <a class="btn btn-primary" asp-action="Create"><i class="iconfont icon-plus"></i> 添加</a>
+</div>
+<div class="grid-5 m-b-15">
+@foreach (var item in Model.Teams)
+{
+    <div class="card">
+       
+            <img src="@(string.IsNullOrEmpty(item.PhotoUrl)?"/admin/img/member.png":item.PhotoUrl)" alt="@item.Name" class="block" />
+     
+        <div class="card-body text-center">
+            @item.Name
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-edit" data-url="@Url.Action("Edit",new {id = item.Id})">
+                <i class="iconfont icon-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-delete" data-url="@Url.Action("Delete",new {id = item.Id})">
+                <i class="iconfont icon-delete"></i>
+            </button>
+        </div>
+    </div>
+}
+</div>
+
+<div class="flex">
+
+ 
+      
+    @*<pager class="pager-container" list="@Model.Teams" LinkToPreviousPageFormat="前页" ,
+           LinkToNextPageFormat="下页"
+           options="@{ new PagedListRenderOptions {
+                           DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                           DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                           DisplayLinkToIndividualPages = true,
+                           UlElementClasses = new[] { "pagination" },
+                              
+                           LinkToPreviousPageFormat = "前页",
+                           LinkToNextPageFormat = "后页"
+                       }}"
+           asp-action="Index" asp-controller="Products"  />*@
+      
+    <div class="text-right">
+          
+        <div class="tag" > 总记录<strong>@Model.TotalCount</strong>条</div>
+        @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+          
+    </div>
+ 
+</div>
+
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+        
+        $(function() {
+            $(".btn-edit").click(function(e) {
+                e.preventDefault();
+                var url = $(this).attr("data-url");
+              
+                location.href = url;
+
+            });
+            
+            $(".btn-delete").click(function(e) {
+                e.preventDefault();
+                var url = $(this).attr("data-url");
+                var item = $(this).closest("div.card");
+                
+                
+                swal({
+                        title: "您确定要删除此项？",
+                        text: "此删除操作不可恢复！",
+                        icon: "warning",
+                        buttons: ["取消","确定"],
+                        dangerMode: true
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            
+                            $.ajax({
+                                url:url,
+                                type: "DELETE",
+                                headers: { 'RequestVerificationToken': antiforgeryToken },
+                                success:function(data) {
+
+                                    if (data.status === 1) {
+                                        toastr.success(data.message);
+                                        item.remove();
+
+                                    }
+                                    if (data.status === 2) {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error:function(xhr, status, error) {
+                                    toastr.error(error);
+                                }
+                            });
+                            
+                        } else {
+                            //swal("Your imaginary file is safe!");
+                        }
+                    });
+                
+                
+         
+                
+
+            });
+        })
+    </script>
+}

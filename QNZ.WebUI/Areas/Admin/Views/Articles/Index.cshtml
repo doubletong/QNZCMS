@@ -1,0 +1,149 @@
+﻿@model ArticleListVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = "文章";
+}
+
+<div class="row mb-3">
+    <div class="col-md">
+        <form asp-action="Index" method="get" class="form-inline">          
+            <div class="form-group">
+                <input asp-for="Keyword" class="form-control" placeholder="关键字" />          
+            </div>
+            <button type="submit" class="btn btn-primary mx-sm-3"><i class="iconfont icon-search"></i> 搜索</button>
+        </form>
+    </div>   
+    <div class="col-md-auto">
+        <a class="btn btn-primary" asp-action="Edit" asp-controller="Articles"><i class="iconfont icon-plus"></i> 添加</a>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                标题
+            </th>
+            <th>
+                关键字
+            </th>
+            <th>
+                查看
+            </th>
+
+            <th>
+                激活
+            </th>
+
+            <th>
+                创建日期
+            </th>
+            <th>
+                作者
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Articles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Keywords)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ViewCount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="flex">
+
+
+    <pager class="pager-container" list="@Model.Articles" 
+           options="@PagedListRenderOptions.Bootstrap4Full"
+           asp-action="Index" asp-controller="Articles" asp-route-solutionid="@Model.Keyword" />
+
+    <div class="text-right">
+
+        <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
+        @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+
+    </div>
+
+</div>
+
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+        $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+
+
+            swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+        });
+    </script>
+}

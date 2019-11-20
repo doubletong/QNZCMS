@@ -1,0 +1,86 @@
+﻿@model QNZ.Model.RecipesDetailVM
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+
+
+<div>
+    <h4>营养餐：@Model.Title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            主题
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+
+        <dt>
+            营养师
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt>
+            创建时间
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt>
+            吃法说明
+        </dt>
+        <dd>
+            @Html.Raw(Model.Description)
+        </dd>
+    </dl>
+</div>
+
+<table class="table table-striped" style="max-width:700px;">
+    <thead>
+        <tr>
+            <th>
+                菜品
+            </th>
+            <th>
+                数量
+            </th>
+            <th>
+                单价
+            </th>
+            <th>
+                小计
+            </th>
+       
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RecipesItems)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @string.Format("{0:c}", item.Price * item.Quantity)
+            </td>
+         
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+
+    <a asp-action="Index">返回列表</a>
+</div>

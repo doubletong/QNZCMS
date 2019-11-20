@@ -1,0 +1,129 @@
+.page-school{
+    padding-bottom: 0;
+    .s1{
+        .more {
+            background-color:$color-primary;
+           display: inline-block;
+            width: 160px;
+            height: 40px;
+            border-radius: 20px;
+            line-height: 40px;
+          color:#fff;
+          margin-top: 1rem;
+          @include hover{
+            background-color: $color-secondary;
+        }
+          }
+          
+    }
+    .s2{
+        padding: 2rem 0 0;
+        background:$color-primary url(../img/school_bg.jpg) no-repeat center center;
+        background-size: cover;
+        color:#fff;
+        margin-bottom: 0;
+
+        @include respond-above (md) {       
+            padding: 2rem 0 0;
+          }
+          @include respond-above (lg) {       
+            padding: 3rem 0 6rem;
+          }
+          @media (min-width:1601) {
+            padding: 4rem 0 8rem;
+        }
+
+        .four{
+            position: relative;
+            margin-top: 2rem;
+            @include respond-above (md) {       
+                margin-top: 3rem;
+              }
+              @include respond-above (lg) {       
+                margin-top: 3rem;
+              }
+              @media (min-width:1601) {
+                 margin-top: 5rem;
+            }
+        }
+        .item{
+            position: relative;
+            margin: 0 -15px 3rem;
+            &::before{
+                content:" ";
+                height: 10px;
+                width: 10px;
+                position: absolute;
+                z-index: 100;
+                background-color: #fff;
+                top: 7.1rem;
+                left: 50%;
+                display: block;
+                border-radius: 5px;
+                margin-left: -5px;
+            }
+            &::after{
+                content:" ";
+                height: 1px;
+                width: 100%;
+                position: absolute;
+                z-index: 100;
+                background-color: #fff;
+                top: 7.35rem;
+                left: 0;
+                display: block;
+            }
+        }
+        h2{
+            color:#fff;
+        }
+        h3{
+            font-size: rem(30);
+            font-weight: lighter;
+            margin: 0;
+        }
+        h4{
+            font-size: rem(20);
+            font-weight: lighter;
+            margin: 0 0 4rem;
+            
+        }
+        ul{
+            @include reset-list;
+        }
+    }
+    .s3{
+        .pic{
+            img{
+                display: block;
+                width: 100%;
+            }
+        }
+        .txt{
+
+            padding: 1rem;
+            text-align: justify;
+            @include respond-above (md) {       
+                padding: 0 15%;
+              }
+              @include respond-above (lg) {       
+                padding: 0 28%;
+              }
+            h3{
+               text-align: center;
+               font-size: rem(24);
+               margin: 0;
+               @include respond-above (md) {       
+                font-size: rem(30);
+              }
+              @include respond-above (lg) {       
+                font-size: rem(36);
+              }
+              @media (min-width:1601) {
+                font-size: rem(40);
+            }
+            }
+        }
+    }
+}
+

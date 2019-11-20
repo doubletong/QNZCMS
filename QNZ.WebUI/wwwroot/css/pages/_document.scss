@@ -1,0 +1,13 @@
+.tab_nav li{
+   
+    a{
+        color:$color-primary;
+       
+    }
+    &.active{
+        a{
+            color:#fff;
+        }
+    }
+   
+}

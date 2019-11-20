@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/plugins/jqueryui"
+    },
+    {
+      "library": "holder@2.9.6",
+      "destination": "wwwroot/plugins/holder"
+    }
+  ]
+}

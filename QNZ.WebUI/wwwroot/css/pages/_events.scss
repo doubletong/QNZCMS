@@ -1,0 +1,25 @@
+.page-events{
+    .list-events{
+     
+            border-top: 1px #d2d2d2 solid;
+       
+        time{
+            color: $color-text-weak;
+        }
+    }
+ 
+}
+.page-events-detail{
+   .detail{
+       margin-bottom: 2rem;
+       @include respond-above(sm) {
+        margin-bottom: 3rem;
+    }
+    @include respond-above(md) {
+        margin-bottom: 4rem;
+    }
+    @include respond-above(lg) {
+        margin-bottom: 5rem;
+    }
+   }
+}

@@ -1,0 +1,74 @@
+﻿@model QNZ.Model.ViewModel.ProductCategoryIM
+
+@{
+    ViewData["Title"] = "删除";
+}
+
+<h2>删除</h2>
+<h3>您确定要删除此分类？</h3>
+<div>
+
+    <hr />
+
+    <div class="row">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+
+            <div class="col-md-3">
+                <figure>
+                    <img src="@Model.ImageUrl" alt="" style="max-width:100%;" />
+                    <figcaption class="text-center">分类图片</figcaption>
+                </figure>
+            </div>
+        }
+        <div class="col-md-4">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SubTitle)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SubTitle)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Importance)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Importance)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.InMenu)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.InMenu)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Recommend)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Recommend)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CreatedDate)
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="删除" class="btn btn-default" /> |
+        <a asp-action="Index">返回</a>
+    </form>
+</div>

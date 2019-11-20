@@ -1,0 +1,38 @@
+﻿@model PagedList.Core.IPagedList<QNZ.Model.Admin.ViewModel.FeedbackTypeVM>
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th>
+              #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="item-container">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+               
+                <td>
+                    <a data-id="@item.Id" data-title="@item.Title" class="btn btn-outline-primary btn-sm btnEdit">编辑</a>
+                    @if (!item.HasData) { 
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm delete-item">删除</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

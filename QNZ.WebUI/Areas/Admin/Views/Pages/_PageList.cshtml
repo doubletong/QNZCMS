@@ -1,0 +1,55 @@
+﻿@model PagedList.Core.IPagedList<PageVM>
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead class="thead-primary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SeoName)
+            </th>
+            <th>
+                排序 <span class="badge badge-pill badge-info" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="iconfont icon-question"></i></span>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ViewCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.SeoName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ViewCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">编辑</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">详情</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">删除</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

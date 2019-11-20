@@ -1,0 +1,325 @@
+.page-career {
+   
+    .intro{
+        margin-bottom: 2rem;
+        @include respond-above(sm) {
+            margin-bottom: 3rem;
+        }
+        @include respond-above(md) {
+            margin-bottom: 4rem;
+        }
+    }
+    .box{
+        border-top: 2px solid #F2F2F2;
+        border-right: 2px solid #F2F2F2;
+        margin-bottom: 2rem;
+        @include respond-above(sm) {
+            margin-bottom: 3rem;
+        }
+        @include respond-above(md) {
+            margin-bottom: 4rem;
+        }
+        @include respond-above(lg) {
+            margin-bottom: 5rem;
+        }
+        div{
+            height: 100%;
+        }
+        .item{
+            padding: 1rem 2rem;
+            border-left: 2px solid #F2F2F2;
+            border-bottom: 2px solid #F2F2F2;
+            height: 250px;
+            @include respond-above(sm) {
+                padding: 1.5rem 2rem; height: 300px;
+            }
+            @include respond-above(md) {
+                padding: 2.5rem 4rem; height: 300px;
+            }
+            h2{
+                font-size: rem(24);
+                color: $color-primary;
+                @include respond-above(sm) {
+                    font-size: rem(30);
+                }
+                @include respond-above(md) {
+                    font-size: rem(36);
+                }
+            }
+            p{color:#999;}
+        }
+    }
+    .values{
+        margin-top: 2rem;
+        .pic{
+            position: relative;
+            .txt{
+                text-align: center;
+                position: absolute;
+                left: 0; top:0;
+                width: 100%;
+                color: #fff;
+                font-size: rem(12);
+                padding: 1rem 2rem; line-height: 2.6;
+                @include respond-above(sm) {
+                    padding: 1rem 2rem;   line-height: 2.6;
+                }
+                @include respond-above(md) {
+                    padding-top: rem(65);    line-height: 3;
+                }
+            }
+        }
+
+    }
+    .box-salary{
+        margin-top: 2rem;
+        padding: 0 5px;
+        @include respond-above(sm) {
+            margin-top: 3rem;
+        }
+        @include respond-above(md) {
+            margin-top: 4rem;
+        }
+        @include respond-above(lg) {
+            margin-top: 5rem;
+        }
+        .list-salary{
+            border-radius: 6px ; 
+            overflow: hidden;
+            .row{
+                .col-md-6{
+                    .item{
+                        background-color: #f49c00;                        
+                        color: #fff;                   
+                        margin: 0 -5px rem(20);
+                        .txt{
+                            padding-left: 2rem;
+                            @include respond-above(md) {
+                                padding-left: 4rem;
+                            }
+                            h3{
+                                font-size: rem(24);
+                                @include respond-above(md) {
+                                    font-size: rem(36);
+                                }
+                            }
+                            a{
+                                color: #fff;
+                            }
+                        }
+                       
+                        img{
+                            display: block;
+                        }
+                    }
+                    &:nth-child(2n+1){
+                        .item{
+                            background-color: $color-primary;
+                        }
+                    }
+                    &:nth-of-type(5){
+                        .item{
+                            margin-bottom: 0;
+                        }
+                    }
+                    &:nth-of-type(6){
+                        .item{
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    .filters{
+       
+        max-width: 1060px;
+        margin: 0 auto 2rem;
+        @include respond-above(sm) {
+            font-size: rem(18); padding: 1rem;   margin: 0 auto 3rem;
+        }
+        @include respond-above(md) {
+            font-size: rem(20);   margin: 0 auto 4rem;
+        }
+        .title{
+            display: block;
+            width: 90px;
+            font-weight: bold;
+            @include respond-above(sm) {
+                width: 150px;
+            }
+        }
+        .cities{
+            margin-bottom: 1.5rem;
+            @include respond-above(sm) {
+                margin-bottom: 3rem;
+            }
+            a{
+                display: inline-block;
+                margin-right: 1.5rem;
+                @include respond-above(sm) {
+                    margin-right: 4.5rem;
+                }
+                &.active{
+                    color: $color-primary;
+                }
+            }
+        }
+        .formsearch{
+            max-width: 500px;
+            input{
+               
+                height:45px;
+                border-radius:4px 0 0 4px;
+                border:2px solid $color-primary;
+                width: 100%;
+                padding: 0 .6rem;
+                @include respond-above(sm) {
+                    height:58px;  padding: 0 .8rem;
+                    font-size: rem(20);
+                }
+            }
+            button{
+                width:45px;
+                height:45px;
+                background:$color-primary;
+                border-radius:0 4px 4px 0;
+                border:none;
+                color: #fff;
+                @include respond-above(sm) {
+                    height:58px;  width:58px;
+                }
+                .iconfont{
+                    font-size: rem(18);   
+                    @include respond-above(sm) {
+                        font-size: rem(20);   
+                    }
+                }
+            }
+        }
+        
+    }
+
+    .list-jobs{
+        max-width: 1060px;
+        margin: 0 auto 1rem;
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+            .address{
+                display: none;
+                @include respond-above(sm) {
+                   display: block;
+                }
+            }
+            tr{
+                th{
+                    background-color: #ECECEC;
+                     color: #888;
+                    text-align: left;
+                    font-size: rem(14);
+                    padding: .4rem .8rem;
+                    font-weight: normal;
+                
+                    &.date{
+                        display: none;
+                        @include respond-above(sm) {
+                           display: table-cell;
+                        }
+                    }
+                    @include respond-above(sm) {
+                        padding: .8rem .8rem;
+                     }
+                 }
+                 td{
+                     font-size: 1rem;
+                     padding: .6rem .8rem;
+                     border-bottom: 2px #f7f7f7 solid;
+                     @include respond-above(sm) {
+                        font-size: rem(20);  padding: 1rem .8rem;
+                     }
+                     &.date{
+                         font-size: 1rem;
+                         color:#999;
+                         display: none;
+                         @include respond-above(sm) {
+                            display:  table-cell;
+                         }
+                     }
+                     .post-body{
+                      
+                         font-size: 1rem;
+                         padding: 1rem;
+                         
+                         border-bottom: 2px #f7f7f7 solid;
+                         @include respond-above(sm) {
+                            padding: 2rem;
+                        }
+                         address{
+                             background-color: #eee;
+                             border-radius: 15px; font-style: normal;
+                             text-align: center;
+                            @include respond-above(sm) {
+                                display: none;
+                            }
+                         }
+                         .cont_title{
+                            font-weight: bold;   font-size: rem(20);
+                         }
+                         .title-job{
+                             font-weight: bold; font-size: rem(20);
+                         }
+                         .reply{
+                             a{
+                                 display: inline-block; padding: .6rem 2rem; border-radius: 25px;
+                                 background-color: $color-primary; color: #fff;                           
+                                 transition: all .2s;
+                                 &:hover{
+                                     background-color:darken($color-primary,5%);  transform: translateX(5px)
+                                 }
+                                 @include respond-above(sm) {
+                                    padding: 1rem 3rem; border-radius: 30px;
+                                }
+                             }
+                             
+                         }
+                     }
+                     .open{
+                         color: $color-primary;
+                         display: block;
+                         transition: all .2s;
+                         i.iconfont{
+                             font-size: rem(20);
+                         }
+     
+                     }
+                     
+                 }
+                 &.job-body{
+                    td{
+                        padding: 0;
+                        border-bottom: none;
+                    }
+                }
+                &.view{
+                    td{
+                        color: $color-primary;
+                        .open{
+                            transform: rotate(180deg)
+                        }
+                    }
+                   
+                }
+                &.opentr{
+                    cursor: pointer;
+                }
+            }
+            
+            
+        }
+       
+    }
+   
+}

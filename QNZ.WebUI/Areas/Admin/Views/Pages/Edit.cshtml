@@ -1,0 +1,157 @@
+﻿@model PageIM
+@{
+    var pageTitle = Model.Id > 0 ? "编辑页面" : "创建页面";
+    ViewData["Title"] = pageTitle;
+}
+
+
+
+        <form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+              data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+              data-ajax="true" data-ajax-method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" type="hidden" />
+            <div class="card">
+                <div class="card-header">
+                    <h3>@pageTitle</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SeoName" class="control-label"></label>
+                        <input asp-for="SeoName" class="form-control" />
+                        <span asp-validation-for="SeoName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" />
+                        <span asp-validation-for="Importance" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Body" class="control-label"></label>
+                        <textarea asp-for="Body"></textarea>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer ">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+@section header{
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+
+    <script>
+        tinymce.init({
+            selector: "#Body",
+            height: 300,
+            language: 'zh_CN',
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount codemirror visualblocks visualchars insertdatetime media nonbreaking",
+                "table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect | link unlink anchor | image media | forecolor backcolor  | print preview code",
+            codemirror: {
+                path: 'codemirror'
+              },
+            image_advtab: true,
+            file_picker_callback: elFinderBrowser
+        });
+   
+        function elFinderBrowser(callback, value, meta) {
+            tinymce.activeEditor.windowManager.open({
+                file: '/tiny-mce/browse',
+                title: '文件管理',
+                width: 900,
+                height: 450,
+                resizable: 'yes'
+            }, {
+                    oninsert: function (file, fm) {
+                        var url, reg, info;
+                        // URL normalization
+                        url = fm.convAbsUrl(file.url);
+                        // Make file info
+                        info = file.name + ' (' + fm.formatSize(file.size) + ')';
+                        // Provide file and text for the link dialog
+                        if (meta.filetype == 'file') {
+                            callback(url, { text: info, title: info });
+                        }
+                        // Provide image and alt text for the image dialog
+                        if (meta.filetype == 'image') {
+                            callback(url, { alt: info });
+                        }
+                        // Provide alternative source and posted for the media dialog
+                        if (meta.filetype == 'media') {
+                            callback(url);
+                        }
+                    }
+                });
+            return false;
+        }
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save")
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {
+                var url = "@Url.Action("Index")";
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+
+
+
+        });
+    </script>
+}

@@ -1,0 +1,100 @@
+﻿@model PagedList.Core.StaticPagedList<QNZ.Model.ViewModel.OrderVM>
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-vmiddle">
+            <thead>
+                <tr>
+                    <th style="width:3.8rem;">
+                        #
+                    </th>
+
+                    <th>
+                        客户手机
+                    </th>
+                    <th>
+                        客户昵称
+                    </th>
+
+
+                    <th>
+                        总金额
+                    </th>
+                    <th>
+                        下单时间
+                    </th>
+                    <th>
+                        状态
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerMobile)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nickname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+
+                    <td>
+                        @SIG.Infrastructure.Helper.Site.OrderStatus(item.Status)
+                    </td>
+             
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <button type="button" class="btn btn-outline-secondary btn-sm btnDelivery" data-id="@item.Id">发货</button>
+                        }
+                        @if (item.Status != 10 && item.Status != 4)
+                        {
+                            <button type="button" class="btn btn-outline-secondary btn-sm btnCannelled" data-id="@item.Id">取消订单</button>
+                        }
+                    </td>
+                </tr>
+                    if (item.OrderDetails != null)
+                    {
+                        <tr>
+                            <td colspan="11">
+                                <div style="position:relative;">
+                                    
+                                        @foreach (var sub in item.OrderDetails)
+                                        {
+                                            <div class="card" style="width:200px;margin-right:10px; float:left;">
+                                                <img class="card-img-top" src="@sub.Thumbnail" alt="Card image cap">
+                                                <div class="card-body">
+
+                                                    <h5 class="card-title">@sub.ProductName</h5>
+                                                    <p class="card-text">@sub.Summary</p>
+
+
+                                                </div>
+                                                <div class="card-footer">
+                                                    <small class="text-muted"> @sub.Price x @sub.Quantity = @string.Format("{0:c}", sub.Price * sub.Quantity)</small>
+                                                </div>
+                                            </div>
+
+                                        }
+                                  
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,40 @@
+.modal-overlay {
+    position: fixed;
+    z-index: 6000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vw;
+    background-color: rgba(0, 0, 0, .8);
+    display: none;
+    .modal {
+        max-width: 450px;
+        margin: 100px auto;
+        background-color: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 0 12px rgba(0, 0, 0, .15);
+        .modal-header {
+            padding: .6rem 1rem;
+            border-bottom: 1px $colorBorder solid;
+            position: relative;
+            .btn-close {
+                position: absolute;
+                right: .4rem;
+                top: .6rem;
+                z-index: 100;
+                display: block;
+                padding: 0 .4rem;
+                color: $light;
+            }
+        }
+        .modal-body {
+            padding: 1rem;
+        }
+        .modal-footer {
+            border-top: 1px $colorBorder solid;
+            padding: .6rem 1rem;
+            text-align: right;
+        }
+    }
+}

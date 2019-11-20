@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewData["Title"] = "Upload";
+}
+<div style="padding-top:300px;"></div>
+@*<div class="modal-dialog">
+    <div class="modal-content">
+        <form asp-controller="Home" asp-action="UploadSmallFile" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
+            <div class="modal-footer">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Browse… <input type="file" style="display: none;" name="file" id="FileInput">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly="" id="BrowseInput">
+                    </div>
+                </div>
+                <div class="progress"></div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" value="Upload Small File" class="btn btn-default" id="UploadSmallFile">Upload Small File</button>
+                        <button type="button" value="Upload Streaming File" class="btn btn-default" id="UploadStreamingFile" onclick="uploadStreamingFile()">Upload Streaming File</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>*@
+
+<form id="uploadForm" asp-controller="Files" asp-area="Admin" asp-action="UploadPhysical" method="post"
+      enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;">
+    <dl>
+        <dt>
+            <label for="file">File</label>
+        </dt>
+        <dd>
+            <input id="file" type="file" name="file" />
+        </dd>
+    </dl>
+
+    <input class="btn" type="submit" value="Upload" />
+
+    <div style="margin-top:15px">
+        <output form="uploadForm" name="result"></output>
+    </div>
+</form>
+
+@section Scripts {
+    @*<script type="text/javascript">
+        $(document).on('change', ':file', function () {
+            var input = $(this)
+            var label = $('#BrowseInput').val(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+        });
+    </script>
+    <script type="text/javascript">
+        function getAntiForgeryToken() {
+            token = $('input[name=__RequestVerificationToken]').val();
+            return token;
+        };
+    </script>
+    <script type="text/javascript">
+        function uploadStreamingFile() {
+            var data = new FormData();
+            $.each($('#FileInput')[0].files, function (i, file) {
+                data.append('file-' + i, file);
+            });
+
+            $.ajax({
+                url: '@Url.Action("UploadStreamingFile", "Home")',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                headers: { 'RequestVerificationToken': getAntiForgeryToken({}) },
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress",
+                        function (evt) {
+                            debugger;
+                        if (evt.lengthComputable) {
+                          var progress = Math.round((evt.loaded / evt.total) * 100);
+
+                            // Do something with the progress
+                            console.log(progress);
+                        }
+                      },
+                      false);
+                    return xhr;
+                  },
+                success: function (returned) {
+
+                },
+                error: function (returned) {
+
+                }
+            }).done(function(data, textStatus, jqXhr) {
+                  alert("Uploading is done");
+
+                  // Clear the input
+                  $("#files").val();
+                })
+                .fail(function(jqXhr, textStatus, errorThrown) {
+                  if (errorThrown === "abort") {
+                    alert("Uploading was aborted");
+                  } else {
+                    alert("Uploading failed");
+                  }
+                })
+                .always(function(data, textStatus, jqXhr) {});
+        }
+    </script>*@
+
+    <script>
+        "use strict";
+        async function AJAXSubmit(oFormElement) {
+            const formData = new FormData(oFormElement);
+            try {
+                const response = await fetch(oFormElement.action, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': getCookie('RequestVerificationToken')
+                    },
+                    body: formData
+                });
+                oFormElement.elements.namedItem("result").value =
+                    'Result: ' + response.status + ' ' + response.statusText;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+    </script>
+}
+

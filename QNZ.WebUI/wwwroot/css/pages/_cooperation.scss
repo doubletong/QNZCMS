@@ -1,0 +1,160 @@
+.page-cooperation {
+    .s1 {
+        margin-bottom: 5rem;
+    }
+
+    .newslist {
+        .item {
+            display: block;
+
+            .pic {
+                img {
+                    display: block;
+                }
+            }
+
+            .des {
+                border: 1px #ddd solid;
+                border-top: none;
+                padding: 1rem 2rem;
+                position: relative;
+
+                .time {
+                    position: absolute;
+                    top: -3.3rem;
+                    right: 2rem;
+                    background-color: $color-primary;
+                    color: #fff;
+                    text-align: center;
+                    padding: .5rem .7rem;
+
+                    .date {
+                        font-size: rem(34);
+                    }
+
+                    .month {
+                        font-size: 1rem;
+                    }
+                }
+
+                h3 {
+                    margin-bottom: 1rem;
+                    height: 5.5rem;
+                }
+
+                p {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+
+    .s2 {
+        margin-bottom: 5rem;
+    }
+
+    .s3 {
+        .se1 {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+    }
+
+    .s4 {
+        background-color: #f7f8f8;
+        padding: 2rem 0 3rem;
+
+        h4 {
+            font-size: rem(34);
+        }
+
+        .list1 {
+            img {
+                display: block;
+                height: 205px;
+                display: block;
+            }
+        }
+
+        .list2 {
+            img {
+                display: block;
+                height: 220px;
+                display: block;
+            }
+        }
+
+        .t1 {
+            text-align: center;
+            color: $color-primary;
+            margin-bottom: 3rem;
+            font-size: rem(34);
+        }
+    }
+
+    .s5 {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+
+        .map_canvas {
+            height: 430px;
+
+            @include respond-above(md) {
+                margin-left: 2rem;
+            }
+
+            img {
+                max-width: none;
+            }
+        }
+
+        .formcontact {
+
+
+            @include respond-above(md) {
+                padding-right: 2rem;
+            }
+
+            .control-group {
+                margin-bottom: rem(30);
+            }
+
+            input {
+                font-size: rem(20);
+                padding: .5rem 0;
+                width: 100%;
+                border: none;
+                border-bottom: 1px #595757 solid;
+            }
+
+            textarea {
+                margin-top: 2.5rem;
+                font-size: rem(20);
+                border: 1px #595757 solid;
+                padding: .5rem 1rem;
+                width: 100%;
+            }
+        }
+
+        .contact {
+            text-align: center;
+            padding-top: 5rem;
+
+            p {
+                font-size: rem(20);
+            }
+
+            ul {
+                @include reset-list();
+
+                li {
+                    font-size: rem(20);
+
+                    .iconfont {
+                        font-size: rem(20);
+                    }
+                }
+            }
+        }
+    }
+}

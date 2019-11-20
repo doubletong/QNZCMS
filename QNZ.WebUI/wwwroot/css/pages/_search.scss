@@ -1,0 +1,53 @@
+.page-search{
+    padding-top: 0;
+    .search_bg{
+        padding-top: 7rem;
+        background-color: $color-accent;
+        height: 250px;
+        .searchbox{
+           
+        
+            border-bottom: 1px #fff solid;
+            input{
+                width: 100%;
+                font-size: rem(30);
+                padding: .8rem 1rem;
+                background-color: transparent;
+                border:none;
+                outline: none;
+                color:#fff;
+            }
+            button{
+                background-color: transparent;
+                border:none;
+                color: #fff;
+                cursor: pointer;
+                padding: .8rem;
+                .iconfont{
+                    font-size: rem(30);
+                }
+            }
+        }
+    }
+    .list-search{
+        .item{
+            display: block;
+            .des{
+                border-bottom: 1px #ddd solid;
+                padding-top: 2rem;
+                padding-bottom: 2.5rem;
+                time{
+                    color:$color-text-weak;
+                    font-size: rem(14);
+                }
+                h3{
+                   margin: 0;
+                    font-size: rem(20);
+                }
+            }
+            @include hover{
+                background-color: #d7ddeb;
+            }
+        }
+    }
+}

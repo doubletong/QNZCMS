@@ -1,0 +1,111 @@
+﻿
+@using QNZ.Data.Enums
+@using QNZ.Model.Admin.InputModel.Identity
+@model ProfileIM
+
+    <form asp-controller="User" asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+          data-ajax="true" data-ajax-method="POST">
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <!-- 添加菜单 Modal -->
+    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">编辑用户资料</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" asp-for="UserName">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.RealName, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.RealName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.RealName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+
+                            @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Birthday)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(model => model.Gender, Html.GetEnumSelectList(typeof(Gender)), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Gender)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Mobile)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.QQ, htmlAttributes: new { @class = "col-form-label col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.QQ, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.QQ)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3">状态</div>
+                        <div class="col-sm-9">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsActive"> 激活
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save fa-fw"></i>保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

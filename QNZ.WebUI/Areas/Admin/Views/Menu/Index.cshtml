@@ -1,0 +1,245 @@
+﻿@using QNZ.Data
+@using SIG.Resources.Admin
+@model MenuCategory
+@{
+    ViewBag.Title = EntityNames.Menu;
+    ViewBag.PageTitle = ViewBag.Title + "_组件";
+}
+
+
+    <div class="row">
+     
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="panel panel-default">
+                <header class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-navicon"></i> @Model.Title
+                    </h3>
+                    <button type="button" class="btn btn-info btn-sm btn-refresh" data-id="@Model.Id" data-url="@Url.Action("ResetSort",new { id=Model.Id})"><i class="fa fa-sort-numeric-asc"></i></button>
+                </header>
+                <section class="panel-body" id="@string.Format("menu{0}", Model.Id)">
+                    @*<a asp-controller="Menu" asp-action="CreateMenu" data-route-parentId="1" data-route-categoryId="1" data-ajax="true" data-ajax-method="GET"
+                       data-ajax-mode="replace" data-ajax-update="edit-container" data-ajax-begin="onBegin" data-ajax-complete="onComplete"
+                       data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class='fa fa-plus'></i></a>*@
+
+                    @await Component.InvokeAsync("MenuList", new {categoryId = Model.Id})
+                </section>
+                <footer class="panel-footer">
+                </footer>
+            </div>
+            </div>
+     
+    </div>
+
+<div id="edit-container">
+</div>
+
+<form id="anti-form" method="post">
+    @Html.AntiForgeryToken()
+</form>
+
+@section header{
+    <style>
+        .panel {
+            box-shadow: 0 0 1rem rgba(0, 0, 0, .15);
+            padding:0 2rem 2rem;
+        }
+        .panel-heading {
+            border-bottom: 1px #eee solid;
+            margin: 0 -2rem;position: relative;
+        }
+        .panel-title {
+            font-size: 1rem;padding: 1rem 1rem;margin: 0;
+        }
+        .btn-refresh {
+            position: absolute;right: 1rem;top: .6rem;z-index: 100;
+        }
+       
+        .panel-body {
+            padding-top: 1rem;
+        }
+        .panel-body li a {
+            margin-left: .3rem;
+        }
+        
+    </style>
+}
+
+@section footer {
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+        <script>
+            function onBegin() {
+                var iconEl = $(this).find("i.fa");
+                var icon = iconEl.attr("data-icon");
+                iconEl.removeClass(icon).addClass("fa-spinner fa-spin");
+            }
+
+            function onComplete() {
+                var iconEl = $(this).find("i.fa");
+                var icon = iconEl.attr("data-icon");
+                iconEl.removeClass("fa-spinner fa-spin").addClass(icon);
+                $('#ModalMenuForm').modal();
+            }
+            function onSuccess(data) {
+                //console.log(data);
+                //$("#")
+            }
+            function onFailed(d) {
+
+            }
+
+
+            function onBeginSave() {
+                $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+            }
+            function onCompleteSave() {
+                $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save");
+            }
+            function onSuccessSave(data) {
+                var title = '@ViewBag.PageTitle';
+                Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+            }
+            function onFailedSave(d) {
+                toastr.error(d.message, '@ViewBag.Title');
+            }
+
+            function submitSuccess(id, htmlData) {
+               
+                $('#ModalMenuForm').modal('hide');
+               
+                $.ajax({
+                    method: 'GET',
+                    url: '@Url.Action("GetMenus", "Menu")?categoryId=' + id
+                }).done(function (data, statusText, xhdr) {
+               
+                    $("#menu" + id).html(data);
+
+                    }).fail(function (xhdr, statusText, errorText) {
+                        toastr.error(JSON.stringify(xhdr), '@ViewBag.Title');
+                    //$("#result").text(JSON.stringify(xhdr));
+                });
+
+              
+            }
+
+
+            $(function () {
+
+
+
+                //展开折叠菜单
+                $(document).on("click", '.expmenu', function (e) {
+              //  $(".expmenu").on("click", function (e) {
+                    e.preventDefault();
+
+                     if ($(this).hasClass("expandmenu")) {
+                        $(this).children("span").removeClass("icon-minus-square-fill").addClass("icon-plus-square-fill");
+                    } else {
+                        $(this).children("span").removeClass("icon-plus-square-fill").addClass("icon-minus-square-fill");
+                    }
+
+                    $(this).toggleClass("expandmenu");
+                    $(this).closest("li").children("ul.menuTree").toggleClass("hidden");
+
+                    var url = $(this).attr("data-url");
+                    Common.SingleAction(url, "", false);
+
+                });
+
+
+                //delete
+                $(document).on("click", '.delete-item', function (e) {
+                    e.preventDefault();
+
+                    var url = $(this).attr('data-url');
+                    var that = $(this);
+                    
+                    
+                    swal({
+                            title: "您确定要删除此项？",
+                            text: "此删除操作不可恢复！",
+                            icon: "warning",
+                            buttons: ["取消","确定"],
+                            dangerMode: true
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                            
+                                var title = "@ViewBag.Title";
+                                Common.DeleteItem(url, title, that);
+                            
+                            } else {
+                                //swal("Your imaginary file is safe!");
+                            }
+                        });
+
+                    
+                    
+                  
+
+                });
+
+                //删除数据
+                $(document).on("click", '.menuRemove', function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    //      var confireMes = $(this).attr('data-confirm');
+                    var menu = "#menu" + $(this).attr('data-categoryid');
+                    var that = $(this);
+
+                    bootbox.setLocale("zh_CN");
+
+                    bootbox.confirm("是否确定删除该项？", function (result) {
+                        if (result) {
+                            $.post(url, $("#anti-form").serialize(), function (data) {
+
+                                if (data.Status === 1) {
+                                    toastr.error(data.message, '@ViewBag.Title');
+                                } else {
+                                    toastr.success("已成功删除此项", '@ViewBag.Title');
+
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 1000);
+                                }
+
+                            });
+                        }
+                    });
+                });
+
+
+              
+
+                //激活
+                $('.active-item').click(function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr('data-url'), title = $(this).attr('data-action'), that = $(this);
+
+                    Common.SingleAction(url, title, true);
+
+                });
+
+
+                $('.btn-refresh').click(function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr('data-url'), title = '重排序列', that = $(this).attr("data-id");
+                    Common.SingleActionWithFuncBack(url, title, that, resetSortSuccess);
+                    //(url, title, that, func)
+                });
+
+
+
+
+
+            });
+
+            function resetSortSuccess(id,htmlData) {
+                $("#menu" + id).html(htmlData);
+            }
+        </script>
+
+    }

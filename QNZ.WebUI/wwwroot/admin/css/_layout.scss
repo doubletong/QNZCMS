@@ -1,0 +1,93 @@
+﻿.wrapper {
+    display: grid;
+    grid-template-columns: 170px auto;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+
+
+.rightcol {
+    position: relative;
+    grid-column: 2;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+
+
+    .page-header {
+        height: 50px;
+        position: sticky;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+        background-color: #ffffff;
+        padding:0 1rem;
+
+        .closemenu {
+           
+            width: 1.8rem;
+            padding-top: .2rem;
+            cursor: pointer;
+
+            .link_item {
+            
+                height: 2px;
+                margin-bottom: 5px;
+                background-color: #333;
+                transition:all .25s;
+            }
+
+            &.openav {
+                .up {
+                    width: .8rem;
+                    margin-left: auto;
+                    margin-right: 0;
+                    transform: rotate(45deg)  translateX(5px);
+                }
+
+                .bot {
+                    width: .8rem;
+                    margin-left: auto;
+                    margin-right: 0;
+                    transform: rotate(-45deg)  translateX(5px);
+                }
+            }
+        }
+
+        .row {
+            height: 100%;
+        }
+
+        .nav-user {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: right;
+
+            li {
+                display: inline-block;
+                margin-right: 1rem;
+            }
+        }
+    }
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px 20px;
+    justify-items: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.flex {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    &>* {
+        flex: 1;
+    }
+}

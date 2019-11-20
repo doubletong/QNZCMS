@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/styles.css",
+    "inputFile": "wwwroot/css/styles.scss"
+  },
+  {
+    "outputFile": "wwwroot/plugins/SigFinder/SigFinder.css",
+    "inputFile": "wwwroot/plugins/SigFinder/SigFinder.scss"
+  }
+]

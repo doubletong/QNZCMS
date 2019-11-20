@@ -1,0 +1,149 @@
+﻿@using PagedList.Core.Mvc
+@model QNZ.Model.Admin.ViewModel.FeedbackTypePageVM
+@{
+    ViewData["Title"] = "反馈类型";
+}
+
+
+<div class="row">
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-auto mr-auto">
+                <form asp-action="Index" method="get" class="form-inline mb-2">
+                    <label class="sr-only" for="Keyword">关键字</label>
+                    @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "类型" } })
+
+                    <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+                </form>
+            </div>
+            <div class="col-auto">
+                <a asp-action="Create" class="btn btn-primary" id="btnCreate"><i class="fa fa-plus"></i> 添加类型</a>
+            </div>
+        </div>
+        <partial name="_FeedbackTypeList" model="Model.FeedbackTypes" />
+
+
+        <div class="panel-footer">
+
+            <div class="row">
+                <div class="col-auto mr-auto">
+                    @*<pager class="pager-container" list="@Model.FeedbackTypes" LinkToPreviousPageFormat="前页" ,
+                           LinkToNextPageFormat="下页"
+                           options="@{ new PagedListRenderOptions {
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayLinkToIndividualPages = true,
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                    AhrefElementClasses = new[] { "page-link" },
+                    ClassToApplyToFirstListItemInPager = null,
+                    ClassToApplyToLastListItemInPager = null,
+                    LinkToPreviousPageFormat = "前页",
+                    LinkToNextPageFormat = "后页"
+                    }}"
+                           asp-action="Index" asp-controller="FeedbackTypes" asp-route-keyword="@Model.Keyword" />*@
+                </div>
+                <div class="col-auto">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                        @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-sm-4">
+        <div class="jumbotron" style="padding:2rem;">
+            <h4 id="formTitle">添加类型</h4>
+            <hr />       
+            <partial name="_Create" model="Model.FeedbackType" />
+        </div>
+    </div>
+</div>
+
+
+<form id="anti-form" method="post">
+    @Html.AntiForgeryToken()
+</form>
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+   
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save")
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {
+                toastr.success(data.message);
+                location.reload();
+            }
+            if (data.Status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+        $(function () {
+
+            $(document).on("click", '.btnEdit', function (e) {
+                var title = $(this).attr("data-title");
+                var eid = $(this).attr("data-id");
+                $("#Id").val(eid);
+                $("#Title").val(title);
+                $("#formTitle").text("编辑类型");
+                $("#formEq").attr("action", "@Url.Action("Edit")");
+            });
+
+            $(document).on("click", '#btnCreate', function (e) {
+                e.preventDefault();
+                $("#Id").val(0);
+                $("#Title").val("");
+                $("#formTitle").text("添加类型");
+                $("#formEq").attr("action", "@Url.Action("Create")");
+            });
+
+
+
+            //delete
+            $(document).on("click", '.delete-item', function (e) {
+                e.preventDefault();
+
+                var url = $(this).attr('href');
+                var that = $(this);
+                bootbox.setLocale("zh_CN");
+                bootbox.confirm("你确定要删除此项吗？", function (result) {
+                    if (result) {
+                        /*DELETE*/
+                        var title = "@ViewBag.Title";
+                        Common.DeleteItem(url, title, that);
+                    }
+                });
+
+            });
+
+        });
+    </script>
+}
+

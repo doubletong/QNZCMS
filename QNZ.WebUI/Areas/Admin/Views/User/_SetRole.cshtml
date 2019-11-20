@@ -1,0 +1,63 @@
+﻿
+@using QNZ.Model.Admin.ViewModel.Identity
+@model SetUserRolesVM
+
+@*@using (Ajax.BeginForm("SetRole", "User",
+                            new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                OnBegin = "onBeginSave",
+                                OnComplete = "onCompleteSave",
+                                OnSuccess = "onSuccess",
+                                //OnFailure = "handleError",
+                                //  UpdateTargetId = "RoleList"
+
+                            }, new { @class = "form-horizontal", role = "form" }))
+{*@
+<form asp-controller="User" asp-action="SetRole" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+@Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.UserId)
+    <!-- 添加菜单 Modal -->
+    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">设置角色</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    @foreach (var r in Model.Roles)
+                    {
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" @(Model.RoleIds.Contains(r.Id)?"checked":"") value="@r.Id" name="RoleId"> @r.RoleName  [@r.Description]
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save fa-fw"></i>保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

@@ -1,0 +1,151 @@
+﻿@model ClientListVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = "客户";
+}
+
+<div class="flex m-b-10">
+
+    <form asp-action="Index" method="get">
+        <input asp-for="Keyword" class="form-control" />
+        <button type="submit" class="btn btn-primary"><i class="iconfont icon-search"></i> 搜索</button>
+    </form>
+    <div class="text-right">
+        <a class="btn btn-primary" asp-action="Create"><i class="iconfont icon-plus"></i> 添加</a>
+    </div>
+</div>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().LogoURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().ClientName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().Homepage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().Importance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clients.FirstOrDefault().CreatedDate)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Clients)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.LogoURL))
+                    {
+                        <img src="@item.LogoURL" style="height:50px;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Homepage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Importance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommend)
+                </td>
+                <td>
+                    @($"{item.CreatedDate:d}")
+                </td>
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="flex">
+
+
+    <pager class="pager-container" list="@Model.Clients" 
+           options="@PagedListRenderOptions.Bootstrap4Full"
+           asp-action="Index" asp-controller="Clients" asp-route-solutionid="@Model.Keyword" />
+
+    <div class="text-right">
+
+        <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
+        @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+
+    </div>
+
+</div>
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+        $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+
+
+            swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+        });
+    </script>
+}

@@ -1,0 +1,102 @@
+﻿@model QNZ.Model.ViewModel.ProductDetailVM
+@{
+    ViewData["Title"] = "删除商品";
+}
+
+<div class="alert alert-danger">
+    <h4>@ViewData["Title"]</h4>
+    您确定要删除此商品？
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.SubName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SubName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Summary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Summary)
+            </dd>
+
+
+        </dl>
+    </div>
+    <div class="col-md-3">
+        @if (!string.IsNullOrEmpty(Model.FullImages))
+        {
+            var images = Model.FullImages.Split("|");
+            int i = 0;
+            int j = 0;
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach (var item in images)
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i==0?"active":"")"></li>
+                        i++;
+                    }
+                </ol>
+                <div class="carousel-inner">
+
+                    @foreach (var item in images)
+                    {
+                        <div class="carousel-item @(j==0?"active":"")">
+                            <img class="d-block w-100" src="@item" alt="slide">
+                        </div>
+                        j++;
+                    }
+
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">上一张</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">下一张</span>
+                </a>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<form asp-action="Delete" class="mb-2">
+    <input type="hidden" asp-for="Id" />
+    @if (!Model.HasData)
+    {
+        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> 删除</button>
+    }
+
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+</form>
+
+@if (Model.HasData)
+{
+    <div class="alert alert-danger">此商品已存在订单或已有人在选购此商品，不可以删除</div>
+}

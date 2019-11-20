@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "联系我们";
+}
+
+<div class="banner banner-contact">
+    <h3>联系我们</h3>
+    <h4>Contact</h4>
+    <hr />
+</div>
+<div class="page page-contact">
+
+    <section class="s1">
+        <div class="container">
+            <h2>深圳清华大学研究院</h2>
+
+            <p>
+                研究院办公室：深圳清华大学研究院大楼A402室
+            </p>
+            <p>
+                通讯地址：深圳高新技术产业园南区高新南七道
+            </p>
+            <p>
+                电话：86-755-26551329<br />
+                传真：86-755-26551038
+            </p>
+            <p>
+                邮政编码：518057
+            </p>
+            <p>
+                电子邮箱：ofc@tsinghua-sz.org
+            </p>
+            <p>
+                乘车路线： 地铁1号线 深大站C出口；公交车（粤海门村站）：334；b728；m209；m388；m528等
+            </p>
+        </div>
+    </section>
+    <section class="s2  wow slideInUp" id="map_canvas">&nbsp;</section>
+</div>
+
+@section Scripts{
+    <script src="https://api.map.baidu.com/api?v=2.0&ak=G7h0sKsr60IFU3OrHRmKTRzD"></script>
+    <script>
+
+         // 百度地图API功能
+         var map = new BMap.Map("map_canvas");
+
+
+        map.addControl(new BMap.NavigationControl());
+        map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
+        map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
+
+        map.centerAndZoom(new BMap.Point(113.94924,22.538721), 16);
+        var point = new BMap.Point(113.94924,22.538721);
+
+        //var myIcon = new BMap.Icon("/Content/img/marker.png", new BMap.Size(132, 132));
+        //var marker1 = new BMap.Marker(point, { icon: myIcon });  // 创建标注
+        var marker1 = new BMap.Marker(point);
+
+        map.addOverlay(marker1); // 将标注添加到地图中
+        // marker1.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        var sContent =
+            "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>深圳清华大学研究院</h4>" +
+            "<p>地址：深圳清华大学研究院大楼A402室<br/>" +
+            "电话：010-80716680</p>" +
+            "</div>";
+
+
+        //创建信息窗口
+        //var infoWindow1 = new BMap.InfoWindow(sContent);
+        //marker1.addEventListener("click", function () { this.openInfoWindow(infoWindow1); });
+        //marker1.openInfoWindow(infoWindow1);
+
+        $(document).ready(function() {
+
+
+        });
+    </script>
+}

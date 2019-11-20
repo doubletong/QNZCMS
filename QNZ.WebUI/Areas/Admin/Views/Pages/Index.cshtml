@@ -1,0 +1,54 @@
+﻿@using PagedList.Core.Mvc
+@model PageListVM
+@{
+    ViewData["Title"] = "页面";
+}
+
+<div class="row">
+    <div class="col-auto mr-auto">
+        <form asp-action="Index" method="get" class="form-inline mb-2">
+            <label class="sr-only" for="Keyword">关键字</label>
+            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "关键字" } })
+
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Edit" class="btn btn-primary"><i class="fa fa-plus"></i> 创建页面</a>
+    </div>
+</div>
+<partial name="_PageList" model="Model.Pages" />
+
+<div class="panel-footer">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <pager class="pager-container" list="@Model.Pages"
+                   options="@PagedListRenderOptions.Bootstrap4Full"
+                   asp-action="Index" asp-controller="Pages" asp-route-solutionid="@Model.Keyword" />
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section  header{ 
+    <style>
+        th span .iconfont{
+            font-size:12px;
+            font-weight:normal;
+        }
+    </style>
+}
+
+@section footer{
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    </script>
+}

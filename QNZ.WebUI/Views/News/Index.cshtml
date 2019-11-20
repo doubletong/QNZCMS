@@ -1,0 +1,58 @@
+﻿@model ArticlePageVM
+
+@{
+    ViewData["Title"] = "新闻资讯";
+}
+<div class="banner banner-about">
+    <h3>新闻</h3>
+    <h4>News</h4>
+    <hr />
+    <nav>
+        @foreach (var item in Model.Categories)
+        {
+            <a asp-controller="News" asp-action="List" asp-route-cid="@item.Id">@item.Title</a>
+        }       
+    </nav>
+</div>
+<section class="page-articles">
+    <header class="se-header">
+        <h3>新闻资讯</h3>
+        <p>news</p>
+    </header>
+    <div class="articles">
+        <ul class="newsList">
+            @foreach (var item in Model.Articles)
+            {
+                <li>
+                    <div class="date">
+                        <div class="top">
+                            @($"{item.CreatedDate:dd}")
+                        </div>
+                        <div class="bot">
+                            @($"{item.CreatedDate:yy/MM}")
+                        </div>
+                    </div>
+                    <a asp-action="Detail" asp-route-id="@item.Id">
+                        <h3>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </h3>
+                        <p class="summary">
+                            @Html.DisplayFor(modelItem => item.Summary)
+                        </p>
+                        <p class="note">
+                            分类：
+                            @Html.DisplayFor(modelItem => item.Category)
+                            查看：
+                            @Html.DisplayFor(modelItem => item.ViewCount)
+                        </p>
+                    </a>
+                </li>
+            }
+
+        </ul>
+        <pager class="pager-container" list="@Model.Articles" LinkToPreviousPageFormat="<" ,
+               LinkToNextPageFormat=">"
+               options="@PagedListRenderOptions.Bootstrap4Full"
+               asp-action="Index" asp-controller="Articles" />
+    </div>
+</section>

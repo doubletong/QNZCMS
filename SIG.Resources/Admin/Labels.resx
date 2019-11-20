@@ -1,0 +1,630 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>激活</value>
+  </data>
+  <data name="BLayout" xml:space="preserve">
+    <value>比料的皮子分布</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>条形码</value>
+  </data>
+  <data name="BottomColor" xml:space="preserve">
+    <value>底颜色</value>
+  </data>
+  <data name="BSize" xml:space="preserve">
+    <value>比料规格</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="ClientName" xml:space="preserve">
+    <value>客户名称</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>公司</value>
+  </data>
+  <data name="CompayName" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="CultureName" xml:space="preserve">
+    <value>语言编码</value>
+  </data>
+  <data name="CUSHION" xml:space="preserve">
+    <value>垫层</value>
+  </data>
+  <data name="Demourl" xml:space="preserve">
+    <value>演示网址</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>昵称</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>电子邮箱</value>
+  </data>
+  <data name="FABRIC" xml:space="preserve">
+    <value>面料</value>
+  </data>
+  <data name="FinishYear" xml:space="preserve">
+    <value>完成年份</value>
+  </data>
+  <data name="FontIcon" xml:space="preserve">
+    <value>字体图标</value>
+  </data>
+  <data name="FormatInvalid" xml:space="preserve">
+    <value>格式不正确</value>
+  </data>
+  <data name="FullImage" xml:space="preserve">
+    <value>大图</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>全称</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>高度</value>
+  </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Icon" xml:space="preserve">
+    <value>图标</value>
+  </data>
+  <data name="ImageURL" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="Importance" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="IsDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="KeyWords" xml:space="preserve">
+    <value>关键字</value>
+  </data>
+  <data name="Lang" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>纵深</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>当前密码</value>
+  </data>
+  <data name="OverallColor" xml:space="preserve">
+    <value>整体颜色</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>电话</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>品名</value>
+  </data>
+  <data name="ProductNo" xml:space="preserve">
+    <value>产品编号</value>
+  </data>
+  <data name="QLayout" xml:space="preserve">
+    <value>圈料的皮子分布</value>
+  </data>
+  <data name="QSize" xml:space="preserve">
+    <value>圈料规格</value>
+  </data>
+  <data name="Recommend" xml:space="preserve">
+    <value>推荐</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>记住我？</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>必填</value>
+  </data>
+  <data name="Schematic" xml:space="preserve">
+    <value>示意图</value>
+  </data>
+  <data name="SeoName" xml:space="preserve">
+    <value>别名</value>
+  </data>
+  <data name="Serie" xml:space="preserve">
+    <value>系列</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>解决方案</value>
+  </data>
+  <data name="SubTitle" xml:space="preserve">
+    <value>副标题</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>摘要</value>
+  </data>
+  <data name="SurfaceColor" xml:space="preserve">
+    <value>面颜色</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>缩略图</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="ViewCount" xml:space="preserve">
+    <value>显示次数</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="GoodsName" xml:space="preserve">
+    <value>货品名称</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>价格</value>
+  </data>
+  <data name="ImageUrlMobile" xml:space="preserve">
+    <value>手机轮播图</value>
+  </data>
+  <data name="ImageUrlPC" xml:space="preserve">
+    <value>PC轮播图</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="Answer" xml:space="preserve">
+    <value>答案</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>问题</value>
+  </data>
+  <data name="WebLink" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="VideoUrl" xml:space="preserve">
+    <value>视频地址</value>
+  </data>
+  <data name="MailTo" xml:space="preserve">
+    <value>收件人</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="SmtpServer" xml:space="preserve">
+    <value>SMTP服务器</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>端口</value>
+  </data>
+  <data name="SSL" xml:space="preserve">
+    <value>SSL</value>
+  </data>
+  <data name="TestEmail" xml:space="preserve">
+    <value>测试邮箱</value>
+  </data>
+  <data name="EmailAccount" xml:space="preserve">
+    <value>邮件帐号</value>
+  </data>
+  <data name="TemplateNo" xml:space="preserve">
+    <value>模板编号</value>
+  </data>
+  <data name="Birthday" xml:space="preserve">
+    <value>生日</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="RealName" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>预览图</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="Cover" xml:space="preserve">
+    <value>封面</value>
+  </data>
+  <data name="Album" xml:space="preserve">
+    <value>相册</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>职位</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="PhotoUrl" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>编码</value>
+  </data>
+  <data name="Sketch" xml:space="preserve">
+    <value>示意图</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>广告位</value>
+  </data>
+  <data name="CloseInfo" xml:space="preserve">
+    <value>关闭原因</value>
+  </data>
+  <data name="BaiduSiteID" xml:space="preserve">
+    <value>百度统计代号</value>
+  </data>
+  <data name="IsClose" xml:space="preserve">
+    <value>是否关闭</value>
+  </data>
+  <data name="SiteDomainName" xml:space="preserve">
+    <value>域名</value>
+  </data>
+  <data name="SiteName" xml:space="preserve">
+    <value>站点名称</value>
+  </data>
+  <data name="WebNumber" xml:space="preserve">
+    <value>工信部备案号</value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>分页数</value>
+  </data>
+  <data name="ThumbHeight" xml:space="preserve">
+    <value>缩略图高度</value>
+  </data>
+  <data name="ThumbWidth" xml:space="preserve">
+    <value>缩略图宽度</value>
+  </data>
+  <data name="CacheDuration" xml:space="preserve">
+    <value>缓存时间（分钟）</value>
+  </data>
+  <data name="EnableCaching" xml:space="preserve">
+    <value>开启缓存</value>
+  </data>
+  <data name="TemplateName" xml:space="preserve">
+    <value>模板名称</value>
+  </data>
+  <data name="GoogleAnalyticsID" xml:space="preserve">
+    <value>谷歌分析ID</value>
+  </data>
+  <data name="MenuName" xml:space="preserve">
+    <value>菜单名称</value>
+  </data>
+  <data name="Mp4Url" xml:space="preserve">
+    <value>视频(MP4)</value>
+  </data>
+  <data name="OgvUrl" xml:space="preserve">
+    <value>视频(OGV)</value>
+  </data>
+  <data name="WebmUrl" xml:space="preserve">
+    <value>视频(WEBM)</value>
+  </data>
+  <data name="ImageHeight" xml:space="preserve">
+    <value>图片高度</value>
+  </data>
+  <data name="ImageWidth" xml:space="preserve">
+    <value>图片宽度</value>
+  </data>
+  <data name="ParentCategory" xml:space="preserve">
+    <value>父级分类</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>网址</value>
+  </data>
+  <data name="CategoryImageHeight" xml:space="preserve">
+    <value>分类图片高度</value>
+  </data>
+  <data name="CategoryImageWidth" xml:space="preserve">
+    <value>分类图片宽度</value>
+  </data>
+  <data name="DashboardLogo" xml:space="preserve">
+    <value>Logo（控制面版）</value>
+  </data>
+  <data name="LoginLogo" xml:space="preserve">
+    <value>Logo（登录页）</value>
+  </data>
+  <data name="Pubdate" xml:space="preserve">
+    <value>发布日期</value>
+  </data>
+  <data name="EnglishTitle" xml:space="preserve">
+    <value>英文标题</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>面积</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>亮度</value>
+  </data>
+  <data name="Construction" xml:space="preserve">
+    <value>结构尺寸</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>产品图片</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>分辩率</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>尺寸说明</value>
+  </data>
+  <data name="Solutions" xml:space="preserve">
+    <value>应用与方案</value>
+  </data>
+  <data name="Specification" xml:space="preserve">
+    <value>规格</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>角色名称</value>
+  </data>
+  <data name="MobileCode" xml:space="preserve">
+    <value>手机验证码</value>
+  </data>
+  <data name="AppType" xml:space="preserve">
+    <value>平台类型</value>
+  </data>
+  <data name="AgentName" xml:space="preserve">
+    <value>代理商名称</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>市</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>区/县</value>
+  </data>
+  <data name="Principal" xml:space="preserve">
+    <value>负责人</value>
+  </data>
+  <data name="Province" xml:space="preserve">
+    <value>省</value>
+  </data>
+  <data name="WechatId" xml:space="preserve">
+    <value>微信号</value>
+  </data>
+  <data name="Agent" xml:space="preserve">
+    <value>代理商</value>
+  </data>
+  <data name="EquipmentId" xml:space="preserve">
+    <value>分配仪器</value>
+  </data>
+  <data name="StoreName" xml:space="preserve">
+    <value>门店名称</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Cashier" xml:space="preserve">
+    <value>店员帐号</value>
+  </data>
+  <data name="Coordinate" xml:space="preserve">
+    <value>坐标</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>创建者</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="LastLogin" xml:space="preserve">
+    <value>最后登录时间</value>
+  </data>
+  <data name="Workplace" xml:space="preserve">
+    <value>工作场所</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>年龄</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>头像</value>
+  </data>
+  <data name="EquipmentCount" xml:space="preserve">
+    <value>仪器数量</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="FeedbackType" xml:space="preserve">
+    <value>反馈类型</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="SkuCode" xml:space="preserve">
+    <value>物料编码</value>
+  </data>
+  <data name="InMenu" xml:space="preserve">
+    <value>导航显示</value>
+  </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>产品分类</value>
+  </data>
+  <data name="OriginalPrice" xml:space="preserve">
+    <value>原价</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>库存</value>
+  </data>
+  <data name="Store" xml:space="preserve">
+    <value>店铺/基地</value>
+  </data>
+  <data name="CustomerMobile" xml:space="preserve">
+    <value>客户手机号</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>单位</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="Wechat" xml:space="preserve">
+    <value>微信</value>
+  </data>
+  <data name="ArticleCount" xml:space="preserve">
+    <value>文章数量</value>
+  </data>
+  <data name="WorkCount" xml:space="preserve">
+    <value>案例数量</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="Alias" xml:space="preserve">
+    <value>别名</value>
+  </data>
+</root>

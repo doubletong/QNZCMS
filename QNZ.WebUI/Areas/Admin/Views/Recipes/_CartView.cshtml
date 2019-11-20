@@ -1,0 +1,14 @@
+﻿@model IEnumerable<QNZ.Model.CartItemVM>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <img src="@item.Thumbnail"  data-id="@item.ProductId" />
+    }
+    <div id="pcount" class="pcount">@Model.Sum(d => d.Quantity)</div>
+}
+else
+{
+    <div id="pcount" class="pcount">0</div>
+}

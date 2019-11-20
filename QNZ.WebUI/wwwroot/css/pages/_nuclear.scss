@@ -1,0 +1,51 @@
+.page-nuclear {
+    .intro{
+        .p1{
+            margin-bottom: 1rem;
+            @include respond-above(sm) {
+                margin-bottom: 2rem;
+            }
+            @include respond-above(md) {
+                margin-bottom: 3rem;
+            }
+        }
+        .txt{
+            color: #999;
+            text-align: justify;
+            margin-bottom: 1rem;
+            @include respond-above(sm) {
+                margin-bottom: 2rem;
+            }
+            @include respond-above(md) {
+                margin-bottom: 3rem;
+            }
+            .title{
+                color: $color-primary;
+                font-size: rem(20);
+                img{
+                    vertical-align: middle;display: inline-block;
+                    margin-right: 10px;
+                }
+            }
+            &.t3{
+                margin-bottom: 0;
+            }
+        }
+        .list{
+            @include reset-list;
+        }
+        .p2{
+            padding-top: 1rem;
+            @include respond-above(sm) {
+                padding-top: 2rem;
+            }
+            @include respond-above(md) {
+                padding-top: 3rem;
+            }
+            img{
+                display: block;
+                margin: 0 auto;
+            }
+        }
+    }
+}

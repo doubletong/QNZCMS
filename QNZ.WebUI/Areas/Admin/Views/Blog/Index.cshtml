@@ -1,0 +1,232 @@
+@model IEnumerable<PostCategoryBVM>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{ 
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = "博客分类";
+    
+    var Categories = new SelectList(Model, "Id", "Title");
+}
+
+
+<div class="m-b-10 text-right">
+    <a asp-action="Create" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importance)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+         
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleCount)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Importance)
+            </td>
+    
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                <a href="javascript:void(0);" data-id="@item.Id" class="btn btn-primary btn-move btn-sm" title="批量移动文章"><i class="iconfont icon-swap"></i></a> 
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="modal-overlay" id="overlay">
+    <div class="modal">
+        <div class="modal-header">
+            批量移动文章
+            <a href="javascript:void(0);" class="btn-close"><i class="iconfont icon-close"></i></a>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="oId"/>
+            <div class="form-h">
+                <div class="form-group">
+                    <label class="control-label" style="width: 80px;">目标分类</label>
+                    <select id="selectMove" class="form-control btn-block" asp-items="@Categories">
+                        <option value="">--请选择分类--</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-ok">确定</button>
+            <button type="button" class="btn btn-close">取消</button>
+        </div>
+    </div>
+</div>
+
+@section header{
+    <style>
+        .overlay-box {
+            height: 300px;width: 300px; background-color: #fff;
+            margin: 0 auto;
+        }
+    </style>
+}
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+
+        $(function() {
+            $(".btn-close").on('click',
+                function(e) {
+                    e.preventDefault();
+                    $(this).closest("div.modal-overlay").fadeOut();
+                });
+
+            $(".btn-move").on('click',
+                function(e) {
+                    e.preventDefault();
+                    $("#overlay").fadeIn();
+                    var moveId = $(this).attr("data-id");
+
+                    $("#oId").val(moveId);
+                });
+
+            $(".btn-ok").on('click',
+                function(e) {
+                    e.preventDefault();
+                    var moveId = $("#oId").val();
+                    var cover = $(this).closest("div.modal-overlay");
+                    var toId = $("#selectMove").val();
+                  //  debugger;
+
+                    if (toId === "") {
+                        swal({
+                            title: "请选择目标分类！",
+                            icon: "warning"
+                        });
+                        return;
+                    };
+
+            
+            swal({
+                    title: "您确定要移动此类别下的文章吗？",
+                    text: "此移动操作不可恢复！",
+                    icon: "warning",
+                    buttons: ["取消", "确定"],
+                    dangerMode: true
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: "/admin/blog/move?oId=" + moveId + "&toId=" + toId,
+                            type: "POST",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function(data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    cover.fadeOut();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+        });
+    });
+        
+        
+        $(".btn-delete").click(function(e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+                
+                
+            swal({
+                    title: "您确定要删除此项？",
+                    text: "此删除操作不可恢复！",
+                    icon: "warning",
+                    buttons: ["取消","确定"],
+                    dangerMode: true
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                            
+                        $.ajax({
+                            url:url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success:function(data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error:function(xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+                            
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+                
+                
+         
+                
+
+        });
+    </script>
+}

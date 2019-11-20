@@ -1,0 +1,104 @@
+﻿@using PagedList.Core.Mvc
+@model QNZ.Model.ViewModel.OrderPagedVM
+
+@{
+    ViewData["Title"] = "订单管理";
+}
+<div class="row">
+    <div class="col-auto mr-auto">
+        <form asp-action="Index" method="get" class="form-inline mb-2">
+            <label class="sr-only" for="Keyword">关键字</label>
+            <input asp-for="Mobile" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="客户手机号" />
+          
+            <select asp-for="Status" class="form-control  mb-2 mr-sm-2 mb-sm-0">
+                <option value="">--订单状态--</option>
+                <option value="0">待付款</option>
+                <option value="1">待发货</option>
+                <option value="2">已发货</option>
+                <option value="3">待评价</option>
+                <option value="4">已完成</option>
+                <option value="10">已取消</option>            
+            </select>
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+
+</div>
+
+<partial name="_OrdersList" model="Model.Orders" />
+
+<div class="panel-footer">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <pager class="pager-container" list="@Model.Orders" LinkToPreviousPageFormat="前页" ,
+                   LinkToNextPageFormat="下页"
+                   options="@PagedListRenderOptions.Bootstrap4Full"
+                   asp-action="Index" asp-controller="Orders" asp-route-status="@Model.Status" />
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="anti-form" method="post" asp-antiforgery="true">
+   
+</form>
+
+@section header{
+    <style>
+        .card-columns {
+            column-count: 6;
+            padding-left: 3rem;
+        }
+    </style>
+}
+
+@section footer{
+    <script>
+        $(function () {
+            //确认框默认语言
+            bootbox.setDefaults({
+                locale: "zh_CN"
+            });
+
+             //订单发货
+            $(document).on("click", '.btnDelivery', function (e) {
+                e.preventDefault();
+
+                var url = "/admin/orders/delivery/" + $(this).attr('data-id');
+
+                bootbox.setLocale("zh_CN");
+                bootbox.confirm("你确定要设为已发货订单吗？", function (result) {
+                    if (result) {
+                      
+                        var title = "@ViewBag.PageTitle";
+                        Common.SingleAction(url, title, true);
+                    }
+                });
+
+            });
+            //取消订单
+            $(document).on("click", '.btnCannelled', function (e) {
+                e.preventDefault();
+
+                var url = "/admin/orders/cancelled/" + $(this).attr('data-id');
+
+                bootbox.setLocale("zh_CN");
+                bootbox.confirm("你确定要取消此订单吗？", function (result) {
+                    if (result) {
+                      
+                        var title = "@ViewBag.PageTitle";
+                        Common.SingleAction(url, title, true);
+                    }
+                });
+
+            });
+
+        });
+    </script>
+}

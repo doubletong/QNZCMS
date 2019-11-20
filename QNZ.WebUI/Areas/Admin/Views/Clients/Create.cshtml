@@ -1,0 +1,173 @@
+﻿@model ClientIM
+@{
+    ViewData["Title"] = "添加客户";
+}
+
+
+<form asp-action="Create" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <div class="card">
+        <header class="card-header">
+            <h3 class="card-title">
+                @ViewData["Title"]
+            </h3>
+        </header>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section class="flex form-h">
+
+                <aside style="flex:initial; width: 240px;">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Logo
+                        </div>
+                        <div class="card-body">
+
+                            <div class="thumb" id="divThumb">
+                                <i class="iconfont icon-image" style="font-size: 3rem; "></i>
+                            </div>
+                            <input type="file" id="files" hidden
+                                   name="files" />
+
+                            <input type="button" id="setImageUrl" class="btn btn-info btn-block"
+                                   value="浏览" />
+
+                            <p class="text-center">*图片尽寸：700*700像素</p>
+                            <input asp-for="LogoURL" type="hidden" />
+                            <span asp-validation-for="LogoURL"></span>
+                        </div>
+                    </div>
+                </aside>
+                <div style="flex: auto;">
+
+                    <div class="form-group">
+                        <label asp-for="ClientName" class="control-label"></label>
+                        <input asp-for="ClientName" class="form-control" />
+                        <span asp-validation-for="ClientName"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Homepage" class="control-label"></label>
+                        <input asp-for="Homepage" class="form-control" />
+                        <span asp-validation-for="Homepage"></span>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" value="0" />
+                        <span asp-validation-for="Importance"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Recommend" class="control-label"></label>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Recommend" checked type="checkbox" />
+                            </label>
+                        </div>
+                        <span asp-validation-for="Recommend"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Active" class="control-label"></label>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" checked type="checkbox" />
+                            </label>
+                        </div>
+                        <span asp-validation-for="Active"></span>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+@section header{
+    <style>
+
+        .thumb {
+            height: 200px;
+            margin: 0 auto 1rem;
+            line-height: 200px;
+            cursor: pointer;
+            background-color: #ddd;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+        }
+    </style>
+
+}
+@section footer {
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        var url = "@Url.Action("Index")";
+
+
+        function SetThumbnail(fileUrl) {
+            //alert(fileUrl);
+            $('#LogoURL').val(fileUrl);
+            $('#divThumb').css({'background-image': 'url(' + fileUrl + ')' });
+            $("#divThumb i").remove();
+
+        }
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+        $(function () {
+
+            $("#setImageUrl").on("click", function () {
+                singleEelFinder.selectActionFunction = SetThumbnail;
+                singleEelFinder.open();
+
+            });
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

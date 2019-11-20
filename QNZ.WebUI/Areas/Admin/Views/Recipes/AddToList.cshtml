@@ -1,0 +1,197 @@
+﻿@using PagedList.Core.Mvc
+@model QNZ.Model.Admin.ViewModel.ProductPageVM
+@{
+    ViewData["Title"] = "配置营养菜谱";
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="item active">第一步：配置营养菜谱</div>
+    </div>
+    <div class="col-sm-6">
+        <div class="item">第二步：创建营养单</div>
+    </div>
+</div>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"].ToString();
+    </div>
+}
+
+<div class="row">
+    <div class="col-auto mr-auto">
+        <form asp-action="Index" method="get" class="form-inline mb-2">
+            <label class="sr-only" for="Keyword">关键字</label>
+            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "品名" } })
+
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+
+</div>
+
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th>
+                缩略图
+            </th>
+
+            <th>
+               产品名称
+                /
+               子标题
+            </th>
+            <th>
+              分页
+            </th>
+            <th>
+              价格
+            </th>
+
+            <th>
+              原价
+            </th>
+            <th>
+               单位
+            </th>
+            <th>
+             库存
+            </th>
+         
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Thumbnail))
+                    {
+                        <img src="@item.Thumbnail" style="height:3rem" alt="" />
+                    }
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name) <br />
+                    @Html.DisplayFor(modelItem => item.SubName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.OriginalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+           
+                <td>
+                   <a href="@Url.Action("AddToList",new { productId = item.Id})" data-img="@item.Thumbnail"
+                      class="btn btn-primary addToCart">加入清单</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="panel-footer m-5">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            @*<pager class="pager-container" list="@Model.Products" LinkToPreviousPageFormat="前页" ,
+                   LinkToNextPageFormat="下页"
+                   options="@{ new PagedListRenderOptions {
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayLinkToIndividualPages = true,
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                    AhrefElementClasses = new[] { "page-link" },
+                    ClassToApplyToFirstListItemInPager = null,
+                    ClassToApplyToLastListItemInPager = null,
+                    LinkToPreviousPageFormat = "前页",
+                    LinkToNextPageFormat = "后页"
+                    }}"
+                   asp-action="AddToList" asp-controller="Recipes" asp-route-keyword="@Model.Keyword" />*@
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">下一步</a>
+</div>
+<div class="prolist" id="prolist">
+    @(await Html.PartialAsync("_CartView", (List<QNZ.Model.CartItemVM>)ViewData["CartItems"]))
+</div>
+
+@section header{ 
+    <style>
+        .item{
+            background-color:#f7f7f7;border:1px #eee solid;padding:8px;margin-bottom:1rem;text-align:center;
+        }
+        .item.active{
+            background-color:#fff;
+        }
+        .prolist{
+            position:fixed;bottom:50px;right:50px;border-radius:35px;height:70px;width:auto;text-align:center;
+            line-height:70px; padding:0 2rem;
+            background-color:#fff;box-shadow:0  0 12px rgba(0,0,0,.2);
+        }
+            .prolist .pcount{
+                display:inline-block;
+            }
+            .prolist img {
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 1rem;border:1px #ddd solid;
+            }
+    </style>
+}
+
+@section footer{ 
+    <script>
+        $(function () {
+            $(".addToCart").click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr("href");
+                var imgurl = $(this).attr("data-img");
+
+                $.post(url, function (data) {
+                    if (data.status === 2) {
+                        toastr.error(data.message);
+                    } else {
+                       // toastr.success("");
+                        $("#prolist").html(data);
+                       // $("#pcount").text(data.data);
+                    }
+                    //if (data > 0) {
+                    //    toastr.success("已经添加清单");
+                    //    $("#prolist").append("<img src='" + imgurl +"'/>");
+                    //    $("#pcount").text(data);
+                    //}
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,106 @@
+.slider{
+    div.item{  
+        img{
+            max-width: 100%;
+            @include respond-above(md) {
+                max-width: none;
+                height: 390px;
+            }
+            @include respond-above(lg) {
+                max-width: none;
+                height: 460px;
+            }
+            @include respond-above(xlg) {
+                max-width: none;  height: auto;
+            }
+           
+        }
+    }
+}
+.bx-wrapper {
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+.bx-wrapper  .bx-pager{
+    text-align: right;
+    bottom:.7rem;
+    @include respond-above(md) {
+        text-align: left;  position: relative;  margin-top: -1rem;  
+        padding-top:0;
+    }
+    .num{
+    line-height:12px;
+        color: #fff;font-weight: normal;   
+        margin-right: 5px;
+        display: none;
+        @include respond-above(md) {
+            display: inline-block;
+        }
+    }
+    .total{
+        line-height:12px; 
+        color: #fff;font-weight: normal;
+        display: none;
+        margin-left: 5px;
+        @include respond-above(md) {
+            display: inline-block;
+        }
+    }
+}
+
+
+.bx-wrapper  .bx-pager.bx-default-pager a {
+    background: rgba(255,255,255,.3); width: 30px;height: 2px;
+    margin-top: -13px;
+}
+
+.bx-wrapper  .bx-pager.bx-default-pager a.active,
+.bx-wrapper  .bx-pager.bx-default-pager a:focus,
+.bx-wrapper  .bx-pager.bx-default-pager a:hover {
+    background: #fff;
+}
+.bx-wrapper .bx-controls-direction{
+    display: none;
+    @include respond-above(md) {
+        display: block;
+    }
+    a{
+        position: absolute;
+        top: auto;
+        bottom:3px;
+        left: 50%;
+        margin-left: -400px;
+        @include respond-above(md) {
+            bottom:13px;
+            margin-left: -300px;
+        }
+        @include respond-above(lg) {
+            margin-left: -350px;
+        }
+        @include respond-above(xlg) {
+            margin-left: -400px;
+        }
+        &.bx-prev{
+            background: url(../img/icon-arrow-left.png) no-repeat left center;
+            width: 20px;height: 20px;
+        }
+        &.bx-next{
+            background: url(../img/icon-arrow-right.png) no-repeat right center;
+            width: 20px;height: 20px;
+            margin-left: -360px;
+            @include respond-above(md) {
+                bottom:13px;
+                margin-left: -260px;
+            }
+            @include respond-above(lg) {
+                margin-left: -310px;
+            }
+            @include respond-above(xlg) {
+                margin-left: -360px;
+            }
+        }
+    }
+}

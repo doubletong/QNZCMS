@@ -1,0 +1,22 @@
+.page-join {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    font-size: rem(20);
+
+    @include respond-above(md) {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+
+    .item {
+        border-bottom: #ddd solid 1px;
+        cursor: pointer;
+        padding: 1.5rem 0;
+        color:#999;
+
+        h3 {
+            margin: 0;color:#666;
+        }
+    }
+}

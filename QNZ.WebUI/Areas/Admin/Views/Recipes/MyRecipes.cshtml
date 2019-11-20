@@ -1,0 +1,78 @@
+﻿@model QNZ.Model.RecipePageVM
+@using PagedList.Core.Mvc
+@{
+    ViewData["Title"] = "我的营养套餐";
+}
+<p class="text-right">
+    <a href="@Url.Action("AddToList")">创建营养套餐</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                主题
+            </th>
+
+            <th>
+                创建日期
+            </th>
+            <th>
+                营养师
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Recipes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">详情</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="panel-footer">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            @*<pager class="pager-container" list="@Model.Recipes" LinkToPreviousPageFormat="前页" ,
+                   LinkToNextPageFormat="下页"
+                   options="@{ new PagedListRenderOptions {
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayLinkToIndividualPages = true,
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                    AhrefElementClasses = new[] { "page-link" },
+                    ClassToApplyToFirstListItemInPager = null,
+                    ClassToApplyToLastListItemInPager = null,
+                    LinkToPreviousPageFormat = "前页",
+                    LinkToNextPageFormat = "后页"
+                    }}"
+                   asp-action="Index" asp-controller="Customers" asp-route-keyword="@Model.Keyword" />*@
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿.toolbar {
+    padding: 0 1rem;
+    background-color: #f7f7f7;
+    height: 36px;
+    line-height: 36px;
+    .iconfont {
+        color: #ccc;
+        float: left;
+        margin-right: .7rem;
+    }
+    .breadcrumb {
+        @include reset-list;
+        margin: 0 0 0 1rem;
+        li {
+            display: inline-block;
+            color: #333;
+            &::after {
+                content: "/";
+                margin-left: .3rem;
+            }
+            &:last-child {
+                &::after {
+                    content: none;
+                }
+            }
+            a {
+                color: #999;
+            }
+        }
+    }
+}

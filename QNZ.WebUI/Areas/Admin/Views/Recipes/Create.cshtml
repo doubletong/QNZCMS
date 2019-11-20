@@ -1,0 +1,102 @@
+﻿@model QNZ.Model.RecipeIM
+
+@{
+    ViewData["Title"] = "创建营养单";
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="item ">第一步：配置营养菜谱</div>
+    </div>
+    <div class="col-sm-6">
+        <div class="item active">第二步：创建营养单</div>
+    </div>
+</div>
+
+
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CustomerMobile" class="control-label"></label>
+        <input asp-for="CustomerMobile" class="form-control" />
+        <span asp-validation-for="CustomerMobile" class="text-danger"></span>
+    </div>
+    <div class="jumbotron">
+        @for (int i = 0; i < Model.RecipeItems.Count; i++)
+        {
+        <div class="row m-2">
+            <div class="col-sm-3">
+                @Model.RecipeItems[i].Name
+                <input asp-for="RecipeItems[i].ProductId" hidden />
+            </div>
+            <div class="col-sm-2">
+                <input asp-for="RecipeItems[i].Quantity" class="form-control" />  
+            </div>
+            <div class="col-sm-1">
+                @Model.RecipeItems[i].Unit
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-danger btn-del">删除</button>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <script id="Description" name="Description" style="height:20rem;width:100%" type="text/plain">
+        </script>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="创建" class="btn btn-default" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">返回列表</a>
+</div>
+
+
+@section header{
+    <style>
+        .item {
+            background-color: #f7f7f7;
+            border: 1px #eee solid;
+            padding: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+            .item.active {
+                background-color: #fff;
+            }
+    </style>
+}
+
+@section footer{
+    <script src="~/plugins/neditor/utf8-net/neditor.config.js"></script>
+    <script src="~/plugins/neditor/utf8-net/neditor.all.min.js"></script>
+
+    <script>
+
+        var ue = UE.getEditor('Description', {
+            autoHeight: false,
+            autoHeightEnabled: false,
+            autoFloatEnabled: false
+        });
+        $(function () {
+            $(".btn-del").click(function (e) {
+                e.preventDefault();
+                $(this).closest(".row").remove();
+            });
+        });
+    </script>
+}

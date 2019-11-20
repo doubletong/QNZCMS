@@ -1,0 +1,35 @@
+﻿@using QNZ.Data
+@model List<Menu>
+
+
+@{
+    int i = 0;
+}
+
+
+<div class="toolbar">  
+   
+    <nav aria-label="breadcrumb" role="navigation">       
+    
+    <ol class="breadcrumb">
+        @foreach (var item in Model)
+        {
+            i++;
+            if (i == Model.Count())
+            {
+                <li class="breadcrumb-item active">@item.Title</li>
+
+            }
+            else if (i == 1)
+            {
+                <li class="breadcrumb-item"><a href="@item.Url" >@item.Title</a></li>
+            }
+            else
+            {
+
+                <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+            }
+        }
+    </ol>
+    </nav>
+</div>

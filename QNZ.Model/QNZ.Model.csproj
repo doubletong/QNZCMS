@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="PagedList.Core" Version="1.17.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QNZ.Data\QNZ.Data.csproj" />
+    <ProjectReference Include="..\QNZ.Infrastructure\QNZ.Infrastructure.csproj" />
+    <ProjectReference Include="..\SIG.Resources\SIG.Resources.csproj" />
+  </ItemGroup>
+
+</Project>

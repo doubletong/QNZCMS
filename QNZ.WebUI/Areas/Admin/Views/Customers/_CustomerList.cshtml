@@ -1,0 +1,76 @@
+﻿@model PagedList.Core.IPagedList<QNZ.Model.ViewModel.CustomerVM>
+
+<table class="table table-bordered table-striped table-vmiddle">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().OpenId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().WechatNickName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Avatar)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Mobile)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().LastLogin)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().CreatedDate)
+                </th>
+
+
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpenId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WechatNickName)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Avatar))
+                    {
+                        <img src="@item.Avatar" alt="@item.WechatNickName" class="avatar" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastLogin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.OpenId" class="btn btn-outline-info btn-sm">详情</a>
+                    <a asp-controller="Orders" asp-action="BuyList" asp-route-mobile="@item.Mobile" class="btn btn-outline-info btn-sm">购买记录</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

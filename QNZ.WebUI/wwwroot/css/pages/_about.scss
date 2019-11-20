@@ -1,0 +1,178 @@
+
+.page-about {
+    font-size: rem(24);
+
+    .s1 {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+
+        figure {
+            padding: 0;
+            margin: 2rem 0 0;
+            max-width: 627px;
+
+            figcaption {
+                font-size: rem(34);
+            }
+        }
+
+        .txt {
+            @include respond-above (md) {
+                padding-right: 3rem;
+            }
+        }
+
+        .txt1 {
+            @include respond-above (md) {
+                padding-left: 3rem;
+            }
+        }
+
+        p {
+            text-align: justify;
+        }
+    }
+
+    .s2 {
+        background: #f7f8f8 url('../img/logo_bg.png') no-repeat left center;
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+
+        .txt {
+            max-width: 960px;
+            margin: 0 auto;
+            text-align: center;
+
+            .item {
+                margin-bottom: 1rem;
+                margin-top: 1rem;
+            }
+
+            .num {
+                font-size: 56px;
+                font-weight: bold;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    .s3 {
+        padding: 4rem 15px 5rem;
+
+        .txt {
+            text-align: justify;
+
+            @include respond-above (md) {
+                padding-right: 3rem;
+            }
+        }
+
+        .pic {
+            margin-top: 2rem;
+        }
+    }
+
+    .s4 {
+        padding: 3rem 0;
+        background-color: #f7f8f8;
+    }
+
+    .s5 {
+        padding: 5rem 0;
+
+        .box {
+            margin-bottom: 3rem;
+        }
+
+        .item {
+            text-align: center;
+            margin-bottom: 1rem;
+
+            .icon {
+                margin-bottom: 2rem;
+            }
+
+            h4 {
+                margin: 0;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .box2 {
+            max-width: 960px;
+            margin: 0 auto;
+
+            h4 {
+                text-align: left;
+
+                &::before {
+                    content: " ";
+                    height: 5px;
+                    width: 100px;
+                    background-color: $color-primary;
+                    display: block;
+                }
+            }
+
+            ul {
+                padding-left: 1.5rem;
+
+                li {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .s6 {
+        .item {
+            max-width: 624px;
+            border: 1px #eee solid;
+            margin-bottom: rem(60);
+
+            .pic {
+                height: 246px;
+                overflow: hidden;
+            }
+
+            .title {
+                background-color: $color-primary;
+                color: #fff;
+                padding: .5rem 1rem;
+            }
+
+            .des {
+                min-height: 250px;
+            }
+        }
+    }
+
+    .s7 {
+        .item {
+            position: relative;
+
+            .txt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 10;
+                width: 100%;
+                height: 100%;
+
+                p {
+                    @include vertical-align();
+                    text-align:center;
+                    font-size:rem(34);
+                    font-weight:bold;
+                    margin:0;
+                }
+            }
+        }
+    }
+}

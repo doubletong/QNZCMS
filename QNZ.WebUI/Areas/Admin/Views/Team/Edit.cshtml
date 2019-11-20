@@ -1,0 +1,217 @@
+@model TeamIM
+@{
+    ViewData["Title"] = "编辑成员";
+}
+
+
+
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+          data-ajax="true" data-ajax-method="POST">
+        
+        <div class="card">
+            <header class="card-header">
+                <h3 class="card-title">
+                    @ViewData["Title"]
+                </h3>
+            </header>
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id"/>
+                <section class="flex form-h">
+                   
+                    <aside style="flex:initial; width: 240px;">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                照片
+                            </div>
+                            <div class="card-body">
+                             
+
+                                    <div class="thumb" id="divThumb" style="background-image: url(@Model.PhotoUrl)">
+                                        @if (string.IsNullOrEmpty((Model.PhotoUrl)))
+                                        {
+                                            <i class="iconfont icon-image" style="font-size: 3rem;"></i>
+                                        }
+                                     
+                                    </div>
+                                    <input type="file" id="files" hidden
+                                           name="files" />
+
+                                 
+                                    <input type="button" id="setImageUrl" class="btn btn-info btn-block"
+                                         
+                                           value="浏览" />
+
+                              
+                                <p class="text-center">*图片尽寸：700*700像素</p>
+                                <input asp-for="PhotoUrl" type="hidden"/>
+                                <span asp-validation-for="PhotoUrl"></span>
+                            </div>
+                        </div>
+                    </aside>
+                    <div style="flex: auto;" >
+                       
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label asp-for="Post" class="control-label"></label>
+                            <input asp-for="Post" class="form-control" />
+                            <span asp-validation-for="Post"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label asp-for="QQ" class="control-label"></label>
+                            <input asp-for="QQ" class="form-control" />
+                            <span asp-validation-for="QQ"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CodePen" class="control-label"></label>
+                            <input asp-for="CodePen" class="form-control" />
+                            <span asp-validation-for="CodePen"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Twitter" class="control-label"></label>
+                            <input asp-for="Twitter" class="form-control" />
+                            <span asp-validation-for="Twitter"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Github" class="control-label"></label>
+                            <input asp-for="Github" class="form-control" />
+                            <span asp-validation-for="Github"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Facebook" class="control-label"></label>
+                            <input asp-for="Facebook" class="form-control" />
+                            <span asp-validation-for="Facebook"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Weixin" class="control-label"></label>
+                            <input asp-for="Weixin" class="form-control" />
+                            <span asp-validation-for="Weixin"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email"></span>
+                         
+                        </div>
+                        
+                        <div class="form-group">
+                            <label asp-for="Importance" class="control-label"></label>
+                            <input asp-for="Importance" class="form-control" value="0" />
+                            <span asp-validation-for="Importance"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label asp-for="Active" class="control-label"></label>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Active" checked type="checkbox"/> 
+                                </label>
+                            </div>
+                            <span asp-validation-for="Active"></span>
+                        </div>
+                        
+                    </div>
+                    
+                </section>
+
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+                <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+            </div>
+        </div>
+    </form>
+
+
+
+@section header{
+    <style>
+        .thumb {
+            height:200px;
+            margin:0 auto 1rem;
+            line-height: 200px;
+           cursor:pointer;
+            background-color:#ddd; 
+            text-align:center;
+           background-repeat:no-repeat;
+           background-size:contain;
+           background-position:center center;
+        }
+     
+    </style>
+   
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+        var url = "@Url.Action("Index")";
+        
+        
+        function SetThumbnail(fileUrl) {
+            //alert(fileUrl);
+            $('#PhotoUrl').val(fileUrl);
+            $('#divThumb').css({'background-image': 'url(' + fileUrl + ')' });
+            $("#divThumb i").remove();
+           
+        }
+
+       
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+    
+        
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+
+        $(function () {
+            
+            $("#setImageUrl").on("click", function () {         
+                singleEelFinder.selectActionFunction = SetThumbnail;
+                singleEelFinder.open();        
+          
+            });
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

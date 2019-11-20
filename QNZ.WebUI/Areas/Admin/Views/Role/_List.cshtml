@@ -1,0 +1,6 @@
+﻿@using QNZ.Data
+@model IEnumerable<Role>
+@foreach (var item in Model)
+{  
+    <partial name="_RoleItem" model="item" />
+}

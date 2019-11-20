@@ -1,0 +1,41 @@
+﻿@using PagedList.Core.Mvc
+@model QNZ.Model.Admin.ViewModel.StorePageVM
+@{
+    ViewData["Title"] = "门店";
+}
+
+<div class="row">
+    <div class="col-auto mr-auto">
+        <form asp-action="Index" method="get" class="form-inline mb-2">
+            <label class="sr-only" for="Keyword">关键字</label>
+            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "名称、地址" } })
+        
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> 创建门店</a>
+    </div>
+</div>
+<partial name="_StoreList" model="Model.Stores" />
+
+
+<div class="panel-footer">
+
+    <div class="row">
+        <div class="col-auto mr-auto">
+            <pager class="pager-container" list="@Model.Stores" LinkToPreviousPageFormat="前页" ,
+                   LinkToNextPageFormat="下页"
+                   options="@PagedListRenderOptions.Bootstrap4Full"
+                   asp-action="Index" asp-controller="Stores" asp-route-keyword="@Model.Keyword"  />
+        </div>
+        <div class="col-auto">
+            <div class="input-group">
+                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
+                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+

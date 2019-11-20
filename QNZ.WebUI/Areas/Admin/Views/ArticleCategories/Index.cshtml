@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ArticleCategoryBVM>
+
+@{
+    ViewData["Title"] = "文章分类";
+}
+
+
+<div class="mb-3 text-right">
+    <a asp-action="Edit" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+</div>
+<table class="table table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Alias)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importance)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" style="height:50px;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Alias)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importance)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i> 编辑</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">详情</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="iconfont icon-delete"></i>删除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<QNZ.Model.ViewModel.OrderVM>
+
+@{
+    ViewData["Title"] = "购买记录";
+}
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th style="width:3.8rem;">
+                #
+            </th>
+            <th>
+                购买门店
+            </th>
+            <th>
+                下单时间
+            </th>
+            <th>
+                平台
+            </th>
+            <th>
+                优惠价格
+            </th>
+            <th>
+                总金额
+            </th>
+            <th>
+                店员
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+             
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+               
+                <td>
+                    @string.Format("{0:c}",item.Amount)
+                </td>
+            
+            </tr>
+            if (item.OrderDetails != null)
+            {
+                <tr>
+                    <td colspan="7">
+                        <div class="card-columns">
+                            @foreach (var sub in item.OrderDetails)
+                            {
+                                <div class="card">
+                                    <img class="card-img-top" src="@sub.Thumbnail" alt="Card image cap">
+                                    <div class="card-body">
+
+                                        <h5 class="card-title">@sub.ProductName</h5>
+                                        <p class="card-text">@sub.Summary</p>
+
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted"> @sub.Price x @sub.Quantity = @string.Format("{0:c}", sub.Price * sub.Quantity)</small>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@section header{ 
+    <style>
+        .card-columns{
+            column-count:6;padding-left:3rem;
+        }
+    </style>
+}

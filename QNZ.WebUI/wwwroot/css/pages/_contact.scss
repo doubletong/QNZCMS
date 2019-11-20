@@ -1,0 +1,40 @@
+
+
+.page-contact {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    font-size: rem(24);
+
+    @include respond-above (sm) {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    @include respond-above(md) {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    @include respond-above (lg) {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    .s1 {
+        text-align: center;
+
+        h2 {
+            font-size: rem(56);
+        }
+
+    }
+
+    .s2 {
+        max-width:750px;
+        height:400px;
+        margin:5rem auto;
+        img{
+            max-width:none;
+        }
+    }
+}

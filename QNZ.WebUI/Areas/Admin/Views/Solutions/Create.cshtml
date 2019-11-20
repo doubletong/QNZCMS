@@ -1,0 +1,119 @@
+﻿@model SolutionIM
+
+@{
+    ViewData["Title"] = "添加解决方案";
+}
+
+
+
+<form asp-action="Create" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <div class="card">
+        <header class="card-header">
+            <h3 class="card-title">
+                @ViewData["Title"]
+            </h3>
+        </header>
+        <div class="card-body">
+            <section class="form-h">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FontIcon" class="control-label"></label>
+                    <input asp-for="FontIcon" class="form-control" />
+                    <span asp-validation-for="FontIcon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Importance" class="control-label"></label>
+                    <input asp-for="Importance" class="form-control" value="0" />
+                    <span asp-validation-for="Importance" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Active" class="control-label"></label>
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Active" checked type="checkbox" />
+                        </label>
+                    </div>
+                    <span asp-validation-for="Active"></span>
+                </div>
+
+
+            </section>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+
+
+
+@section header{
+
+}
+@section footer {
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        var url = "@Url.Action("Index")";
+
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+
+        $(function () {
+
+
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

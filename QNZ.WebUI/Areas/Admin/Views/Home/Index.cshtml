@@ -1,0 +1,94 @@
+﻿@using SIG.Infrastructure.Configs
+@model QNZ.Model.Admin.ViewModel.HomePageVM
+
+@{
+    ViewData["Title"] = "控制台";
+}
+
+<div class="row">
+    @*<div class="col-sm-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                今日营业额：
+                <p>@string.Format("{0:c}", Model.TodayRevenue)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                总营业额：
+                <p>@string.Format("{0:c}", Model.TotalRevenue)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                今日反馈：
+                <p>@string.Format("{0}条", Model.FeedbackTodayCount)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                总反馈：
+                <p>@string.Format("{0}条", Model.FeedbackCount)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                公众号今日注册：
+                <p>@string.Format("{0}人", Model.CustomerGZHTodayCount)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                公众号总注册：
+                <p>@string.Format("{0}人", Model.CustomerGZHCount)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                小程序今日注册：
+                <p>@string.Format("{0}人", Model.CustomerXCXTodayCount)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                小程序总注册：
+                <p>@string.Format("{0}人", Model.CustomerXCXCount)</p>
+            </div>
+        </div>
+    </div>*@
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item">@SettingsManager.Site.SiteName</li>
+            <li class="list-group-item">网址：@SettingsManager.Site.SiteDomainName</li>
+            <li class="list-group-item">邮箱：@SettingsManager.Site.MailTo</li>
+            <li class="list-group-item">备案号：@SettingsManager.Site.WebNumber</li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item">IP: @ViewContext.HttpContext.Connection.RemoteIpAddress.ToString()</li>
+            <li class="list-group-item">网址：@ViewContext.HttpContext.Request.Headers["User-Agent"].ToString() </li>
+            <li class="list-group-item">当前主机名称：@System.Net.Dns.GetHostName()</li>
+
+
+  
+        </ul>
+    </div>
+</div>
+
+@section header{ 
+    <style>
+        .card p{
+          margin:0;font-size:1.5rem;
+        }
+    </style>
+}

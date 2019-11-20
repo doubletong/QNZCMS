@@ -1,0 +1,154 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>aspnet-QNZCMS-A6A7578C-F0DA-435B-B7E6-3829220CB4F0</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\Articles1\**" />
+    <Compile Remove="Areas\Admin\Views\Clients\**" />
+    <Compile Remove="Areas\Admin\Views\Customers\**" />
+    <Compile Remove="Areas\Admin\Views\Feedbacks\**" />
+    <Compile Remove="Areas\Admin\Views\FeedbackTypes\**" />
+    <Compile Remove="Areas\Admin\Views\Orders\**" />
+    <Compile Remove="Areas\Admin\Views\Works\**" />
+    <Content Remove="Areas\Admin\Views\Articles1\**" />
+    <Content Remove="Areas\Admin\Views\Clients\**" />
+    <Content Remove="Areas\Admin\Views\Customers\**" />
+    <Content Remove="Areas\Admin\Views\Feedbacks\**" />
+    <Content Remove="Areas\Admin\Views\FeedbackTypes\**" />
+    <Content Remove="Areas\Admin\Views\Orders\**" />
+    <Content Remove="Areas\Admin\Views\Works\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Articles1\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Clients\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Customers\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Feedbacks\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\FeedbackTypes\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Orders\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Works\**" />
+    <None Remove="Areas\Admin\Views\Articles1\**" />
+    <None Remove="Areas\Admin\Views\Clients\**" />
+    <None Remove="Areas\Admin\Views\Customers\**" />
+    <None Remove="Areas\Admin\Views\Feedbacks\**" />
+    <None Remove="Areas\Admin\Views\FeedbackTypes\**" />
+    <None Remove="Areas\Admin\Views\Orders\**" />
+    <None Remove="Areas\Admin\Views\Works\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Controllers\Articles1Controller.cs" />
+    <Compile Remove="Areas\Admin\Controllers\BlogController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\ClientsController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\CommonController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\CustomersController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\GeneralController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\LogController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\OrdersController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\PagesController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\PostController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\ProductCategoriesController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\RecipesController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\RoleController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\SolutionsController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\StoresController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\TeamController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\TinymceController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\WorksController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Areas\Admin\Views\ArticleCategories\Create.cshtml" />
+    <Content Remove="Areas\Admin\Views\Menu\_MenuList.cshtml" />
+    <Content Remove="Areas\Admin\Views\Navigation\_MenuList.cshtml" />
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="Views\Account\Register.cshtml" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="PagedList.Core.Mvc" Version="3.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Member\Controllers\" />
+    <Folder Include="Areas\Member\Data\" />
+    <Folder Include="Areas\Member\Models\" />
+    <Folder Include="Areas\Member\Views\" />
+    <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\Articles\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Articles\Delete.cshtml" />
+    <None Include="Areas\Admin\Views\Articles\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Articles\0000Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\Config\AdsSettings.config" />
+    <None Include="wwwroot\Config\AlbumSettings.config" />
+    <None Include="wwwroot\Config\AnnouncementSettings.config" />
+    <None Include="wwwroot\Config\ArticleSettings.config" />
+    <None Include="wwwroot\Config\BlogSettings.config" />
+    <None Include="wwwroot\Config\CaseSettings.config" />
+    <None Include="wwwroot\Config\CategorySettings.config" />
+    <None Include="wwwroot\Config\ChronicleSettings.config" />
+    <None Include="wwwroot\Config\ClientSettings.config" />
+    <None Include="wwwroot\Config\ContactSettings.config" />
+    <None Include="wwwroot\Config\EmailAccountSettings.config" />
+    <None Include="wwwroot\Config\EmailSettings.config" />
+    <None Include="wwwroot\Config\EmailTemplateSettings.config" />
+    <None Include="wwwroot\Config\FileSettings.config" />
+    <None Include="wwwroot\Config\FilterTemplateSettings.config" />
+    <None Include="wwwroot\Config\GlobalSettings.config" />
+    <None Include="wwwroot\Config\imageprocessor\cache.config" />
+    <None Include="wwwroot\Config\imageprocessor\processing.config" />
+    <None Include="wwwroot\Config\imageprocessor\security.config" />
+    <None Include="wwwroot\Config\JobSettings.config" />
+    <None Include="wwwroot\Config\LinkSettings.config" />
+    <None Include="wwwroot\Config\log4net.config" />
+    <None Include="wwwroot\Config\LogSettings.config" />
+    <None Include="wwwroot\Config\LuceneSettings.config" />
+    <None Include="wwwroot\Config\MenuSettings.config" />
+    <None Include="wwwroot\Config\PageMetaSettings.config" />
+    <None Include="wwwroot\Config\PageSettings.config" />
+    <None Include="wwwroot\Config\PhotoSettings.config" />
+    <None Include="wwwroot\Config\ProductSettings.config" />
+    <None Include="wwwroot\Config\QuestionSettings.config" />
+    <None Include="wwwroot\Config\RoleSettings.config" />
+    <None Include="wwwroot\Config\SMTPSettings.config" />
+    <None Include="wwwroot\Config\SocialSettings.config" />
+    <None Include="wwwroot\Config\StoreSettings.config" />
+    <None Include="wwwroot\Config\TeamSettings.config" />
+    <None Include="wwwroot\Config\UserSettings.config" />
+    <None Include="wwwroot\Config\VideoSettings.config" />
+    <None Include="wwwroot\Config\WeiXinSettings.config" />
+    <None Include="wwwroot\plugins\jquery-ui\jquery-ui.min.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\elFinder.NetCore\elFinder.NetCore.csproj" />
+    <ProjectReference Include="..\QNZ.Infrastructure\QNZ.Infrastructure.csproj" />
+    <ProjectReference Include="..\QNZ.Model\QNZ.Model.csproj" />
+    <ProjectReference Include="..\QNZ.Services\QNZ.Services.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,101 @@
+﻿@model QNZ.Model.Admin.ViewModel.StoreSalesVM
+
+@using SIG.Infrastructure.Extensions;
+
+@{
+    ViewData["Title"] = "门店销售情况";
+}
+
+<div class="row mb-4">
+    <div class="col-auto mr-auto">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a asp-controller="Orders"
+               asp-action="StoreSaleList"
+               asp-route-storeid="@Model.StoreId"
+               asp-route-startdate="@string.Format("{0:yyyy-MM-dd}",DateTime.Today)"
+               asp-route-enddate="@string.Format("{0:yyyy-MM-dd}",DateTime.Today.AddDays(1))"
+               class="btn @(Model.StartDate == DateTime.Today && Model.EndDate == DateTime.Today.AddDays(1)?"btn-primary":"btn-outline-secondary")">今日</a>
+            <a asp-controller="Orders"
+               asp-action="StoreSaleList"
+               asp-route-storeid="@Model.StoreId"
+               asp-route-startdate="@string.Format("{0:yyyy-MM-dd}",DateTime.Now.StartOfWeek(DayOfWeek.Monday))"
+               asp-route-enddate="@string.Format("{0:yyyy-MM-dd}",DateTime.Now.StartOfWeek(DayOfWeek.Sunday).AddDays(8))"
+               class="btn @(Model.StartDate == DateTime.Now.StartOfWeek(DayOfWeek.Monday) && Model.EndDate == DateTime.Now.StartOfWeek(DayOfWeek.Sunday).AddDays(8)?"btn-primary":"btn-outline-secondary")">本周</a>
+            <a asp-controller="Orders" asp-action="StoreSaleList"
+               asp-route-storeid="@Model.StoreId"
+               asp-route-startdate="@string.Format("{0:yyyy-MM-dd}",DateTime.Now.ToStartOfMonth())"
+               asp-route-enddate="@string.Format("{0:yyyy-MM-dd}",DateTime.Now.ToEndOfMonth().AddDays(1))"
+               class="btn @(Model.StartDate == DateTime.Now.ToStartOfMonth() && Model.EndDate == DateTime.Now.ToEndOfMonth().AddDays(1)?"btn-primary":"btn-outline-secondary")">本月</a>
+        </div>
+    </div>
+    <div class="col-auto">
+        <form asp-action="StoreSaleList" method="get" class="form-inline mb-2">
+            <input type="hidden" asp-for="StoreId"/>
+            <label class="sr-only" for="StartDate">开始日期</label>
+            <input asp-for="StartDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="开始日期" type="date" />
+            <label class="sr-only" for="EndDate">结束日期</label>
+            <input asp-for="EndDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="结束日期" type="date" />
+            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+        </form>
+    </div>
+</div>
+
+
+    <div class="row mb-4">
+        <div class="col-6">
+            <div class="item">
+                总销售额(元)：<strong>@Model.Products.Sum(d => d.Amount)</strong>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="item">
+                总数量：<strong>@Model.Products.Sum(d => d.Qty)</strong>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped table-vmiddle">
+        <thead>
+            <tr>
+
+                <th>
+                    商品名称
+                </th>
+                <th>
+                    销售数量
+                </th>
+                <th>
+                    销售额
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    @section header{
+        <style>
+            .item {
+                border: 1px #eee solid;
+                padding: 1rem;
+                font-size: 2rem;
+                text-align: center;
+            }
+        </style>
+    }

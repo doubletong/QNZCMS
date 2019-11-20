@@ -1,0 +1,124 @@
+﻿@using SIG.Resources.Admin
+@model QNZ.Model.Admin.InputModel.Identity.LoginIM
+@{
+    ViewData["Title"] = "登录";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/icons/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+    <style>
+        html,body {
+            height: 100%;
+        }
+         .page-login {
+             padding: 3rem;max-width: 25rem; box-shadow: 0 0 3rem rgba(0,0,0,.15);
+             margin: 0 auto;
+         }
+        .field-validation-error {
+            color: #dc143c;
+
+        }
+        .input-validation-error {
+            border-color: #dc143c;
+        }
+
+       
+    </style>
+</head>
+<body>
+<div class="page-login">
+    <h3 class="text-center">用户登录</h3>
+    <form asp-controller="Account" asp-action="Login"  data-ajax-begin="onBegin" data-ajax-complete="onComplete"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccess"
+          data-ajax="true" data-ajax-method="POST">
+        <input type="hidden" asp-for="ReturnUrl"/>
+        <div class="form-group">
+            <label asp-for="Username"></label>
+            <input type="text" class="form-control" asp-for="Username" placeholder="">
+            <span asp-validation-for="Username"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input type="password" class="form-control" asp-for="Password" placeholder="">
+            <span asp-validation-for="Username"></span>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" asp-for="RememberMe">
+                记住我
+            </label>
+        </div>
+        <button type="submit" id="btnLogin" class="btn btn-primary"><i class="fa fa-sign-in fa-fw"></i> 登录</button>
+    </form>
+</div>
+
+
+<script src="~/js/lib/jquery/jquery.min.js"></script>
+    <script src="~/js/lib/popper/popper.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+<script>
+
+   
+
+    function resetMarginTop() {
+        var wh = $(window).height(), ch = $(".page-login").height();
+        var mt = (wh - ch) / 3;
+        $("body").css({ "padding-top": mt + "px" });
+    }
+
+    $(function () {
+        resetMarginTop();
+        $(window).resize(function(e) {
+            resetMarginTop();
+        });
+    });
+    
+
+    var onBegin = function() {
+        $("#btnLogin i").removeClass("fa-sign-in").addClass("fa-spinner fa-spin");
+    };
+
+    var onComplete = function() {
+        $("#btnLogin i").removeClass("fa-spinner fa-spin").addClass("fa-sign-in");
+    };
+
+    var onSuccess = function (d) {
+        if (d.status === 1) {
+            toastr.success(d.message);
+          
+            setTimeout( function() {
+                var url = $("#ReturnUrl").val();
+                    location.href = url.length > 0 ? url : "/";
+                  
+                },1000);
+        }
+        if (d.status === 2) {
+            toastr.error(d.message);
+        }
+   
+    };
+
+    var onFailed = function (context) {
+        toastr.error("登录失败");
+    };
+</script>
+
+</body>
+</html>

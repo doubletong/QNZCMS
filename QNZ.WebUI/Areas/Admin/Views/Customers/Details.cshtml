@@ -1,0 +1,74 @@
+﻿@model QNZ.Model.ViewModel.CustomerVM
+@{
+    ViewData["Title"] = "客户详情";
+}
+
+<h4>@ViewData["Title"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <div class="headimg">
+            <img src="@Html.DisplayFor(model => model.Avatar)" />
+        </div>
+
+    </div>
+    <div class="col-md-9">
+
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.WechatNickName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.WechatNickName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Mobile)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.LastLogin)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastLogin)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Active)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Active)
+            </dd>
+           
+        </dl>
+        <div>
+            <a asp-action="Index" class="btn btn-outline-primary">返回</a>
+        </div>
+    </div>
+</div>
+
+
+@section header{
+    <style>
+        .dl-horizontal dt {
+            width: 7rem;
+        }
+        .dl-horizontal dd {
+            margin-left: 8rem;
+        }
+        .headimg{
+            text-align:center;
+        }
+        .headimg img{
+            max-width:100%;
+        }
+    </style>
+}

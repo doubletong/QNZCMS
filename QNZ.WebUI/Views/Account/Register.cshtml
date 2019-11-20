@@ -1,0 +1,104 @@
+﻿@using SIG.Resources.Admin
+@model SIG.Model.Admin.InputModel.Identity.RegisterIM
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+<div class="container page-register">
+    <h3 class="sectiontitle">
+        @ViewBag.Title
+    </h3>
+
+
+    <form asp-controller="Account" asp-action="Register"  data-ajax-begin="onBegin" data-ajax-complete="onComplete"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccess"
+          data-ajax="true" data-ajax-method="POST">
+        @*<div asp-validation-summary="All"></div>*@
+
+        <div class="form-group row">
+            <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input type="text" asp-for="UserName" class="form-control" placeholder="@Labels.UserName">
+                <span asp-validation-for="UserName"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Password" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input type="password" asp-for="Password" class="form-control" placeholder="@Labels.Password">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ConfirmPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="@Labels.ConfirmPassword">
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input type="email" asp-for="Email" class="form-control" placeholder="@Labels.Email">
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </div>
+    </form>
+
+
+    <div id="Results"></div>
+
+
+
+</div>
+
+<script src="~/js/lib/jquery/jquery.min.js"></script>
+<script src="~/js/lib/popper/popper.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>  
+
+    
+<script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+<script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+<script>
+    var results = $("#Results");
+    var onBegin = function(){
+        results.html("<img src=\"/images/ajax-loader.gif\" alt=\"Loading\" />");
+    };
+
+    var onComplete = function(){
+        results.html("");
+    };
+
+    var onSuccess = function(context){
+        alert(context);
+    };
+
+    var onFailed = function(context){
+        alert("Failed");
+    };
+</script>
+
+</body>
+</html>

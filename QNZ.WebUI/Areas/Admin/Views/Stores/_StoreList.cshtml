@@ -1,0 +1,79 @@
+﻿@model PagedList.Core.IPagedList<QNZ.Model.Admin.ViewModel.StoreVM>
+
+<table class="table table-bordered table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th>
+             
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Thumbnail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Contact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Phone)
+            </th>
+            <th>
+
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Coordinate)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Thumbnail))
+                {
+                    <img src="@item.Thumbnail" style="height:50px;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Province)
+           
+                @Html.DisplayFor(modelItem => item.City)
+         
+                @Html.DisplayFor(modelItem => item.District)
+            <br/>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coordinate)
+            </td>
+
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary  btn-sm">编辑</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">详情</a>
+                <a asp-controller="Orders" asp-action="StoreSaleList" asp-route-storeid="@item.Id" 
+                     asp-route-startdate="@string.Format("{0:yyyy-MM-dd}",DateTime.Today)"
+               asp-route-enddate="@string.Format("{0:yyyy-MM-dd}",DateTime.Today.AddDays(1))"
+                   class="btn btn-outline-primary  btn-sm">销售情况</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">删除</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,201 @@
+﻿@model SiteInfoIM
+@{
+    ViewData["Title"] = "基本信息";
+}
+
+
+    <form asp-action="EditSite" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+          data-ajax="true" data-ajax-method="POST">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       
+
+        <div class="card">
+            <h5 class="card-header">@ViewData["Title"]</h5>
+      
+            <div class="card-body">
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.SiteName, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SiteName)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.SiteDomainName, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SiteDomainName, new { @class = "form-control", placeholder = "http://" })
+                        @Html.ValidationMessageFor(model => model.SiteDomainName)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.MailTo, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.MailTo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MailTo)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.WebNumber, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.WebNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.WebNumber)
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.BaiduSiteID, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.BaiduSiteID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BaiduSiteID)
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.GoogleAnalyticsID, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.GoogleAnalyticsID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.GoogleAnalyticsID)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.DashboardLogo, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @if (!string.IsNullOrEmpty(Model.DashboardLogo))
+                        {
+                            <img src='@Model.DashboardLogo' id="imgDashboardLogo" class="img-thumbnail m-b-10" style="max-width:200px;background-color:#333;" />
+                        }
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.DashboardLogo, new { @class = "form-control" })
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="btnDashboardLogo" type="button">浏览…</button>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DashboardLogo)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.LoginLogo, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @if (!string.IsNullOrEmpty(Model.LoginLogo))
+                        {
+                            <img src='@Model.LoginLogo' id="imgLoginLogo" class="img-thumbnail m-b-10" style="max-width:200px; " />
+                        }
+                        <div class="input-group">
+                            @Html.TextBoxFor(model => model.LoginLogo, new { @class = "form-control" })
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="btnLoginLogo" type="button">浏览…</button>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DashboardLogo)
+
+                    </div>
+                </div>
+
+                <hr />
+                <div class="form-group row">
+                    <div class="col-md-2">是否关闭</div>
+                    <div class="col-md-10">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.IsClose, new { @class = "form-check-input" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.CloseInfo, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.CloseInfo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CloseInfo)
+                    </div>
+
+                </div>
+                <div class="spinner-border" role="status" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            </div>
+
+        </div>
+    </form>
+
+
+    @section header{
+
+    }
+
+    @section footer {
+
+        <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+        <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+        <script src="~/lib/tinymce/tinymce.min.js"></script>
+
+        <script>
+            function SetDashboardLogo(fileUrl) {
+             
+                $('#imgDashboardLogo').attr("src",fileUrl);
+                $('#DashboardLogo').val(fileUrl);  
+            }
+             function SetLoginLogo(fileUrl) {
+             
+                $('#imgLoginLogo').attr("src",fileUrl);
+                $('#LoginLogo').val(fileUrl);  
+            }
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+            function onBeginSave() {
+                $(".spinner-border").fadeIn();
+           
+        }
+        function onCompleteSave() {
+             $(".spinner-border").fadeOut();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {            
+                toastr.success(data.message);             
+
+            }
+            if (data.status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+                $("#btnDashboardLogo").on("click", function () {
+                    singleEelFinder.selectActionFunction = SetDashboardLogo;
+                    singleEelFinder.open();
+
+                });
+
+                $("#btnLoginLogo").on("click", function () {
+                    singleEelFinder.selectActionFunction = SetLoginLogo;
+                    singleEelFinder.open();
+
+                });
+
+
+        });
+        </script>
+    }

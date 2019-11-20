@@ -1,0 +1,37 @@
+﻿@using QNZ.Data
+@model Role
+<tr class="item-container" id="@string.Format("container{0}",Model.Id)">
+
+    <td>
+        @Html.DisplayFor(modelItem => Model.RoleName)
+        @if (Model.IsSys)
+        {
+            <span class="badge badge-primary">系统</span>
+        }
+
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Description)
+    </td>
+    <td>
+        <a asp-controller="Role" asp-action="SetRoleMenus" class="btn btn-primary" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+           data-ajax-begin="onBegin" data-ajax-complete="onAjaxCompleteRoleMenus" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-user-secret fa-fw" data-icon="fa-user-secret"></i>编辑权限</a>
+ 
+
+        @if (!Model.IsSys)
+        {
+            <a asp-controller="Role" asp-action="EditRole" class="btn btn-primary" asp-route-id="@Model.Id" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+               data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class="fa fa-edit fa-fw" data-icon="fa-edit"></i>编辑</a>
+            
+           
+        }
+        @if (!Model.IsSys)
+        {
+           
+                <a href="@Url.Action("Delete", new { id = Model.Id })" data-confirm="你确定要删除此 @Model.RoleName 吗？" class="delete-item btn btn-danger" data-toggle="tooltip" data-placement="top" title="删除">
+                    <i class="fa fa-trash-o fa-fw"></i> 删除
+                </a>
+          
+        }
+    </td>
+</tr>

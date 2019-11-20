@@ -1,0 +1,75 @@
+﻿@model IEnumerable<QNZ.Model.ViewModel.ProductCategoryBVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="m-b-10">
+    <a asp-action="Create" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubTitle)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InMenu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" style="height:50px;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTitle)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InMenu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommend)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">编辑</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">详情</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">删除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
