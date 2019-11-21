@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 namespace SIG.Infrastructure.Helper
 {
     
-
+    [Obsolete]
     public static class HttpHelper
     {
         private static IHttpContextAccessor _accessor;

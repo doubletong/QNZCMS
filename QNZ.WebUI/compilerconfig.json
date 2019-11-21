@@ -6,5 +6,9 @@
   {
     "outputFile": "wwwroot/plugins/SigFinder/SigFinder.css",
     "inputFile": "wwwroot/plugins/SigFinder/SigFinder.scss"
+  },
+  {
+    "outputFile": "wwwroot/admin/css/main.css",
+    "inputFile": "wwwroot/admin/css/main.scss"
   }
 ]

@@ -1,68 +1,74 @@
-﻿@model QNZ.Model.ViewModel.ProductCategoryIM
+﻿@model QNZ.Data.ArticleCategory
+
 
 @{
     ViewData["Title"] = "详情";
 }
 
 
+    <div class="card">
+        <h5 class="card-header">
+            详情
+        </h5>
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
 
-<div class="row">
-    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-    {
+                    <div class="col-md-auto">
+                        <figure style="width:300px; display:block;">
+                            <img src="@Model.ImageUrl" alt="" />
+                        </figure>
+                    </div>
+                }
+                <div class="col-md">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            主题
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Title)
+                        </dd>
+                        <dt>
+                            别名
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Alias)
+                        </dd>
 
-        <div class="col-md-3">
-            <figure>
-                <img src="@Model.ImageUrl" alt="" style="max-width:100%;" />
-                <figcaption class="text-center">分类图片</figcaption>
-            </figure>
+                        <dt>
+                            排序
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Importance)
+                        </dd>
+                        <dt>
+                            发布
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Active)
+                        </dd>
+
+                        <dt>
+                            创建人
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.CreatedBy)
+                        </dd>
+                        <dt>
+                            创建时间
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.CreatedDate)
+                        </dd>
+
+
+                    </dl>
+                </div>
+            </div>
         </div>
-    }
-    <div class="col-md-4">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Title)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.SubTitle)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.SubTitle)
-            </dd>
-
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Importance)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Importance)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.InMenu)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.InMenu)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Recommend)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Recommend)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.CreatedDate)
-            </dd>
-        </dl>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="iconfont icon-edit"></i> 编辑</a>
+            <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-arrowleft"></i> 返回</a>
+        </div>
     </div>
-
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">编辑</a> |
-    <a asp-action="Index">返回</a>
-</div>

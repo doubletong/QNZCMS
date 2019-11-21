@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<ArticleCategoryBVM>
-
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @{
     ViewData["Title"] = "文章分类";
+
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 
@@ -34,36 +36,87 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                {
-                    <img src="@item.ImageUrl" style="height:50px;" />
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Alias)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Importance)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" style="height:50px;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Alias)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Importance)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i> 编辑</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">详情</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="iconfont icon-delete"></i>删除</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="iconfont icon-eye"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+        $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+
+
+            swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+        });
+    </script>
+}

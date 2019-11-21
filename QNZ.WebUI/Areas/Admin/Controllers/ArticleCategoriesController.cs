@@ -49,13 +49,13 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var productCategory = await _context.ArticleCategories
+            var model = await _context.ArticleCategories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (productCategory == null)
+            if (model == null)
             {
                 return NotFound();
             }
-            var model = _mapper.Map<ArticleCategoryIM>(productCategory);
+            // var model = _mapper.Map<ArticleCategoryIM>(productCategory);
             return View(model);
         }
 
@@ -100,9 +100,9 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
             if (id == 0)
             {
-
+             
                 var model = _mapper.Map<ArticleCategory>(im);
-                model.CreatedBy = Site.CurrentUserName;
+                model.CreatedBy = User.Identity.Name;
                 model.CreatedDate = DateTime.Now;
                 _context.Add(model);
 
@@ -126,7 +126,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     var model = await _context.ArticleCategories.FindAsync(id);
                     model = _mapper.Map(im, model);
 
-                    model.UpdatedBy = Site.CurrentUserName;
+                    model.UpdatedBy = User.Identity.Name;
                     model.UpdatedDate = DateTime.Now;
                     _context.Update(model);
                     await _context.SaveChangesAsync();
@@ -152,36 +152,31 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
            
         }
 
-        // GET: Admin/ArticleCategories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+      
 
-            var productCategory = await _context.ArticleCategories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productCategory == null)
-            {
-                return NotFound();
-            }
-
-            var model = _mapper.Map<ArticleCategoryIM>(productCategory);
-
-            return View(model);
-        }
-
-        // POST: Admin/ArticleCategories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Admin/Articles/Delete/5
+        [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productCategory = await _context.ArticleCategories.FindAsync(id);
-            _context.ArticleCategories.Remove(productCategory);
+
+
+            var c = await _context.ArticleCategories.FirstOrDefaultAsync(d => d.Id == id);
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.ArticleCategories.Remove(c);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return Json(AR);
         }
+
+
+
         [HttpPost]
         public async Task<IActionResult> UploadAsync()
         {
