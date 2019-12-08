@@ -1,28 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.PlatformAbstractions;
 using SIG.Infrastructure.Configs;
 using SIG.Infrastructure.Helper;
-using SIG.Model.ViewModel;
-using SIG.Model.Admin.ViewModel;
+
+using QNZ.Model.Admin.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using QNZ.Model.ViewModel;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
+    [Authorize(Policy = "Permission")]
     public class GeneralController : BaseController
     {
         //   const string folderName = "Config";
-        private IHostingEnvironment _hostingEnvironment;
-        public GeneralController(IHostingEnvironment hostingEnvironment)
-        {
-            _hostingEnvironment = hostingEnvironment;
-        }
+        //private IHostingEnvironment _hostingEnvironment;
+        //public GeneralController(IHostingEnvironment hostingEnvironment)
+        //{
+        //    _hostingEnvironment = hostingEnvironment;
+        //}
 
         //public ViewResult Site()
         //{

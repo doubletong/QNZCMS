@@ -1,10 +1,10 @@
-﻿using PagedList.Core;
-using SIG.Resources.Admin;
+﻿using SIG.Resources.Admin;
 using System;
 using System.ComponentModel.DataAnnotations;
 using QNZ.Data;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
@@ -144,9 +144,9 @@ namespace QNZ.Model.ViewModel
         [StringLength(50, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         [Display(ResourceType = typeof(Labels), Name = "Author")]
         public string Author { get; set; }
-        [StringLength(50, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
+      
         [Display(ResourceType = typeof(Labels), Name = "Category")]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
 
         [Display(ResourceType = typeof(Labels), Name = "Pubdate")]
         [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]

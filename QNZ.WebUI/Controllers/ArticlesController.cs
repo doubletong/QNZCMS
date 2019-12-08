@@ -7,25 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 
-namespace QNZCMS.Areas.Admin.Controllers
+namespace QNZCMS.Controllers
 {
-    [Area("Admin")]
-    public class Articles1Controller : Controller
+    public class ArticlesController : Controller
     {
         private readonly YicaiyunContext _context;
 
-        public Articles1Controller(YicaiyunContext context)
+        public ArticlesController(YicaiyunContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Articles1
+        // GET: Articles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Articles.ToListAsync());
+            var yicaiyunContext = _context.Articles.Include(a => a.Category);
+            return View(await yicaiyunContext.ToListAsync());
         }
 
-        // GET: Admin/Articles1/Details/5
+        // GET: Articles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +34,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
 
             var article = await _context.Articles
+                .Include(a => a.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -43,18 +44,19 @@ namespace QNZCMS.Areas.Admin.Controllers
             return View(article);
         }
 
-        // GET: Admin/Articles1/Create
+        // GET: Articles/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.ArticleCategories, "Id", "Alias");
             return View();
         }
 
-        // POST: Admin/Articles1/Create
+        // POST: Articles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Body,Summary,Description,Keywords,ViewCount,PubDate,Thumbnail,Active,Category,CreatedDate,CreatedBy,UpdatedDate,UpdatedBy")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Title,Summary,Body,Author,Description,Keywords,Thumbnail,Pubdate,ViewCount,Active,CategoryId,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -62,10 +64,11 @@ namespace QNZCMS.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.ArticleCategories, "Id", "Alias", article.CategoryId);
             return View(article);
         }
 
-        // GET: Admin/Articles1/Edit/5
+        // GET: Articles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,15 +81,16 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.ArticleCategories, "Id", "Alias", article.CategoryId);
             return View(article);
         }
 
-        // POST: Admin/Articles1/Edit/5
+        // POST: Articles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Summary,Description,Keywords,ViewCount,PubDate,Thumbnail,Active,Category,CreatedDate,CreatedBy,UpdatedDate,UpdatedBy")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Summary,Body,Author,Description,Keywords,Thumbnail,Pubdate,ViewCount,Active,CategoryId,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] Article article)
         {
             if (id != article.Id)
             {
@@ -113,10 +117,11 @@ namespace QNZCMS.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.ArticleCategories, "Id", "Alias", article.CategoryId);
             return View(article);
         }
 
-        // GET: Admin/Articles1/Delete/5
+        // GET: Articles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,6 +130,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
 
             var article = await _context.Articles
+                .Include(a => a.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -134,7 +140,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             return View(article);
         }
 
-        // POST: Admin/Articles1/Delete/5
+        // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

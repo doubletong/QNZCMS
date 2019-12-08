@@ -22,6 +22,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
+    [Authorize(Policy = "Permission")]
     public class ArticleCategoriesController : BaseController
     {
         private IWebHostEnvironment _hostingEnvironment;

@@ -8,17 +8,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList.Core;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using SIG.Resources.Admin;
 using QNZ.Data;
+using X.PagedList;
+using SIG.Infrastructure.Configs;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
-    //[Authorize(Policy = "Permission")]
+    [Authorize(Policy = "Permission")]
     public class ArticlesController : BaseController
     {
         private readonly IMapper _mapper;
@@ -34,9 +35,11 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             var vm = new ArticleListVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
-                Keyword = keyword
+                Keyword = keyword,
+                
+                
             };
-            var pageSize = 10;
+            var pageSize = SettingsManager.Article.PageSize;
 
             var query = _context.Articles.AsNoTracking().AsQueryable();
 
@@ -48,10 +51,10 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             var clients = await query.OrderByDescending(d => d.Id)
                 .ProjectTo<ArticleBVM>(_mapper.ConfigurationProvider)
                 .Skip((vm.PageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-            // var list = _mapper.Map<IEnumerable<ProductVM>>(agents);
+      
 
             vm.Articles = new StaticPagedList<ArticleBVM>(clients, vm.PageIndex, pageSize, vm.TotalCount);
-
+      
 
             return View(vm);
         }
@@ -74,58 +77,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             return View(article);
         }
 
-        // GET: Admin/Articles/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Admin/Articles/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(ArticleIM article)
-        //{
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    //    _context.Add(article);
-        //    //    await _context.SaveChangesAsync();
-        //    //    return RedirectToAction(nameof(Index));
-        //    //}
-        //    //return View(article);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        AR.Setfailure(GetModelErrorMessage());
-        //        return Json(AR);
-        //    }
-        //    try
-        //    {
-
-
-        //        var model = _mapper.Map<Article>(article);
-
-        //        model.CreatedBy = User.Identity.Name;
-        //        model.CreatedDate = DateTime.Now;
-
-
-        //        //model.Body = WebUtility.HtmlEncode(page.Body);
-
-        //        _context.Add(model);
-        //        await _context.SaveChangesAsync();
-
-        //        AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Article));
-        //        return Json(AR);
-
-        //    }
-        //    catch (Exception er)
-        //    {
-        //        AR.Setfailure(er.Message);
-        //        return Json(AR);
-        //    }
-        //}
-
+      
         // GET: Admin/Articles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -134,8 +86,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             {
                 vm.Active = true;
                 vm.PubDate = DateTime.Now;
-
-                return View(vm);
+             
             }
             else
             {
@@ -146,9 +97,14 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 }
 
                 vm = _mapper.Map<ArticleIM>(article);
-                return View(vm);
-            }     
-            
+               
+            }
+            var categories = await _context.ArticleCategories.AsNoTracking()
+               .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
+
+            return View(vm);
+
         }
 
         // POST: Admin/Articles/Edit/5
@@ -156,13 +112,9 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ArticleIM article)
+        public async Task<IActionResult> Edit(ArticleIM article)
         {
-            if (id != article.Id)
-            {
-                AR.Setfailure(Messages.HttpNotFound);
-                return Json(AR);
-            }
+       
 
             if (!ModelState.IsValid)
             {
@@ -170,21 +122,48 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 return Json(AR);
             }
 
+
             try
             {
 
-                var model = await _context.Articles.SingleOrDefaultAsync(d => d.Id == id);
+                if (article.Id > 0)
+                {
+                    var model = await _context.Articles.FirstOrDefaultAsync(d => d.Id == article.Id);
+                    if (model == null)
+                    {
+                        AR.Setfailure(Messages.HttpNotFound);
+                        return Json(AR);
+                    }
+                    model = _mapper.Map(article, model);
 
-                model = _mapper.Map(article, model);
-                model.CreatedBy = User.Identity.Name;
-                model.CreatedDate = DateTime.Now;
+                    model.UpdatedBy = User.Identity.Name;
+                    model.UpdatedDate = DateTime.Now;
 
 
-                _context.Update(model);
-                await _context.SaveChangesAsync();
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
 
-                AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Post));
-                return Json(AR);
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Post));
+                    return Json(AR);
+                }
+                else
+                {
+                    var model = _mapper.Map<Article>(article);
+
+                    model.CreatedBy = User.Identity.Name;
+                    model.CreatedDate = DateTime.Now;
+
+
+                    //model.Body = WebUtility.HtmlEncode(page.Body);
+
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+
+                    AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Article));
+                    return Json(AR);
+                }
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -216,6 +195,26 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
 
             _context.Articles.Remove(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        // POST: Admin/Articles/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(int[] ids)
+        {
+
+            var c = await _context.Articles.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Articles.RemoveRange(c);
             await _context.SaveChangesAsync();
 
             return Json(AR);

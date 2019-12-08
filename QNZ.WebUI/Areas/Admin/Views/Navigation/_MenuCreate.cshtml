@@ -1,7 +1,7 @@
 ﻿@using QNZ.Data.Enums
-@using QNZ.Model.Admin.InputModel.Menus
+@using QNZ.Model
 @using SIG.Resources.Admin
-@model MenuIM
+@model NavIM
 
 
 
@@ -27,16 +27,16 @@
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CategoryId)
                 @Html.HiddenFor(model => model.ParentId)
-                
-              
+
+
 
                 <div class="form-group row">
                     @Html.LabelFor(model => model.Title, new { @class = "col-md-2 col-form-label" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = Labels.Title })
                         @Html.ValidationMessageFor(model => model.Title)
-                     </div>
-                   
+                    </div>
+
                 </div>
 
                 <div class="form-group row">
@@ -45,7 +45,7 @@
                         @Html.DropDownListFor(model => model.MenuType, Html.GetEnumSelectList(typeof(MenuType)), new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.MenuType)
                     </div>
-                   
+
                 </div>
 
                 <div class="form-group row">
@@ -54,18 +54,18 @@
                         @Html.TextBoxFor(model => model.Url, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Url)
                     </div>
-                
+
                 </div>
 
-                
+
                 <div class="form-group row">
                     @Html.LabelFor(model => model.Iconfont, new { @class = "col-md-2 col-form-label" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.Iconfont, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Iconfont)
-                    </div>                  
+                    </div>
                 </div>
-                
+
                 <div class="form-group row">
                     <div class="col-sm-2">显示</div>
                     <div class="col-sm-10">
@@ -77,8 +77,29 @@
                         @Html.ValidationMessageFor(model => model.Active)
                     </div>
                 </div>
-
-   
+                <hr/>
+                <h5>SEO</h5>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.SEOTitle, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SEOTitle, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SEOTitle)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.SEOKeywords, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SEOKeywords, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SEOKeywords)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.SEODescription, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.SEODescription, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SEODescription)
+                    </div>
+                </div>
 
             </div>
             <div class="modal-footer">

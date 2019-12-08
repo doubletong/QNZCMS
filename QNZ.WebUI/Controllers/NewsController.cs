@@ -7,9 +7,9 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList.Core;
 using QNZ.Data;
 using QNZ.Model.ViewModel;
+using X.PagedList;
 
 namespace QNZCMS.Controllers
 {

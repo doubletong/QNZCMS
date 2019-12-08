@@ -10,6 +10,11 @@ img {
 .thead-primary {
   background-color: #563d7c;
   color: #fff; }
+  .thead-primary a {
+    color: #fff;
+    text-decoration: underline; }
+    .thead-primary a:hover {
+      color: #fff; }
 
 /* loading style */
 .loading {

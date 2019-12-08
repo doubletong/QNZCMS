@@ -2,7 +2,7 @@
 
 namespace QNZ.Data.Enums
 {
-    public enum ModelType : short
+    public enum ModuleType : short
     {
         //[Display(ResourceType = typeof(Resources.ModuleNames), Name = "Menu")]
         [Display(Name = "菜单")]

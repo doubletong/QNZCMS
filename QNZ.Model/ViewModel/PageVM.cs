@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PagedList.Core;
 using SIG.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
@@ -21,9 +21,11 @@ namespace QNZ.Model.ViewModel
         public int ViewCount { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "CreatedDate")]
+        public DateTime CreatedDate { get; set; }
 
     }
-    public class PageIM
+    public class PageIM:PageMetaIM
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")]
@@ -51,6 +53,7 @@ namespace QNZ.Model.ViewModel
     public class PageListVM
     {
         public int PageIndex { get; set; }
+        public int PageSize { get; set; }
         public string Keyword { get; set; }
         public int TotalCount { get; set; }
         public StaticPagedList<PageVM> Pages { get; set; }

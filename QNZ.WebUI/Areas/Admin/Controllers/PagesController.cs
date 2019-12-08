@@ -1,66 +1,87 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList.Core;
+using Microsoft.Extensions.PlatformAbstractions;
+using QNZ.Data;
+using QNZ.Data.Enums;
+using QNZ.Model.Admin.ViewModel;
+using QNZ.Model.ViewModel;
+using SIG.Infrastructure.Configs;
 using SIG.Infrastructure.Helper;
-using SIG.Model.Admin.ViewModel;
-using SIG.Model.ViewModel;
 using SIG.Resources.Admin;
-using YCY.Data;
+using X.PagedList;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class PagesController : BaseController
     {
-      
 
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
         private readonly YicaiyunContext _context;
-        public PagesController(YicaiyunContext context, IMapper mapper)
+        public PagesController(IWebHostEnvironment hostingEnvironment, YicaiyunContext context, IMapper mapper)
         {
+            _hostingEnvironment = hostingEnvironment;
             _context = context;
             _mapper = mapper;      
         }
 
         // GET: Admin/Pages
-        public async Task<IActionResult> Index(string keyword, int? page)
+        public async Task<IActionResult> Index(string keyword, string sort, int? page)
         {
            PageListVM vm = new PageListVM()
             {
-                PageIndex = page == null || page <= 0 ? 1 : page.Value,
+                PageIndex = page??1,
+                PageSize = SettingsManager.Page.PageSize,
                 Keyword = keyword
             };
-            var pageSize = 10;
+        
 
             var query = _context.Pages.AsNoTracking().AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(d => d.Title.Contains(keyword) || d.Body.Contains(keyword));
+                query = query.Where(d => d.Title.Contains(keyword) || d.Body.Contains(keyword));        
 
 
             vm.TotalCount = await query.CountAsync();
-            var pages = await query.Select(d => new PageVM
+            ViewData["ViewSortParm"] = sort == "view" ? "view_desc" : "view";
+            ViewData["ImportanceSortParm"] = sort== "importance" ? "importance_desc" : "importance";
+            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+
+            query = sort switch
             {
-                Id = d.Id,
-                Title = d.Title,
-                ViewCount = d.ViewCount,
-                SeoName = d.SeoName,
-                Active = d.Active
-              
-            }).Skip((vm.PageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
-            // var list = _mapper.Map<IEnumerable<ProductVM>>(agents);
+                "view" => query.OrderBy(s => s.Title),
+                "view_desc" => query.OrderByDescending(s => s.Title),
+                "title" => query.OrderBy(s => s.Title),
+                "title_desc" => query.OrderByDescending(s => s.Title),
+                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_desc" => query.OrderByDescending(s => s.CreatedDate),
+                "importance" => query.OrderBy(s => s.CreatedDate),
+                "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
+                _ => query.OrderByDescending(s => s.Importance),
+            };
 
-            vm.Pages = new StaticPagedList<PageVM>(pages, vm.PageIndex, pageSize, vm.TotalCount);
+            var pages = await query
+                .Skip((vm.PageIndex - 1) * vm.PageSize)
+                .Take(vm.PageSize).ProjectTo<PageVM>(_mapper.ConfigurationProvider).ToListAsync();
+          
 
+            vm.Pages = new StaticPagedList<PageVM>(pages, vm.PageIndex, vm.PageSize, vm.TotalCount);
+
+            ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
         }
@@ -82,46 +103,11 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
             page.Body = WebUtility.HtmlDecode(page.Body);
 
+         
 
             return View(page);
         }
 
-
-
-        // POST: Admin/Pages/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Title,Body,SeoName,Active")] PageIM page)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        AR.Setfailure(GetModelErrorMessage());
-        //        return Json(AR);
-        //    }
-        //    try
-        //    {
-           
-
-        //        var model = _mapper.Map<Page>(page);
-        //        //model.SeoName = model.SeoName.ToLower();
-        //        model.Body = WebUtility.HtmlEncode(page.Body);
-
-        //        _context.Add(model);
-        //        await _context.SaveChangesAsync();
-
-        //        AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Page));
-        //        return Json(AR);
-
-        //    }
-        //    catch(Exception er)
-        //    {
-        //        AR.Setfailure(er.Message);
-        //        return Json(AR);
-        //    }
-          
-        //}
 
         //GET: Admin/Pages/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -145,6 +131,16 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             vm = _mapper.Map<PageIM>(page);
             vm.Body = WebUtility.HtmlDecode(page.Body);
 
+            var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.PAGE && d.ObjectId == vm.SeoName);
+
+            if (pm != null)
+            {
+                vm.SEOTitle = pm.Title;
+                vm.SEOKeywords = pm.Keywords;
+                vm.SEODescription = pm.Description;
+            }
+           
+
             return View(vm);
         }
 
@@ -153,7 +149,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Title,Importance,Body,SeoName,Active")] PageIM page)
+        public async Task<IActionResult> Edit([Bind("Id,Title,Importance,Body,SeoName,Active,SEOTitle,SEOKeywords,SEODescription")] PageIM page)
         {
 
             if (!ModelState.IsValid)
@@ -174,13 +170,13 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     model.SeoName = model.SeoName.ToLower();
                     model.Body = WebUtility.HtmlEncode(page.Body);
                     model.UpdatedDate = DateTime.Now;
-                    model.UpdatedBy = Site.CurrentUserName;
+                    model.UpdatedBy = User.Identity.Name;
 
                     _context.Update(model);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();                 
 
                     AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Page));
-                    return Json(AR);
+                 
 
                 }
                 else
@@ -189,18 +185,28 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     model.SeoName = model.SeoName.ToLower();
                     model.Body = WebUtility.HtmlEncode(page.Body);
                     model.CreatedDate = DateTime.Now;
-                    model.CreatedBy = Site.CurrentUserName;
+                    model.CreatedBy = User.Identity.Name;
 
                     _context.Add(model);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();                
 
-                    AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Page));
-                    return Json(AR);
+                    AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Page));                  
 
 
                 }
 
-               
+                var pm = new PageMeta
+                {
+                    Title = page.SEOTitle,
+                    Description = page.SEODescription,
+                    Keywords = page.SEOKeywords,
+                    ModuleType = (short)ModuleType.PAGE,
+                    ObjectId = page.SeoName
+                };
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+
+                return Json(AR);
 
             }
             catch (DbUpdateConcurrencyException)
@@ -219,37 +225,95 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         }
 
-        // GET: Admin/Pages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+
+
+        [HttpPost]
+        public JsonResult PageSizeSet(int pageSize)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                var xmlFile = PlatformServices.Default.MapPath("/Config/PageSettings.config");
+                XDocument doc = XDocument.Load(xmlFile);
 
-            var page = await _context.Pages
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (page == null)
+                var item = doc.Descendants("Settings").FirstOrDefault();
+                item.Element("PageSize").SetValue(pageSize);
+                doc.Save(xmlFile);
+
+
+                return Json(AR);
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                AR.Setfailure(ex.Message);
+                return Json(AR);
             }
-            page.Body = WebUtility.HtmlDecode(page.Body);
-
-
-            return View(page);
         }
+
 
         // POST: Admin/Pages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var page = await _context.Pages.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Pages.Remove(page);
+            var c = await _context.Pages.FirstOrDefaultAsync(d => d.Id == id);
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Pages.Remove(c);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return Json(AR);
+
         }
-      
+        // POST: Admin/Articles/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(int[] ids)
+        {
+
+            var c = await _context.Pages.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Pages.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(int[] ids,bool isLock)
+        {
+
+            var c = await _context.Pages.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+    
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+        
+
+
         [AllowAnonymous]
         public async Task<JsonResult> IsSeoNameUnique(string seoName, int? id)
         {

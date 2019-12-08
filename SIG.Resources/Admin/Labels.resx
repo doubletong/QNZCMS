@@ -204,7 +204,7 @@
   <data name="IsDefault" xml:space="preserve">
     <value>默认</value>
   </data>
-  <data name="KeyWords" xml:space="preserve">
+  <data name="Keywords" xml:space="preserve">
     <value>关键字</value>
   </data>
   <data name="Lang" xml:space="preserve">

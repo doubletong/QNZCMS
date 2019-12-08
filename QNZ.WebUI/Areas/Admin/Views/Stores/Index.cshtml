@@ -1,4 +1,4 @@
-﻿@using PagedList.Core.Mvc
+﻿
 @model QNZ.Model.Admin.ViewModel.StorePageVM
 @{
     ViewData["Title"] = "门店";
@@ -27,7 +27,10 @@
             <pager class="pager-container" list="@Model.Stores" LinkToPreviousPageFormat="前页" ,
                    LinkToNextPageFormat="下页"
                    options="@PagedListRenderOptions.Bootstrap4Full"
-                   asp-action="Index" asp-controller="Stores" asp-route-keyword="@Model.Keyword"  />
+                   asp-action="Index" asp-controller="Stores" asp-route-keyword="@Model.Keyword" />
+
+
+       
         </div>
         <div class="col-auto">
             <div class="input-group">

@@ -10,10 +10,10 @@ namespace PagedList.Core.Mvc
         private static readonly string[] DefaultLiElementClasses = { "page-item" };
         private static readonly string[] DefaultAhrefElementClasses = { "page-link" };
 
-        private static string DefaultLinkToPreviousPageFormat = SIG.Resources.PagedList.Previous;
-        private static string DefaultLinkToNextPageFormat = SIG.Resources.PagedList.Next;
-        private static string DefaultLinkToFirstPageFormat = SIG.Resources.PagedList.First;
-        private static string DefaultLinkToLastPageFormat = SIG.Resources.PagedList.Last;
+        private static string DefaultLinkToPreviousPageFormat = "a";//SIG.Resources.PagedList.Previous;
+        private static string DefaultLinkToNextPageFormat = "a";//SIG.Resources.PagedList.Next;
+        private static string DefaultLinkToFirstPageFormat = "a";//SIG.Resources.PagedList.First;
+        private static string DefaultLinkToLastPageFormat = "a";//SIG.Resources.PagedList.Last;
 
         private static void SetBootstrap4Option(PagedListRenderOptions option)
         {

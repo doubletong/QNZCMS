@@ -12,11 +12,11 @@ using QNZ.Services.Menus;
 using QNZ.Data.Enums;
 using SIG.Infrastructure.Configs;
 using SIG.Infrastructure.Helper;
-using QNZ.Model.Admin.InputModel.Menus;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.Admin.ViewModel.Menus;
 using SIG.Resources.Admin;
-
+using QNZ.Model;
+using QNZ.Model.ViewModel;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
 {

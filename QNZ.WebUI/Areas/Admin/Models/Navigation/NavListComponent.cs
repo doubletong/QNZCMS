@@ -6,40 +6,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using QNZ.Data;
+using SIG.Infrastructure.Cache;
+using SIG.Infrastructure.Configs;
 
 namespace SIG.SIGCMS.Areas.Admin.Models.Navigation
 {
     [ViewComponent(Name = "NavList")]
     public class NavListComponent : ViewComponent
     {
-        private IMemoryCache _cache;
+        private ICacheService _cache;
         private readonly YicaiyunContext _context;
-        public NavListComponent(YicaiyunContext context, IMemoryCache memoryCache)
+        public NavListComponent(YicaiyunContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;
         }
         public async Task<IViewComponentResult> InvokeAsync(int categoryId)
         {
-            var cacheKey = $"AllMenus_{categoryId}";
-            // Look for cache key.
-            if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
-            {
-                // Key not in cache, so get data.
-                menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
-                // Save data in cache.
-                _cache.Set(cacheKey, menus, cacheEntryOptions);
-            }
-
-            var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
+            var navs = await GetMenusByCategoryIdAsync(categoryId);
+            var MenuTree = CreatedMenuList(navs.Where(m => m.ParentId == null), navs);
 
             return View("NavList", MenuTree);
+            // Look for cache key.
+            //if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
+            //{
+            //    // Key not in cache, so get data.
+            //    menus = await _context.Navigations.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
+            //    // Set cache options.
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
+            //    // Save data in cache.
+            //    _cache.Set(cacheKey, menus, cacheEntryOptions);
+            //}
+
+            // var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
+
+            // return View("NavList", MenuTree);
             // return View("Menus", _menuServices.CurrenMenuCrumbs(SettingsManager.Menu.BackMenuCId, viewContext));
         }
 
-        private string CreatedMenuList(IEnumerable<QNZ.Data.Menu> levelMenus, IEnumerable<QNZ.Data.Menu> menus, string menuTree = "", bool isExpand = true)
+
+        private async Task<IEnumerable<QNZ.Data.Navigation>> GetMenusByCategoryIdAsync(int categoryId)
+        {
+            if (!SettingsManager.Site.EnableCaching)
+            {
+                return await _context.Navigations.Include(d => d.InverseParent).Where(d => d.CategoryId == categoryId).OrderBy(d => d.Importance).ToListAsync();
+            }
+
+            var cacheKey = $"NAVIGATIONS_CATEGORY_{categoryId}";
+            if (_cache.IsSet(cacheKey))
+            {
+                return (IEnumerable<QNZ.Data.Navigation>)_cache.Get(cacheKey);
+            }
+
+            var result = await _context.Navigations.Include(d => d.InverseParent).Where(d => d.CategoryId == categoryId).OrderBy(d => d.Importance).ToListAsync();
+            _cache.Set(cacheKey, result, SettingsManager.Site.CacheDuration);
+            return result;
+
+        }
+
+        private string CreatedMenuList(IEnumerable<QNZ.Data.Navigation> levelMenus, IEnumerable<QNZ.Data.Navigation> menus, string menuTree = "", bool isExpand = true)
         {
             var exClassName = isExpand ? "" : "hidden";
             menuTree = menuTree + $"<ul class=\"menuTree {exClassName}\">";

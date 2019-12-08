@@ -23,6 +23,7 @@ using QNZ.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using SIG.Infrastructure.Cache;
 
 namespace QNZCMS
 {
@@ -91,6 +92,7 @@ namespace QNZCMS
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -101,7 +103,7 @@ namespace QNZCMS
             services.AddTransient<IMenuServices, MenuServices>();
             services.AddTransient<IMenuCategoryServices, MenuCategoryServices>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
-
+            services.AddScoped<ICacheService, CacheService>();
             // To list physical files from a path provided by configuration:
             var physicalProvider = new PhysicalFileProvider(Configuration.GetValue<string>("StoredFilesPath"));
 

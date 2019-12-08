@@ -4,7 +4,7 @@
 }
 
 
-<form asp-action="Create" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
       asp-antiforgery="true"
       data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
       data-ajax="true" data-ajax-method="POST">
@@ -27,10 +27,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Category" class="control-label"></label>
-                        <input asp-for="Category" class="form-control" />
-                        <span asp-validation-for="Category"></span>
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])"></select>
+                        <span asp-validation-for="CategoryId"></span>
                     </div>
+
+
 
                     <div class="form-group">
                         <label asp-for="Body" class="control-label"></label>
@@ -48,6 +50,11 @@
                         <span asp-validation-for="Summary"></span>
                     </div>
 
+                    <div class="form-group">
+                        <label asp-for="PubDate" class="control-label"></label>
+                        <input asp-for="PubDate" class="form-control" />
+                        <span asp-validation-for="PubDate"></span>
+                    </div>
                     <div class="form-group">
                         <label asp-for="Author" class="control-label"></label>
                         <input asp-for="Author" class="form-control" />
@@ -116,11 +123,11 @@
     </div>
 </form>
 
-<partial name="../QNZFinder/_PopuFinder.cshtml" />
+@*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
 
 @section header{
-    <link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
-    <link href="~/plugins/webuploader/webuploader.css" rel="stylesheet" />
+    @*<link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+    <link href="~/plugins/webuploader/webuploader.css" rel="stylesheet" />*@
     <style>
         .thumb {
             height: 200px;
@@ -143,8 +150,8 @@
     <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
 
-    <script src="/Plugins/webuploader/webuploader.min.js"></script>
-    <script src="/Plugins/SigFinder/FileManager.js"></script>
+    @*<script src="/Plugins/webuploader/webuploader.min.js"></script>
+    <script src="/Plugins/SigFinder/FileManager.js"></script>*@
 
     <script src="~/plugins/tinymce5/tinymce.min.js"></script>
     <script>
@@ -160,7 +167,7 @@
             valid_children : 'a[p|span|div|strong|i]',
             valid_elements : "*[*]",
             //picture manager
-            file_picker_callback: SIGFinder.FilePickerCallback2,   //from plugin FileManager.js
+            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
             images_upload_handler: QNZ.ImagesUploadHandler,
             plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
 

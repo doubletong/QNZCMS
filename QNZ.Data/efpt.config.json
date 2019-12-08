@@ -1,1 +1,182 @@
-﻿{"ContextClassName":"YicaiyunContext","DefaultDacpacSchema":null,"IdReplace":false,"IncludeConnectionString":true,"OutputPath":"","ProjectRootNamespace":"QNZ.Data","SelectedToBeGenerated":0,"Tables":[{"HasPrimaryKey":true,"Name":"dbo.AgentSet"},{"HasPrimaryKey":true,"Name":"dbo.ArticleCategories"},{"HasPrimaryKey":true,"Name":"dbo.Articles"},{"HasPrimaryKey":true,"Name":"dbo.Cart"},{"HasPrimaryKey":true,"Name":"dbo.CartItem"},{"HasPrimaryKey":true,"Name":"dbo.City"},{"HasPrimaryKey":true,"Name":"dbo.Client"},{"HasPrimaryKey":true,"Name":"dbo.Customer"},{"HasPrimaryKey":true,"Name":"dbo.CustomerRecipes"},{"HasPrimaryKey":true,"Name":"dbo.District"},{"HasPrimaryKey":true,"Name":"dbo.FeedbackSet"},{"HasPrimaryKey":true,"Name":"dbo.FeedbackTypeSet"},{"HasPrimaryKey":true,"Name":"dbo.Log"},{"HasPrimaryKey":true,"Name":"dbo.MailingAddress"},{"HasPrimaryKey":true,"Name":"dbo.Menu"},{"HasPrimaryKey":true,"Name":"dbo.MenuCategory"},{"HasPrimaryKey":true,"Name":"dbo.MobileCodeSet"},{"HasPrimaryKey":true,"Name":"dbo.Order"},{"HasPrimaryKey":true,"Name":"dbo.OrderComment"},{"HasPrimaryKey":true,"Name":"dbo.OrderDetail"},{"HasPrimaryKey":true,"Name":"dbo.Pages"},{"HasPrimaryKey":true,"Name":"dbo.PCategoryProducts"},{"HasPrimaryKey":true,"Name":"dbo.Post"},{"HasPrimaryKey":true,"Name":"dbo.PostCategory"},{"HasPrimaryKey":true,"Name":"dbo.ProductCategory"},{"HasPrimaryKey":true,"Name":"dbo.Products"},{"HasPrimaryKey":true,"Name":"dbo.Province"},{"HasPrimaryKey":true,"Name":"dbo.Recipes"},{"HasPrimaryKey":true,"Name":"dbo.RecipesItem"},{"HasPrimaryKey":true,"Name":"dbo.Role"},{"HasPrimaryKey":true,"Name":"dbo.RoleMenu"},{"HasPrimaryKey":true,"Name":"dbo.Solution"},{"HasPrimaryKey":true,"Name":"dbo.Store"},{"HasPrimaryKey":true,"Name":"dbo.Team"},{"HasPrimaryKey":true,"Name":"dbo.User"},{"HasPrimaryKey":true,"Name":"dbo.UserRole"},{"HasPrimaryKey":true,"Name":"dbo.Work"}],"UseDatabaseNames":false,"UseFluentApiOnly":false,"UseHandleBars":false,"UseInflector":true}
+﻿{
+   "ContextClassName": "YicaiyunContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "",
+   "ProjectRootNamespace": "QNZ.Data",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AgentSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ArticleCategories]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Articles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Cart]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[CartItem]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[City]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Client]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Customer]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[CustomerRecipes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[District]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[FeedbackSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[FeedbackTypeSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Log]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[MailingAddress]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Menu]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[MenuCategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[MobileCodeSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[NavigationCategories]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Navigations]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Order]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[OrderComment]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[OrderDetail]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PageMetas]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Pages]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PCategoryProducts]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Post]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PostCategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ProductCategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Products]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Province]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Recipes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[RecipesItem]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Role]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[RoleMenu]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Solution]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Store]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Team]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[User]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[UserRole]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Work]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}

@@ -774,9 +774,9 @@ namespace SIG.Resources.Admin {
         /// <summary>
         ///   查找类似 关键字 的本地化字符串。
         /// </summary>
-        public static string KeyWords {
+        public static string Keywords {
             get {
-                return ResourceManager.GetString("KeyWords", resourceCulture);
+                return ResourceManager.GetString("Keywords", resourceCulture);
             }
         }
         

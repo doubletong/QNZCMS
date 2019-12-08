@@ -6,41 +6,37 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data.Enums;
 using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
 using QNZ.Model.Admin.ViewModel;
-using QNZ.Model.Admin.InputModel.Menus;
 using QNZ.Services;
 using QNZ.Services.Menus;
 using QNZ.Data;
 using SIG.Resources.Admin;
-using QNZ.Model.Admin.ViewModel.Menus;
 using QNZ.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
-
+using QNZ.Model;
+using SIG.Infrastructure.Cache;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
-    //[Authorize(Policy = "Permission")]
+    [Authorize(Policy = "Permission")]
     public class NavigationController : BaseController
     {
-        private IMemoryCache _cache;
+        private ICacheService _cache;
         private readonly YicaiyunContext _context;
 
-        private readonly IMenuCategoryServices _menuCategoryService;
+   
         private readonly IMenuServices _menuService;
         private readonly IViewRenderService _viewRenderService;
         private readonly IMapper _mapper;
 
-        public NavigationController(IMenuServices menuService, IMenuCategoryServices menuCategoryService, IViewRenderService viewRenderService, IMapper mapper,
-            YicaiyunContext context, IMemoryCache memoryCache)
+        public NavigationController(IMenuServices menuService, IViewRenderService viewRenderService, IMapper mapper,
+            YicaiyunContext context, ICacheService memoryCache)
         {
-            _menuService = menuService;
-            _menuCategoryService = menuCategoryService;
+            _menuService = menuService;         
             _viewRenderService = viewRenderService;
             _mapper = mapper;
             _context = context;
@@ -51,7 +47,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // GET: /Admin/Menu/ 
         public async Task<ActionResult> Index()
         {
-            var vm = await _context.MenuCategories.Where(d => d.Id != SettingsManager.Menu.BackMenuCId)
+            var vm = await _context.NavigationCategories
                 .ProjectTo<MenuCategoryVM>(_mapper.ConfigurationProvider).ToListAsync();   
             return View(vm);
         }
@@ -60,7 +56,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult EditCategory()
         {
-            var im = new MenuCategoryIM
+            var im = new NavigationCategoryIM
             {
                 Importance = 0,
                 Active = true
@@ -70,7 +66,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveCategory([Bind("Id, Title, Importance, Active")] MenuCategoryIM im)
+        public async Task<IActionResult> SaveCategory([Bind("Id, Title, Importance, Active")] NavigationCategoryIM im)
         {
             if (!ModelState.IsValid)
             {
@@ -78,9 +74,9 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 return Json(AR);
             }
 
-            var model = _mapper.Map<MenuCategory>(im);
+            var model = _mapper.Map<NavigationCategory>(im);
             model.CreatedDate = DateTime.Now;
-            model.CreatedBy = Site.CurrentUserName;
+            model.CreatedBy = User.Identity.Name;
             model.IsSys = false;
            
             _context.Add(model);
@@ -100,32 +96,32 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         public IActionResult GetMenus(int categoryId)
         {
             //不支持控制器视图查看
-            return ViewComponent("NavList", new { categoryId = categoryId });
+            return ViewComponent("NavList", new { categoryId });
         }
 
 
         [HttpGet]
         public ActionResult CreateMenu(int categoryId, int? parentId)
         {
-            var vMenu = new Menu();
-            MenuIM newDto = _mapper.Map<MenuIM>(vMenu);
+            var vMenu = new Navigation();
+            NavIM newDto = _mapper.Map<NavIM>(vMenu);
 
-            newDto.CategoryId = (int)categoryId;
+            newDto.CategoryId = categoryId;
             newDto.ParentId = parentId;
             return PartialView("_MenuCreate", newDto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateMenu(MenuIM menu)
+        public async Task<JsonResult> CreateMenu(NavIM menu)
         {
 
             if (ModelState.IsValid)
             {
-                var vMenu = _mapper.Map<Menu>(menu);
+                var vMenu = _mapper.Map<Navigation>(menu);
                 if (menu.ParentId != null)
                 {
-                    var parentMenu = _menuService.GetById(vMenu.ParentId.Value);
+                    var parentMenu = await _context.Navigations.FindAsync(vMenu.ParentId.Value);
                     vMenu.LayoutLevel = parentMenu.LayoutLevel + 1;
                 }
                 else
@@ -133,19 +129,29 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     vMenu.LayoutLevel = 0;
                 }
             
-                vMenu.CreatedBy = Site.CurrentUserName;
+                vMenu.CreatedBy = User.Identity.Name;
                 vMenu.CreatedDate = DateTime.Now;
 
-                
-                var result = _menuService.Create(vMenu);
-                //_menuService.CreateAndSort(vMenu);           
-                // _menuService.ResetSort(menu.CategoryId);
+                _context.Add(vMenu);
+                await _context.SaveChangesAsync();
 
-                var menus = _menuService.GetLevelMenusByCategoryId(vMenu.CategoryId);
+                var pm = new PageMeta
+                {
+                    Title = menu.SEOTitle,
+                    Description = menu.SEODescription,
+                    Keywords = menu.SEOKeywords,
+                    ModuleType = (short)ModuleType.MENU,
+                    ObjectId = vMenu.Url
+                };
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+            
+
+                //  var menus = _menuService.GetLevelMenusByCategoryId(vMenu.CategoryId);
                 AR.Id = menu.CategoryId;
                 //AR.Data = ViewComponent("MenuList", new { categoryId = menu.CategoryId });  //await _viewRenderService.RenderToStringAsync("Admin/Menu/_MenuList", menus);
-                var cacheKey = $"AllMenus_{ menu.CategoryId}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
 
                 AR.SetSuccess("已成功新增菜单");
                 return Json(AR);
@@ -160,10 +166,10 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult EditMenu(int id)
+        public async Task<ActionResult> EditMenu(int id)
         {
-            Menu vMenu = _menuService.GetById(id);
-            MenuIM dto = _mapper.Map<MenuIM>(vMenu);
+            var vMenu = await _context.Navigations.FindAsync(id);
+            NavIM dto = _mapper.Map<NavIM>(vMenu);
             return PartialView("_MenuEdit", dto);
 
         }
@@ -173,37 +179,31 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult EditMenu(MenuIM menu)
+        public async Task<JsonResult> EditMenu(NavIM menu)
         {
 
             if (ModelState.IsValid)
             {
-                Menu vMenu = _mapper.Map<Menu>(menu);
+               // Menu vMenu = _mapper.Map<Menu>(menu);
 
-                Menu orgMenu = _menuService.GetById(vMenu.Id);
-                orgMenu.Title = vMenu.Title;
-                orgMenu.MenuType = vMenu.MenuType;
-                orgMenu.Active = vMenu.Active;
-                orgMenu.Action = vMenu.Action;
-                orgMenu.Area = vMenu.Area;
-                orgMenu.CategoryId = vMenu.CategoryId;
-                orgMenu.Controller = vMenu.Controller;
-                orgMenu.Iconfont = vMenu.Iconfont;
-                orgMenu.ParentId = vMenu.ParentId;
-                orgMenu.Url = vMenu.Url;
-                orgMenu.UpdatedBy = Site.CurrentUserName;
-                orgMenu.UpdatedDate = DateTime.Now;
+                var orgNav = await _context.Navigations.FindAsync(menu.Id);
+                var im = _mapper.Map(menu, orgNav);
 
-                _menuService.Update(orgMenu);
+            
+                im.UpdatedBy = User.Identity.Name;
+                im.UpdatedDate = DateTime.Now;
 
-                var cacheKey = $"AllMenus_{orgMenu.CategoryId}";
+                _context.Entry(im).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+              
 
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+
+                _cache.Invalidate(cacheKey);
 
                 // _menuService.ResetSort(orgMenu.CategoryId);
-
                 //  var menus = _menuService.GetLevelMenusByCategoryId(vMenu.CategoryId);
-                AR.Id = vMenu.CategoryId;
+                AR.Id = im.CategoryId;
                 //// using a Model
                 //string html = view.Render("Emails/Test", new Product("Apple"));
 
@@ -232,24 +232,15 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // POST: Admin/User/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
 
-            Menu vMenu = _menuService.GetByIdWithChilds(id);
+            var vMenu = await _context.Navigations.Include(d => d.InverseParent).FirstOrDefaultAsync(d => d.Id == id);
+                //_menuService.GetByIdWithChilds(id);
 
             if (vMenu != null)
             {
 
-                int cid = vMenu.CategoryId;
-                if (SettingsManager.Menu.BackMenuCId == cid)
-                {
-                    if (User.Identity.Name != SettingsManager.User.Founder)
-                    {
-                        AR.SetWarning(string.Format(Messages.NotFounderCanNotDelete, EntityNames.Menu));
-                        return Json(AR);
-                    }
-
-                }
 
                 // var childMenuCount = _menuService.GetMenuCount(id);
                 if (vMenu.InverseParent.Count > 1)
@@ -259,13 +250,13 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 }
 
 
-                //  vMenu.Roles.Clear();
-                _menuService.Delete(vMenu);
+                _context.Navigations.Remove(vMenu);
+                await _context.SaveChangesAsync();
 
                 //_menuService.ResetSort(vMenu.CategoryId);
 
-                var cacheKey = $"AllMenus_{vMenu.CategoryId}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
                 //var menus = await _menuService.GetMenus(cid);
                 //return PartialView("_MenuList", menus);
                 AR.SetSuccess(string.Format(Messages.AlertDeleteSuccess, EntityNames.Menu));
@@ -279,12 +270,12 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult UpDownMove(int id, bool isUp, int categoryId)
+        public async Task<IActionResult> UpDownMove(int id, bool isUp, int categoryId)
         {
 
             if (isUp)
             {
-                var result = _menuService.UpMoveMenu(id);
+                var result = await UpMoveMenuAsync(id);
 
                 if (result == 0)
                 {
@@ -294,7 +285,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
             else
             {
-                var result = _menuService.DownMoveMenu(id);
+                var result = await DownMoveMenuAsync(id);
 
                 if (result == 0)
                 {
@@ -307,8 +298,8 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             // var menus = _menuService.GetLevelMenusByCategoryId(categoryId);
             AR.Id = categoryId;
             // AR.Data = await _viewRenderService.RenderAsync("_MenuList", menus);
-            var cacheKey = $"AllMenus_{categoryId}";
-            _cache.Remove(cacheKey);
+            var cacheKey = "NAVIGATION";
+            _cache.Invalidate(cacheKey);
 
             AR.SetSuccess("菜单排位成功！");
             return Json(AR);
@@ -319,18 +310,126 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         }
 
 
+        /// <summary>
+        /// 向上移动
+        /// </summary>
+        /// <param name = "id" ></param >
+        /// < returns ></returns >
+        private async Task<int> UpMoveMenuAsync(int id)
+        {
+            var vMenu = await _context.Navigations.FirstOrDefaultAsync(d => d.Id == id);
+            //_unitOfWork.GetRepository<Menu>().GetFirstOrDefault(predicate: d => d.Id == id);
+            var menuList = await GetMenusByCategoryIdAsync(vMenu.CategoryId);
+
+            var prevMenu = await _context.Navigations.OrderByDescending(d => d.Importance).FirstOrDefaultAsync(d => d.ParentId == vMenu.ParentId && d.Id != vMenu.Id && d.Importance <= vMenu.Importance);
+
+
+
+            //_unitOfWork.GetRepository<Menu>().GetFirstOrDefault(
+            //predicate: d => d.ParentId == vMenu.ParentId && d.Id !=vMenu.Id && d.Importance <= vMenu.Importance,
+            //orderBy: d => d.OrderByDescending(m => m.Importance));
+
+
+            //if (prevMenu == null)
+            //{
+            //    // 已经在第一位
+            //    return 0;
+            //}
+            var num = prevMenu.Importance - vMenu.Importance;
+            if (num == 0)
+            {
+                vMenu.Importance -= 1;
+            }
+            else
+            {
+                prevMenu.Importance -= num;
+                vMenu.Importance += num;
+            }
+
+
+            _context.Entry(vMenu).State = EntityState.Modified;
+            _context.Entry(prevMenu).State = EntityState.Modified;
+
+            var result = await _context.SaveChangesAsync();
+
+            return result;
+
+        }
+
+        /// <summary>
+        /// 向下移动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<int> DownMoveMenuAsync(int id)
+        {
+            var vMenu = await _context.Navigations.FirstOrDefaultAsync(d => d.Id == id);
+            var menuList = await GetMenusByCategoryIdAsync(vMenu.CategoryId);
+            var nextMenu = await _context.Navigations.FirstOrDefaultAsync(d => d.ParentId == vMenu.ParentId && d.Id != vMenu.Id && d.Importance >= vMenu.Importance);
+       
+
+            //Menu nextMenu = menuList.Where(m => m.ParentId == vMenu.ParentId &&
+            //    m.Importance > vMenu.Importance).OrderBy(m => m.Importance).FirstOrDefault();
+
+
+            //if (nextMenu == null)
+            //{
+            //    // 已经在最后一位
+            //    return 0;
+            //}
+
+            var num = nextMenu.Importance - vMenu.Importance;
+            if (num == 0)
+            {
+                vMenu.Importance += 1;
+            }
+            else
+            {
+                nextMenu.Importance -= num;
+                vMenu.Importance += num;
+            }
+
+
+            _context.Entry(vMenu).State = EntityState.Modified;
+            _context.Entry(nextMenu).State = EntityState.Modified;
+
+            var result = await _context.SaveChangesAsync();
+
+            return result;
+        }
+
+        private async Task<IEnumerable<Navigation>> GetMenusByCategoryIdAsync(int categoryId)
+        {
+            if (!SettingsManager.Site.EnableCaching)
+            {              
+                return await _context.Navigations.Include(d => d.InverseParent).Where(d => d.CategoryId == categoryId).OrderBy(d => d.Importance).ToListAsync();
+            }
+
+            var cacheKey = $"NAVIGATIONS_CATEGORY_{categoryId}";
+            if (_cache.IsSet(cacheKey))
+            {
+                return (IEnumerable<Navigation>)_cache.Get(cacheKey);
+            }
+
+            var result = await _context.Navigations.Include(d => d.InverseParent).Where(d => d.CategoryId == categoryId).OrderBy(d => d.Importance).ToListAsync();
+            _cache.Set(cacheKey, result, SettingsManager.Site.CacheDuration);
+            return result;
+
+        }
+
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult IsExpand(int id)
+        public async Task<JsonResult> IsExpand(int id)
         {
-            var menu = _menuService.GetById(id);
+            var menu = await _context.Navigations.FindAsync(id);
             if (menu != null)
             {
                 menu.IsExpand = !menu.IsExpand;
-                _menuService.Update(menu);
+                _context.Entry(menu).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
 
-                var cacheKey = $"AllMenus_{menu.CategoryId}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
 
                 AR.SetSuccess(Messages.AlertActionSuccess);
                 return Json(AR);
@@ -342,16 +441,17 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult IsActive(int id)
+        public async Task<JsonResult> IsActive(int id)
         {
-            var menu = _menuService.GetById(id);
+            var menu = await _context.Navigations.FindAsync(id);
             if (menu != null)
             {
                 menu.Active = !menu.Active;
-                _menuService.Update(menu);
+                _context.Entry(menu).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
 
-                var cacheKey = $"AllMenus_{menu.CategoryId}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
 
                 AR.SetSuccess(Messages.AlertActionSuccess);
                 return Json(AR);
@@ -373,8 +473,8 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 AR.Id = id;
                 // AR.Data = await _viewRenderService.RenderAsync("_MenuList", menus);
 
-                var cacheKey = $"AllMenus_{id}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
 
                 AR.SetSuccess(Messages.AlertActionSuccess);
                 return Json(AR);
@@ -388,11 +488,11 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public IActionResult MoveMenu(int id)
+        public async Task<IActionResult> MoveMenu(int id)
         {
-            var menu = _menuService.GetById(id);
+            var menu = await _context.Navigations.FindAsync(id);
             // var menus = _menuService.GetLevelMenusByCategoryId(menu.CategoryId);
-            MoveMenuVM vm = new MoveMenuVM
+            var vm = new MoveNavVM
             {
                 Id = id,
                 //   Menus = menus, //_mapper.Map<List<Menu>, List<MenuVM>>(menus),
@@ -422,8 +522,8 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 AR.Id = menu.CategoryId;
                 // AR.Data = await _viewRenderService.RenderAsync("_MenuList", menus);
 
-                var cacheKey = $"AllMenus_{menu.CategoryId}";
-                _cache.Remove(cacheKey);
+                var cacheKey = "NAVIGATION";
+                _cache.Invalidate(cacheKey);
                 return Json(AR);
 
             }

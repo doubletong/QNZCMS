@@ -13,6 +13,8 @@
     <Compile Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Compile Remove="Areas\Admin\Views\Orders\**" />
     <Compile Remove="Areas\Admin\Views\Works\**" />
+    <Compile Remove="Utilities\PagedList\**" />
+    <Compile Remove="Views\News\**" />
     <Content Remove="Areas\Admin\Views\Articles1\**" />
     <Content Remove="Areas\Admin\Views\Clients\**" />
     <Content Remove="Areas\Admin\Views\Customers\**" />
@@ -20,6 +22,8 @@
     <Content Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Content Remove="Areas\Admin\Views\Orders\**" />
     <Content Remove="Areas\Admin\Views\Works\**" />
+    <Content Remove="Utilities\PagedList\**" />
+    <Content Remove="Views\News\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Articles1\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Clients\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Customers\**" />
@@ -27,6 +31,8 @@
     <EmbeddedResource Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Orders\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Works\**" />
+    <EmbeddedResource Remove="Utilities\PagedList\**" />
+    <EmbeddedResource Remove="Views\News\**" />
     <None Remove="Areas\Admin\Views\Articles1\**" />
     <None Remove="Areas\Admin\Views\Clients\**" />
     <None Remove="Areas\Admin\Views\Customers\**" />
@@ -34,6 +40,8 @@
     <None Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <None Remove="Areas\Admin\Views\Orders\**" />
     <None Remove="Areas\Admin\Views\Works\**" />
+    <None Remove="Utilities\PagedList\**" />
+    <None Remove="Views\News\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,10 +50,9 @@
     <Compile Remove="Areas\Admin\Controllers\ClientsController.cs" />
     <Compile Remove="Areas\Admin\Controllers\CommonController.cs" />
     <Compile Remove="Areas\Admin\Controllers\CustomersController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\GeneralController.cs" />
+    <Compile Remove="Areas\Admin\Controllers\ElfinderController.cs" />
     <Compile Remove="Areas\Admin\Controllers\LogController.cs" />
     <Compile Remove="Areas\Admin\Controllers\OrdersController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\PagesController.cs" />
     <Compile Remove="Areas\Admin\Controllers\PostController.cs" />
     <Compile Remove="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Remove="Areas\Admin\Controllers\ProductsController.cs" />
@@ -57,12 +64,19 @@
     <Compile Remove="Areas\Admin\Controllers\TinymceController.cs" />
     <Compile Remove="Areas\Admin\Controllers\UserController.cs" />
     <Compile Remove="Areas\Admin\Controllers\WorksController.cs" />
+    <Compile Remove="Controllers\FileSystemController.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\ArticleCategories\Create.cshtml" />
+    <Content Remove="Areas\Admin\Views\Articles\0000Edit.cshtml" />
     <Content Remove="Areas\Admin\Views\Menu\_MenuList.cshtml" />
     <Content Remove="Areas\Admin\Views\Navigation\_MenuList.cshtml" />
+    <Content Remove="Areas\Admin\Views\Post\Create.cshtml" />
+    <Content Remove="Areas\Admin\Views\Post\Edit.cshtml" />
+    <Content Remove="Areas\Admin\Views\Post\Index.cshtml" />
+    <Content Remove="Areas\Admin\Views\Stores\Index.cshtml" />
+    <Content Remove="Areas\Admin\Views\User\Index.cshtml" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Views\Account\Register.cshtml" />
   </ItemGroup>
@@ -78,13 +92,15 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="PagedList.Core.Mvc" Version="3.0.0" />
+    <PackageReference Include="X.PagedList" Version="7.9.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Post\" />
     <Folder Include="Areas\Member\Controllers\" />
     <Folder Include="Areas\Member\Data\" />
     <Folder Include="Areas\Member\Models\" />
@@ -99,7 +115,6 @@
     <None Include="Areas\Admin\Views\Articles\Edit.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Delete.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Details.cshtml" />
-    <None Include="Areas\Admin\Views\Articles\0000Edit.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\Config\AdsSettings.config" />
@@ -145,7 +160,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\elFinder.NetCore\elFinder.NetCore.csproj" />
     <ProjectReference Include="..\QNZ.Infrastructure\QNZ.Infrastructure.csproj" />
     <ProjectReference Include="..\QNZ.Model\QNZ.Model.csproj" />
     <ProjectReference Include="..\QNZ.Services\QNZ.Services.csproj" />

@@ -6,16 +6,18 @@
 
 
 
-        <form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
-              data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
-              data-ajax="true" data-ajax-method="POST">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id" type="hidden" />
-            <div class="card">
-                <div class="card-header">
-                    <h3>@pageTitle</h3>
-                </div>
-                <div class="card-body">
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="Id" type="hidden" />
+    <div class="card">
+        <h5 class="card-header">
+           @pageTitle
+        </h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md">
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
@@ -46,18 +48,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer ">
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
-                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+                <div class="col-auto">
+                    <div class="card" style="width:320px;">
+                        <h5 class="card-header">SEO</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="SEOTitle" class="control-label"></label>
+                                <input asp-for="SEOTitle" class="form-control" />
+                                <span asp-validation-for="SEOTitle" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEOKeywords" class="control-label"></label>
+                                <input asp-for="SEOKeywords" class="form-control" />
+                                <span asp-validation-for="SEOKeywords" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEODescription" class="control-label"></label>
+                                <textarea asp-for="SEODescription" class="form-control" ></textarea>
+                                <span asp-validation-for="SEODescription" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>
+            
+        </div>
+        <div class="card-footer ">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+            </div>
+        </div>
+    </div>
+</form>
 
 
 
 @section header{
+
 
 }
 
@@ -67,57 +95,46 @@
     <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
 
-
-    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/plugins/tinymce5/tinymce.min.js"></script>
 
     <script>
+
         tinymce.init({
-            selector: "#Body",
-            height: 300,
+            selector: '#Body',  // change this value according to your HTML
+            height: 400,
             language: 'zh_CN',
-            plugins: [
-                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount codemirror visualblocks visualchars insertdatetime media nonbreaking",
-                "table contextmenu directionality emoticons paste textcolor"
-            ],
-            toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect | link unlink anchor | image media | forecolor backcolor  | print preview code",
-            codemirror: {
-                path: 'codemirror'
-              },
-            image_advtab: true,
-            file_picker_callback: elFinderBrowser
+
+            convert_urls: false,
+            //extended_valid_elements: 'span,i[class]',
+            valid_children : 'a[p|span|div|strong|i]',
+            valid_elements : "*[*]",
+            //picture manager
+            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
+            images_upload_handler: QNZ.ImagesUploadHandler,
+            plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
+
+              toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
+
+        autosave_ask_before_unload: true,
+              autosave_interval: "30s",
+              autosave_prefix: "{path}{query}-{id}-",
+              autosave_restore_when_empty: false,
+            autosave_retention: "2m",
+
+          image_advtab: true,
+                    importcss_append: true,
+             image_caption: true,
+          templates: [
+                { title: '新表格', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            { title: '文章样式', description: 'A cure for writers block', content: 'Once upon a time...' },
+            { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+          ],
+
+
+
         });
-   
-        function elFinderBrowser(callback, value, meta) {
-            tinymce.activeEditor.windowManager.open({
-                file: '/tiny-mce/browse',
-                title: '文件管理',
-                width: 900,
-                height: 450,
-                resizable: 'yes'
-            }, {
-                    oninsert: function (file, fm) {
-                        var url, reg, info;
-                        // URL normalization
-                        url = fm.convAbsUrl(file.url);
-                        // Make file info
-                        info = file.name + ' (' + fm.formatSize(file.size) + ')';
-                        // Provide file and text for the link dialog
-                        if (meta.filetype == 'file') {
-                            callback(url, { text: info, title: info });
-                        }
-                        // Provide image and alt text for the image dialog
-                        if (meta.filetype == 'image') {
-                            callback(url, { alt: info });
-                        }
-                        // Provide alternative source and posted for the media dialog
-                        if (meta.filetype == 'media') {
-                            callback(url);
-                        }
-                    }
-                });
-            return false;
-        }
+
+
 
 
         function onFailed() {
@@ -153,5 +170,7 @@
 
 
         });
+
     </script>
+    <script src="/Plugins/SigFinder/FileManager.js"></script>
 }

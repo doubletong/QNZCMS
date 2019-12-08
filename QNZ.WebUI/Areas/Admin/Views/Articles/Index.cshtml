@@ -3,6 +3,7 @@
 @{
     var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["Title"] = "文章";
+  
 }
 
 <div class="row mb-3">
@@ -25,9 +26,7 @@
             <th>
                 标题
             </th>
-            <th>
-                关键字
-            </th>
+         
             <th>
                 查看
             </th>
@@ -49,14 +48,12 @@
     <tbody>
         @foreach (var item in Model.Articles)
         {
-            <tr>
+            <tr id="@(item.Id)tr">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Keywords)
-                </td>
+           
                 <td>
                     @Html.DisplayFor(modelItem => item.ViewCount)
                 </td>
@@ -82,10 +79,13 @@
 
 
 <div class="flex">
-    <pager class="pager-container" list="@Model.Articles" 
-           options="@PagedListRenderOptions.Bootstrap4Full"
-           asp-action="Index" asp-controller="Articles" asp-route-solutionid="@Model.Keyword" />
 
+    @Html.PagedListPager(Model.Articles, page => Url.Action("Index", new { page = page,keyword = Model.Keyword }),
+           new PagedListRenderOptions
+                {
+               LiElementClasses = new string[] { "page-item" },
+               PageClasses = new string[] { "page-link" }
+       })
     <div class="text-right">
 
         <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>

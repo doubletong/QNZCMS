@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QNZ.Data;
+using QNZ.Data.Enums;
 using QNZ.Model.Admin.ViewModel;
 
 namespace SIG.SIGCMS.Areas.Admin.Controllers
@@ -18,6 +21,35 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     .Select(d => d.ErrorMessage)
                     .ToArray());
             return validationErrors;
+        }
+
+        protected async Task CreatedUpdatedPageMetaAsync(YicaiyunContext db, PageMeta pm)
+        {
+            var origin = await db.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == pm.ModuleType && d.ObjectId == pm.ObjectId);
+            if (origin != null)
+            {
+                if(string.IsNullOrEmpty(pm.Title) && string.IsNullOrEmpty(pm.Keywords) && string.IsNullOrEmpty(pm.Description))
+                {
+                    db.Remove(origin);
+                }
+                else
+                {
+                    origin.Title = pm.Title;
+                    origin.Keywords = pm.Keywords;
+                    origin.Description = pm.Description;
+
+                    db.Entry(origin).State = EntityState.Modified;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(pm.Title) || !string.IsNullOrEmpty(pm.Keywords) || !string.IsNullOrEmpty(pm.Description))
+                {
+                    db.Add(pm);
+                }              
+            }
+
+            await db.SaveChangesAsync();
         }
     }
 }

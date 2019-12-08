@@ -353,6 +353,43 @@ var QNZ = {
         var y = screen.height / 2 - h / 2;
 
         window.open(this.baseUrl, "_blank", 'height=' + h + ',width=' + w + ',left=' + x + ',top=' + y);
+    },
+
+    FilePickerCallback2: function (callback, value, meta) {
+        // Provide file and text for the link dialog
+        // if (meta.filetype == 'file') {
+        //   callback('mypage.html', {text: 'My text'});
+        // }
+
+        // // Provide image and alt text for the image dialog
+        //if (meta.filetype == 'image') {
+
+        //   callback('myimage.jpg', {alt: 'My alt text'});
+        // }
+
+        // // Provide alternative source and posted for the media dialog
+        // if (meta.filetype == 'media') {
+        //   callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
+        // }
+        var finderUrl = '/Admin/QNZFinder/FinderForTinyMce';
+        tinyMCE.activeEditor.windowManager.openUrl({
+            url: finderUrl,
+            title: 'QNZFinder 1.0 文件管理',
+            width: 960,
+            height: 700
+            // onMessage: function (api, data) {
+            //     if (data.mceAction === 'FileSelected') {
+            //        callback(data.url);
+            //        api.close();
+            //    }
+            //}
+        });
+
+        window.addEventListener('message', function (event) {
+            var data = event.data;
+            callback(data.content);
+        });
+
     }
 
 };

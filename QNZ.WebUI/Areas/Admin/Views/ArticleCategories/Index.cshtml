@@ -6,73 +6,115 @@
     var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
+    <div class="card">
+        <div class="card-header text-right">
+            <a asp-action="Edit" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+        </div>
 
-<div class="mb-3 text-right">
-    <a asp-action="Edit" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
-</div>
-<table class="table table-striped table-vmiddle">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Alias)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Importance)
-            </th>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-vmiddle">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="allSelect" />
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ImageUrl)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Alias)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Importance)
+                        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        <th>
+                            @Html.DisplayNameFor(model => model.Active)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbList">
+                    @foreach (var item in Model)
                     {
-                        <img src="@item.ImageUrl" style="height:50px;" />
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Alias)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Importance)
-                </td>
+                        <tr id="@(item.Id)tr">
+                            <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" style="height:50px;" />
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Alias)
+                            </td>
+                            <td>
+                                @item.CreatedDate.ToShortDateString()
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Importance)
+                            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Active)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="iconfont icon-eye"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="iconfont icon-eye"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+
+            <div class="row align-items-center">
+                <div class="col">
+                    <button type="button" class="btn btn-danger btn-sm" id="btn-delete-multi"><i class="iconfont icon-delete"></i> 删除</button>
+                    <button type="button" class="btn btn-info btn-sm" id="btn-lock"><i class="iconfont icon-lock"></i> 锁定</button>
+                    <button type="button" class="btn btn-info btn-sm" id="btn-unlock"><i class="iconfont icon-unlock"></i> 激活</button>
+                </div>
+              
+                <div class="col-auto">
+                    总记录<strong>@Model.Count()</strong>条
+                </div>
+             
+            </div>
+        </div>
+    </div>
+
 
 @section footer{
     <script>
+
+        document.getElementById('allSelect').onclick = function() {
+             selectAllPages(this.checked);
+        };
+
+        function selectAllPages(isChecked) {
+            // get reference to element containing toppings checkboxes
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByTagName('input');
+
+            for (var i=0, len=tops.length; i<len; i++) {
+                if ( tops[i].type === 'checkbox' ) {
+                    //tops[i].onclick = updateTotal;
+                    tops[i].checked = isChecked;
+                }
+            }
+        }
+
         var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
 
         $(".btn-delete").click(function (e) {
@@ -115,8 +157,6 @@
                         //swal("Your imaginary file is safe!");
                     }
                 });
-
-
         });
     </script>
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using QNZ.Data;
+using QNZ.Model;
 using QNZ.Model.Admin.InputModel.Identity;
-using QNZ.Model.Admin.InputModel.Menus;
 using QNZ.Model.Admin.ViewModel.Identity;
 using QNZ.Model.ViewModel;
 using System;
@@ -16,11 +16,21 @@ namespace QNZCMS
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
+            CreateMap<Navigation, NavIM>();
+            CreateMap<NavIM, Navigation>();
+
             CreateMap<Menu, MenuIM>();
             CreateMap<MenuIM, Menu>();
+
             CreateMap<MenuCategory, MenuCategoryIM>();
             CreateMap<MenuCategoryIM, MenuCategory>();
 
+            CreateMap<NavigationCategory, MenuCategoryVM>();
+            CreateMap<MenuCategoryVM, NavigationCategory>();
+
+            CreateMap<NavigationCategory, NavigationCategoryIM>();
+            CreateMap<NavigationCategoryIM, NavigationCategory>();
+            
             CreateMap<MenuCategory, MenuCategoryVM>();
             CreateMap<MenuCategoryVM, MenuCategory>();
 
@@ -31,14 +41,15 @@ namespace QNZCMS
             CreateMap<Role, RoleIM>();
             CreateMap<RoleIM, Role>();
 
-
+          
+            CreateMap<Page, PageVM>();
             //// CreateMap<StoreVM, Store>();            
             //CreateMap<Store, StoreVM>()
             //    .ForMember(d => d.Coordinate, opt => opt.MapFrom(source => $"{source.Longitude},{source.Latitude}"));
 
             //CreateMap<StoreIM, Store>();
             //CreateMap<Store, StoreIM>();
-          
+
             CreateMap<ArticleCategory, ArticleCategoryVM>();
             CreateMap<ArticleCategory, ArticleCategoryBVM>();
             CreateMap<ArticleCategory, ArticleCategoryIM>();
