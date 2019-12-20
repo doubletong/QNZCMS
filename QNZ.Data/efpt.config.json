@@ -14,6 +14,14 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[Advertisements]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[AdvertisingSpaces]"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[AgentSet]"
       },
       {

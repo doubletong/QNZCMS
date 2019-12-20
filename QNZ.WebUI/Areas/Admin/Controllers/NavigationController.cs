@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Model;
 using SIG.Infrastructure.Cache;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]

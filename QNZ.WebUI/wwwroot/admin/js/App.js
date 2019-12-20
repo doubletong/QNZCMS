@@ -1,6 +1,6 @@
 ﻿$(function() {
 
-    var resetwidth = function() {
+    var resetwidth = function () {
 
         var winwidth = $(window).width();
         // alert(winwidth)
@@ -11,7 +11,7 @@
         } else {
             $('#rightcol').css({ 'width': (winwidth - 170) + "px" })
         }
-    }
+    };
 
     resetwidth();
 
@@ -19,7 +19,8 @@
         resetwidth();
     });
 
-    var pid = $('.mainmenu a.active').closest('li').attr("data-parent");
+    $('.mainmenu li.active').closest('li.down-nav').addClass('nav-open');
+    var pid = $('.mainmenu li.active').attr("data-parent");
     $('.mainmenu li[data-parent=' + pid + ']').fadeIn();
 
     //查子项数量

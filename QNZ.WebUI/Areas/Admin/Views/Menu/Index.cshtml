@@ -3,24 +3,25 @@
 @model MenuCategory
 @{
     ViewBag.Title = EntityNames.Menu;
-    ViewBag.PageTitle = ViewBag.Title + "_组件";
 }
 
 
     <div class="row">
      
         <div class="col-sm-12 col-md-12 col-lg-6">
-            <div class="panel panel-default">
-                <header class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-navicon"></i> @Model.Title
-                    </h3>
-                    <button type="button" class="btn btn-info btn-sm btn-refresh" data-id="@Model.Id" data-url="@Url.Action("ResetSort",new { id=Model.Id})"><i class="fa fa-sort-numeric-asc"></i></button>
+            <div class="card">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5>@Model.Title</h5>
+                          
+                        </div>
+                        <h3 class="col-auto">
+                            <button type="button" class="btn btn-info btn-sm btn-refresh" data-id="@Model.Id" data-url="@Url.Action("ResetSort",new { id=Model.Id})"><i class="iconfont icon-sort-ascending"></i></button>
+                        </h3>
+                    </div>
                 </header>
-                <section class="panel-body" id="@string.Format("menu{0}", Model.Id)">
-                    @*<a asp-controller="Menu" asp-action="CreateMenu" data-route-parentId="1" data-route-categoryId="1" data-ajax="true" data-ajax-method="GET"
-                       data-ajax-mode="replace" data-ajax-update="edit-container" data-ajax-begin="onBegin" data-ajax-complete="onComplete"
-                       data-ajax-failure="onFailed" data-ajax-success="onSuccess"><i class='fa fa-plus'></i></a>*@
+                <section class="card-body" id="@string.Format("menu{0}", Model.Id)">               
 
                     @await Component.InvokeAsync("MenuList", new {categoryId = Model.Id})
                 </section>
@@ -51,14 +52,9 @@
         .panel-title {
             font-size: 1rem;padding: 1rem 1rem;margin: 0;
         }
-        .btn-refresh {
-            position: absolute;right: 1rem;top: .6rem;z-index: 100;
-        }
-       
-        .panel-body {
-            padding-top: 1rem;
-        }
-        .panel-body li a {
+
+ 
+        .card-body li a {
             margin-left: .3rem;
         }
         

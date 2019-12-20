@@ -26,27 +26,27 @@
         <table class="table table-hover table-striped table-vmiddle">
             <thead class="thead-primary">
                 <tr>
-                    <th>
+                    <th style="width:30px;">
                         <input type="checkbox" id="allSelect" />
                     </th>
                     <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>                   
+                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
                     </th>
 
                     <th>
                         别名
                     </th>
                     <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ImportanceSortParm"]">排序</a>                        
+                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ImportanceSortParm"]">排序</a>
                     </th>
                     <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ViewSortParm"]">查看次数</a>                        
+                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ViewSortParm"]">查看次数</a>
                     </th>
                     <th>
                         激活
                     </th>
                     <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">创建日期</a>                        
+                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">创建日期</a>
                     </th>
                     <th></th>
                 </tr>
@@ -76,9 +76,8 @@
                             @item.CreatedDate.ToShortDateString()
                         </td>
                         <td>
-
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="iconfont icon-info-circle"></i></a>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="iconfont icon-info-circle"></i></a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
                         </td>
                     </tr>
@@ -148,14 +147,12 @@
 
         //锁定
         $("#btn-lock").click(function (e) {
-            e.preventDefault();      
-
+            e.preventDefault(); 
             isLockPages(true);
         });
           //激活
         $("#btn-unlock").click(function (e) {
-            e.preventDefault();      
-
+            e.preventDefault(); 
             isLockPages(false);
         });
 
@@ -171,7 +168,7 @@
             }
             console.log(ids);
             if (ids.length === 0) {
-                swal("激活/锁定页面", "请选择要激活/锁定的页面!", "error");             
+                swal("激活/锁定", "请选择要激活/锁定的项目!", "error");             
             } else {
                 //to doing
 

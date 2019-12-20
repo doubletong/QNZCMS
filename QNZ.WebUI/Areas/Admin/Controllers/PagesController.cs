@@ -21,7 +21,7 @@ using SIG.Infrastructure.Helper;
 using SIG.Resources.Admin;
 using X.PagedList;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
@@ -63,14 +63,14 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
             query = sort switch
             {
-                "view" => query.OrderBy(s => s.Title),
-                "view_desc" => query.OrderByDescending(s => s.Title),
+                "view" => query.OrderBy(s => s.ViewCount),
+                "view_desc" => query.OrderByDescending(s => s.ViewCount),
                 "title" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
                 "date" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
-                "importance" => query.OrderBy(s => s.CreatedDate),
-                "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
+                "importance" => query.OrderBy(s => s.Importance),
+                "importance_desc" => query.OrderByDescending(s => s.Importance),
                 _ => query.OrderByDescending(s => s.Importance),
             };
 

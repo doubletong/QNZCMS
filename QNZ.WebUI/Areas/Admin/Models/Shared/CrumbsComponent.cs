@@ -10,7 +10,7 @@ using QNZ.Data;
 using QNZ.Data.Enums;
 using SIG.Infrastructure.Configs;
 
-namespace SIG.SIGCMS.Areas.Admin.Models.Shared
+namespace QNZCMS.Areas.Admin.Models.Shared
 {
     [ViewComponent(Name = "Crumbs")]
     public class CrumbsComponent : ViewComponent

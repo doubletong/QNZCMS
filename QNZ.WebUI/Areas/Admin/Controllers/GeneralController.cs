@@ -11,7 +11,7 @@ using QNZ.Model.Admin.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Model.ViewModel;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]

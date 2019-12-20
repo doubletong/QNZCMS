@@ -18,10 +18,6 @@ namespace QNZ.Data
         public string Body { get; set; }
         [StringLength(50)]
         public string Author { get; set; }
-        [StringLength(500)]
-        public string Description { get; set; }
-        [StringLength(250)]
-        public string Keywords { get; set; }
         [StringLength(150)]
         public string Thumbnail { get; set; }
         [Column(TypeName = "datetime")]

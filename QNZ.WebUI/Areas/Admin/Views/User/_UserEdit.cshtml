@@ -1,6 +1,5 @@
 ﻿
 @using QNZ.Data.Enums
-@using QNZ.Model.Admin.InputModel.Identity
 @model ProfileIM
 
     <form asp-controller="User" asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
@@ -98,8 +97,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save fa-fw"></i>保存</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" type="submit" id="btnSave"><i class="iconfont icon-save"></i>保存</button>
                 </div>
             </div>
         </div>

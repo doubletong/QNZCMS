@@ -1,0 +1,336 @@
+﻿@model AdvertisementListVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = EntityNames.Carousel;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md">
+                <form asp-action="Index" method="get" class="form-inline">
+                    <div class="form-group mr-2">
+                        <input asp-for="Keyword" class="form-control" placeholder="关键字" />
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="SpaceId" class="form-control" asp-items="@((SelectList)ViewData["Spaces"])"></select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-sm-3"><i class="iconfont icon-search"></i> 搜索</button>
+                </form>
+            </div>
+            <div class="col-md-auto">
+                <a class="btn btn-primary" asp-action="Edit"><i class="iconfont icon-plus"></i> 添加</a>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover table-striped table-vmiddle">
+        <thead class="thead-primary">
+            <tr>
+                <th style="width:30px;">
+                    <input type="checkbox" id="allSelect" />
+                </th>
+                <th>
+                    图片
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
+                </th>
+
+                <th>
+                    广告位
+                </th>
+                <th>
+                    链接
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ImportanceSortParm"]">排序</a>
+                </th>
+
+                <th>
+                    激活
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">发布日期</a>
+
+                </th>
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbList">
+            @foreach (var item in Model.Advertisments)
+            {
+            <tr id="@(item.Id)tr">
+                <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
+                <td>
+                    <img src="@item.ImageUrl" alt="@item.Title" style="height:50px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpaceTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WebLink)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Importance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="iconfont icon-info-circle"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="card-footer">
+        <div class="row align-items-center">
+            <div class="col">
+                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-multi"><i class="iconfont icon-delete"></i> 删除</button>
+                <button type="button" class="btn btn-info btn-sm" id="btn-lock"><i class="iconfont icon-lock"></i> 锁定</button>
+                <button type="button" class="btn btn-info btn-sm" id="btn-unlock"><i class="iconfont icon-unlock"></i> 激活</button>
+
+            </div>
+            <div class="col-auto">
+                @Html.PagedListPager(Model.Advertisments, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, spaceId = Model.SpaceId }),
+                 new PagedListRenderOptions
+                      {
+                     LiElementClasses = new string[] { "page-item" },
+                     PageClasses = new string[] { "page-link" }
+             })
+            </div>
+
+            <div class="col-auto">
+                <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
+            </div>
+            <div class="col-auto">
+                <select asp-for="@Model.PageSize" asp-items="(SelectList)ViewBag.PageSizes" class="form-control" style="min-width:60px;">
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+    <script>
+            document.getElementById('allSelect').onclick = function() {
+                selectAllPages(this.checked);
+        };
+
+        function selectAllPages(isChecked) {
+            // get reference to element containing toppings checkboxes
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByTagName('input');
+
+            for (var i=0, len=tops.length; i<len; i++) {
+                if ( tops[i].type === 'checkbox' ) {
+                    //tops[i].onclick = updateTotal;
+                    tops[i].checked = isChecked;
+                }
+            }
+        }
+
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+        //锁定
+        $("#btn-lock").click(function (e) {
+            e.preventDefault();
+            isLockPages(true);
+        });
+          //激活
+        $("#btn-unlock").click(function (e) {
+            e.preventDefault();
+            isLockPages(false);
+        });
+
+        function isLockPages(isLock) {
+             var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("激活/锁定页面", "请选择要激活/锁定的页面!", "error");
+            } else {
+                //to doing
+
+                var url = "@Url.Action("IsLock")";
+
+
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data:{ ids: ids, isLock:isLock },
+                    headers: { 'RequestVerificationToken': antiforgeryToken },
+                    success: function (data) {
+
+                        if (data.status === 1) {
+                            toastr.success(data.message);
+                            location.reload();
+                            //for (var i = 0, len = ids.length; i < len; i++) {
+                            //    $("#" + ids[i] + "tr").remove();
+                            //  }
+
+                        }
+                        if (data.status === 2) {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(error);
+                    }
+                });
+
+
+            }
+        }
+
+
+        $("#btn-delete-multi").click(function (e) {
+            e.preventDefault();
+
+
+            var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("删除页面", "请选择要删除的页面!", "error");
+            } else {
+                //to doing
+
+                var url = "@Url.Action("DeleteMulti")";
+
+                swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            data:{ ids: ids },
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    //location.reload();
+                                  for (var i = 0, len = ids.length; i < len; i++) {
+                                      $("#" + ids[i] + "tr").remove();
+                                    }
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+            }
+        });
+
+
+          //single delete
+        $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+
+
+            swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+        });
+
+         $(function () {
+
+          $(document).on("change", '#PageSize', function (e) {
+                e.preventDefault();
+
+                var url = "@Url.Action("PageSizeSet")", title = "分页设置", pageSize = $(this).val();
+                Common.PageSizeSet(url, title, pageSize, setPageSizeFunc);
+
+          });
+
+            function setPageSizeFunc() {
+                location.reload();
+            }
+        })
+    </script>
+}

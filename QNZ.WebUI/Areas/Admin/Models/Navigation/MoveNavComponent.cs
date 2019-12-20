@@ -5,7 +5,7 @@ using QNZ.Services.Menus;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SIG.SIGCMS.Areas.Admin.Models.Navigation
+namespace QNZCMS.Areas.Admin.Models.Navigation
 {
     [ViewComponent(Name = "MoveNav")]
     public class MoveNavComponent : ViewComponent

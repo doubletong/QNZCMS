@@ -6,37 +6,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data;
+using SIG.Infrastructure.Cache;
+using SIG.Infrastructure.Configs;
 
-namespace SIG.SIGCMS.Areas.Admin.Models.Menu
+namespace QNZCMS.Areas.Admin.Models.Menu
 {
     [ViewComponent(Name = "MenuList")]
     public class MenusComponent : ViewComponent
     {
-        private IMemoryCache _cache;
+        private ICacheService _cache;
         private readonly YicaiyunContext _context;
-        public MenusComponent(YicaiyunContext context, IMemoryCache memoryCache)
+        public MenusComponent(YicaiyunContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;
         }
         public async Task<IViewComponentResult> InvokeAsync(int categoryId)
         {
-            var cacheKey = $"AllMenus_{categoryId}";
-            // Look for cache key.
-            if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
+            var cacheKey = $"MENUS_CATEGORY_{categoryId}";
+
+            if (_cache.IsSet(cacheKey))
             {
-                // Key not in cache, so get data.
-                menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
-                // Save data in cache.
-                _cache.Set(cacheKey, menus, cacheEntryOptions);
+                var menus = (List<QNZ.Data.Menu>)_cache.Get(cacheKey);
+                var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
+                return View("MenuList", MenuTree);
             }
+            else
+            {
+               var menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
+                _cache.Set(cacheKey, menus, SettingsManager.Site.CacheDuration);
+                var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
+                return View("MenuList", MenuTree);
 
-            var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId ==null),menus);
-
-            return View("MenuList", MenuTree);
-           // return View("Menus", _menuServices.CurrenMenuCrumbs(SettingsManager.Menu.BackMenuCId, viewContext));
+            }
+           
         }
 
         private string CreatedMenuList(IEnumerable<QNZ.Data.Menu> levelMenus, IEnumerable<QNZ.Data.Menu> menus,string menuTree = "", bool isExpand = true)

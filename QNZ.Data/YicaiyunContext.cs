@@ -16,6 +16,8 @@ namespace QNZ.Data
         {
         }
 
+        public virtual DbSet<Advertisement> Advertisements { get; set; }
+        public virtual DbSet<AdvertisingSpace> AdvertisingSpaces { get; set; }
         public virtual DbSet<AgentSet> AgentSets { get; set; }
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleCategory> ArticleCategories { get; set; }
@@ -68,6 +70,15 @@ namespace QNZ.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Advertisement>(entity =>
+            {
+                entity.HasOne(d => d.Space)
+                    .WithMany(p => p.Advertisements)
+                    .HasForeignKey(d => d.SpaceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Advertisements_AdvertisingSpaces");
+            });
+
             modelBuilder.Entity<AgentSet>(entity =>
             {
                 entity.Property(e => e.City).HasComment("市");
@@ -397,12 +408,6 @@ namespace QNZ.Data
                 entity.Property(e => e.Description).HasComment("吃法说明");
 
                 entity.Property(e => e.Title).HasComment("营养食谱名称");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Recipes)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recipes_User");
             });
 
             modelBuilder.Entity<RecipesItem>(entity =>

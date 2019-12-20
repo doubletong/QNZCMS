@@ -419,17 +419,18 @@
                         //  data: JSON.stringify({filePath: filePath }),
                         dataType: 'json',
                         success: function (result) {
-                            if (result === "OK") {                                
+                            if (result.status === "1") {
                                 //    toastr.success("创建新目录", "创建目录")
                                 var li = taskItemInContext.closest("li");
-                              
+
                                 var urlDir = "/admin/qnzfinder/GetSubDirectories?dir=" + filePath;
                                 SIG.getInstance().getSubDirectories(urlDir, $(li));
-                            } else if (result === "NO") {
-                                toastr.warning("此目录已存在！", "创建目录")
+                                //} else if (result === "NO") {
+                                //    toastr.warning("此目录已存在！", "创建目录")
+                                //}
                             }
                             else {
-                                toastr.error(result, "创建目录")
+                                toastr.error(result.message, "创建目录");
                             }
 
                         }

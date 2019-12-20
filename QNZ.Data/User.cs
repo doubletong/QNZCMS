@@ -11,7 +11,6 @@ namespace QNZ.Data
     {
         public User()
         {
-            Recipes = new HashSet<Recipe>();
             UserRoles = new HashSet<UserRole>();
         }
 
@@ -42,8 +41,6 @@ namespace QNZ.Data
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Balance { get; set; }
 
-        [InverseProperty(nameof(Recipe.User))]
-        public virtual ICollection<Recipe> Recipes { get; set; }
         [InverseProperty(nameof(UserRole.User))]
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }

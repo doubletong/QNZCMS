@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Html
+@using QNZ.Data
+
+@model Role
+
+
+
+<form  asp-action="SetRoleMenus" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+@Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <!-- 添加菜单 Modal -->
+    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">角色（@Model.RoleName）权限设置</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   
+                </div>
+                <div class="modal-body" style="height:450px;overflow-y:auto;padding-left:35px;">
+                    @*@ShowTree(Model.Menus.Where(m=>m.ParentId == null))*@
+                    @await Component.InvokeAsync("RoleMenus", new { id = Model.Id })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" type="submit" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

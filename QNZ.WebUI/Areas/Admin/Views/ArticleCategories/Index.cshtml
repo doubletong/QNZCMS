@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ArticleCategoryBVM>
+﻿@model ArticleCategoryList
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @{
     ViewData["Title"] = "文章分类";
@@ -7,72 +7,85 @@
 }
 
     <div class="card">
-        <div class="card-header text-right">
-            <a asp-action="Edit" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-auto mr-auto">
+                    <form asp-action="Index" method="get" class="form-inline">
+                        <label class="sr-only" for="Keyword">关键字</label>
+                        @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "关键字" } })
+                        <button type="submit" class="btn btn-primary"><span class="iconfont icon-search"></span> 搜索</button>
+                    </form>
+                </div>
+                <div class="col-auto">
+                    <a asp-action="Edit" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建分类</a>
+                </div>
+            </div>
+           
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover table-striped table-vmiddle">
-                <thead>
+                <thead class="thead-primary">
                     <tr>
-                        <th>
+                        <th style="width:30px;">
                             <input type="checkbox" id="allSelect" />
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ImageUrl)
+                            图片
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Title)
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Alias)
+                            别名
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.CreatedDate)
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ImportanceSortParm"]">排序</a>
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Importance)
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">创建日期</a>
                         </th>
 
+
                         <th>
-                            @Html.DisplayNameFor(model => model.Active)
+                            激活？
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody id="tbList">
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Categories)
                     {
-                        <tr id="@(item.Id)tr">
-                            <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                {
-                                    <img src="@item.ImageUrl" style="height:50px;" />
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Alias)
-                            </td>
-                            <td>
-                                @item.CreatedDate.ToShortDateString()
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Importance)
-                            </td>
+                    <tr id="@(item.Id)tr">
+                        <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" style="height:50px;" />
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Alias)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Active)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="iconfont icon-eye"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
-                            </td>
-                        </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Importance)
+                        </td>
+                        <td>
+                            @item.CreatedDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Active)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="iconfont icon-eye"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -87,7 +100,7 @@
                 </div>
               
                 <div class="col-auto">
-                    总记录<strong>@Model.Count()</strong>条
+                    总记录<strong>@Model.Categories.Count()</strong>条
                 </div>
              
             </div>
@@ -117,6 +130,133 @@
 
         var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
 
+         //锁定
+        $("#btn-lock").click(function (e) {
+            e.preventDefault(); 
+            isLockPages(true);
+        });
+          //激活
+        $("#btn-unlock").click(function (e) {
+            e.preventDefault(); 
+            isLockPages(false);
+        });
+
+        function isLockPages(isLock) {
+             var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("激活/锁定", "请选择要激活/锁定的项目!", "error");             
+            } else {
+                //to doing
+
+                var url = "@Url.Action("IsLock")";
+
+            
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data:{ ids: ids, isLock:isLock },
+                    headers: { 'RequestVerificationToken': antiforgeryToken },
+                    success: function (data) {
+
+                        if (data.status === 1) {
+                            toastr.success(data.message);
+                            location.reload();
+                            //for (var i = 0, len = ids.length; i < len; i++) {                                      
+                            //    $("#" + ids[i] + "tr").remove();
+                            //  }
+
+                        }
+                        if (data.status === 2) {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(error);
+                    }
+                });               
+
+
+            }
+        }
+
+
+        $("#btn-delete-multi").click(function (e) {
+            e.preventDefault();
+       
+
+            var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("删除页面", "请选择要删除的页面!", "error");             
+            } else {
+                //to doing
+
+                var url = "@Url.Action("DeleteMulti")";
+
+                swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            data:{ ids: ids },
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    //location.reload();
+                                  for (var i = 0, len = ids.length; i < len; i++) {                                      
+                                      $("#" + ids[i] + "tr").remove();
+                                    }
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+            }
+        });
+
+
+
+        // delete single item
         $(".btn-delete").click(function (e) {
             e.preventDefault();
             var url = $(this).attr("href");

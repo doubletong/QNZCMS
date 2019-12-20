@@ -1,5 +1,4 @@
 ﻿@using SIG.Infrastructure.Configs
-@using QNZ.Model.Admin.ViewModel.Menus
 @using QNZ.Data.Enums
 @model LeftNavVM
 
@@ -44,10 +43,10 @@
                                             if (sub.Active)
                                             {
 
-                                                string subLinkActive = sub.Id == Model.CurrentMenu.Id ? "active" : "";
-                                                <li class="@string.Format("level{0}", sub.LayoutLevel) " data-parent="@(sub.ParentId ?? 0)">
-                                                    <a href="@sub.Url" class="@subLinkActive" data-id="@sub.Id">
-                                                        <i class="@sub.Iconfont fa-fw"></i>@sub.Title
+                                                string subLinkActive = (sub.Id == Model.CurrentMenu.Id || sub.Id == Model.CurrentMenu.ParentId) ? "active" : "";
+                                                <li class="@string.Format("level{0}", sub.LayoutLevel) @subLinkActive" data-parent="@(sub.ParentId ?? 0)">
+                                                    <a href="@sub.Url" data-id="@sub.Id">
+                                                        <i class="@sub.Iconfont"></i>@sub.Title 
                                                     </a>
                                                 </li>
                                             }

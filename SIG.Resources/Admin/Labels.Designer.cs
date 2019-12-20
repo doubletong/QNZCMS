@@ -79,6 +79,15 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 广告位 的本地化字符串。
+        /// </summary>
+        public static string AdvertisingSpace {
+            get {
+                return ResourceManager.GetString("AdvertisingSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 年龄 的本地化字符串。
         /// </summary>
         public static string Age {

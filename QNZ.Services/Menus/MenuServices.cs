@@ -153,9 +153,7 @@ namespace QNZ.Services.Menus
         {
             return _db.Menus.Include(d => d.InverseParent).Where(d => d.CategoryId == categoryId).OrderBy(d => d.Importance).ToList();
                 
-                //_unitOfWork.GetRepository<Menu>().GetMany(predicate: m => m.CategoryId == categoryId,
-               // orderBy:d=>d.OrderBy(m=>m.Importance), 
-               // include:d=>d.Include(m=>m.InverseParent));
+           
         }
 
         public async Task<IEnumerable<Menu>> GetRolesMenusByUserId(Guid userId)

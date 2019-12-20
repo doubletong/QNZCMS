@@ -17,8 +17,9 @@ using QNZ.Data;
 using SIG.Resources.Admin;
 using SIG.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
+using QNZ.Data.Enums;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
@@ -37,9 +38,35 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         }
 
         // GET: Admin/ArticleCategories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort,string keyword)
         {
-            return View(await _context.ArticleCategories.ProjectTo<ArticleCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync());
+            var vm = new ArticleCategoryList
+            {
+                Keyword = keyword
+            };
+
+            var query = _context.ArticleCategories.AsNoTracking().AsQueryable();
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
+         
+            ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
+            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+
+            query = sort switch
+            {              
+                "title" => query.OrderBy(s => s.Title),
+                "title_desc" => query.OrderByDescending(s => s.Title),
+                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_desc" => query.OrderByDescending(s => s.CreatedDate),
+                "importance" => query.OrderBy(s => s.CreatedDate),
+                "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
+                _ => query.OrderByDescending(s => s.Importance),
+            };
+
+            vm.Categories = await query.ProjectTo<ArticleCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+
+            return View(vm);
         }
 
         // GET: Admin/ArticleCategories/Details/5
@@ -73,17 +100,24 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             {
                 return View(vm);
             }
-            else
+         
+            var category = await _context.ArticleCategories.FindAsync(id);
+            if (category == null)
             {
-                var productCategory = await _context.ArticleCategories.FindAsync(id);
-                if (productCategory == null)
-                {
-                    return NotFound();
-                }
-                var model = _mapper.Map<ArticleCategoryIM>(productCategory);
-                return View(model);
+                return NotFound();
+            }
+            var model = _mapper.Map<ArticleCategoryIM>(category);
+
+            var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLECATEGORY && d.ObjectId == category.Alias);
+
+            if (pm != null)
+            {
+                model.SEOTitle = pm.Title;
+                model.SEOKeywords = pm.Keywords;
+                model.SEODescription = pm.Description;
             }
 
+            return View(model);
           
         }
 
@@ -92,13 +126,14 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("Id,Title,ImageUrl,Alias,Importance,Active")] ArticleCategoryIM im, int id = 0)
+        public async Task<IActionResult> Edit( [Bind("Id,Title,ImageUrl,Alias,Description,Importance,Active,SEOTitle,SEOKeywords,SEODescription")] ArticleCategoryIM im, int id = 0)
         {
             if (!ModelState.IsValid)
             {
                 AR.Setfailure(GetModelErrorMessage());
                 return Json(AR);
             }
+
             if (id == 0)
             {
              
@@ -113,8 +148,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.ArticleCategory));
                 return Json(AR);
             }
-            else
-            {
+          
                 if (id != im.Id)
                 {
                     AR.Setfailure("未发现此分类");
@@ -131,6 +165,20 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     model.UpdatedDate = DateTime.Now;
                     _context.Update(model);
                     await _context.SaveChangesAsync();
+
+                    var pm = new PageMeta
+                    {
+                        Title = im.SEOTitle,
+                        Description = im.SEODescription,
+                        Keywords = im.SEOKeywords,
+                        ModuleType = (short)ModuleType.ARTICLECATEGORY,
+                        ObjectId = im.Alias
+                    };
+
+                    await CreatedUpdatedPageMetaAsync(_context, pm);
+
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.ArticleCategory));
+                    return Json(AR);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -145,15 +193,63 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                         return Json(AR);
                     }
                 }
-                //  return RedirectToAction(nameof(Index));
-
-                AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.ArticleCategory));
-                return Json(AR);
-            }
+               
+              
+            
            
         }
 
-      
+
+        // POST: Admin/Articles/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(int[] ids)
+        {
+            var exitAricles = await _context.Articles.AnyAsync(d => ids.Contains(d.CategoryId));
+            if (exitAricles)
+            {
+                AR.Setfailure(Messages.HasChildCanNotDelete);
+                return Json(AR);
+            }
+
+            var c = await _context.ArticleCategories.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.ArticleCategories.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(int[] ids, bool isLock)
+        {
+
+            var c = await _context.ArticleCategories.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+
 
         // POST: Admin/Articles/Delete/5
         [HttpDelete, ActionName("Delete")]

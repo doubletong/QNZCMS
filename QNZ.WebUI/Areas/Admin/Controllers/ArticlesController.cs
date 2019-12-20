@@ -14,8 +14,12 @@ using SIG.Resources.Admin;
 using QNZ.Data;
 using X.PagedList;
 using SIG.Infrastructure.Configs;
+using SIG.Infrastructure.Helper;
+using QNZ.Data.Enums;
+using System.Xml.Linq;
+using Microsoft.Extensions.PlatformAbstractions;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
@@ -30,31 +34,55 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             _mapper = mapper;
         }
         // GET: Admin/Articles
-        public async Task<IActionResult> Index(string keyword, int? page)
+        public async Task<IActionResult> Index(string keyword, string sort, int? categoryId, int? page)
         {
             var vm = new ArticleListVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
                 Keyword = keyword,
-                
-                
+                CategoryId = categoryId,
+                PageSize = SettingsManager.Article.PageSize
             };
-            var pageSize = SettingsManager.Article.PageSize;
 
-            var query = _context.Articles.AsNoTracking().AsQueryable();
+            //var pageSize = SettingsManager.Article.PageSize;
+            var query = _context.Articles.Include(d=>d.Category).AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrEmpty(keyword))
                 query = query.Where(d => d.Title.Contains(keyword));
 
+            if (categoryId>0)
+                query = query.Where(d => d.CategoryId == categoryId);
+
+
+            ViewData["ViewSortParm"] = sort == "view" ? "view_desc" : "view";
+            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+
+            query = sort switch
+            {
+                "view" => query.OrderBy(s => s.ViewCount),
+                "view_desc" => query.OrderByDescending(s => s.ViewCount),
+                "title" => query.OrderBy(s => s.Title),
+                "title_desc" => query.OrderByDescending(s => s.Title),
+                "date" => query.OrderBy(s => s.Pubdate),
+                "date_desc" => query.OrderByDescending(s => s.Pubdate),
+              
+                _ => query.OrderByDescending(s => s.Pubdate),
+            };
+
 
             vm.TotalCount = await query.CountAsync();
-            var clients = await query.OrderByDescending(d => d.Id)
-                .ProjectTo<ArticleBVM>(_mapper.ConfigurationProvider)
-                .Skip((vm.PageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var clients = await query     
+                .Skip((vm.PageIndex - 1) * vm.PageSize).Take(vm.PageSize).ProjectTo<ArticleBVM>(_mapper.ConfigurationProvider).ToListAsync();
       
 
-            vm.Articles = new StaticPagedList<ArticleBVM>(clients, vm.PageIndex, pageSize, vm.TotalCount);
-      
+            vm.Articles = new StaticPagedList<ArticleBVM>(clients, vm.PageIndex, vm.PageSize, vm.TotalCount);
+
+            var categories = await _context.ArticleCategories.AsNoTracking()
+                 .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
+
+            ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
         }
@@ -67,7 +95,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Articles
+            var article = await _context.Articles.Include(d=>d.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -97,11 +125,22 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 }
 
                 vm = _mapper.Map<ArticleIM>(article);
-               
+
+                var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLE && d.ObjectId == vm.Id.ToString());
+
+                if (pm != null)
+                {
+                    vm.SEOTitle = pm.Title;
+                    vm.SEOKeywords = pm.Keywords;
+                    vm.SEODescription = pm.Description;
+                }
+
             }
             var categories = await _context.ArticleCategories.AsNoTracking()
                .OrderByDescending(d => d.Importance).ToListAsync();
             ViewData["Categories"] = new SelectList(categories, "Id", "Title");
+
+           
 
             return View(vm);
 
@@ -125,6 +164,15 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
             try
             {
+                var pm = new PageMeta
+                {
+                    Title = article.SEOTitle,
+                    Description = article.SEODescription,
+                    Keywords = article.SEOKeywords,
+                    ModuleType = (short)ModuleType.ARTICLE
+                  
+                };
+
 
                 if (article.Id > 0)
                 {
@@ -140,11 +188,13 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     model.UpdatedDate = DateTime.Now;
 
 
-                    _context.Update(model);
+                    _context.Entry(model).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
 
-                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Post));
-                    return Json(AR);
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Article));
+                    pm.ObjectId = model.Id.ToString();
+
+
                 }
                 else
                 {
@@ -158,11 +208,17 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
                     _context.Add(model);
                     await _context.SaveChangesAsync();
+                    pm.ObjectId = model.Id.ToString();
 
                     AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Article));
-                    return Json(AR);
+                 
                 }
 
+             
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+
+                return Json(AR);
 
             }
             catch (DbUpdateConcurrencyException)
@@ -179,6 +235,52 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult PageSizeSet(int pageSize)
+        {
+            try
+            {
+                var xmlFile = PlatformServices.Default.MapPath("/Config/ArticleSettings.config");
+                XDocument doc = XDocument.Load(xmlFile);
+
+                var item = doc.Descendants("Settings").FirstOrDefault();
+                item.Element("PageSize").SetValue(pageSize);
+                doc.Save(xmlFile);
+
+
+                return Json(AR);
+            }
+            catch (Exception ex)
+            {
+                AR.Setfailure(ex.Message);
+                return Json(AR);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Copy(int id)
+        {
+
+            var article = await _context.Articles.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+
+            if (article == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            article.Id = 0;
+            article.CreatedBy = User.Identity.Name;
+            article.CreatedDate = DateTime.Now;
+            article.Pubdate = DateTime.Now;
+            article.Active = false;
+            article.Title = $"{article.Title}【拷贝】"; 
+
+            _context.Articles.Add(article);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
         // POST: Admin/Articles/Delete/5
         [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -215,6 +317,29 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             }
 
             _context.Articles.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(int[] ids, bool isLock)
+        {
+
+            var c = await _context.Articles.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
             await _context.SaveChangesAsync();
 
             return Json(AR);

@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using QNZ.Data;
-using QNZ.Model;
-using QNZ.Model.Admin.InputModel.Identity;
-using QNZ.Model.Admin.ViewModel.Identity;
 using QNZ.Model.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace QNZCMS
 {
@@ -42,7 +36,7 @@ namespace QNZCMS
             CreateMap<RoleIM, Role>();
 
           
-            CreateMap<Page, PageVM>();
+        
             //// CreateMap<StoreVM, Store>();            
             //CreateMap<Store, StoreVM>()
             //    .ForMember(d => d.Coordinate, opt => opt.MapFrom(source => $"{source.Longitude},{source.Latitude}"));
@@ -80,11 +74,20 @@ namespace QNZCMS
             CreateMap<ProductIM, Product>();
             CreateMap<Product, ProductIM>();
 
+            CreateMap<Page, PageVM>();
             CreateMap<Page, PageIM>();
             CreateMap<PageIM, Page>();
 
             CreateMap<Team, TeamIM>();
             CreateMap<TeamIM, Team>();
+
+            CreateMap<AdvertisingSpace, AdvertisingSpaceVM>();
+            CreateMap<AdvertisingSpace, AdvertisingSpaceIM>();
+            CreateMap<AdvertisingSpaceIM, AdvertisingSpace>();
+
+            CreateMap<Advertisement, AdvertisementVM>().ForMember(d => d.SpaceTitle, opt => opt.MapFrom(source => source.Space.Title));
+            CreateMap<Advertisement, AdvertisementIM>();
+            CreateMap<AdvertisementIM, Advertisement>();
 
             CreateMap<PostCategory, PostCategoryBVM>()
                 .ForMember(d => d.ArticleCount, opt => opt.MapFrom(source => source.Posts.Count()));
@@ -112,7 +115,8 @@ namespace QNZCMS
             CreateMap<ClientIM, Client>();
 
             CreateMap<Article, ArticleVM>();
-            CreateMap<Article, ArticleBVM>();
+            CreateMap<Article, ArticleBVM>()
+                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
 
             CreateMap<Article, ArticleIM>();
             CreateMap<ArticleIM, Article>();

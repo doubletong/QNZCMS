@@ -27,9 +27,6 @@ namespace QNZ.Data
         [StringLength(50)]
         public string CustomerMobile { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        [InverseProperty("Recipes")]
-        public virtual User User { get; set; }
         [InverseProperty(nameof(CustomerRecipe.Recipes))]
         public virtual ICollection<CustomerRecipe> CustomerRecipes { get; set; }
         [InverseProperty(nameof(RecipesItem.Recipes))]

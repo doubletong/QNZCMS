@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]  
     [Route("Admin/[controller]/[action]")]

@@ -1,44 +1,81 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-QNZCMS-A6A7578C-F0DA-435B-B7E6-3829220CB4F0</UserSecretsId>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\Articles1\**" />
+    <Compile Remove="Areas\Admin\Views\Blog\**" />
     <Compile Remove="Areas\Admin\Views\Clients\**" />
+    <Compile Remove="Areas\Admin\Views\Common\**" />
     <Compile Remove="Areas\Admin\Views\Customers\**" />
     <Compile Remove="Areas\Admin\Views\Feedbacks\**" />
     <Compile Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Compile Remove="Areas\Admin\Views\Orders\**" />
+    <Compile Remove="Areas\Admin\Views\Post\**" />
+    <Compile Remove="Areas\Admin\Views\ProductCategories\**" />
+    <Compile Remove="Areas\Admin\Views\Products\**" />
+    <Compile Remove="Areas\Admin\Views\Recipes\**" />
+    <Compile Remove="Areas\Admin\Views\Solutions\**" />
+    <Compile Remove="Areas\Admin\Views\Stores\**" />
+    <Compile Remove="Areas\Admin\Views\Team\**" />
     <Compile Remove="Areas\Admin\Views\Works\**" />
     <Compile Remove="Utilities\PagedList\**" />
     <Compile Remove="Views\News\**" />
     <Content Remove="Areas\Admin\Views\Articles1\**" />
+    <Content Remove="Areas\Admin\Views\Blog\**" />
     <Content Remove="Areas\Admin\Views\Clients\**" />
+    <Content Remove="Areas\Admin\Views\Common\**" />
     <Content Remove="Areas\Admin\Views\Customers\**" />
     <Content Remove="Areas\Admin\Views\Feedbacks\**" />
     <Content Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Content Remove="Areas\Admin\Views\Orders\**" />
+    <Content Remove="Areas\Admin\Views\Post\**" />
+    <Content Remove="Areas\Admin\Views\ProductCategories\**" />
+    <Content Remove="Areas\Admin\Views\Products\**" />
+    <Content Remove="Areas\Admin\Views\Recipes\**" />
+    <Content Remove="Areas\Admin\Views\Solutions\**" />
+    <Content Remove="Areas\Admin\Views\Stores\**" />
+    <Content Remove="Areas\Admin\Views\Team\**" />
     <Content Remove="Areas\Admin\Views\Works\**" />
     <Content Remove="Utilities\PagedList\**" />
     <Content Remove="Views\News\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Articles1\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Blog\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Clients\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Common\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Customers\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Feedbacks\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Orders\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Post\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\ProductCategories\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Products\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Recipes\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Solutions\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Stores\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Team\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Works\**" />
     <EmbeddedResource Remove="Utilities\PagedList\**" />
     <EmbeddedResource Remove="Views\News\**" />
     <None Remove="Areas\Admin\Views\Articles1\**" />
+    <None Remove="Areas\Admin\Views\Blog\**" />
     <None Remove="Areas\Admin\Views\Clients\**" />
+    <None Remove="Areas\Admin\Views\Common\**" />
     <None Remove="Areas\Admin\Views\Customers\**" />
     <None Remove="Areas\Admin\Views\Feedbacks\**" />
     <None Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <None Remove="Areas\Admin\Views\Orders\**" />
+    <None Remove="Areas\Admin\Views\Post\**" />
+    <None Remove="Areas\Admin\Views\ProductCategories\**" />
+    <None Remove="Areas\Admin\Views\Products\**" />
+    <None Remove="Areas\Admin\Views\Recipes\**" />
+    <None Remove="Areas\Admin\Views\Solutions\**" />
+    <None Remove="Areas\Admin\Views\Stores\**" />
+    <None Remove="Areas\Admin\Views\Team\**" />
     <None Remove="Areas\Admin\Views\Works\**" />
     <None Remove="Utilities\PagedList\**" />
     <None Remove="Views\News\**" />
@@ -57,12 +94,10 @@
     <Compile Remove="Areas\Admin\Controllers\ProductCategoriesController.cs" />
     <Compile Remove="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Remove="Areas\Admin\Controllers\RecipesController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\RoleController.cs" />
     <Compile Remove="Areas\Admin\Controllers\SolutionsController.cs" />
     <Compile Remove="Areas\Admin\Controllers\StoresController.cs" />
     <Compile Remove="Areas\Admin\Controllers\TeamController.cs" />
     <Compile Remove="Areas\Admin\Controllers\TinymceController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\UserController.cs" />
     <Compile Remove="Areas\Admin\Controllers\WorksController.cs" />
     <Compile Remove="Controllers\FileSystemController.cs" />
   </ItemGroup>
@@ -72,11 +107,6 @@
     <Content Remove="Areas\Admin\Views\Articles\0000Edit.cshtml" />
     <Content Remove="Areas\Admin\Views\Menu\_MenuList.cshtml" />
     <Content Remove="Areas\Admin\Views\Navigation\_MenuList.cshtml" />
-    <Content Remove="Areas\Admin\Views\Post\Create.cshtml" />
-    <Content Remove="Areas\Admin\Views\Post\Edit.cshtml" />
-    <Content Remove="Areas\Admin\Views\Post\Index.cshtml" />
-    <Content Remove="Areas\Admin\Views\Stores\Index.cshtml" />
-    <Content Remove="Areas\Admin\Views\User\Index.cshtml" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Views\Account\Register.cshtml" />
   </ItemGroup>
@@ -85,13 +115,16 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="X.PagedList" Version="7.9.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
   </ItemGroup>
@@ -99,8 +132,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Post\" />
     <Folder Include="Areas\Member\Controllers\" />
     <Folder Include="Areas\Member\Data\" />
     <Folder Include="Areas\Member\Models\" />
@@ -113,7 +144,6 @@
 
   <ItemGroup>
     <None Include="Areas\Admin\Views\Articles\Edit.cshtml" />
-    <None Include="Areas\Admin\Views\Articles\Delete.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Details.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
     <None Include="compilerconfig.json" />

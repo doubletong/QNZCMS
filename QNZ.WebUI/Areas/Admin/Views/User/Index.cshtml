@@ -1,112 +1,132 @@
 ﻿
-@using QNZ.Model.Admin.ViewModel.Identity
 @using SIG.Resources.Admin
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @model UserListVM
 
 
 @{
     var modelName = EntityNames.User;
-    ViewBag.PageTitle = modelName;
-    ViewBag.Title = ViewBag.PageTitle + "_安全";
+    ViewBag.Title = modelName;
+
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 @section header{
 
 }
-<div class="row">
-    <div class="col-auto mr-auto">
-        <form asp-controller="User" asp-action="Index" method="get" class="form-inline mb-2">
-            <label class="sr-only" for="Username">用户名</label>
-            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mb-2 mr-sm-2 mb-sm-0", placeholder = "用户名" } })
 
-            <label class="sr-only" for="StartDate">开始日期</label>
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-auto mr-auto">
+                    <form asp-controller="User" asp-action="Index" method="get" class="form-inline">
+                        <label class="sr-only" for="Username">用户名</label>
+                        @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control mr-sm-2", placeholder = "用户名" } })
 
-            <input asp-for="StartDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="开始日期" type="date" />
-            <label class="sr-only" for="EndDate">结束日期</label>
-            <input asp-for="EndDate" class="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="结束日期" type="date" />          
+                        <label class="sr-only" for="StartDate">开始日期</label>
 
-            @Html.DropDownListFor(model => model.RoleId, (IEnumerable<SelectListItem>)ViewBag.Roles, string.Format("--{0}--", EntityNames.Role), new { @class = "form-control mb-2 mr-sm-2 mb-sm-0" })
+                        <input asp-for="StartDate" class="form-control mr-sm-2" placeholder="开始日期" type="date" />
+                        <label class="sr-only" for="EndDate">结束日期</label>
+                        <input asp-for="EndDate" class="form-control mr-sm-2" placeholder="结束日期" type="date" />
 
-            <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
-        </form>
-    </div>
-    <div class="col-auto">
-        <a asp-controller="User" asp-action="Create" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
-           data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i>创建新用户</a>
+                        @Html.DropDownListFor(model => model.RoleId, (IEnumerable<SelectListItem>)ViewBag.Roles, string.Format("--{0}--", EntityNames.Role), new { @class = "form-control mr-sm-2 " })
 
-    </div>
-</div>
+                        <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> 搜索</button>
+                    </form>
+                </div>
+                <div class="col-auto">
+                    <a asp-action="Create" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container"
+                       data-ajax-begin="onBegin" data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess" class="btn btn-primary"><i class="iconfont icon-plus"></i>创建新用户</a>
 
-
-<table class="table table-bordered table-striped table-vmiddle">
-    <thead>
-        <tr>
-            <th></th>
-            <th>头像</th>
-            <th>
-                用户名
-            </th>
-            <th>
-                邮箱
-            </th>
-            <th>
-                姓名
-            </th>
-            <th>
-                手机
-            </th>
-
-            <th>
-                激活？
-            </th>
-            <th>
-                创建日期
-            </th>
-
-        </tr>
-    </thead>
-    <tbody id="tbList">
-        @foreach (var item in Model.Users)
-        {          
-            <partial name="_UserItem" model="item" />
-        }
-    </tbody>
-</table>
-
-
-
-
-<div class="panel-footer">
-
-    <div class="row">
-        <div class="col-auto mr-auto">
-            <pager class="pager-container" list="@Model.Users" LinkToPreviousPageFormat="前页" ,
-                   LinkToNextPageFormat="下页"
-                   options="@PagedListRenderOptions.Bootstrap4Full"
-                    
-                   asp-action="Index" asp-controller="User" asp-route-keyword="@Model.Keyword" asp-route-roleid="@Model.RoleId" asp-route-startdate="@Model.StartDate" asp-route-enddate="@Model.EndDate" />
-        </div>
-        <div class="col-auto">
-            <div class="input-group">
-                <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>
-                @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+                </div>
             </div>
         </div>
-    </div>
-</div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-vmiddle">
+                <thead class="thead-primary">
+                    <tr>
+                        <th style="width:30px;">
+                            <input type="checkbox" id="allSelect" />
+                        </th>
+                        <th>头像</th>
+                        <th>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["UsernameSortParm"]">用户名</a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["EmailSortParm"]">邮箱</a>
+                            
+                        </th>
+                        <th>
+                            姓名
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["MobileSortParm"]">手机</a>
+                            
+                        </th>
+                     
+                        <th>
+                            激活？
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">创建日期</a>
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tbList">
+                    @foreach (var item in Model.Users)
+                    {
+                        <partial name="_UserItem" model="item" />
+                    }
+                </tbody>
+            </table>
+
+        </div>
 
 
+            <div class="card-footer">
 
-<div id="edit-container">
-</div>
-<div id="role-container">
-</div>
-<div id="pwd-container">
-</div>
+                <div class="row align-items-center">
+                    <div class="col-md">
+                        <button type="button" class="btn btn-danger btn-sm" id="btn-delete-multi"><i class="iconfont icon-delete"></i> 删除</button>
+                        <button type="button" class="btn btn-info btn-sm" id="btn-lock"><i class="iconfont icon-lock"></i> 锁定</button>
+                        <button type="button" class="btn btn-info btn-sm" id="btn-unlock"><i class="iconfont icon-unlock"></i> 激活</button>
+                    </div>
+                    <div class="col-auto">
+                        @Html.PagedListPager(Model.Users, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, roleid = Model.RoleId, startdate = Model.StartDate, enddate = Model.EndDate }),
+                       new PagedListRenderOptions
+                            {
+                           LiElementClasses = new string[] { "page-item" },
+                           PageClasses = new string[] { "page-link" }
+                   })
 
-<form id="anti-form" method="post">
-    @Html.AntiForgeryToken()
-</form>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="btnGroupAddon2"> 总记录<strong>@Model.TotalCount</strong>条</span>                       
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <select asp-for="@Model.PageSize" asp-items="(SelectList)ViewBag.PageSizes" class="form-control" style="min-width:60px;"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="edit-container">
+        </div>
+        <div id="role-container">
+        </div>
+        <div id="pwd-container">
+        </div>
+
+        <form id="anti-form" method="post">
+            @Html.AntiForgeryToken()
+        </form>
 
 @section footer {
 
@@ -116,17 +136,37 @@
 
 
     <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+            document.getElementById('allSelect').onclick = function() {
+
+             selectAllPages(this.checked);
+        };
+
+        function selectAllPages(isChecked) {
+            // get reference to element containing toppings checkboxes
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByTagName('input');
+
+            for (var i=0, len=tops.length; i<len; i++) {
+                if ( tops[i].type === 'checkbox' ) {
+                    //tops[i].onclick = updateTotal;
+                    tops[i].checked = isChecked;
+                }
+            }
+        }
+
         var modelName = "@EntityNames.User";
 
         function onBegin() {
-            var iconEl = $(this).find("i.fa");
-            var icon = iconEl.attr("data-icon");
-            iconEl.removeClass(icon).addClass("fa-spinner fa-spin");
+            //var iconEl = $(this).find("i.fa");
+            //var icon = iconEl.attr("data-icon");
+            //iconEl.removeClass(icon).addClass("fa-spinner fa-spin");
         }
         function onComplete() {
-            var iconEl = $(this).find("i.fa");
-            var icon = iconEl.attr("data-icon");
-            iconEl.removeClass("fa-spinner fa-spin").addClass(icon);
+            //var iconEl = $(this).find("i.fa");
+            //var icon = iconEl.attr("data-icon");
+            //iconEl.removeClass("fa-spinner fa-spin").addClass(icon);
             $('#ModalEdit').modal();
         }
         function onSuccess(data) {
@@ -144,13 +184,15 @@
             $('#ModalEdit').modal();
         }
 
+       
         function onBeginSave() {
-            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+            var htmlCode = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  提交中...'
+            $("#btnSave").html(htmlCode);
         }
         function onCompleteSave() {
-            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save")
+            var htmlCode = '<i class="iconfont icon-save"></i> 保存';
+            $("#btnSave").html(htmlCode);
         }
-
 
         function onSuccessSave(data) {
             var title = '@ViewBag.PageTitle';
@@ -246,31 +288,179 @@
                 location.reload();
             }
 
-            //确认框默认语言
-            bootbox.setDefaults({
-                locale: "zh_CN"
-            });
+  
+         //锁定
+        $("#btn-lock").click(function (e) {
+            e.preventDefault(); 
+            isLockPages(true);
+        });
+          //激活
+        $("#btn-unlock").click(function (e) {
+            e.preventDefault(); 
+            isLockPages(false);
+        });
+
+        function isLockPages(isLock) {
+             var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("激活/锁定", "请选择要激活/锁定的项目!", "error");             
+            } else {
+                //to doing
+
+                var url = "@Url.Action("IsLock")";
+
+            
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data:{ ids: ids, isLock:isLock },
+                    headers: { 'RequestVerificationToken': antiforgeryToken },
+                    success: function (data) {
+
+                        if (data.status === 1) {
+                            toastr.success(data.message);
+                            location.reload();
+                            //for (var i = 0, len = ids.length; i < len; i++) {                                      
+                            //    $("#" + ids[i] + "tr").remove();
+                            //  }
+
+                        }
+                        if (data.status === 2) {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(error);
+                    }
+                });               
 
 
-            //delete
-            $(document).on("click", '.delete-item', function (e) {
-                e.preventDefault();
+            }
+        }
 
-                var url = $(this).attr('data-url');
-                var that = $(this);
-                bootbox.setLocale("zh_CN");
-                bootbox.confirm("你确定要删除此项吗？", function (result) {
-                    if (result) {
-                        /*DELETE*/
-                        var title = "@ViewBag.PageTitle";
-                        Common.DeleteItem(url, title, that);
+
+        $("#btn-delete-multi").click(function (e) {
+            e.preventDefault();
+       
+
+            var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("删除页面", "请选择要删除的页面!", "error");             
+            } else {
+                //to doing
+
+                var url = "@Url.Action("DeleteMulti")";
+
+                swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            data:{ ids: ids },
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    //location.reload();
+                                  for (var i = 0, len = ids.length; i < len; i++) {                                      
+                                      $("#" + ids[i] + "tr").remove();
+                                    }
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
                     }
                 });
 
-            });
+
+            }
+        });
+
+
+        //单个删除
+        $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            var item = $(this).closest("tr");
+
+
+            swal({
+                title: "您确定要删除此项？",
+                text: "此删除操作不可恢复！",
+                icon: "warning",
+                buttons: ["取消", "确定"],
+                dangerMode: true
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            headers: { 'RequestVerificationToken': antiforgeryToken },
+                            success: function (data) {
+
+                                if (data.status === 1) {
+                                    toastr.success(data.message);
+                                    item.remove();
+
+                                }
+                                if (data.status === 2) {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                toastr.error(error);
+                            }
+                        });
+
+                    } else {
+                        //swal("Your imaginary file is safe!");
+                    }
+                });
+
+
+        });
 
 
 
         });
-    </script>
-}
+            </script>
+        }

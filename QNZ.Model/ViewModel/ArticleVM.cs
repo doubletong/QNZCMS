@@ -66,8 +66,12 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }
     }
-
-    public class ArticleCategoryIM
+    public class ArticleCategoryList
+    {
+        public IEnumerable<ArticleCategoryBVM> Categories { get; set; }
+        public string Keyword { get; set; }
+    }
+    public class ArticleCategoryIM:PageMetaIM
     {
 
         public int Id { get; set; }
@@ -90,6 +94,9 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Importance")]
         public int Importance { get; set; }
 
+        [Display(ResourceType = typeof(Labels), Name = "Description")]
+        public string Description { get; set; }
+
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }
     }
@@ -99,23 +106,24 @@ namespace QNZ.Model.ViewModel
 
         public int Id { get; set; }
         public string Title { get; set; }
+        public string CategoryTitle { get; set; }
         public int ViewCount { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string Keywords { get; set; }
-        public string Category { get; set; }
+        public DateTime Pubdate { get; set; }     
         public string Author { get; set; }
-        public string Active { get; set; }
+        public bool Active { get; set; }
 
     }
     public class ArticleListVM
     {
+        public int? CategoryId { get; set; }
         public int PageIndex { get; set; }
         public string Keyword { get; set; }
         public int TotalCount { get; set; }
+        public int PageSize { get; set; }
         public StaticPagedList<ArticleBVM> Articles { get; set; }
     }
 
-    public class ArticleIM
+    public class ArticleIM:PageMetaIM
     {
 
         public int Id { get; set; }
@@ -128,12 +136,7 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Thumbnail")]
         public string Thumbnail { get; set; }
 
-        [StringLength(150, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
-        [Display(ResourceType = typeof(Labels), Name = "KeyWords")]
-        public string Keywords { get; set; }
-        [StringLength(250, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
-        [Display(ResourceType = typeof(Labels), Name = "Description")]
-        public string Description { get; set; }
+
         [StringLength(250, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         [Display(ResourceType = typeof(Labels), Name = "Summary")]
         public string Summary { get; set; }

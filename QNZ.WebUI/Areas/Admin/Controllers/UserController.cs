@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,22 +15,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
-using Newtonsoft.Json;
-using PagedList.Core;
+using QNZ.Data;
+using QNZ.Model.Admin.ViewModel;
+using QNZ.Model.ViewModel;
+using QNZ.Services;
+using QNZ.Services.Identity;
 using SIG.Infrastructure.Configs;
 using SIG.Infrastructure.Helper;
-using SIG.Model.Admin.InputModel.Identity;
-using SIG.Model.Admin.ViewModel;
-using SIG.Model.Admin.ViewModel.Identity;
 using SIG.Resources.Admin;
-using SIG.Services;
-using SIG.Services.Identity;
-using TZGCMS.Model.Admin.ViewModel.Identity;
-using YCY.Data;
+using X.PagedList;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class UserController : BaseController
     {
@@ -55,7 +52,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
         // GET: User
         // [CustomAuthorize(Roles = "Admin")]
-        public async Task<IActionResult> Index(int? page, string keyword, DateTime? startDate, DateTime? endDate, int? roleId)
+        public async Task<IActionResult> Index(int? page, string sort, string keyword, DateTime? startDate, DateTime? endDate, int? roleId)
         {
             var vm = new UserListVM
             {
@@ -86,7 +83,26 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             {
                 query = query.Where(d => d.UserRoles.Any(c => c.RoleId == roleId));
             }
-           
+
+
+            ViewData["EmailSortParm"] = sort == "email" ? "email_desc" : "email";
+            ViewData["MobileSortParm"] = sort == "mobile" ? "mobile_desc" : "mobile";
+            ViewData["UsernameSortParm"] = sort == "username" ? "username_desc" : "username";
+            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+
+            query = sort switch
+            {
+                "email" => query.OrderBy(s => s.Email),
+                "email_desc" => query.OrderByDescending(s => s.Email),
+                "username" => query.OrderBy(s => s.UserName),
+                "username_desc" => query.OrderByDescending(s => s.UserName),
+                "date" => query.OrderBy(s => s.CreateDate),
+                "date_desc" => query.OrderByDescending(s => s.CreateDate),
+                "mobile" => query.OrderBy(s => s.Mobile),
+                "mobile_desc" => query.OrderByDescending(s => s.Mobile),
+                _ => query.OrderByDescending(s => s.CreateDate),
+            };
+
             vm.TotalCount = await query.CountAsync();
 
            var list = await query.Skip((vm.PageIndex - 1)* vm.PageSize).Take(vm.PageSize).ToListAsync();
@@ -117,7 +133,7 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
             try
             {
                 var xmlFile = PlatformServices.Default.MapPath("~/Config/UserSettings.config");
-                xmlFile = xmlFile.ToLower().Replace(@"\bin\debug\netcoreapp2.0", "");
+                //xmlFile = xmlFile.ToLower().Replace(@"\bin\debug\netcoreapp2.0", "");
               //  var xmlFile = HttpHelper.HttpContext.MapPath("~/Config/UserSettings.config");
                 XDocument doc = XDocument.Load(xmlFile);
 
@@ -456,31 +472,76 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult IsActive(Guid id)
+        //[HttpPost]
+        //public JsonResult IsActive(Guid id)
+        //{
+        //    var user = _userServices.GetById(id);
+        //    if (user != null)
+        //    {
+        //        user.IsActive = !user.IsActive;
+        //        _userServices.Update(user);
+        //        //    var userVM = _mapper.Map<UserVM>(user);
+        //        AR.Id = user.Id;
+        //     //   AR.Data = RenderPartialViewToString("_UserItem", user);
+
+        //        AR.SetSuccess(Messages.AlertActionSuccess);
+        //        return Json(AR);
+
+        //    }
+        //    AR.Setfailure(Messages.AlertActionFailure);
+        //    return Json(AR);
+
+        //}
+
+
+        // POST: Admin/Articles/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(Guid[] ids)
         {
-            var user = _userServices.GetById(id);
-            if (user != null)
+
+            var c = await _context.Users.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
             {
-                user.IsActive = !user.IsActive;
-                _userServices.Update(user);
-                //    var userVM = _mapper.Map<UserVM>(user);
-                AR.Id = user.Id;
-             //   AR.Data = RenderPartialViewToString("_UserItem", user);
-
-                AR.SetSuccess(Messages.AlertActionSuccess);
+                AR.Setfailure(Messages.HttpNotFound);
                 return Json(AR);
-
             }
-            AR.Setfailure(Messages.AlertActionFailure);
-            return Json(AR);
 
+            _context.Users.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(Guid[] ids, bool isLock)
+        {
+
+            var c = await _context.Users.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.IsActive = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
         }
 
 
+
         // POST: Users/Delete/5
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
         public JsonResult Delete(Guid id)
         {
             var user = _userServices.GetById(id);

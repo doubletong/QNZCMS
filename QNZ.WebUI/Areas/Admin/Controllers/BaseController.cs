@@ -8,7 +8,7 @@ using QNZ.Data;
 using QNZ.Data.Enums;
 using QNZ.Model.Admin.ViewModel;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     public abstract class BaseController : Controller
     {

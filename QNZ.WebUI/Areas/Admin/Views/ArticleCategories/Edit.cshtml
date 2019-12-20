@@ -33,6 +33,11 @@
                             <span asp-validation-for="Alias" class="text-danger"></span>
                         </div>
 
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
 
                         <div class="form-group">
                             <label asp-for="Importance" class="control-label"></label>
@@ -47,7 +52,25 @@
                                 </label>
                             </div>
                         </div>
-                       
+                        <hr />
+                        <h5>SEO</h5>
+
+                        <div class="form-group">
+                            <label asp-for="SEOTitle" class="control-label"></label>
+                            <input asp-for="SEOTitle" class="form-control" />
+                            <span asp-validation-for="SEOTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SEOKeywords" class="control-label"></label>
+                            <input asp-for="SEOKeywords" class="form-control" />
+                            <span asp-validation-for="SEOKeywords" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SEODescription" class="control-label"></label>
+                            <textarea asp-for="SEODescription" class="form-control"></textarea>
+                            <span asp-validation-for="SEODescription" class="text-danger"></span>
+                        </div>
+
 
                     </div>
                     <div class="col-md-auto">

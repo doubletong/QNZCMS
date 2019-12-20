@@ -627,4 +627,7 @@
   <data name="Alias" xml:space="preserve">
     <value>别名</value>
   </data>
+  <data name="AdvertisingSpace" xml:space="preserve">
+    <value>广告位</value>
+  </data>
 </root>

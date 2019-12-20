@@ -1,0 +1,155 @@
+﻿@model AdvertisingSpaceIM
+
+@{
+    ViewData["Title"] = (Model.Id > 0 ? "编辑" : "创建") + EntityNames.Position;
+}
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+
+    <div class="card">
+        <h5 class="card-header">
+            @ViewData["Title"]
+        </h5>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Code" class="control-label"></label>
+                        <input asp-for="Code" class="form-control" />
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" type="number" />
+                        <span asp-validation-for="Importance" class="text-danger"></span>
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            </label>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="col-md-auto">
+                    <div class="card" style="width:300px;">
+                        <div class="card-header text-center">
+                            示意图
+                        </div>
+                        <div class="card-body">
+                            <img data-src="holder.js/300x200?text=示意图 \n 240x180像素" id="imgImageUrl" src="@(Model!=null?Model.Sketch:"")">
+                            <input type="hidden" asp-for="Sketch" />
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-info btn-block" id="btnImageUrl">
+                                <i class="iconfont icon-upload"></i> 上传图片
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-arrowleft"></i> 返回</a>
+        </div>
+
+    </div>
+
+
+
+
+</form>
+
+
+
+@section header{
+
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/plugins/holder/holder.min.js"></script>
+
+    <script>
+
+          function SetThumbnail(fileUrl) {
+
+            $('#imgImageUrl').attr("src",fileUrl);
+            $('#Sketch').val(fileUrl);
+
+
+        }
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            var htmlCode = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  提交中...'
+            $("#btnSave").html(htmlCode);
+        }
+        function onCompleteSave() {
+            var htmlCode = '<i class="iconfont icon-save"></i> 保存';
+            $("#btnSave").html(htmlCode);
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                var url = "@Url.Action("Index")";
+                toastr.success(data.message);
+               // location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+
+
+            $("#btnImageUrl").on("click", function () {
+                QNZ.selectActionFunction = SetThumbnail;
+                QNZ.open();
+
+            });
+
+
+        });
+    </script>
+}

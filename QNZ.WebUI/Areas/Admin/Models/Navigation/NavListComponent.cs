@@ -9,7 +9,7 @@ using QNZ.Data;
 using SIG.Infrastructure.Cache;
 using SIG.Infrastructure.Configs;
 
-namespace SIG.SIGCMS.Areas.Admin.Models.Navigation
+namespace QNZCMS.Areas.Admin.Models.Navigation
 {
     [ViewComponent(Name = "NavList")]
     public class NavListComponent : ViewComponent

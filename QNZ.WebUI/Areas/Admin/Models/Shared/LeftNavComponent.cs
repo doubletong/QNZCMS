@@ -8,14 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data;
 using QNZ.Data.Enums;
-using QNZ.Model.Admin.ViewModel.Menus;
+using QNZ.Model.ViewModel;
 
-using SIG.Infrastructure.Configs;
-
-using QNZ.Services.Menus;
-
-
-namespace SIG.SIGCMS.Areas.Admin.Models.Shared
+namespace QNZCMS.Areas.Admin.Models.Shared
 {
     [ViewComponent(Name = "LeftNav")]
     public class LeftNavComponent : ViewComponent
@@ -32,32 +27,32 @@ namespace SIG.SIGCMS.Areas.Admin.Models.Shared
         public async Task<IViewComponentResult> InvokeAsync(int categoryId, ViewContext viewContext)
         {
 
-            if (!User.IsInRole("系统管理员"))
-            {
-                if (User.IsInRole("店员"))
-                {
-                    var cacheKey1 = $"AllMenus_6_{categoryId}";
-                    // Look for cache key.
-                    if (!_cache.TryGetValue(cacheKey1, out List<QNZ.Data.Menu> menus1))
-                    {
-                        // 6是店员角色ID
-                        menus1 = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId && d.RoleMenus.Any(r => r.RoleId == 6)).ToListAsync();
-                        // Set cache options.
-                        var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
-                        // Save data in cache.
-                        _cache.Set(cacheKey1, menus1, cacheEntryOptions);
-                    }
-                    LeftNavVM vm1 = new LeftNavVM
-                    {
-                        Menus = menus1,  //_menuServices.GetLeftMenus(categoryId),//_menuServices.GetShowMenus(categoryId),
-                        CurrentMenu = GetCurrenMenu(categoryId, viewContext, menus1)
-                    };
-                    return View(vm1);
-                }
-            }
+            //if (!User.IsInRole("系统管理员"))
+            //{
+            //    if (User.IsInRole("店员"))
+            //    {
+            //        var cacheKey1 = $"AllMenus_6_{categoryId}";
+            //        // Look for cache key.
+            //        if (!_cache.TryGetValue(cacheKey1, out List<QNZ.Data.Menu> menus1))
+            //        {
+            //            // 6是店员角色ID
+            //            menus1 = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId && d.RoleMenus.Any(r => r.RoleId == 6)).ToListAsync();
+            //            // Set cache options.
+            //            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
+            //            // Save data in cache.
+            //            _cache.Set(cacheKey1, menus1, cacheEntryOptions);
+            //        }
+            //        LeftNavVM vm1 = new LeftNavVM
+            //        {
+            //            Menus = menus1,  //_menuServices.GetLeftMenus(categoryId),//_menuServices.GetShowMenus(categoryId),
+            //            CurrentMenu = GetCurrenMenu(categoryId, viewContext, menus1)
+            //        };
+            //        return View(vm1);
+            //    }
+            //}
 
            
-                var cacheKey = $"AllMenus_{categoryId}";
+                var cacheKey = $"MENUS_CATEGORY_{categoryId}";
                 // Look for cache key.
                 if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
                 {
@@ -68,6 +63,7 @@ namespace SIG.SIGCMS.Areas.Admin.Models.Shared
                     // Save data in cache.
                     _cache.Set(cacheKey, menus, cacheEntryOptions);
                 }
+
                 LeftNavVM vm = new LeftNavVM
                 {
                     Menus = menus,  //_menuServices.GetLeftMenus(categoryId),//_menuServices.GetShowMenus(categoryId),

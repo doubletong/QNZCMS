@@ -1,102 +1,115 @@
 ﻿@model QNZ.Data.Article
 
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
 }
 
-<h1>Details</h1>
+<div class="card">
+    @*<partial name="_DetailsView" model="Model" />*@
 
-<div>
-    <h4>Article</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Summary)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Summary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Keywords)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Keywords)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ViewCount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pubdate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pubdate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumbnail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Thumbnail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-    </dl>
+    <h5 class="card-header">
+        @Html.DisplayFor(model => model.Title)
+    </h5>
+    <div class="card-body">
+        <div class="well">
+            <div class="row no-gutters">
+                <div class="col-md">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="row no-gutters">
+                                <div class="col-auto">
+                                    <label>分类</label>
+                                </div>
+                                <div class="col">@Html.DisplayFor(model => model.Category.Title)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto">
+                                    <label>查看次数</label>
+                                </div>
+                                <div class="col">@Html.DisplayFor(model => model.ViewCount)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>发布日期</label></div> <div class="col">@Html.DisplayFor(model => model.Pubdate)</div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto">
+                                    <label>作者</label>
+                                </div>
+                                <div class="col">@Html.DisplayFor(model => model.Author)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>发布</label></div>
+                                <div class="col">@(Model.Active == true ? "是" : "否")</div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>创建时间</label></div>
+                                <div class="col">@Html.DisplayFor(model => model.CreatedDate)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>创建人</label></div>
+                                <div class="col">@Html.DisplayFor(model => model.CreatedBy)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>最后修改</label></div>
+                                <div class="col">@Html.DisplayFor(model => model.UpdatedDate)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><label>修改人</label></div>
+                                <div class="col">@Html.DisplayFor(model => model.UpdatedBy)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <img src="@Model.Thumbnail" alt="@Model.Title" style="max-width:300px;" />
+                </div>
+            </div>
+        </div>
+
+
+
+        @Html.Raw(Model.Body)
+
+
+    </div>
+    <div class="card-footer text-center">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-edit"></i> 编辑</a>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+    </div>
+
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@section header{
+    <style>
+        .card-body label {
+            display: inline-block;
+            width: 80px;
+            color: #999;
+        }
+
+        .well {
+            padding: 1rem 2rem;
+            background-color: #f7f7f7;
+            margin-bottom: 2rem;
+        }
+    </style>
+}

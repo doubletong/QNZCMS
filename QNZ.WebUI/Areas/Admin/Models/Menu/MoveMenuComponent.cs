@@ -7,7 +7,7 @@ using QNZ.Data.Enums;
 using QNZ.Services.Menus;
 
 
-namespace SIG.SIGCMS.Areas.Admin.Models.Menu
+namespace QNZCMS.Areas.Admin.Models.Menu
 {
     [ViewComponent(Name = "MoveMenu")]
     public class MoveMenuComponent : ViewComponent

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QNZ.Data;
-using QNZ.Model.Admin.InputModel.Identity;
 using QNZ.Model.Front.ViewModel;
+using QNZ.Model.ViewModel;
 using SIG.Infrastructure.Helper;
 using SIG.Resources.Front;
 

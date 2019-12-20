@@ -1,4 +1,5 @@
-﻿using QNZ.Data.Enums;
+﻿using QNZ.Data;
+using QNZ.Data.Enums;
 using SIG.Resources.Admin;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,20 @@ namespace QNZ.Model.ViewModel
     public class MenuVM
     {
 
+    }
+    public class MoveMenuVM
+    {
+        public int Id { get; set; }
+        public int? CurrentParentId { get; set; }
+        public IEnumerable<Menu> Menus { get; set; }
+
+        public int CategoryId { get; set; }
+
+    }
+    public class LeftNavVM
+    {
+        public IEnumerable<Menu> Menus { get; set; }
+        public Menu CurrentMenu { get; set; }
     }
     public class MenuIM
     {

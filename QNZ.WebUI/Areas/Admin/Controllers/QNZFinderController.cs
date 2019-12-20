@@ -208,8 +208,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 dir = dir.Replace(" ", "_");
 
-                var newDir = Path.Combine(filePath, dir);
-                newDir = Path.Combine(_hostingEnvironment.WebRootPath,  newDir);
+                var newDir = $"{_hostingEnvironment.WebRootPath}{filePath.Replace('/', '\\')}\\{dir}";
+                //newDir = _hostingEnvironment.WebRootPath,  newDir.Replace('/','\\'));
                 //var response = Request.CreateResponse(HttpStatusCode.OK, "OK");
 
                 if (Directory.Exists(newDir))
