@@ -4,7 +4,7 @@
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,
    "IdReplace": false,
-   "IncludeConnectionString": true,
+   "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "",
@@ -127,6 +127,14 @@
       {
          "HasPrimaryKey": true,
          "Name": "[dbo].[PostCategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PostTagesLinkPosts]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PostTags]"
       },
       {
          "HasPrimaryKey": true,

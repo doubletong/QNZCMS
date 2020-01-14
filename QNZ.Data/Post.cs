@@ -9,6 +9,11 @@ namespace QNZ.Data
     [Table("Post")]
     public partial class Post
     {
+        public Post()
+        {
+            PostTagesLinkPosts = new HashSet<PostTagesLinkPost>();
+        }
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -39,5 +44,7 @@ namespace QNZ.Data
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PostCategory.Posts))]
         public virtual PostCategory Category { get; set; }
+        [InverseProperty(nameof(PostTagesLinkPost.Post))]
+        public virtual ICollection<PostTagesLinkPost> PostTagesLinkPosts { get; set; }
     }
 }

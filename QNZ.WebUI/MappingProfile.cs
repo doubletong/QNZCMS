@@ -89,8 +89,7 @@ namespace QNZCMS
             CreateMap<Advertisement, AdvertisementIM>();
             CreateMap<AdvertisementIM, Advertisement>();
 
-            CreateMap<PostCategory, PostCategoryBVM>()
-                .ForMember(d => d.ArticleCount, opt => opt.MapFrom(source => source.Posts.Count()));
+            CreateMap<PostCategory, PostCategoryBVM>();
             CreateMap<PostCategory, PostCategoryIM>();
             CreateMap<PostCategoryIM, PostCategory>();
 
