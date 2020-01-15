@@ -15,6 +15,7 @@ namespace QNZ.Data
         public string Title { get; set; }
         [StringLength(500)]
         public string Summary { get; set; }
+        [Required]
         public string Body { get; set; }
         [StringLength(50)]
         public string Author { get; set; }
@@ -26,10 +27,11 @@ namespace QNZ.Data
         [Required]
         public bool? Active { get; set; }
         public int CategoryId { get; set; }
+        [Required]
         [StringLength(50)]
         public string CreatedBy { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         [StringLength(50)]
         public string UpdatedBy { get; set; }
         [Column(TypeName = "datetime")]

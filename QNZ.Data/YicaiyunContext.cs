@@ -45,6 +45,8 @@ namespace QNZ.Data
         public virtual DbSet<PcategoryProduct> PcategoryProducts { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostCategory> PostCategories { get; set; }
+        public virtual DbSet<PostTag> PostTags { get; set; }
+        public virtual DbSet<PostTagesLinkPost> PostTagesLinkPosts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
@@ -63,8 +65,6 @@ namespace QNZ.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-5NKIOPC;Initial Catalog=TZGCMS_NetCore;Integrated Security=True");
             }
         }
 
@@ -364,7 +364,36 @@ namespace QNZ.Data
 
             modelBuilder.Entity<PostCategory>(entity =>
             {
+                entity.HasIndex(e => e.Alias)
+                    .HasName("IX_PostCategory")
+                    .IsUnique();
+
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<PostTag>(entity =>
+            {
+                entity.HasIndex(e => e.TagName)
+                    .HasName("IX_PostTags")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<PostTagesLinkPost>(entity =>
+            {
+                entity.HasKey(e => new { e.PostId, e.TagId });
+
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.PostTagesLinkPosts)
+                    .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PostTagesLinkPosts_PostTagesLinkPosts");
+
+                entity.HasOne(d => d.Tag)
+                    .WithMany(p => p.PostTagesLinkPosts)
+                    .HasForeignKey(d => d.TagId)
+                    .HasConstraintName("FK_PostTagesLinkPosts_PostTags");
             });
 
             modelBuilder.Entity<Product>(entity =>

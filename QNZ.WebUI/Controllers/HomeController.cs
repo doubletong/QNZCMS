@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using QNZCMS.Models;
+using SIG.Infrastructure.Cache;
 using SIG.Infrastructure.Configs;
 
 namespace QNZCMS.Controllers
@@ -18,9 +19,11 @@ namespace QNZCMS.Controllers
     public class HomeController : Controller
     {
         private IWebHostEnvironment _hostingEnvironment;
-        public HomeController(IWebHostEnvironment hostingEnvironment)
+        private ICacheService _cache;
+        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache)
         {
             _hostingEnvironment = hostingEnvironment;
+            _cache = cache;
         }
     
 
@@ -32,6 +35,19 @@ namespace QNZCMS.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult ChacheShow()
+        {
+            _cache.Set("test", "this is test", 15);
+
+            return Content(_cache.IsSet("MENUS_CATEGORY_1").ToString());
+        }
+        public IActionResult ChacheShow1()
+        {
+            _cache.Invalidate("MENU");
+
+            return Content(_cache.IsSet("MENUS_CATEGORY_1").ToString());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
