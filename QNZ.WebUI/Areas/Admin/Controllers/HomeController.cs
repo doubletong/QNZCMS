@@ -25,7 +25,9 @@ namespace QNZCMS.Areas.Admin.Controllers
            
 
         }
-
+        [Route("/admin")]
+        [Route("/admin/home")]
+        [Route("/admin/home/index")]
         public IActionResult Index()
         {
             HomePageVM vm = new HomePageVM
