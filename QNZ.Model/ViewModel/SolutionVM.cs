@@ -27,7 +27,11 @@ namespace QNZ.Model.ViewModel
             public string CreatedBy { get; set; }
         
     }
-
+    public class SolutionListVM
+    {
+        public IEnumerable<SolutionBVM> Solutions { get; set; }
+        public string Keyword { get; set; }
+    }
     public class SolutionIM
     {
 

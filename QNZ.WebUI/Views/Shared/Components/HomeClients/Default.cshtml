@@ -1,0 +1,17 @@
+@model IEnumerable<QNZ.Data.Client>
+
+<section class="page-home section4">
+<header class="se-header">
+    <h3>合作伙伴</h3>
+    <p>partnership</p>
+</header>
+<div class="client">
+    @foreach (var item in Model)
+    {
+     
+        <div class="item">
+            <a href="@item.Homepage" title="@item.ClientName"><img src="@item.LogoUrl" alt="@item.ClientName"></a>
+        </div>
+    }
+</div>
+</section>

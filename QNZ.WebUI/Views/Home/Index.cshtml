@@ -1,101 +1,273 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-    ViewBag.HeaderClassName = "home_header";
+﻿@using System;
+@{
+    ViewData["Title"] = "深圳网站建设_深圳高端网站建设_深圳网页设计_微信小程序定制开发";
+}
+@section Header{
+    <meta name="keywords" content="深圳网站建设公司,深圳网站建设公司,深圳高端网站建设,用户体验设计,ui设计公司,响应式网站设计,界面设计公司,网站界面设计,微信小程序开发">
+    <meta name="description" content="黑鸟志为企业提供网站建设、服务设计、产品策略研究、用户体验研究、交互设计、视觉ui设计、网站界面设计、用户体验设计以及vi设计；包括app设计、ui设计、界面设计、微信小程序开发等。">
 }
 
-    <div class="banner-home" style="background-image:url('/img/banner/home-80.jpg')">
-        
-    </div>
-
-
-    <div class="page-home">
-        <section class="s1 container" style="background-image:url('/img/1x/photo01-80.jpg')">
-            <div class="intro">
-                <h2 class="title">
-                    关于研究院
-                </h2>
-                <p>
-                    研究院是深圳市政府和清华大学于1996年12月共建的、以企业化方式运作的事业单位，双方各占50%股份，实行理事会领导下的院长负责制。研究院恪守着清华“自强不息，厚德载物”的校训，秉承了深圳“敢闯敢试，兼容并蓄”的精神，以体制机制创新为核心，在实践中形成了独具特色的发展理念，确立了行之有效的发展战略。
-                </p>
-                <a href="/about" class="more">了解更多</a>
+<div class="banner">
+    <img src="img/bird.svg" alt="bird">
+    <div id="parallax">
+        <div class="layer" data-depth="0.6">
+            <div class="some-space">
+                <h1>致力于<span class="typed"></span></h1>
             </div>
-        </section>
-       
-        <section class="s2 container">
-            <div class="row no-gutters">
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
+        </div>
+        <div class="layer" data-depth="0.4">
+            <div id="particles-js"></div>
+        </div>
+        <div class="layer" data-depth="0.3">
+            <div class="some-more-space">Professional / trend / perfect</div>
+        </div>
+    </div>
+</div>
+
+<section class="page-home section2" style="background-color:#f7f7f7;">
+    <header class="se-header">
+        <h3>服务项目</h3>
+        <p>service</p>
+    </header>
+    <div class="service">
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-site"></i>
+            </div>
+            <h3>网站建设</h3>
+            <p>精美的设计，规范的编码<br />打造一流的网站</p>
+        </div>
+
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-xcu"></i>
+            </div>
+            <h3>小程序与公众号开发</h3>
+            <p>对接微信公众号接口定制开发<br />精美UI设计，个性化服务</p>
+        </div>
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-software"></i>
+            </div>
+            <h3>软件开发</h3>
+            <p>桌面软件定制开发，合理设计<br />提供二次扩展</p>
+        </div>
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-html"></i>
+            </div>
+            <h3>设计稿html化</h3>
+            <p>Html5、CSS3 规范编码，响应式设计<br />打造精美时尚的页面</p>
+        </div>
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-design"></i>
+            </div>
+            <h3>UI交互设计</h3>
+            <p>用户体验至上、精美界面辅助、<br />多年成功能经验积累，细节到位</p>
+        </div>
+        <div class="item">
+            <div class="icon">
+                <i class="iconfont icon-app"></i>
+            </div>
+            <h3>APP开发</h3>
+            <p>H5/原生APP开发，良好的交互体验<br />多年的开发经验</p>
+        </div>
+    </div>
+</section>
+
+@await Component.InvokeAsync("HomeWorks")
+<section class="page-home section1">
+    <div class="yh">
+        <i class="iconfont icon-yinghao"></i>
+    </div>
+    <div class="slider-container">
+        <div class="sliders" id="sliders">
+            <div class="item">
+                <p>"经过多次的深入合作。非常专业的团队，有着丰富的实战经验和专业的技术水平，对细节的把控入微细致，对需求的完成到位。与其合作非常是一场非常愉快的旅程，有着的共同的信念和精益求精的执着！"</p>
+                <div class="star">
+                    ★★★★☆
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a  asp-controller="News" asp-action="Index" class="item item1">                       
-                        <div class="txt1">
-                            <h2>新 闻</h2>
-                            <div class="more">了解更多</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <a href="#" class="item">
-                        <img src="~/img/temp/n1-80.jpg" alt="title" />
-                        <div class="txt">
-                            研究院总支部委员会及下属支部委员会召开换届选举党员大会
-                        </div>
-                    </a>
+                <p class="client">闲人设计公司 / 闲人张 / 项目经理</p>
+                <div class="photo">
+                    <img src="img/client/afu.jpg" alt="">
                 </div>
             </div>
-        </section>
-        
+            <div class="item">
+                <p>"长期的合作伙伴，对响应式网站建设有着丰富的实战经验，对我们提出交互需求能够完美的呈现。非常有创新精神的团队，有着对技术的执着追求。到了一痴迷的地步。每一次合作都会会带来一些新的东西，让人意外的惊喜！"</p>
+                <div class="star">
+                    ★★★★☆
+                </div>
+                <p class="client">无事设计公司 / 搞事李 / 项目总监</p>
+                <div class="photo">
+                    <img src="img/client/hely.jpg" alt="">
+                </div>
+            </div>
+            <div class="item">
+                <p>"Thank you so much for all your hard work, your flexibility and diligence in pulling together a very successful event. We’ve had great feedback from our clients, it has been considered a massive success all round. It was a pleasure working with you. We hope to work with you again in the future."</p>
+                <div class="star">
+                    ★★★★☆
+                </div>
+                <p class="client">吹牛皮设计公司 / 吹牛金 / 项目经理</p>
+                <div class="photo">
+                    <img src="img/client/tina.jpg" alt="">
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+@await Component.InvokeAsync("HomeArticles")
+@await Component.InvokeAsync("HomePosts")
+@await Component.InvokeAsync("HomeClients")
+
+
+
+@section Scripts
+    {
+    <script src="js/libs/particles.min.js"></script>
+    <script src="plugins/bxslider/jquery.bxslider.min.js"></script>
+    <script src="js/libs/typed.min.js"></script>
+    <script src="js/libs/jquery.parallax.js "></script>
+
+    <!-- Google Analytics -->
+    <script>
+        $('#parallax').parallax({
+            invertX: true,
+            invertY: true,
+            scalarX: 10,
+            frictionY: .1
+        });
+
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 120,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#eeeeee"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#eeeeee",
+                    "opacity": 1,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab "
+                    },
+                    "onclick": {
+                        "enable ": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked ": {
+                            "opacity ": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        $(document).ready(function () {
+
+            $(".typed").typed({
+                strings: ["网站建设", "软件开发", "交互设计", "用户体验", "APP开发"],
+                // typing speed
+                typeSpeed: 200,
+                // time before typing starts
+                backSpeed: 20,
+                // loop
+                loop: true,
+            });
+            $("#sliders").bxSlider({
+                "auto": true,
+                "controls": false
+            });
+
+            $(".nav__list li:nth-of-type(1)").addClass("active");
+
+        });
+    </script>
+
+}

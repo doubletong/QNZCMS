@@ -9,6 +9,8 @@ using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data;
 using QNZ.Data.Enums;
 using QNZ.Model.ViewModel;
+using SIG.Infrastructure.Cache;
+using SIG.Infrastructure.Configs;
 
 namespace QNZCMS.Areas.Admin.Models.Shared
 {
@@ -16,9 +18,9 @@ namespace QNZCMS.Areas.Admin.Models.Shared
     public class LeftNavComponent : ViewComponent
     {
 
-        private IMemoryCache _cache;
+        private ICacheService _cache;
         private readonly YicaiyunContext _context;
-        public LeftNavComponent(YicaiyunContext context, IMemoryCache memoryCache)
+        public LeftNavComponent(YicaiyunContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;
@@ -50,27 +52,38 @@ namespace QNZCMS.Areas.Admin.Models.Shared
             //        return View(vm1);
             //    }
             //}
+            LeftNavVM vm = new LeftNavVM();
 
-           
-                var cacheKey = $"MENUS_CATEGORY_{categoryId}";
-                // Look for cache key.
-                if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
-                {
-                    // Key not in cache, so get data.
-                    menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
-                    // Set cache options.
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
-                    // Save data in cache.
-                    _cache.Set(cacheKey, menus, cacheEntryOptions);
-                }
 
-                LeftNavVM vm = new LeftNavVM
-                {
-                    Menus = menus,  //_menuServices.GetLeftMenus(categoryId),//_menuServices.GetShowMenus(categoryId),
-                    CurrentMenu = GetCurrenMenu(categoryId, viewContext, menus)
-                };
-                return View(vm);
-            
+            var cacheKey = $"MENUS_CATEGORY_{categoryId}";
+            if (_cache.IsSet(cacheKey))
+            {
+                var menus = (List<QNZ.Data.Menu>)_cache.Get(cacheKey);
+                vm.Menus = menus;
+                vm.CurrentMenu = GetCurrenMenu(categoryId, viewContext, menus);         
+            }
+            else
+            {
+               var menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
+                _cache.Set(cacheKey, menus, SettingsManager.Site.CacheDuration);
+
+                vm.Menus = menus;
+                vm.CurrentMenu = GetCurrenMenu(categoryId, viewContext, menus);               
+
+            }
+            // Look for cache key.
+            //if (!_cache.TryGetValue(cacheKey, out List<QNZ.Data.Menu> menus))
+            //{
+            //    // Key not in cache, so get data.
+            //    menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
+            //    // Set cache options.
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(1));
+            //    // Save data in cache.
+            //    _cache.Set(cacheKey, menus, cacheEntryOptions);
+            //}
+
+            return View(vm);
+
         }
 
 

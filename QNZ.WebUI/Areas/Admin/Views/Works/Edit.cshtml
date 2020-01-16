@@ -1,133 +1,172 @@
 ﻿@model WorkIM
 @{
-    ViewData["Title"] = "编辑作品";
+    ViewData["Title"] = Model.Id>0?"编辑文章":"添加文章";
 }
 
 
-<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
-      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
-      data-ajax="true" data-ajax-method="POST">
+    <form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+          asp-antiforgery="true"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+          data-ajax="true" data-ajax-method="POST">
 
-    <div class="card">
-        <header class="card-header">
-            <h3 class="card-title">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="card">
+            <h5 class="card-header">
                 @ViewData["Title"]
-            </h3>
-        </header>
-        <div class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
-            <section class="flex form-h">
+            </h5>
+            <div class="card-body">
 
-                <aside style="flex:initial; width: 240px;">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            缩略图
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <section class="row">
+
+                    <div class="col-md">
+
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title"></span>
                         </div>
-                        <div class="card-body">
 
-                            <div class="thumb" id="divThumb">
-                                <i class="iconfont icon-image" style="font-size: 3rem; "></i>
+
+                        <div class="form-group">
+                            <label asp-for="SolutionId" class="control-label"></label>
+                            <select asp-for="SolutionId" class="form-control" asp-items="@((SelectList)ViewData["Solutions"])">
+                                <option>--请选择方案--</option>
+                            </select>
+                            <span asp-validation-for="SolutionId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ClientId" class="control-label"></label>
+                            <select asp-for="ClientId" class="form-control" asp-items="@((SelectList)ViewData["Clients"])">
+                                <option>--请选择客户--</option>
+                            </select>
+                            <span asp-validation-for="ClientId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="FinishYear" class="control-label"></label>
+                            <input asp-for="FinishYear" class="form-control" type="number" />
+                            <span asp-validation-for="FinishYear"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Demourl" class="control-label"></label>
+                            <input asp-for="Demourl" class="form-control" />
+                            <span asp-validation-for="Demourl"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="Body" class="control-label"></label>
+                            <div style="flex: 2">
+                                <textarea asp-for="Body"></textarea>
                             </div>
-                            <input type="file" id="files" hidden
-                                   name="files" />
-
-                            <input type="button" id="btnThumbnail" class="btn btn-info btn-block" value="浏览" />
-
-                            <p class="text-center">*图片尽寸：700*700像素</p>
-                            <input asp-for="Thumbnail" type="hidden" />
-                            <span asp-validation-for="Thumbnail"></span>
+                            <span asp-validation-for="Body" class="text-danger"></span>
                         </div>
-                    </div>
-                </aside>
-                <div style="flex: auto;">
 
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="SolutionId" class="control-label"></label>
-                        <select asp-for="SolutionId" class="form-control" asp-items="@ViewBag.SolutionId">
-                            <option>--请选择方案--</option>
-                        </select>
-                        <span asp-validation-for="SolutionId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="ClientId" class="control-label"></label>
-                        <select asp-for="ClientId" class="form-control" asp-items="@ViewBag.ClientId">
-                            <option>--请选择客户--</option>
-                        </select>
-                        <span asp-validation-for="ClientId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FinishYear" class="control-label"></label>
-                        <input asp-for="FinishYear" class="form-control" type="number" />
-                        <span asp-validation-for="FinishYear"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Demourl" class="control-label"></label>
-                        <input asp-for="Demourl" class="form-control" />
-                        <span asp-validation-for="Demourl"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ImageUrl" class="control-label"></label>
-                        <input asp-for="ImageUrl" class="form-control" /> <button type="button" class="btn btn-primary" id="btnImageUrl">浏览</button>
-                        <span asp-validation-for="ImageUrl"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Body" class="control-label"></label>
-                        <div style="flex: 2">
-                            <textarea asp-for="Body"></textarea>
+                        <div class="form-group">
+                            <label asp-for="Abstract" class="control-label"></label>
+                            <div style="flex: 2">
+                                <textarea asp-for="Abstract" class="form-control" style="width: 100%;"></textarea>
+                            </div>
+                            <span asp-validation-for="Abstract"></span>
                         </div>
-                        <span asp-validation-for="Body" class="text-danger"></span>
-                    </div>
 
-                    <div class="form-group">
-                        <label asp-for="Abstract" class="control-label"></label>
-                        <div style="flex: 2">
-                            <textarea asp-for="Abstract" class="form-control" style="width: 100%;"></textarea>
+                        <div class="form-group">
+                            <label asp-for="Recommend" class="control-label"></label>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Recommend" type="checkbox" />
+                                </label>
+                            </div>
+                            <span asp-validation-for="Recommend"></span>
                         </div>
-                        <span asp-validation-for="Abstract"></span>
-                    </div>
 
-                    <div class="form-group">
-                        <label asp-for="Recommend" class="control-label"></label>
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="Recommend" type="checkbox" />
-                            </label>
+
+
+                        <div class="form-group">
+                            <label asp-for="Active" class="control-label"></label>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Active" checked type="checkbox" />
+                                </label>
+                            </div>
+                            <span asp-validation-for="Active"></span>
                         </div>
-                        <span asp-validation-for="Recommend"></span>
-                    </div>
 
-                    <div class="form-group">
-                        <label asp-for="Active" class="control-label"></label>
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="Active" checked type="checkbox" />
-                            </label>
+                    </div>
+                    <aside class="col-md-auto">
+                        <div class="card" style="width:320px;">
+                            <div class="card-header text-center">
+                                缩略图
+                            </div>
+                            <div class="card-body">
+                                <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgThumbnail" src="@(Model!=null?Model.Thumbnail:"")">
+                                <input asp-for="Thumbnail" type="hidden" />
+                                <span asp-validation-for="Thumbnail"></span>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-info btn-block" id="btnThumbnail">
+                                    <i class="iconfont icon-upload"></i> 上传图片
+                                </button>
+                            </div>
                         </div>
-                        <span asp-validation-for="Active"></span>
-                    </div>
+                        <div class="card" style="width:320px;">
+                            <div class="card-header text-center">
+                                大图
+                            </div>
+                            <div class="card-body">
+                                <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgImageUrl" src="@(Model!=null?Model.ImageUrl:"")">
+                                <input asp-for="ImageUrl" type="hidden" />
+                                <span asp-validation-for="ImageUrl"></span>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-info btn-block" id="btnImageUrl">
+                                    <i class="iconfont icon-upload"></i> 上传图片
+                                </button>
+                            </div>
+                        
+                        </div>
 
-                </div>
+                        <div class="card" style="width:320px;">
+                            <h5 class="card-header">SEO</h5>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="SEOTitle" class="control-label"></label>
+                                    <input asp-for="SEOTitle" class="form-control" />
+                                    <span asp-validation-for="SEOTitle" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SEOKeywords" class="control-label"></label>
+                                    <input asp-for="SEOKeywords" class="form-control" />
+                                    <span asp-validation-for="SEOKeywords" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SEODescription" class="control-label"></label>
+                                    <textarea asp-for="SEODescription" class="form-control"></textarea>
+                                    <span asp-validation-for="SEODescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </section>
 
-            </section>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+                <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+            </div>
         </div>
-        <div class="card-footer text-center">
-            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
-            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
-        </div>
-    </div>
-</form>
+    </form>
+
+@*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
 
 @section header{
+    @*<link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+    <link href="~/plugins/webuploader/webuploader.css" rel="stylesheet" />*@
     <style>
-
         .thumb {
             height: 200px;
             margin: 0 auto 1rem;
@@ -142,69 +181,63 @@
     </style>
 
 }
+
 @section footer {
+
     <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
     <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/lib/tinymce/tinymce.min.js"></script>
+
+    @*<script src="/Plugins/webuploader/webuploader.min.js"></script>
+    <script src="/Plugins/SigFinder/FileManager.js"></script>*@
+
+    <script src="~/plugins/tinymce5/tinymce.min.js"></script>
     <script>
         var url = "@Url.Action("Index")";
 
         tinymce.init({
-            selector: "#Body",
-            height: 300,
+            selector: '#Body',  // change this value according to your HTML
+            height: 400,
             language: 'zh_CN',
-            plugins: [
-                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount code visualblocks visualchars insertdatetime media nonbreaking",
-                "table contextmenu directionality emoticons paste textcolor"
-            ],
-            toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect | link unlink anchor | image media | forecolor backcolor  | print preview code ",
-            image_advtab: true,
-            file_picker_callback: elFinderBrowser
+
+            convert_urls: false,
+            //extended_valid_elements: 'span,i[class]',
+            valid_children : 'a[p|span|div|strong|i]',
+            valid_elements : "*[*]",
+            //picture manager
+            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
+            images_upload_handler: QNZ.ImagesUploadHandler,
+            plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
+
+              toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
+
+        autosave_ask_before_unload: true,
+              autosave_interval: "30s",
+              autosave_prefix: "{path}{query}-{id}-",
+              autosave_restore_when_empty: false,
+            autosave_retention: "2m",
+
+          image_advtab: true,
+                    importcss_append: true,
+             image_caption: true,
+          templates: [
+                { title: '新表格', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            { title: '文章样式', description: 'A cure for writers block', content: 'Once upon a time...' },
+            { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+          ],
+
+
+
         });
-        // https://github.com/Studio-42/elFinder/wiki/Integration-with-TinyMCE-4.x
-        function elFinderBrowser(callback, value, meta) {
-            tinymce.activeEditor.windowManager.open({
-                file: '/tiny-mce/browse',
-                title: '文件管理',
-                width: 900,
-                height: 450,
-                resizable: 'yes'
-            }, {
-                    oninsert: function (file, fm) {
-                        var url, reg, info;
-                        // URL normalization
-                        url = fm.convAbsUrl(file.url);
-                        // Make file info
-                        info = file.name + ' (' + fm.formatSize(file.size) + ')';
-                        // Provide file and text for the link dialog
-                        if (meta.filetype == 'file') {
-                            callback(url, { text: info, title: info });
-                        }
-                        // Provide image and alt text for the image dialog
-                        if (meta.filetype == 'image') {
-                            callback(url, { alt: info });
-                        }
-                        // Provide alternative source and posted for the media dialog
-                        if (meta.filetype == 'media') {
-                            callback(url);
-                        }
-                    }
-                });
-            return false;
-        }
 
 
-        function SetThumbnail(fileUrl) {
-            //alert(fileUrl);
+        function SetThumbnail(fileUrl) {        
             $('#Thumbnail').val(fileUrl);
-            $('#divThumb').css({'background-image': 'url(' + fileUrl + ')' });
-            $("#divThumb i").remove();
-
+            $('#imgThumbnail').attr("src",fileUrl);  
         }
-        function SetImageUrl(fileUrl) {
+        function SetImageUrl(fileUrl) {        
             $('#ImageUrl').val(fileUrl);
+            $('#imgImageUrl').attr("src",fileUrl);  
         }
 
         function onFailed() {
@@ -233,18 +266,21 @@
         }
 
 
-        $(function () {
 
+
+        $(function () {
+            
             $("#btnThumbnail").on("click", function () {
-                singleEelFinder.selectActionFunction = SetThumbnail;
-                singleEelFinder.open();
+                QNZ.selectActionFunction = SetThumbnail;
+                QNZ.open();
 
             });
             $("#btnImageUrl").on("click", function () {
-                singleEelFinder.selectActionFunction = SetImageUrl;
-                singleEelFinder.open();
+                QNZ.selectActionFunction = SetImageUrl;
+                QNZ.open();
 
             });
+
 
             $('#btnBack').on('click',
                 function() {

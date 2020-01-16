@@ -1,61 +1,21 @@
-﻿
+<div class="site-logo">
+    <a href="/" title="深圳网站建设，深圳网页设计，深圳网站制作，深圳网站设计，深圳营销型网站建设"><i class="iconfont icon-logo"></i></a>
+</div>
 
-<header class="site-header @ViewBag.HeaderClassName">
-    <div class="row align-items-end">
-        <div class="col">
-            <div class="logo">
-                <img src="@(ViewBag.HeaderClassName!=null?"/img/1x/logo.png":"/img/1x/logo_color.png")" alt="logo" />
-            </div>
-        </div>
-        <div class="col-auto">
-            <div class="topcol">
-                <a href="/join">加入我们</a>
-                <a href="/contact">联系我们</a>
-                <a href="#">OA</a>
-                <a href="#">邮箱入口</a>
-                <a href="#"><i class="iconfont icon-search"></i></a>
-                <a href="#">EN</a>
-            </div>
-            <ul class="mainav">
-                <li>
-                    <a href="/about">关于研究院</a>
-                    <div class="subnav">
-                        <dl>
-                            <dd><a href="/about#s1">院情简介</a></dd>
-                            <dd><a href="/about#s4">产学研</a></dd>
-                            <dd><a href="/about#s5">目标理念</a></dd>
-                            <dd><a href="/about#s6">荣誉与责任</a></dd>
-                            <dd><a href="/about#s7">加入我们</a></dd>
-                           
-                        </dl>
-                    </div>
-                </li>
-                <li><a href="">研发平台</a></li>
-                <li><a href="/achievements">科技成果</a></li>
-                <li><a href="">科技服务</a></li>
-                <li><a href="/cooperation">海外合作</a></li>
-                <li><a href="/party">党建工作</a></li>
-            </ul>
-        </div>
+<div class="menu-icon">
+    <span class="menu-icon__line menu-icon__line-left"></span>
+    <span class="menu-icon__line"></span>
+    <span class="menu-icon__line menu-icon__line-right"></span>
+</div>
+
+<div class="nav">
+    <div class="nav__content">
+        <ul class="nav__list">
+            <li class="nav__list-item"><a asp-controller="Home" asp-action="Index">首页</a></li>
+            <li class="nav__list-item"><a asp-controller="Work" asp-action="Index">案例</a></li>
+            <li class="nav__list-item"><a asp-controller="Posts" asp-action="Index">博客</a></li>
+            <li class="nav__list-item"><a asp-controller="About" asp-action="Index">关于</a></li>
+            <li class="nav__list-item"><a asp-controller="Contact" asp-action="Index">联系</a></li>
+        </ul>
     </div>
-    @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QNZCMS</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
-</header>
+</div>

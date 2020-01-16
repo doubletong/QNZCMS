@@ -1,0 +1,11 @@
+@model QNZ.Model.Front.ViewModel.PostCategoryListVM
+
+ <nav class="blognav">
+    <img src="~/img/bird_call.png" class="bird" alt="">
+    <ul>
+        @foreach (var item in Model.Categories)
+        {
+            <li><a asp-controller="Posts" asp-action="Index" asp-route-cid="@item.Id" class="@(item.Id==Model.CurrentId?"active":"")">@item.Title</a></li>
+        }
+    </ul>
+</nav>

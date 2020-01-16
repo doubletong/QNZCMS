@@ -93,10 +93,10 @@ namespace QNZCMS
             CreateMap<PostCategory, PostCategoryIM>();
             CreateMap<PostCategoryIM, PostCategory>();
 
-            //CreateMap<Post, PostBVM>()
-            //    .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Pos.Title));
-            //CreateMap<Post, PostIM>();
-            //CreateMap<PostIM, Post>();
+            CreateMap<Post, PostBVM>()
+                .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
+            CreateMap<Post, PostIM>();
+            CreateMap<PostIM, Post>();
 
             CreateMap<Solution, SolutionBVM>()
               .ForMember(d => d.WorkCount, opt => opt.MapFrom(source => source.Works.Count()));

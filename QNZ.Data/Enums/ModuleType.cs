@@ -42,7 +42,9 @@ namespace QNZ.Data.Enums
         [Display(Name = "产品分类")]
         CATEGORY = 17,
         [Display(Name = "视频分类")]
-        VIDEOCATEGORY = 18
+        VIDEOCATEGORY = 18,
+        [Display(Name = "博客文章")]
+        POST = 18
 
 
     }

@@ -1,9 +1,9 @@
-﻿using PagedList.Core;
-using SIG.Resources.Admin;
+﻿using SIG.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
@@ -35,6 +35,7 @@ namespace QNZ.Model.ViewModel
         public int PageIndex { get; set; }
         public string Keyword { get; set; }
         public int TotalCount { get; set; }
+      
         public StaticPagedList<ClientBVM> Clients { get; set; }
     }
 

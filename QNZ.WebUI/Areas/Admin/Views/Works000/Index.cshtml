@@ -1,0 +1,198 @@
+﻿@model WorkPageVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["Title"] = "作品";
+}
+
+
+
+<div class="flex m-b-10">
+
+    <form asp-action="Index" method="get">
+        <select asp-for="SolutionId" class="form-control" asp-items="@ViewBag.Solutions">
+            <option>--请选择方案--</option>
+        </select>
+        <button type="submit" class="btn btn-primary"><i class="iconfont icon-search"></i> 搜索</button>
+    </form>
+    <div class="text-right">
+        <a class="btn btn-primary" asp-action="Create"><i class="iconfont icon-plus"></i> 添加</a>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().Thumbnail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().SolutionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().ClientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().FinishYear)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().ViewCount)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Works.FirstOrDefault().CreatedDate)
+            </th>
+
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Works)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Thumbnail))
+                    {
+                        <img src="@item.Thumbnail" style="height:50px;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                    <a href="@item.Demourl" title="@item.Demourl"><i class="iconfont icon-home-fill"></i></a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SolutionTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinishYear)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ViewCount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommend)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @($"{ item.CreatedDate:d}")
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="flex">
+
+
+    @*<pager class="pager-container" list="@Model.Works" LinkToPreviousPageFormat="前页" ,
+           LinkToNextPageFormat="下页"
+           options="@{ new PagedListRenderOptions {
+                           DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                           DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                           DisplayLinkToIndividualPages = true,
+                           UlElementClasses = new[] { "pagination" },
+
+                           LinkToPreviousPageFormat = "前页",
+                           LinkToNextPageFormat = "后页"
+                       }}"
+           asp-action="Index" asp-controller="Works" asp-route-solutionid="@Model.SolutionId" />*@
+
+    <div class="text-right">
+
+        <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
+        @*@Html.DropDownListFor(m => Model.PageSize, (SelectList)ViewBag.PageSizes, "分页", new { @class = "form-control" })*@
+
+    </div>
+
+</div>
+
+
+@section footer{
+    <script>
+        var antiforgeryToken = @Json.Serialize(antiforgeryRequestToken);
+
+        $(function() {
+            $(".btn-edit").click(function(e) {
+                e.preventDefault();
+                var url = $(this).attr("data-url");
+
+                location.href = url;
+
+            });
+
+            $(".btn-delete").click(function(e) {
+                e.preventDefault();
+                var url = $(this).attr("href");
+                var item = $(this).closest("tr");
+
+
+                swal({
+                        title: "您确定要删除此项？",
+                        text: "此删除操作不可恢复！",
+                        icon: "warning",
+                        buttons: ["取消","确定"],
+                        dangerMode: true
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+
+                            $.ajax({
+                                url:url,
+                                type: "DELETE",
+                                headers: { 'RequestVerificationToken': antiforgeryToken },
+                                success:function(data) {
+
+                                    if (data.status === 1) {
+                                        toastr.success(data.message);
+                                        item.remove();
+
+                                    }
+                                    if (data.status === 2) {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error:function(xhr, status, error) {
+                                    toastr.error(error);
+                                }
+                            });
+
+                        } else {
+                            //swal("Your imaginary file is safe!");
+                        }
+                    });
+
+
+
+
+
+            });
+        })
+    </script>
+}

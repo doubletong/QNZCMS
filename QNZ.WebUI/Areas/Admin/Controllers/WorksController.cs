@@ -5,58 +5,86 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList.Core;
-using SIG.Model.Admin.ViewModel;
-using SIG.Model.ViewModel;
+using QNZ.Model.Admin.ViewModel;
+using QNZ.Model.ViewModel;
 using SIG.Resources.Admin;
-using YCY.Data;
+using QNZ.Data;
+using X.PagedList;
+using SIG.Infrastructure.Configs;
+using SIG.Infrastructure.Helper;
+using QNZ.Data.Enums;
+using System.Xml.Linq;
+using Microsoft.Extensions.PlatformAbstractions;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class WorksController : BaseController
     {
-        private IHostingEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
         private readonly YicaiyunContext _context;
-        public WorksController(YicaiyunContext context, IMapper mapper, IHostingEnvironment hostingEnvironment)
+        public WorksController(YicaiyunContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _hostingEnvironment = hostingEnvironment;
         }
+        [Route("/admin/works")]
+        [Route("/admin/works/index")]
         // GET: Admin/Works
-        public async Task<IActionResult> Index(int? page, int? solutionId)
+        public async Task<IActionResult> Index(string keyword, string sort, int? solutionId, int? page)
         {
             var vm = new WorkPageVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
-                SolutionId = solutionId
-
+                Keyword = keyword,
+                SolutionId = solutionId,
+                PageSize = 10
             };
-            const int pageSize = 12;
 
-            var query = _context.Works.Include(d => d.Solution).Include(d=>d.Client).AsNoTracking().AsQueryable();
+            //var pageSize = SettingsManager.Work.PageSize;
+            var query = _context.Works.Include(d=>d.Solution).Include(d=>d.Client).AsNoTracking().AsQueryable();
 
-            if (vm.SolutionId > 0)
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(d => d.Title.Contains(keyword));
+
+            if (solutionId > 0)
+                query = query.Where(d => d.SolutionId == solutionId);
+
+
+            ViewData["ViewSortParm"] = sort == "view" ? "view_desc" : "view";
+            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+
+            query = sort switch
             {
-                query = query.Where(d => d.SolutionId == vm.SolutionId);
-            }
+                "view" => query.OrderBy(s => s.ViewCount),
+                "view_desc" => query.OrderByDescending(s => s.ViewCount),
+                "title" => query.OrderBy(s => s.Title),
+                "title_desc" => query.OrderByDescending(s => s.Title),
+                "date" => query.OrderBy(s => s.FinishYear),
+                "date_desc" => query.OrderByDescending(s => s.FinishYear),
+              
+                _ => query.OrderByDescending(s => s.FinishYear),
+            };
+
 
             vm.TotalCount = await query.CountAsync();
-            var works = await query.OrderByDescending(d => d.Id)
-                .Skip((vm.PageIndex - 1) * pageSize).Take(pageSize).ProjectTo<WorkBVM>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var clients = await query     
+                .Skip((vm.PageIndex - 1) * vm.PageSize).Take(vm.PageSize).ProjectTo<WorkBVM>(_mapper.ConfigurationProvider).ToListAsync();
+      
 
-            vm.Works = new StaticPagedList<WorkBVM>(works, vm.PageIndex, pageSize, vm.TotalCount);
+            vm.Works = new StaticPagedList<WorkBVM>(clients, vm.PageIndex, vm.PageSize, vm.TotalCount);
 
-            ViewData["Solutions"] = new SelectList(await _context.Solutions.AsNoTracking()
-                .OrderByDescending(d => d.Importance).ToListAsync(), "Id", "Title");
+            var solutions = await _context.Solutions.AsNoTracking()
+                 .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Solutions"] = new SelectList(solutions, "Id", "Title");
+
+            ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
         }
@@ -69,77 +97,57 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var work = await _context.Works
-                .Include(w => w.Client)
-                .Include(w => w.Solution)
+            var article = await _context.Works.Include(d=>d.Solution)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (work == null)
+            if (article == null)
             {
                 return NotFound();
             }
 
-            return View(work);
+            return View(article);
         }
 
-        // GET: Admin/Works/Create
-        public IActionResult Create()
-        {
-            ViewData["ClientId"] = new SelectList(_context.Clients.OrderByDescending(d => d.Importance), "Id", "ClientName");
-            ViewData["SolutionId"] = new SelectList(_context.Solutions.OrderByDescending(d=>d.Importance), "Id", "Title");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(WorkIM work)
-        {
-           
-
-            if (!ModelState.IsValid)
-            {
-                AR.Setfailure(GetModelErrorMessage());
-                return Json(AR);
-            }
-            try
-            {
-                var model = _mapper.Map<Work>(work);
-
-                model.CreatedBy = User.Identity.Name;
-                model.CreatedDate = DateTime.Now;
-
-                //model.Body = WebUtility.HtmlEncode(page.Body);
-
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-
-                AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Work));
-                return Json(AR);
-
-            }
-            catch (Exception er)
-            {
-                AR.Setfailure(er.Message);
-                return Json(AR);
-            }
-        }
-
+      
         // GET: Admin/Works/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var vm = new WorkIM();
             if (id == null)
             {
-                return NotFound();
+                vm.Active = true;
+                vm.FinishYear = DateTime.Now.Year;
+             
             }
-
-            var work = await _context.Works.FindAsync(id);
-            if (work == null)
+            else
             {
-                return NotFound();
+                var article = await _context.Works.FindAsync(id);
+                if (article == null)
+                {
+                    return NotFound();
+                }
+
+                vm = _mapper.Map<WorkIM>(article);
+
+                var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLE && d.ObjectId == vm.Id.ToString());
+
+                if (pm != null)
+                {
+                    vm.SEOTitle = pm.Title;
+                    vm.SEOKeywords = pm.Keywords;
+                    vm.SEODescription = pm.Description;
+                }
+
             }
-            var im = _mapper.Map<WorkIM>(work);
-            ViewData["ClientId"] = new SelectList(_context.Clients.OrderByDescending(d => d.Importance), "Id", "ClientName");
-            ViewData["SolutionId"] = new SelectList(_context.Solutions.OrderByDescending(d => d.Importance), "Id", "Title");
-            return View(im);
+            var solutions = await _context.Solutions.AsNoTracking()
+               .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Solutions"] = new SelectList(solutions, "Id", "Title");
+
+            var clients = await _context.Clients.AsNoTracking()
+              .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Clients"] = new SelectList(clients, "Id", "ClientName");
+
+            return View(vm);
+
         }
 
         // POST: Admin/Works/Edit/5
@@ -147,15 +155,9 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, WorkIM work)
+        public async Task<IActionResult> Edit(WorkIM article)
         {
-          
-
-            if (id != work.Id)
-            {
-                AR.Setfailure(Messages.HttpNotFound);
-                return Json(AR);
-            }
+       
 
             if (!ModelState.IsValid)
             {
@@ -166,23 +168,66 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
             try
             {
+                var pm = new PageMeta
+                {
+                    Title = article.SEOTitle,
+                    Description = article.SEODescription,
+                    Keywords = article.SEOKeywords,
+                    ModuleType = (short)ModuleType.ARTICLE
+                  
+                };
 
-                var model = await _context.Works.SingleOrDefaultAsync(d => d.Id == id);
 
-                model = _mapper.Map(work, model);
-                model.CreatedBy = User.Identity.Name;
-                model.CreatedDate = DateTime.Now;
+                if (article.Id > 0)
+                {
+                    var model = await _context.Works.FirstOrDefaultAsync(d => d.Id == article.Id);
+                    if (model == null)
+                    {
+                        AR.Setfailure(Messages.HttpNotFound);
+                        return Json(AR);
+                    }
+                    model = _mapper.Map(article, model);
+
+                    model.UpdatedBy = User.Identity.Name;
+                    model.UpdatedDate = DateTime.Now;
 
 
-                _context.Update(model);
-                await _context.SaveChangesAsync();
+                    _context.Entry(model).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
 
-                AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Post));
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Work));
+                    pm.ObjectId = model.Id.ToString();
+
+
+                }
+                else
+                {
+                    var model = _mapper.Map<Work>(article);
+
+                    model.CreatedBy = User.Identity.Name;
+                    model.CreatedDate = DateTime.Now;
+
+
+                    //model.Body = WebUtility.HtmlEncode(page.Body);
+
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    pm.ObjectId = model.Id.ToString();
+
+                    AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Work));
+                 
+                }
+
+             
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+
                 return Json(AR);
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkExists(work.Id))
+                if (!WorkExists(article.Id))
                 {
                     AR.Setfailure(Messages.HttpNotFound);
                     return Json(AR);
@@ -193,22 +238,112 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 }
             }
         }
-        
+
+        [HttpPost]
+        public JsonResult PageSizeSet(int pageSize)
+        {
+            try
+            {
+                var xmlFile = PlatformServices.Default.MapPath("/Config/WorkSettings.config");
+                XDocument doc = XDocument.Load(xmlFile);
+
+                var item = doc.Descendants("Settings").FirstOrDefault();
+                item.Element("PageSize").SetValue(pageSize);
+                doc.Save(xmlFile);
+
+
+                return Json(AR);
+            }
+            catch (Exception ex)
+            {
+                AR.Setfailure(ex.Message);
+                return Json(AR);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Copy(int id)
+        {
+
+            var article = await _context.Works.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+
+            if (article == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            article.Id = 0;
+            article.CreatedBy = User.Identity.Name;
+            article.CreatedDate = DateTime.Now;
+            article.FinishYear = DateTime.Now.Year;
+            article.Active = false;
+            article.Title = $"{article.Title}【拷贝】"; 
+
+            _context.Works.Add(article);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
         // POST: Admin/Works/Delete/5
         [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-  
-            var post = await _context.Works.FirstOrDefaultAsync(d => d.Id == id);
+     
 
-            if (post == null)
+            var c = await _context.Works.FirstOrDefaultAsync(d => d.Id == id);
+
+            if (c == null)
             {
                 AR.Setfailure(Messages.HttpNotFound);
                 return Json(AR);
             }
 
-            _context.Works.Remove(post);
+            _context.Works.Remove(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        // POST: Admin/Works/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(int[] ids)
+        {
+
+            var c = await _context.Works.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Works.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(int[] ids, bool isLock)
+        {
+
+            var c = await _context.Works.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
             await _context.SaveChangesAsync();
 
             return Json(AR);

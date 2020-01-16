@@ -26,7 +26,7 @@ namespace QNZ.Data
         public string Alias { get; set; }
         public int Importance { get; set; }
         [Required]
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         [Required]
         [StringLength(50)]
         public string CreatedBy { get; set; }

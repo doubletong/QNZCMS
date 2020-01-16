@@ -98,19 +98,27 @@ namespace QNZCMS
             services.AddTransient<IMenuCategoryServices, MenuCategoryServices>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<ICacheService, CacheService>();
+
+
             // To list physical files from a path provided by configuration:
-            var physicalProvider = new PhysicalFileProvider(Configuration.GetValue<string>("StoredFilesPath"));
+            //var physicalProvider = new PhysicalFileProvider(Configuration.GetValue<string>("StoredFilesPath"));
 
-            // To list physical files in the temporary files folder, use:
-            //var physicalProvider = new PhysicalFileProvider(Path.GetTempPath());
-            services.AddSingleton<IFileProvider>(physicalProvider);
+            //// To list physical files in the temporary files folder, use:
+            ////var physicalProvider = new PhysicalFileProvider(Path.GetTempPath());
+            //services.AddSingleton<IFileProvider>(physicalProvider);
 
+            // If using Kestrel:
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
 
-           
+            // If using IIS:
+            //services.Configure<IISServerOptions>(options =>
+            //{
+            //    options.AllowSynchronousIO = true;
+            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

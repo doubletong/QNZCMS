@@ -25,21 +25,21 @@ namespace QNZCMS.Areas.Admin.Models.Menu
         {
             var cacheKey = $"MENUS_CATEGORY_{categoryId}";
 
-            //if (_cache.IsSet(cacheKey))
-            //{
-            //    var menus = (List<QNZ.Data.Menu>)_cache.Get(cacheKey);
-            //    var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
-            //    return View("MenuList", MenuTree);
-            //}
-            //else
-            //{
+            if (_cache.IsSet(cacheKey))
+            {
+                var menus = (List<QNZ.Data.Menu>)_cache.Get(cacheKey);
+                var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
+                return View("MenuList", MenuTree);
+            }
+            else
+            {
                 var menus = await _context.Menus.AsNoTracking().Where(d => d.CategoryId == categoryId).ToListAsync();
                 _cache.Set(cacheKey, menus, SettingsManager.Site.CacheDuration);
                 var MenuTree = CreatedMenuList(menus.Where(m => m.ParentId == null), menus);
                 return View("MenuList", MenuTree);
 
-            //}
-           
+            }
+
         }
 
         private string CreatedMenuList(IEnumerable<QNZ.Data.Menu> levelMenus, IEnumerable<QNZ.Data.Menu> menus,string menuTree = "", bool isExpand = true)

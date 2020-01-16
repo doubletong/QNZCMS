@@ -1,0 +1,257 @@
+﻿@model WorkIM
+@{
+    ViewData["Title"] = "编辑作品";
+}
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <div class="card">
+        <header class="card-header">
+            <h3 class="card-title">
+                @ViewData["Title"]
+            </h3>
+        </header>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <section class="flex form-h">
+
+                <aside style="flex:initial; width: 240px;">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            缩略图
+                        </div>
+                        <div class="card-body">
+
+                            <div class="thumb" id="divThumb">
+                                <i class="iconfont icon-image" style="font-size: 3rem; "></i>
+                            </div>
+                            <input type="file" id="files" hidden
+                                   name="files" />
+
+                            <input type="button" id="btnThumbnail" class="btn btn-info btn-block" value="浏览" />
+
+                            <p class="text-center">*图片尽寸：700*700像素</p>
+                            <input asp-for="Thumbnail" type="hidden" />
+                            <span asp-validation-for="Thumbnail"></span>
+                        </div>
+                    </div>
+                </aside>
+                <div style="flex: auto;">
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SolutionId" class="control-label"></label>
+                        <select asp-for="SolutionId" class="form-control" asp-items="@ViewBag.SolutionId">
+                            <option>--请选择方案--</option>
+                        </select>
+                        <span asp-validation-for="SolutionId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ClientId" class="control-label"></label>
+                        <select asp-for="ClientId" class="form-control" asp-items="@ViewBag.ClientId">
+                            <option>--请选择客户--</option>
+                        </select>
+                        <span asp-validation-for="ClientId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FinishYear" class="control-label"></label>
+                        <input asp-for="FinishYear" class="form-control" type="number" />
+                        <span asp-validation-for="FinishYear"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Demourl" class="control-label"></label>
+                        <input asp-for="Demourl" class="form-control" />
+                        <span asp-validation-for="Demourl"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageUrl" class="control-label"></label>
+                        <input asp-for="ImageUrl" class="form-control" /> <button type="button" class="btn btn-primary" id="btnImageUrl">浏览</button>
+                        <span asp-validation-for="ImageUrl"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Body" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Body"></textarea>
+                        </div>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Abstract" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Abstract" class="form-control" style="width: 100%;"></textarea>
+                        </div>
+                        <span asp-validation-for="Abstract"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Recommend" class="control-label"></label>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Recommend" type="checkbox" />
+                            </label>
+                        </div>
+                        <span asp-validation-for="Recommend"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Active" class="control-label"></label>
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" checked type="checkbox" />
+                            </label>
+                        </div>
+                        <span asp-validation-for="Active"></span>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+@section header{
+    <style>
+
+        .thumb {
+            height: 200px;
+            margin: 0 auto 1rem;
+            line-height: 200px;
+            cursor: pointer;
+            background-color: #ddd;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+        }
+    </style>
+
+}
+@section footer {
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script>
+        var url = "@Url.Action("Index")";
+
+        tinymce.init({
+            selector: "#Body",
+            height: 300,
+            language: 'zh_CN',
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount code visualblocks visualchars insertdatetime media nonbreaking",
+                "table contextmenu directionality emoticons paste textcolor"
+            ],
+            toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect | link unlink anchor | image media | forecolor backcolor  | print preview code ",
+            image_advtab: true,
+            file_picker_callback: elFinderBrowser
+        });
+        // https://github.com/Studio-42/elFinder/wiki/Integration-with-TinyMCE-4.x
+        function elFinderBrowser(callback, value, meta) {
+            tinymce.activeEditor.windowManager.open({
+                file: '/tiny-mce/browse',
+                title: '文件管理',
+                width: 900,
+                height: 450,
+                resizable: 'yes'
+            }, {
+                    oninsert: function (file, fm) {
+                        var url, reg, info;
+                        // URL normalization
+                        url = fm.convAbsUrl(file.url);
+                        // Make file info
+                        info = file.name + ' (' + fm.formatSize(file.size) + ')';
+                        // Provide file and text for the link dialog
+                        if (meta.filetype == 'file') {
+                            callback(url, { text: info, title: info });
+                        }
+                        // Provide image and alt text for the image dialog
+                        if (meta.filetype == 'image') {
+                            callback(url, { alt: info });
+                        }
+                        // Provide alternative source and posted for the media dialog
+                        if (meta.filetype == 'media') {
+                            callback(url);
+                        }
+                    }
+                });
+            return false;
+        }
+
+
+        function SetThumbnail(fileUrl) {
+            //alert(fileUrl);
+            $('#Thumbnail').val(fileUrl);
+            $('#divThumb').css({'background-image': 'url(' + fileUrl + ')' });
+            $("#divThumb i").remove();
+
+        }
+        function SetImageUrl(fileUrl) {
+            $('#ImageUrl').val(fileUrl);
+        }
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+        $(function () {
+
+            $("#btnThumbnail").on("click", function () {
+                singleEelFinder.selectActionFunction = SetThumbnail;
+                singleEelFinder.open();
+
+            });
+            $("#btnImageUrl").on("click", function () {
+                singleEelFinder.selectActionFunction = SetImageUrl;
+                singleEelFinder.open();
+
+            });
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

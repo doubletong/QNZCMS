@@ -26,7 +26,7 @@ namespace QNZ.Data
         public string Imageurl { get; set; }
         [StringLength(150)]
         public string Demourl { get; set; }
-        public int Viewcount { get; set; }
+        public int ViewCount { get; set; }
         [StringLength(100)]
         public string Keywords { get; set; }
         public bool? Recommend { get; set; }

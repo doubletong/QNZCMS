@@ -1,0 +1,23 @@
+@model IEnumerable<QNZ.Data.Article>
+
+<section class="page-home section3" style="display:none;" >
+        <header class="se-header">
+            <h3>最新文章</h3>
+            <p>latest articles</p>
+        </header>
+    <div class="cases">
+        @foreach (var item in Model)
+        {
+            <a asp-controller="Articles" asp-action="Detail" asp-route-id="@item.Id" class="item">
+                <img src="@item.Thumbnail" alt=""/>
+                <div class="over">
+                    <div class="txt">
+                        <h3>@item.Title</h3>
+                        <p>@item.Summary</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+    <a asp-controller="Articles" asp-action="Index" >更多新闻</a>
+</section>

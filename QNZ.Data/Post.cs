@@ -25,7 +25,7 @@ namespace QNZ.Data
         public string Body { get; set; }
         [StringLength(100)]
         public string Keywords { get; set; }
-        public int Viewcount { get; set; }
+        public int ViewCount { get; set; }
         public int CategoryId { get; set; }
         [Required]
         [StringLength(50)]

@@ -1,9 +1,9 @@
-﻿using PagedList.Core;
-using SIG.Resources.Admin;
+﻿using SIG.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
@@ -52,13 +52,14 @@ namespace QNZ.Model.ViewModel
     public class WorkPageVM
     {
         public int PageIndex { get; set; }
+        public int PageSize { get; set; }
         public string Keyword { get; set; }
         public int TotalCount { get; set; }
         public int? SolutionId { get; set; }
         public StaticPagedList<WorkBVM> Works { get; set; }
     }
 
-    public class WorkIM
+    public class WorkIM:PageMetaIM
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")]

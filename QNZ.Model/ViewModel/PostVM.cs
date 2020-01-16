@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using PagedList.Core;
 using SIG.Resources.Admin;
+using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
@@ -26,16 +26,17 @@ namespace QNZ.Model.ViewModel
              public string CreatedBy { get; set; }
          }
     
-    public class PostPageVM
+    public class PostListVM
     {
         public int PageIndex { get; set; }
         public string Keyword { get; set; }     
         public int TotalCount { get; set; }
+        public int PageSize { get; set; }
         public int? CategoryId { get; set; }
         public StaticPagedList<PostBVM> Posts { get; set; }
     }
     
-    public class PostIM
+    public class PostIM:PageMetaIM
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")]
