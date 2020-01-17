@@ -1,0 +1,112 @@
+@model QNZ.Model.Front.ViewModel.PostListVM
+@{
+    ViewBag.Title = "testdddd_博客_深圳网站建设_小程序开发_公众号开发";
+    Layout = "_Layout";
+
+}
+@section Header{
+    <meta name="keywords" content="深圳网站建设,网站制作公司,网站建设公司哪家好,网站建设哪家公司好">
+    <meta name="description" content="黑鸟志拥有多年的网站建设经验，网站建设公司哪家好,网站建设哪家公司好首选深圳黑鸟志">
+}
+<section class="page-post section1">
+    <header class="se-header">
+        <h3>博客</h3>
+        <p>blog</p>
+    </header>
+
+    <div class="posts">
+        @await Component.InvokeAsync("PostCategories", new { id = Model.CategoryId })
+        <div id="postList">
+
+            @foreach (var item in Model.Posts)
+            {
+                <a asp-controller="Posts" asp-action="Detail" asp-route-id="@item.Id" class="item">
+                    <div class="pic">
+                        <img src="@(string.IsNullOrEmpty(item.Thumbnail)?"img/post_thumb.svg":item.Thumbnail)" alt="@item.Title">
+                    </div>
+                    <div class="des">
+                        <h2>@item.Title</h2>
+                        <p class="note">
+                            <span>
+                                <i class="iconfont icon-fenlei"></i> @item.Category.Title
+                            </span><span>
+                                <i class="iconfont icon-time"></i> @($"{item.CreatedDate:f}")
+                            </span><span> <i class="iconfont icon-preview"></i> @($"查看{item.ViewCount}次") </span>
+                        </p>
+                        <p class="txt">@item.Summary</p>
+                    </div>
+                </a>
+            }
+        </div>
+
+
+        <div id="loading" class="loading-container">
+            <div class="twitter-bird-animation"></div>
+            <div class="loading">
+                <span class="text">Loading</span>
+                <span class="blob1 blob"></span>
+                <span class="blob2 blob"></span>
+                <span class="blob3 blob"></span>
+            </div>
+        </div>
+
+
+        <footer class="pager">
+            <form asp-controller="Posts" asp-action="LoadPosts"
+                  data-ajax-begin="onBegin" data-ajax-complete="onComplete"
+                  data-ajax-failure="onFailed" data-ajax-success="onSuccess"
+                  data-ajax="true" data-ajax-method="POST">
+
+
+
+                <input value="1" name="page" id="page" type="hidden" />
+                <input value="@Model.CategoryId" name="cid" id="cid" type="hidden" />
+
+                <button type="submit" value="Save" class="btn btn-primary">
+                    <i class="iconfont icon-yooxi"></i>
+                </button>
+
+
+            </form>
+
+        </footer>
+
+    </div>
+</section>
+@section scripts{
+    <script src="~/lib/Microsoft.jQuery.Unobtrusive.Ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        var results = $("#postList");
+        var onBegin = function () {
+            // results.html("<img src=\"/images/ajax-loader.gif\" alt=\"Loading\" />");
+            $("#loading").fadeIn();
+        };
+
+        var onComplete = function () {
+            // results.html("");
+            $("#loading").fadeOut();
+        };
+
+        var onSuccess = function (context) {
+
+            results.append(context);
+
+            var pageIndex = $("#page").val();
+            pageIndex = parseInt(pageIndex) + 1;
+            $("#page").val(pageIndex);
+
+        };
+
+        var onFailed = function (context) {
+            //alert("Failed");
+        };
+        
+        $(document).ready(function () {
+            $(".nav__list li:nth-of-type(3)").addClass("active");
+        });
+    </script>
+    
+
+}
+
+

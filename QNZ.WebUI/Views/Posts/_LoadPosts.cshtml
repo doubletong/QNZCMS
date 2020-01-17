@@ -1,0 +1,18 @@
+@model IEnumerable<QNZ.Data.Post>
+
+ @foreach (var item in Model)
+{
+    <a asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id" class="item">
+        <div class="pic">
+            <img src="@(string.IsNullOrEmpty(item.Thumbnail)?"img/post_thumb.svg":item.Thumbnail)" alt="@item.Title">
+        </div>
+        <div class="des">
+            <h2>@item.Title</h2>
+            <p class="note">
+                <span>
+                    <i class="iconfont icon-fenlei"></i> @item.Category.Title </span><span> <i class="iconfont icon-time"></i> @($"{item.CreatedDate:f}")
+                </span><span> <i class="iconfont icon-preview"></i> @($"查看{item.ViewCount}次") </span></p>
+            <p class="txt">@item.Summary</p>
+        </div>
+    </a>
+}

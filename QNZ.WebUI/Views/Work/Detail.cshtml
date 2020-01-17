@@ -1,0 +1,55 @@
+@model QNZ.Model.Front.ViewModel.WorkDetailVM
+
+@{
+    ViewBag.Title = $"{Model.WorkDetail.Title}_深圳网站建设_深圳高端网站建设_深圳网页设计" ;
+    Layout = "_Layout";
+}
+
+<section class="page-case section2">
+    <header class="se-title">
+        <h3>@Model.WorkDetail.Title</h3>
+    </header>
+    <div class="work-banner">
+        <img src="@Model.WorkDetail.Imageurl" alt="@Model.WorkDetail.Title">
+    </div>
+    <div class="case-detail">
+        <div class="detail-note">
+            <span><i class="iconfont icon-fenlei"></i> @Model.WorkDetail.Solution.Title </span>
+            <span> <i class="iconfont icon-time"></i> @($"{Model.WorkDetail.CreatedDate:yyyy-M-d ddddß}") </span>
+            <span> <i class="iconfont icon-preview"></i> @($"查看{Model.WorkDetail.ViewCount}次")  </span>
+            <span> <i class="iconfont icon-homepage"></i> <a href="@Model.WorkDetail.Demourl">@Model.WorkDetail.Demourl</a>  </span>
+            </div>
+        
+        @Html.Raw(Model.WorkDetail.Body)
+
+        
+        <footer class="pager detail-pager">
+            @if (Model.WorkPrev != null)
+            {
+                <div class="prev">
+                    <a asp-controller="Work" asp-action="Detail" asp-route-id="@Model.WorkPrev.Id" title="@Model.WorkPrev.Title"><i class="iconfont icon-left"></i></a>
+                </div>
+            }
+            @if (Model.WorkNext != null)
+            {
+                <div class="next">
+                    <a asp-controller="Work" asp-action="Detail" asp-route-id="@Model.WorkNext.Id" title="@Model.WorkNext.Title"><i class="iconfont icon-right"></i></a>
+                </div>
+            }
+              
+        </footer>
+
+    </div>
+
+
+</section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".nav__list li:nth-of-type(2)").addClass("active");
+
+        });
+    </script>
+}

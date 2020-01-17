@@ -23,6 +23,7 @@
     <Compile Remove="Areas\Admin\Views\Stores\**" />
     <Compile Remove="Areas\Admin\Views\Team\**" />
     <Compile Remove="Areas\Admin\Views\Works000\**" />
+    <Compile Remove="Data\**" />
     <Compile Remove="Utilities\PagedList\**" />
     <Compile Remove="Views\News\**" />
     <Content Remove="Areas\Admin\Views\Articles1\**" />
@@ -41,6 +42,7 @@
     <Content Remove="Areas\Admin\Views\Stores\**" />
     <Content Remove="Areas\Admin\Views\Team\**" />
     <Content Remove="Areas\Admin\Views\Works000\**" />
+    <Content Remove="Data\**" />
     <Content Remove="Utilities\PagedList\**" />
     <Content Remove="Views\News\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Articles1\**" />
@@ -59,6 +61,7 @@
     <EmbeddedResource Remove="Areas\Admin\Views\Stores\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Team\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Works000\**" />
+    <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Utilities\PagedList\**" />
     <EmbeddedResource Remove="Views\News\**" />
     <None Remove="Areas\Admin\Views\Articles1\**" />
@@ -77,6 +80,7 @@
     <None Remove="Areas\Admin\Views\Stores\**" />
     <None Remove="Areas\Admin\Views\Team\**" />
     <None Remove="Areas\Admin\Views\Works000\**" />
+    <None Remove="Data\**" />
     <None Remove="Utilities\PagedList\**" />
     <None Remove="Views\News\**" />
   </ItemGroup>
@@ -115,15 +119,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="X.PagedList" Version="7.9.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />

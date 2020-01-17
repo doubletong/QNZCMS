@@ -1,0 +1,81 @@
+@model QNZ.Model.Front.ViewModel.PostDetailVM
+
+@{
+    ViewBag.Title = $"{Model.PostDetail.Title}_深圳高端网站_深圳网站建设_响应式网站";
+    Layout = "_Layout";
+}
+
+@section Header{
+
+    <meta name="keywords" content="@Model.PostDetail.Keywords"/>
+    <meta name="description" content="@Model.PostDetail.Summary"/>
+    <link href="~/lib/social-share/dist/css/share.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/hightlight/default.min.css">
+  
+}
+<section class="page-post section2">
+    <header class="se-title">
+        <h3>@Model.PostDetail.Title</h3>
+
+    </header>
+    <p class="detail-note">
+        <span>
+            <i class="iconfont icon-user1"></i> @Model.PostDetail.CreatedBy </span>
+        <span>
+            <i class="iconfont icon-fenlei"></i> @Model.PostDetail.Category.Title </span>
+            
+        <span> <i class="iconfont icon-time"></i> @($"{Model.PostDetail.CreatedDate:f}") </span><span> <i class="iconfont icon-preview"></i> @($"查看{Model.PostDetail.ViewCount}次") </span></p>
+    <div class="posts">
+        @await Component.InvokeAsync("PostCategories")
+
+        <article>
+            @Html.Raw(Model.PostDetail.Body)
+        </article>
+
+        <div class="social-share" data-initialized="true" data-source="http://heiniaozhi.cn" data-image="@Model.PostDetail.Thumbnail"
+             data-title="@Model.PostDetail.Title" data-description="@Model.PostDetail.Summary">
+           
+            <a href="#" class="social-share-icon icon-weibo"></a>
+            <a href="#" class="social-share-icon icon-qq"></a>
+            <a href="#" class="social-share-icon icon-qzone"></a>
+            <a href="#" class="social-share-icon icon-wechat"></a>
+             <a href="#" class="social-share-icon icon-twitter"></a>
+             <a href="#" class="social-share-icon icon-facebook"></a>
+        </div>
+
+    
+        <footer class="pager detail-pager">
+            @if (Model.PostPrev != null)
+            {
+                <div class="prev">
+                    <a asp-controller="Posts" asp-action="Detail" asp-route-id="@Model.PostPrev.Id" title="@Model.PostPrev.Title"><i class="iconfont icon-left"></i></a>
+                </div>
+            }
+            @if (Model.PostNext != null)
+            {
+                <div class="next">
+                    <a asp-controller="Posts" asp-action="Detail" asp-route-id="@Model.PostNext.Id" title="@Model.PostNext.Title"><i class="iconfont icon-right"></i></a>
+                </div>
+            }
+              
+        </footer>
+
+    </div>
+  
+</section>
+
+
+
+@section Scripts{
+    <script src="~/lib/social-share/dist/js/share.min.js"></script>
+    <script src="~/lib/hightlight/highlight.min.js"></script>
+    
+    <script>
+        hljs.initHighlightingOnLoad();
+        
+        $(document).ready(function () {
+            $(".nav__list li:nth-of-type(3)").addClass("active");
+        });
+    </script>
+  
+}

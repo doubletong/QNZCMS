@@ -1,0 +1,63 @@
+@model IEnumerable<QNZ.Data.Work>
+
+
+@{
+    ViewBag.Title = "案例";
+    Layout = "_Layout";
+
+    int year = (int)ViewData["Year"];
+}
+
+@section Header{
+    <meta name="keywords" content="网站制作公司,网站建设公司哪家好,网站建设哪家公司好">
+    <meta name="description" content="黑鸟志拥有多年的网站建设经验，网站建设公司哪家好,网站建设哪家公司好首选深圳黑鸟志">
+}
+<section class="page-case section1">
+    <header class="se-header">
+        <h3>案例展示</h3>
+        <p>work</p>
+    </header>
+    <nav class="categores">
+        <ul>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2019" class="@(2019==year?"active":"")">2019</a></li>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2018" class="@(2018==year?"active":"")">2018</a></li>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2017" class="@(2017==year?"active":"")">2017</a></li>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2016" class="@(2016==year?"active":"")">2016</a></li>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2015" class="@(2015==year?"active":"")">2015</a></li>
+            <li><a asp-controller="Work" asp-action="Index" asp-route-year="2014" class="@(2014==year?"active":"")">2014</a></li>
+        </ul>
+    </nav>
+    <div class="cases">
+
+        @foreach (var item in Model)
+        {
+            <a asp-controller="Work" asp-action="Detail" asp-route-id="@item.Id" class="item">
+                <img src="@item.Thumbnail" alt="@item.Title" />
+                <div class="over">
+                    <div class="txt">
+                        <h3>@item.Title</h3>
+                        <p>@item.Demourl</p>
+                    </div>
+                </div>
+            </a>
+        }
+
+
+    </div>
+    <footer class="pager">
+        <a href="javascript:void();"><i class="iconfont icon-yooxi"></i></a>
+    </footer>
+</section>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+        
+
+            $(".nav__list li:nth-of-type(2)").addClass("active");
+
+        });
+    </script>
+}
