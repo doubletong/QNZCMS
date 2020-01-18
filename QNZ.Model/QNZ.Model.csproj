@@ -16,4 +16,7 @@
     <ProjectReference Include="..\SIG.Resources\SIG.Resources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Front\ViewModel\WorkDetailVM.cs" />
+  </ItemGroup>
 </Project>

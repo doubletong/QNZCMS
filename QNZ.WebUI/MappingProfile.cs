@@ -106,6 +106,11 @@ namespace QNZCMS
             CreateMap<Work, WorkBVM>()
             .ForMember(d => d.SolutionTitle, opt => opt.MapFrom(source => source.Solution.Title))
             .ForMember(d => d.ClientName, opt => opt.MapFrom(source => source.Client.ClientName));
+
+            CreateMap<Work, WorkFVM>()
+           .ForMember(d => d.SolutionTitle, opt => opt.MapFrom(source => source.Solution.Title))
+           .ForMember(d => d.ClientName, opt => opt.MapFrom(source => source.Client.ClientName));
+
             CreateMap<Work, WorkIM>();
             CreateMap<WorkIM, Work>();
 

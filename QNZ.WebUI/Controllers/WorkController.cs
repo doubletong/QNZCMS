@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
-using QNZ.Model.Front.ViewModel;
+using QNZ.Model.ViewModel;
 
 namespace QNZCMS.Controllers
 {
@@ -21,16 +23,24 @@ namespace QNZCMS.Controllers
 
         }
         // GET
-        public async Task<IActionResult> Index(int year = 2018)
+        public async Task<IActionResult> Index(int year = 2019)
         {
-            var query = _context.Works.AsNoTracking()
-                .Where(d => d.Active);
-           
-            query = query.Where(d => d.FinishYear == year);
+            var vm = new WorkPageFVM
+            {
+                Year = year,
+                Years = await _context.Works.AsNoTracking()
+                    .OrderByDescending(d => d.FinishYear)
+                    .Select(d=>d.FinishYear.Value).Distinct().ToListAsync(),
+                Works = await _context.Works.AsNoTracking()
+                    .Where(d => d.Active && d.FinishYear == year)
+                    .OrderByDescending(d => d.Id)
+                    .ProjectTo<WorkFVM>(_mapper.ConfigurationProvider).ToListAsync()
+
+            };        
             
-            var works = await query.OrderByDescending(d => d.Id).ToListAsync();
-            ViewData["Year"] = year;
-            return View(works);
+           
+            //ViewData["Year"] = year;
+            return View(vm);
         }
         public async Task<IActionResult> Detail(int id)
         {
