@@ -50,7 +50,7 @@ namespace QNZCMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<YicaiyunContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection_MacOS"),
                      b => b.MigrationsAssembly("QNZCMS")));
 
             //services.AddDbContext<ApplicationDbContext>(options =>

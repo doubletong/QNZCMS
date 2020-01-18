@@ -83,6 +83,8 @@
     <None Remove="Data\**" />
     <None Remove="Utilities\PagedList\**" />
     <None Remove="Views\News\**" />
+    <Content Remove="wwwroot\css\styles.scss" />
+    <Content Remove="wwwroot\css\EmptySCSSFile.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -197,4 +199,10 @@
     <ProjectReference Include="..\QNZ.Services\QNZ.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="wwwroot\css\styles.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -28,9 +28,8 @@ namespace QNZCMS.Controllers
             var vm = new WorkPageFVM
             {
                 Year = year,
-                Years = await _context.Works.AsNoTracking()
-                    .OrderByDescending(d => d.FinishYear)
-                    .Select(d=>d.FinishYear.Value).Distinct().ToListAsync(),
+                Years = await _context.Works.AsNoTracking().Where(d=>d.Active)                    
+                    .Select(d=>d.FinishYear.Value).Distinct().OrderByDescending(c => c).ToListAsync(),
                 Works = await _context.Works.AsNoTracking()
                     .Where(d => d.Active && d.FinishYear == year)
                     .OrderByDescending(d => d.Id)
