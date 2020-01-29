@@ -1,0 +1,15 @@
+@model IEnumerable<QNZ.Data.Navigation>
+@{
+    var url = Context.Request.Path;
+}
+    <div class="nav">
+        <div class="nav__content">
+            <ul class="nav__list">
+                @foreach (var item in Model)
+                {
+                    <li class="nav_list-item @(url==item.Url?"active":"")"><a href="@item.Url">@item.Title</a></li>
+                }
+           
+            </ul>
+        </div>
+    </div>

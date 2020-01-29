@@ -4,7 +4,6 @@
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/admin/fonts/iconfont.css" rel="stylesheet" />
     <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/admin/css/main.css" rel="stylesheet" />
@@ -54,10 +53,8 @@
                 @RenderBody()
             </div>
 
-            <footer id="pagefooter" class="page-footer">
-                Copyright &copy; 2012 <a id="hlSiteInfo" href="@SIG.Infrastructure.Configs.SettingsManager.Site.SiteDomainName">@SIG.Infrastructure.Configs.SettingsManager.Site.SiteName</a> All Rights
-                Reserved
-            </footer>
+            <partial href="_footer" />
+           
 
         </div>
     </div>

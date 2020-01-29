@@ -65,11 +65,11 @@ namespace QNZCMS
                 //请求Url
                 var questUrl = httpContext.Request.Path.Value.ToLower();
 
-                //登陆用户为admin 直接跳过
+             
                 if (isAuthenticated)
                 {
                     var currentUser = httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Name)?.Value;
-
+                    //登陆用户为admin 直接跳过
                     if (currentUser == "admin")
                     {
                         context.Succeed(requirement);
@@ -128,10 +128,7 @@ namespace QNZCMS
 
 
             }
-
-
-
-
+            
           
             return Task.CompletedTask;
         }

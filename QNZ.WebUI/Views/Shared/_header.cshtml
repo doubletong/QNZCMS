@@ -8,14 +8,4 @@
     <span class="menu-icon__line menu-icon__line-right"></span>
 </div>
 
-<div class="nav">
-    <div class="nav__content">
-        <ul class="nav__list">
-            <li class="nav__list-item"><a asp-controller="Home" asp-action="Index">首页</a></li>
-            <li class="nav__list-item"><a asp-controller="Work" asp-action="Index">案例</a></li>
-            <li class="nav__list-item"><a asp-controller="Posts" asp-action="Index">博客</a></li>
-            <li class="nav__list-item"><a asp-controller="About" asp-action="Index">关于</a></li>
-            <li class="nav__list-item"><a asp-controller="Contact" asp-action="Index">联系</a></li>
-        </ul>
-    </div>
-</div>
+@await Component.InvokeAsync("SiteNav",new { categoryId = 1})

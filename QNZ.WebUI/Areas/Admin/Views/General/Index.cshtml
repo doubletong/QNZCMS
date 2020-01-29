@@ -85,7 +85,7 @@
                     <div class="col-md-10">
                         @if (!string.IsNullOrEmpty(Model.LoginLogo))
                         {
-                            <img src='@Model.LoginLogo' id="imgLoginLogo" class="img-thumbnail m-b-10" style="max-width:200px; " />
+                            <img src='@Model.LoginLogo' id="imgLoginLogo" class="img-thumbnail m-b-10" style="max-width:200px; background-color:#333;" />
                         }
                         <div class="input-group">
                             @Html.TextBoxFor(model => model.LoginLogo, new { @class = "form-control" })
@@ -183,18 +183,17 @@
 
 
         $(function () {
-                $("#btnDashboardLogo").on("click", function () {
-                    singleEelFinder.selectActionFunction = SetDashboardLogo;
-                    singleEelFinder.open();
+            $("#btnDashboardLogo").on("click", function () {
+                    QNZ.selectActionFunction = SetDashboardLogo;
+                    QNZ.open();
+                  
+            });
 
-                });
-
-                $("#btnLoginLogo").on("click", function () {
-                    singleEelFinder.selectActionFunction = SetLoginLogo;
-                    singleEelFinder.open();
-
-                });
-
+            $("#btnLoginLogo").on("click", function () {            
+                QNZ.selectActionFunction = SetLoginLogo;
+                QNZ.open();
+            });
+        
 
         });
         </script>

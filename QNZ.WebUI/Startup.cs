@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using SIG.Infrastructure.Cache;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace QNZCMS
 {
@@ -50,7 +52,7 @@ namespace QNZCMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<YicaiyunContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection_MacOS"),
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                      b => b.MigrationsAssembly("QNZCMS")));
 
             //services.AddDbContext<ApplicationDbContext>(options =>
@@ -64,9 +66,9 @@ namespace QNZCMS
                 .AddCookie( options =>
            {
                options.Cookie.Name = "QNZAUTH";
-               options.LoginPath = new PathString("/Account/LogIn");
-               options.LogoutPath = new PathString("/Account/LogOff");
-               options.AccessDeniedPath = new PathString("/Errors/AccessDenied");
+               options.LoginPath = new PathString("/account/login");
+               options.LogoutPath = new PathString("/account/logout");
+               options.AccessDeniedPath = new PathString("/errors/accessdenied");
                options.ExpireTimeSpan = TimeSpan.FromDays(1);
                options.SlidingExpiration = false;
            });
@@ -124,17 +126,58 @@ namespace QNZCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseDatabaseErrorPage();
+            //}
+            //else
+            //{
+                // app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                // app.UseHsts();
+
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
+                app.UseExceptionHandler("/errors/500");
+                app.Use(async (context, next) =>
+                {
+                    if (context != null)
+                    {
+                        await next();
+                        var code = context.Response.StatusCode;
+
+                        var newPath = new PathString("/errors/" + code);
+                        var originalPath = context.Request.Path;
+                        var originalQueryString = context.Request.QueryString;
+                        context.Features.Set<IStatusCodeReExecuteFeature>(new StatusCodeReExecuteFeature()
+                        {
+                            OriginalPathBase = context.Request.PathBase.Value,
+                            OriginalPath = originalPath.Value,
+                            OriginalQueryString = originalQueryString.HasValue ? originalQueryString.Value : null,
+                        });
+
+                        // An endpoint may have already been set. Since we're going to re-invoke the middleware pipeline we need to reset
+                        // the endpoint and route values to ensure things are re-calculated.
+
+                        context.SetEndpoint(endpoint: null);
+                        var routeValuesFeature = context.Features.Get<IRouteValuesFeature>();
+                        routeValuesFeature?.RouteValues?.Clear();
+
+                        context.Request.Path = newPath;
+                        try
+                        {
+                            await next();
+                        }
+                        finally
+                        {
+                            context.Request.QueryString = originalQueryString;
+                            context.Request.Path = originalPath;
+                            context.Features.Set<IStatusCodeReExecuteFeature>(null);
+                        }
+                    }
+                    await next();
+                });
+            //}
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
 

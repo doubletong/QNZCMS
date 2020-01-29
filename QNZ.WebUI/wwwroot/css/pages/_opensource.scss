@@ -1,0 +1,59 @@
+﻿.page-opensource {
+    .row{
+        .col-md-auto{
+            height:100%;
+        }
+    }
+    .nav-os {
+        background-color: #f7f7f7;
+        height:100%;
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position:sticky;
+
+            li {
+                a {
+                    display: block;
+                    padding: 1rem;
+                    color:#333;
+                    font-size:rem(14);
+                    &.active{
+                        background-color:#000;
+                        color:#fff;
+                    }
+                    &:hover{
+                        text-decoration:none;
+                        background-color:#000;
+                        color:#fff;
+                    }
+                }
+            }
+        }
+    }
+    .content{
+        p{
+            text-indent:2em;
+        }
+    }
+
+    .oslist {
+        margin-bottom:1rem;
+        .box {
+            padding: 1rem;
+       
+            background-color: #fff;
+            box-shadow: 0 0 16px rgba(0,0,0,.10);
+            text-align: center;
+            a{
+                .iconfont{
+                    font-size:2rem;
+                }
+                &:hover{
+                    text-decoration:none;
+                }
+            }
+        }
+    }
+}

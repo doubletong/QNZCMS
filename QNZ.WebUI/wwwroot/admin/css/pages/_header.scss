@@ -1,0 +1,36 @@
+
+.site-header {
+    background-image: -webkit-gradient(linear,right top, left top,from(rgba(51,148,225,.18)),to(transparent));
+    background-image: linear-gradient(270deg,rgba(51,148,225,.18),transparent);
+    background-color: rgba(255, 255, 255, 0.1);
+ 
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 50px;
+    box-shadow: 0 0 12px rgba(0,0,0,.15);
+    @include mq(md){
+        height: 65px;
+    }
+
+
+
+    .logo{
+        padding-top: .4rem;
+        @include mq(md){
+            padding-top: .6rem;
+        }
+        img{
+            height: 36px;
+            @include mq(md){
+                height: 46px;
+            }
+        }
+    
+    }
+        
+    
+
+}

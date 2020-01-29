@@ -1,4 +1,6 @@
 ﻿
+@import "bootstrap/bootstrap.scss";
+@import "utilities/_index.scss";
 @import "_variables.scss";
 @import "themes/_default.scss";
 
@@ -13,12 +15,16 @@
 @import "_tree.scss";
 @import "_table.scss";
 @import "_form.scss";
-@import "_button.scss";
 @import "_card.scss";
 @import "_pagination.scss";
 @import "_tag.scss";
 @import "_animate.scss";
 @import "_modal.scss";
+
+@import "pages/_header.scss";
+@import "pages/_login.scss";
+@import "pages/_footer.scss";
+
 html {
     height: 100%;
 }
@@ -48,12 +54,6 @@ a:hover {
     }
 }
 
-footer.page-footer {
-    text-align: center;
-    height: 35px;
-    line-height: 35px;
-    font-size: 11px;
-}
 
 .badge-primary {
     background-color: $colorAssistant;
