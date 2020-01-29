@@ -9,6 +9,10 @@
     {
       "library": "holder@2.9.6",
       "destination": "wwwroot/plugins/holder"
+    },
+    {
+      "library": "highlight.js@9.15.10",
+      "destination": "wwwroot/plugins/hightlight"
     }
   ]
 }
