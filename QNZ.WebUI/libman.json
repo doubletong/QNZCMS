@@ -13,6 +13,10 @@
     {
       "library": "highlight.js@9.15.10",
       "destination": "wwwroot/plugins/hightlight"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/plugins/toastr"
     }
   ]
 }

@@ -330,33 +330,38 @@ namespace SIG.Infrastructure.Helper
 
         public static void MakeThumbnail2(string originalImagePath, string thumbnailPath, int width, int height)
         {
-            Image originalImage = Image.FromFile(originalImagePath);
-
-            var orgWidth = originalImage.Width;
-            int orgHeight = originalImage.Height;
-
-            double tempHeight = orgHeight / (orgWidth / width);
-            double tempWidth;
-            if (tempHeight > height)
+            if (Path.GetExtension(originalImagePath) != ".svg")
             {
-                tempWidth = orgWidth / (orgHeight / height);
-                tempHeight = height;
-            }
-            else
-            {
-                tempWidth = width;
-            }
-          
+                Image originalImage = Image.FromFile(originalImagePath);
+
+                var orgWidth = originalImage.Width;
+                int orgHeight = originalImage.Height;
+
+                double tempHeight = orgHeight / (orgWidth / width);
+                double tempWidth;
+                if (tempHeight > height)
+                {
+                    tempWidth = orgWidth / (orgHeight / height);
+                    tempHeight = height;
+                }
+                else
+                {
+                    tempWidth = width;
+                }
 
 
-            FileInfo fi = new FileInfo(thumbnailPath);
-            if (!fi.Directory.Exists)
-            {
-                Directory.CreateDirectory(fi.DirectoryName);
+
+                FileInfo fi = new FileInfo(thumbnailPath);
+                if (!fi.Directory.Exists)
+                {
+                    Directory.CreateDirectory(fi.DirectoryName);
+                }
+                Image thumb = originalImage.GetThumbnailImage((int)tempWidth, (int)tempHeight, () => false, IntPtr.Zero);
+                thumb.Save(thumbnailPath);
+                originalImage.Dispose();
             }
-            Image thumb = originalImage.GetThumbnailImage((int)tempWidth, (int)tempHeight, () => false, IntPtr.Zero);
-            thumb.Save(thumbnailPath);
-            originalImage.Dispose();
+
+            
         }
 
 

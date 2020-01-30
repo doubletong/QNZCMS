@@ -87,6 +87,7 @@
         url = url;
         var baseUrl = "/Uploads/";
 
+    
         if (url.startsWith(baseUrl)) {
             var dir = url.split("/");
             var index = url.indexOf(dir[dir.length - 1]) - 1;
@@ -269,7 +270,7 @@
     var clickCoordsY;
 
     var menu = document.querySelector("#context-menu");
-    var menuItems = menu.querySelectorAll(".context-menu__item");
+    //var menuItems = menu.querySelectorAll(".context-menu__item");
     var menuState = 0;
     var menuWidth;
     var menuHeight;
@@ -419,15 +420,13 @@
                         //  data: JSON.stringify({filePath: filePath }),
                         dataType: 'json',
                         success: function (result) {
-                            if (result.status === "1") {
-                                //    toastr.success("创建新目录", "创建目录")
-                                var li = taskItemInContext.closest("li");
+                            if (result.status === 1) {
 
+                                toastr.success(result.message, "创建目录")
+                                var li = taskItemInContext.closest("li");
                                 var urlDir = "/admin/qnzfinder/GetSubDirectories?dir=" + filePath;
                                 SIG.getInstance().getSubDirectories(urlDir, $(li));
-                                //} else if (result === "NO") {
-                                //    toastr.warning("此目录已存在！", "创建目录")
-                                //}
+                                              
                             }
                             else {
                                 toastr.error(result.message, "创建目录");
@@ -439,7 +438,7 @@
 
                 break;
             case "delete":
-                debugger;
+            
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
@@ -448,20 +447,18 @@
                     dataType: 'json',
                     success: function (result) {
                      
-                        if (result === "OK") {                        
+                        if (result.status === 1) {     
+                            toastr.success(result.message, "删除目录")
                             var li = taskItemInContext.closest("li"), parentLi = $(li).closest("ul").closest("li"),
                             parentPath = $(li).closest("ul").prevAll("a:first").attr("data-path");
-
-                        //    console.log(parentLi);
 
                             var urlDir = "/admin/qnzfinder/GetSubDirectories?dir=" + parentPath
                             SIG.getInstance().getSubDirectories(urlDir, parentLi);
 
-                        } else if (result === "NO") {
-                            toastr.warning("此目录还有文件存在！", "删除目录")
+               
                         }
                         else {
-                            toastr.error(result, "删除目录")
+                            toastr.error(result.message, "删除目录")
                         }
 
                     }
@@ -476,7 +473,7 @@
                 if (newName!=null) {
                     var index = filePath.length - dirName.length;
                     var newPath = filePath.substr(0,index) + newName;
-                    debugger;
+                 
                   
                     $.ajax({
                         type: "POST",
@@ -485,18 +482,18 @@
                         //  data: JSON.stringify({filePath: filePath }),
                         dataType: 'json',
                         success: function (result) {
-                            if (result === "OK") {
+                            if (result.status === 1) {
+                                toastr.success(result.message, "重命名目录")
                                 var li = taskItemInContext.closest("li"), parentLi = $(li).closest("ul").closest("li"),
                                 parentPath = $(li).closest("ul").prevAll("a:first").attr("data-path");
 
                                 var urlDir = "/admin/qnzfinder/GetSubDirectories?dir=" + parentPath
                                 SIG.getInstance().getSubDirectories(urlDir, parentLi);
 
-                            } else if (result === "NO") {
-                                toastr.warning("此目录名已经存在！", "重命名目录")
+                        
                             }
                             else {
-                                toastr.error(result, "重命名目录")
+                                toastr.error(result.message, "重命名目录")
                             }
 
                         }

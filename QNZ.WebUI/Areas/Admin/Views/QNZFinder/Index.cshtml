@@ -19,7 +19,7 @@
                 <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-trash"></span></button>--%>*@
         </nav>
         <aside id="dirbody">
-            <ul class="list-unstyled" id="dirTree"></ul>
+            <ul class="dirTree" id="dirTree"></ul>
 
             <nav id="context-menu" class="context-menu">
                 <ul class="context-menu__items">
@@ -74,16 +74,16 @@
 
 
         </div>
-
-        <div id="fileList" class="row">
+        <div class="filelist-container">
+            <div id="fileList" class="fileList">
+            </div>
         </div>
-
     </div>
 </div>
 
 
 @section header{
-    <link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+    <link href="~/plugins/QNZFinder/QNZFinder.min.css" rel="stylesheet" />
 
     <style>
         .thumb {
@@ -106,7 +106,7 @@
 
 
 
-    <script src="/Plugins/SigFinder/FileManager.js"></script>
+    <script src="/Plugins/QNZFinder/FileManager.js"></script>
 
 
     <script>

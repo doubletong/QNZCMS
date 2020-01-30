@@ -279,7 +279,7 @@ var singleEelFinder = {
         this.selectActionFunction(fileUrl);
     },
     open: function() {
-        var w = 800,
+        var w = 1140,
             h = 600; // default sizes
         if (window.screen) {
             w = window.screen.width * this.percent / 100;
@@ -344,7 +344,7 @@ var QNZ = {
         this.selectActionFunction(fileUrl);
     },
     open: function () {
-        var w = 800,
+        var w = 1140,
             h =600; // default sizes
         if (window.screen) {
             w = window.screen.width * this.percent / 100;
@@ -376,7 +376,7 @@ var QNZ = {
         tinyMCE.activeEditor.windowManager.openUrl({
             url: finderUrl,
             title: 'QNZFinder 1.0 文件管理',
-            width: 960,
+            width: 1140,
             height: 700
             // onMessage: function (api, data) {
             //     if (data.mceAction === 'FileSelected') {

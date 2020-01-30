@@ -155,6 +155,7 @@
         function onSuccessSave(data) {
             if (data.status == 1) {
                 var url = "@Url.Action("Index")";
+             
                 toastr.success(data.message);
                 location.href = url;
 

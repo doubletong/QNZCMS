@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
+    [Authorize]
     public class QNZFinderController : Controller
     {
         private IWebHostEnvironment _hostingEnvironment;
@@ -60,6 +62,60 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             var vm = GetDirectories(rootPath, _rootDirectory);
             return Json(vm);
+        }
+
+        
+
+        /// <summary>
+        /// 获取当前目录
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult CurrentDirectories(string currentDir)
+        {
+            if (!currentDir.Contains(_rootDirectory))
+                return null;
+
+            var directories = currentDir.Split("/");
+            directories = directories.Where(d => d != string.Empty).ToArray();
+
+            if (directories.Any())
+            {
+                
+                var rootPath = _hostingEnvironment.WebRootPath + _rootDirectory.Replace('/', '\\');
+                if (!Directory.Exists(rootPath))
+                {
+                    Directory.CreateDirectory(rootPath);
+                }
+
+                var vm = GetCurrentDirectories(_rootDirectory, currentDir);
+                return Json(vm);
+            }
+
+          
+            return null;
+        }
+
+        /// <summary>
+        /// 获取多级目录
+        /// </summary>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
+        public IEnumerable<DirectoryVM> GetCurrentDirectories(string targetPath, string fullPath)
+        {
+            //   !Directory.EnumerateFiles(filePath).Any() && !Directory.EnumerateDirectories(filePath).Any();
+            var rootPath = _hostingEnvironment.WebRootPath + targetPath.Replace('/', '\\');
+
+            return new DirectoryInfo(rootPath).GetDirectories()
+                 .Where(dir => !dir.Name.StartsWith("_")).Select(dir => new DirectoryVM
+                 {
+                     Name = dir.Name,
+                     DirPath = string.Format("{0}/{1}", targetPath, dir.Name),
+                     HasChildren = Directory.EnumerateDirectories(Path.Combine(rootPath, dir.Name)).Any(),
+                     Children = GetCurrentDirectories(string.Format("{0}/{1}", targetPath, dir.Name), fullPath),
+                     IsOpen = fullPath.StartsWith(string.Format("{0}/{1}", targetPath, dir.Name))
+                 });
+           
         }
 
         // GET: api/FileManager/RootDirFiles
@@ -238,8 +294,11 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-             
-                filePath = Path.Combine(_hostingEnvironment.WebRootPath, filePath);
+
+
+                filePath = $"{_hostingEnvironment.WebRootPath}{filePath.Replace('/', '\\')}";
+
+               // filePath = Path.Combine(_hostingEnvironment.WebRootPath, filePath);
                 if (!Directory.Exists(filePath))
                 {
                     return Json(new { status = 2, message = "此目录不存在" });
@@ -277,8 +336,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 newFilePath = newFilePath.Replace(" ", "_");
 
-                filePath = Path.Combine(_hostingEnvironment.WebRootPath, filePath);
-                newFilePath = Path.Combine(_hostingEnvironment.WebRootPath,  newFilePath);
+                filePath = $"{_hostingEnvironment.WebRootPath}{filePath.Replace('/', '\\')}"; ;
+                newFilePath = $"{_hostingEnvironment.WebRootPath}{newFilePath.Replace('/', '\\')}";  
 
                 //   var response = Request.CreateResponse(HttpStatusCode.OK, "OK");
 
@@ -317,6 +376,9 @@ namespace QNZCMS.Areas.Admin.Controllers
                 });
         }
 
+
+       
+
         /// <summary>
         /// 获取文件列表
         /// </summary>
@@ -340,7 +402,8 @@ namespace QNZCMS.Areas.Admin.Controllers
                     CreatedDate = f.CreationTime.ToString(),
                     FilePath = string.Format("{0}/{1}", webPath, f.Name),
                     FileSize = f.Length / 1024,
-                    ImgUrl = ".jpg.png.gif".Contains(f.Extension.Replace(".", "").ToLower()) ? string.Format("{0}/{1}", _thumbPath, f.Name) : string.Format("{0}/{1}.png", _extensionDir, f.Extension.Replace(".", ""))
+                   // ImgUrl = ".jpg.png.gif.svg.webp".Contains(f.Extension.Replace(".", "").ToLower()) ? string.Format("{0}/{1}", _thumbPath, f.Name) : string.Format("{0}/{1}.png", _extensionDir, f.Extension.Replace(".", ""))
+                    ImgUrl = GetFilePath(f.Extension,f.Name,_thumbPath,webPath)
                 });
 
             foreach(var item in vm)
@@ -356,6 +419,25 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
 
             return vm;
+        }
+
+        public string GetFilePath(string ext,string fileName,string thumbPath,string webPath)
+        {
+            
+            switch (ext)
+            {
+                case ".jpg":
+                case ".png":
+                case ".gif":
+                    return string.Format("{0}/{1}", thumbPath, fileName);
+                //break;
+                case ".svg":
+                    return string.Format("{0}/{1}", webPath, fileName);
+                default:
+                    return string.Format("{0}/{1}.png", _extensionDir, ext.Replace(".", ""));
+
+            }
+            
         }
 
         /// <summary>

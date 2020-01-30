@@ -11,6 +11,8 @@ namespace QNZ.Model
         public string Name { get; set; }
         public string DirPath { get; set; }
         public bool HasChildren { get; set; }
+        public bool IsOpen { get; set; }
+        public IEnumerable<DirectoryVM> Children { get; set; }
     }
 
     public class FileVM

@@ -83,6 +83,8 @@
     <None Remove="Data\**" />
     <None Remove="Utilities\PagedList\**" />
     <None Remove="Views\News\**" />
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\admin\js\App.min.js" />
     <Content Remove="wwwroot\css\EmptySCSSFile.scss" />
   </ItemGroup>
 
@@ -114,6 +116,10 @@
     <Content Remove="Areas\Admin\Views\Navigation\_MenuList.cshtml" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Views\Account\Register.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\admin\js\App.min.js" />
   </ItemGroup>
 
 
@@ -149,6 +155,7 @@
     <None Include="Areas\Admin\Views\Articles\Edit.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Details.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
+    <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\admin\css\bootstrap\bootstrap-grid.scss" />
     <None Include="wwwroot\admin\css\bootstrap\bootstrap-reboot.scss" />
@@ -239,6 +246,7 @@
     <None Include="wwwroot\admin\css\bootstrap\_type.scss" />
     <None Include="wwwroot\admin\css\bootstrap\_utilities.scss" />
     <None Include="wwwroot\admin\css\bootstrap\_variables.scss" />
+    <None Include="wwwroot\admin\js\App.min.js" />
     <None Include="wwwroot\Config\AdsSettings.config" />
     <None Include="wwwroot\Config\AlbumSettings.config" />
     <None Include="wwwroot\Config\AnnouncementSettings.config" />

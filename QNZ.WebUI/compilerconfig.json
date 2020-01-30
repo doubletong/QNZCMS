@@ -10,5 +10,17 @@
   {
     "outputFile": "wwwroot/admin/css/main.css",
     "inputFile": "wwwroot/admin/css/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/plugins/SigFinder/FileManager.es5.js",
+    "inputFile": "wwwroot/plugins/SigFinder/FileManager.js"
+  },
+  {
+    "outputFile": "wwwroot/plugins/QNZFinder/FileManager.es5.js",
+    "inputFile": "wwwroot/plugins/QNZFinder/FileManager.js"
+  },
+  {
+    "outputFile": "wwwroot/plugins/QNZFinder/QNZFinder.css",
+    "inputFile": "wwwroot/plugins/QNZFinder/QNZFinder.scss"
   }
 ]
