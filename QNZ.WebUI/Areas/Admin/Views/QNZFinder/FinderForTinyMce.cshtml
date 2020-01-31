@@ -14,88 +14,14 @@
     <link href="~/plugins/QNZFinder/font/iconfont.css" rel="stylesheet" />
     <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/plugins/QNZFinder/QNZFinder.min.css" rel="stylesheet" />
+    <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
     <title>QNZFinder</title>
 
 </head>
 <body>
 
 
-    <div id="container-file" class="container-media">
-        <input type="hidden" id="rootDir" value="@_rootDirectory" />
-        <div id="dircol">
-            <nav class="qnz-navbar">
-                <button type="button" class="qnz-btn" id="btnRoot">
-                    <i class="iconfont icon-home"></i>
-                </button>
-                @*<%--                <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
-                    <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-trash"></span></button>--%>*@
-            </nav>
-            <aside id="dirbody">
-                <ul class="dirTree" id="dirTree"></ul>
-
-                <nav id="context-menu" class="context-menu">
-                    <ul class="context-menu__items">
-                        <li class="context-menu__item">
-                            <a href="#" class="context-menu__link" data-action="create"><i class="iconfont icon-plus"></i> 创建目录</a>
-                        </li>
-                        <li class="context-menu__item">
-                            <a href="#" class="context-menu__link" data-action="rename"><i class="iconfont icon-edit"></i> 重命名</a>
-                        </li>
-                        <li class="context-menu__item">
-                            <a href="#" class="context-menu__link" data-action="delete"><i class="iconfont icon-delete"></i> 删除目录</a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
-        </div>
-        <div id="filecol">
-            <nav class="qnz-navbar">
-                <div class="qnz-toolbar">
-                    <div class="filePath" id="filePath">
-                        @_rootDirectory
-                    </div>
-                    <div class="actions">
-                        <button type="button" class="qnz-btn qnz-btn-primary" id="btnUpload"><i class="iconfont icon-upload fa-fw"></i> 上传</button>
-                        <button type="button" class="qnz-btn" id="btnRefresh" data-dir="@_rootDirectory"><i class="iconfont icon-sync"></i> 刷新</button>
-                        @*              <button type="button" class="btn btn-default navbar-btn btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
-            <div class="btn-group  btn-group-sm navbar-btn" role="group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    设置
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">按日期</a></li>
-                    <li><a href="#">按大小</a></li>
-                </ul>
-            </div>*@
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Modal -->
-            <div class="uploadFile" id="uploadFile">
-                <header>
-                    <button type="button" class="close" id="btnClose"><span aria-hidden="true">&times;</span></button>
-                </header>
-
-                <div id="uploader" class="wu-example">
-
-                    <input type="file" name="file" multiple id="FileInput" />
-                    <button id="btnUploadFiles" class="btn btn-primary">上传</button>
-                    <div id="thelist" class="uploader-list"></div>
-
-                </div>
-
-
-            </div>
-
-            <div class="filelist-container">
-                <div id="fileList" class="fileList">
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <partial name="_QNZFinder" />
 
 
     <footer class="text-right tinymce-footer">
@@ -107,8 +33,30 @@
     <script src="~/admin/js/jquery-3.2.1.min.js"></script>
     <script src="~/plugins/toastr/toastr.min.js"></script>
     <script src="/Plugins/QNZFinder/FileManager.js"></script>
-
+    <script src="~/lib/dropzone/min/dropzone.min.js"></script>
     <script>
+
+        
+        Dropzone.options.dropzoneForm = {
+            paramName: "file",
+            maxFilesize: 20,
+            maxFiles: 5,
+            acceptedFiles: "image/*,application/pdf",
+            dictMaxFilesExceeded: "Custom max files msg",
+            dictDefaultMessage: "拖拽文件到这里上传",        
+            queuecomplete: function (files) {
+                this.removeAllFiles();
+                console.log("queuecomplete");
+                document.getElementById("uploadbox").style.display = "none";
+                
+                var filePath = document.getElementById("filePath");
+                var dir = filePath.innerText; //$(this).attr("data-dir"),
+                var url = "/admin/qnzfinder/GetSubFiles?dir=" + dir;
+                SIG.getInstance().getFiles(url);
+            }
+        };
+
+
 
         function selectImage(fileUrl) {
             //  console.log(fileUrl);

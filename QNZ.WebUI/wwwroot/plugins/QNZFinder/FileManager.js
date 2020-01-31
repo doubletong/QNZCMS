@@ -7,6 +7,7 @@
  * Licensed under a 3-clauses BSD license
  */
 
+
 var SIG = (function () {
     var instance;
 
@@ -59,7 +60,6 @@ var SIG = (function () {
             }
            
             dirs += loadSubDirectories(val.children);  // 递归加载
-
             dirs += '</li>';
 
         });
@@ -203,29 +203,32 @@ var SIG = (function () {
     function Initialize() {
 
         var lastOpenPath = localStorage.getItem('lastOpenPath');
-        if (lastOpenPath == null) {
-            var url = "/admin/qnzfinder/RootDirectories";
-            getDirectories(url);
+        var url = lastOpenPath != null ? "/admin/qnzfinder/currentdirectories?currentDir=" + lastOpenPath : "/admin/qnzfinder/currentdirectories";
+        getDirectories(url);
 
-            var url2 = "/admin/qnzfinder/RootDirFiles";
-            getFiles(url2);
-            $("#btnRefresh").attr("data-dir", $("#rootDir").val());
-        } else {
+        var url2 = lastOpenPath != null ? "/admin/qnzfinder/GetSubFiles?dir=" + lastOpenPath : "/admin/qnzfinder/GetSubFiles";
+        getFiles(url2);
 
-         
-            var url = "/admin/qnzfinder/currentdirectories?currentDir=" + lastOpenPath;
-            getDirectories(url);
+        var tdir = lastOpenPath == null ? $("#rootDir").val() : lastOpenPath;
 
-            var url = "/admin/qnzfinder/GetSubFiles?dir=" + lastOpenPath;
-            getFiles(url);
-        }
+        setCurrentFilePath(tdir);
+      
 
       
     }
 
-    function test() {
-        alert("aaaaa");
+    // 设置当前目录
+    function setCurrentFilePath(filePath) {
+      
+        var elFilePath = document.getElementById("filePath");
+        elFilePath.innerText = filePath;
+      
+        var elFilePath2 = document.getElementById("filePathForm");
+        elFilePath2.value = filePath;
     }
+
+
+
 
     function createInstance() {
         return {
@@ -234,8 +237,8 @@ var SIG = (function () {
             getSubDirectories: getSubDirectories,
             getDirectories: getDirectories,
             renameFile: renameFile,
-            loadCurrentURL :loadCurrentURL,
-            test: test
+            loadCurrentURL :loadCurrentURL,          
+            setCurrentFilePath: setCurrentFilePath
         }
     }
     return {
@@ -643,6 +646,27 @@ function uploadFiles(inputId) {
     );
 }
 
+
+// 拖拽上传 打开弹窗
+var btnDropUpload = document.getElementById("btnDropUpload");
+btnDropUpload.addEventListener("click", function () {
+  
+    var uploadbox = document.getElementById("uploadbox");
+    uploadbox.style.display = "block";
+    
+});
+
+// 关闭弹窗
+var btnClose = document.getElementById("btnClose");
+btnClose.addEventListener("click", function () {
+
+    var uploadbox = document.getElementById("uploadbox");
+    uploadbox.style.display = "none";
+
+});
+
+
+
 $(function () {
 
     $("#btnUploadFiles").click(function (e) {
@@ -713,17 +737,23 @@ $(function () {
         $(this).children("span").removeClass("icon-folder-fill").addClass("icon-folder-open-fill");
 
         SIG.getInstance().getFiles(url);
-        $("#btnRefresh").attr("data-dir", dir);
-        $("#filePath").text(dir);
 
+        //$("#btnRefresh").attr("data-dir", dir);
+        //$("#filePath").text(dir);
+        //var filePath = document.getElementById("filePath");
+        //filePath.innerText = dir;
+
+        SIG.getInstance().setCurrentFilePath(dir)
     });
 
     $("body").delegate("#btnRefresh", "click", function (e) {
 
         //  $(".btnFile").on("click", function (e) {
         e.preventDefault();
-        var dir = $(this).attr("data-dir"),
-            url = "/admin/qnzfinder/GetSubFiles?dir=" + dir;
+
+        var filePath = document.getElementById("filePath");
+        var dir = filePath.innerText; //$(this).attr("data-dir"),
+        var url = "/admin/qnzfinder/GetSubFiles?dir=" + dir;
 
         SIG.getInstance().getFiles(url);
 

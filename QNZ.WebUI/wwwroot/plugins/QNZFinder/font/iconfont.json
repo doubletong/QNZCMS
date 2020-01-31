@@ -13,6 +13,34 @@
       "unicode_decimal": 58882
     },
     {
+      "icon_id": "4767099",
+      "name": "minus",
+      "font_class": "minus",
+      "unicode": "e894",
+      "unicode_decimal": 59540
+    },
+    {
+      "icon_id": "4767101",
+      "name": "plus",
+      "font_class": "plus",
+      "unicode": "e896",
+      "unicode_decimal": 59542
+    },
+    {
+      "icon_id": "4936623",
+      "name": "folder-fill",
+      "font_class": "folder-fill",
+      "unicode": "e8ec",
+      "unicode_decimal": 59628
+    },
+    {
+      "icon_id": "4936624",
+      "name": "folder-open-fill",
+      "font_class": "folder-open-fill",
+      "unicode": "e8ed",
+      "unicode_decimal": 59629
+    },
+    {
       "icon_id": "8776843",
       "name": "edit",
       "font_class": "edit",

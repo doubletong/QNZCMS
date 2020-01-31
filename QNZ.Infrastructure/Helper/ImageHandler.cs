@@ -334,10 +334,10 @@ namespace SIG.Infrastructure.Helper
             {
                 Image originalImage = Image.FromFile(originalImagePath);
 
-                var orgWidth = originalImage.Width;
+                int orgWidth = originalImage.Width;
                 int orgHeight = originalImage.Height;
 
-                double tempHeight = orgHeight / (orgWidth / width);
+                double tempHeight = (double)orgHeight / ((double)orgWidth / (double)width);
                 double tempWidth;
                 if (tempHeight > height)
                 {

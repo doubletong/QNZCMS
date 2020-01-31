@@ -73,8 +73,12 @@ namespace QNZCMS.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult CurrentDirectories(string currentDir)
         {
+            currentDir = string.IsNullOrEmpty(currentDir) ? _rootDirectory : currentDir;
+           
             if (!currentDir.Contains(_rootDirectory))
-                return null;
+                    return null;
+         
+          
 
             var directories = currentDir.Split("/");
             directories = directories.Where(d => d != string.Empty).ToArray();
@@ -155,6 +159,8 @@ namespace QNZCMS.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetSubFiles(string dir)
         {
+            dir = string.IsNullOrEmpty(dir) ? _rootDirectory : dir;
+
             var subPath = _hostingEnvironment.WebRootPath + dir.Replace('/', '\\');
             IEnumerable<FileVM> vm = GetFileList(subPath, dir);
             return Json(vm);
@@ -487,5 +493,84 @@ namespace QNZCMS.Areas.Admin.Controllers
             //return RedirectToAction("Home");
             return StatusCode(StatusCodes.Status200OK, "文件成功上传！ ");
         }
+
+
+        /// <summary>
+        /// 拖拽上传
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DropzoneUploadFile(UploadVM vm)
+        {
+            string webRootPath = _hostingEnvironment.WebRootPath;
+          
+            try
+            {
+                if (vm.file.Length > 0)
+                {
+                    var orgFileName = Path.GetFileNameWithoutExtension(vm.file.FileName);
+                    var ex = Path.GetExtension(vm.file.FileName);
+                    //string filename = ImageHandler.GetRandomFileName(Path.GetExtension(iFormFile.FileName), 10000);
+                    string localPath = webRootPath + (string.IsNullOrEmpty(vm.filePath) ? _rootDirectory.Replace('/', '\\') : vm.filePath.Replace('/', '\\'));
+
+                    if (!Directory.Exists(localPath))
+                    {
+                        Directory.CreateDirectory(localPath);
+                    }
+                    string fileName = FileHelper.GetFileName(orgFileName, localPath, ex);
+
+                    string saveFilePath = Path.Combine(localPath, fileName);
+
+                    var oldstr = "wwwroot" + _rootDirectory.Replace('/', '\\');
+                    var newstr = "wwwroot" + _tempDirectory.Replace('/', '\\');
+                    string _thumbPath = saveFilePath.Replace(oldstr, newstr);
+
+                    using (var stream = new FileStream(saveFilePath, FileMode.Create))
+                    {
+                        await vm.file.CopyToAsync(stream);
+                    }
+                    //   ImageHandler.MakeThumbnail2(saveFilePath, _thumbPath, 120, 90, "DB", ex.ToLower());
+                    if (ex.ToLower() == ".jpg" || ex.ToLower() == ".png" || ex.ToLower() == ".gif")
+                    {
+                        ImageHandler.MakeThumbnail2(saveFilePath, _thumbPath, _thumbWidth, _thumbHeight);
+                    }
+
+                
+                }
+          
+                return StatusCode(StatusCodes.Status200OK, "文件成功上传！ ");
+            }
+            catch (Exception er)
+            {
+                return BadRequest(new { success = false, message = "文件上传失败：" + er.Message });
+            }
+
+            //var fileurl = vm.filePath;
+            //try
+            //{
+            //    if (vm.file.Length > 0)
+            //    {
+            //        string folderRoot = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads");
+            //        string filePath = Guid.NewGuid() + Path.GetExtension(vm.file.FileName);
+            //        filePath = Path.Combine(folderRoot, filePath);
+            //        using (var stream = new FileStream(filePath, FileMode.Create))
+            //        {
+            //            await vm.file.CopyToAsync(stream);
+            //        }
+            //    }
+            //    return Ok(new { success = true, message = "File Uploaded" + fileurl });
+            //}
+            //catch (Exception er)
+            //{
+            //    return BadRequest(new { success = false, message = "Error file failed to upload" + er.Message });
+            //}
+        }
+    }
+
+    public class UploadVM
+    {
+        public IFormFile file { get; set; }
+        public string filePath { get; set; }
     }
 }

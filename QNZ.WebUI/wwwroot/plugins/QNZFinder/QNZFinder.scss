@@ -80,6 +80,7 @@ html,body{
     list-style: none;
 
     li {
+        font-size:14px;
         ul.subTree {
             margin: 0 0 0 22px;
             padding: 0;
@@ -129,8 +130,51 @@ html,body{
 
 .filelist-container {
     overflow-y: auto;
-   // max-height: 600px;
+    // max-height: 600px;
     height: calc(100% - 50px);
+    position: relative;
+
+    .uploadbox {
+        width: 400px;
+        position: absolute;
+        left: 50%;
+        margin-left: -200px;
+        top: 50px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 0 12px rgba(0,0,0,.1);
+        background-color: azure;
+        padding:10px;
+
+        .dropzone {
+            background-color: azure;
+            border: #88b2b6 dashed 2px;
+        }
+
+        .dz-message {
+            font-size: 1.25rem;
+        }
+
+        .close {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(0,0,0,.15);
+            right: -18px;
+            top: -18px;
+            z-index: 100;
+            opacity: 1;
+
+            &:hover {
+                background-color: steelblue;
+                color: #fff;
+                opacity: 1;
+            }
+        }
+    }
 }
 
 .fileList {
