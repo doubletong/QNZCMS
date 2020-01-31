@@ -11,8 +11,7 @@
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/admin/fonts/iconfont.css" rel="stylesheet" />
+    <link href="~/plugins/QNZFinder/font/iconfont.css" rel="stylesheet" />
     <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/plugins/QNZFinder/QNZFinder.min.css" rel="stylesheet" />
     <title>QNZFinder</title>
@@ -23,7 +22,7 @@
         <input type="hidden" id="rootDir" value="@_rootDirectory" />
         <div id="dircol">
             <nav class="qnz-navbar">
-                <button type="button" class="btn btn-outline-primary navbar-btn btn-sm" id="btnRoot">
+                <button type="button" class="qnz-btn" id="btnRoot">
                     <i class="iconfont icon-home"></i>
                 </button>
                 @*<%--                <button type="button" class="btn btn-default navbar-btn  btn-sm"><span class="glyphicon glyphicon-plus"></span></button>
@@ -54,8 +53,8 @@
                         @_rootDirectory
                     </div>
                     <div class="actions">
-                        <button type="button" class="btn btn-primary navbar-btn btn-sm" id="btnUpload"><i class="iconfont icon-upload fa-fw"></i> 上传</button>
-                        <button type="button" class="btn btn-outline-primary navbar-btn btn-sm" id="btnRefresh" data-dir="@_rootDirectory"><i class="iconfont icon-sync"></i> 刷新</button>
+                        <button type="button" class="qnz-btn qnz-btn-primary" id="btnUpload"><i class="iconfont icon-upload fa-fw"></i> 上传</button>
+                        <button type="button" class="qnz-btn" id="btnRefresh" data-dir="@_rootDirectory"><i class="iconfont icon-sync"></i> 刷新</button>
                         @*              <button type="button" class="btn btn-default navbar-btn btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
                             <div class="btn-group  btn-group-sm navbar-btn" role="group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

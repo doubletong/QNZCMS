@@ -18,5 +18,10 @@
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/plugins/toastr"
     }
-  ]
+  ,
+{
+  "library": "dropzone@5.5.1",
+  "destination": "wwwroot/lib/dropzone/"
+}
+]
 }

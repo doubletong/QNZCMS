@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@section Header{
+    <link href="~/lib/dropzone/min/dropzone.min.css" rel="stylesheet" />
+}
+<h2>Drag & Drop file upload </h2>
+
+<div class="row">
+    @using (Html.BeginForm("UploadFile", "Dropzone",
+                       FormMethod.Post,
+                       new
+                       {
+                           @class = "dropzone",
+                           id = "dropzone-form",
+                       }))
+    {
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+        </div>
+        <input type="hidden" name="filePath" value="/Uploads/Images"/>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/lib/dropzone/min/dropzone.min.js"></script>
+    <script type="text/javascript">
+        Dropzone.options.dropzoneForm = {
+            paramName: "file",
+            maxFilesize: 20,
+            maxFiles: 4,
+            acceptedFiles: "image/*",
+            dictMaxFilesExceeded: "Custom max files msg",
+        };
+    </script>
+}

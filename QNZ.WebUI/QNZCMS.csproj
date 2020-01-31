@@ -286,6 +286,9 @@
     <None Include="wwwroot\Config\VideoSettings.config" />
     <None Include="wwwroot\Config\WeiXinSettings.config" />
     <None Include="wwwroot\plugins\jquery-ui\jquery-ui.min.js" />
+    <None Include="wwwroot\plugins\QNZFinder\font\iconfont.js" />
+    <None Include="wwwroot\plugins\QNZFinder\font\iconfont.svg" />
+    <None Include="wwwroot\plugins\QNZFinder\font\iconfont.woff2" />
   </ItemGroup>
 
 

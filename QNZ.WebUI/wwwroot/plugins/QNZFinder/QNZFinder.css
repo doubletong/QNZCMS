@@ -1,4 +1,7 @@
-﻿html, body {
+﻿* {
+  box-sizing: border-box; }
+
+html, body {
   margin: 0;
   padding: 0;
   height: 100%; }
@@ -6,7 +9,7 @@
 .container-media {
   border: 1px #ddd solid;
   position: relative;
-  height: calc(100% - 50px);
+  height: calc(100% - 35px);
   display: grid;
   grid-template-columns: 220px auto; }
   .container-media #dircol {
@@ -42,36 +45,42 @@
     padding: .5rem 1rem;
     border-bottom: 1px #ddd solid; }
     .container-media .qnz-navbar .filePath {
-      color: #999; }
+      color: #999;
+      font-size: 12px; }
   .container-media.tinymcepopu {
     border: none;
     border-bottom: 1px #ddd solid; }
 
-#dirTree li ul.subTree {
-  margin: 0 0 0 22px;
+#dirTree {
+  margin: 0;
   padding: 0;
   list-style: none; }
-
-#dirTree li.plus ul.subTree {
-  display: none; }
-
-#dirTree .exp {
-  display: inline-block;
-  width: 20px;
-  height: 12px; }
-
-#dirTree a {
-  text-decoration: none;
-  color: #666; }
-  #dirTree a:hover {
-    text-decoration: none; }
-  #dirTree a.active {
-    color: tomato; }
-  #dirTree a span {
-    margin-right: 5px; }
+  #dirTree li ul.subTree {
+    margin: 0 0 0 22px;
+    padding: 0;
+    list-style: none; }
+  #dirTree li.plus ul.subTree {
+    display: none; }
+  #dirTree .exp {
+    display: inline-block;
+    width: 20px;
+    height: 12px; }
+  #dirTree a {
+    text-decoration: none;
+    color: #999;
+    display: inline-block;
+    padding: .2rem 0; }
+    #dirTree a:hover {
+      text-decoration: none; }
+    #dirTree a.active {
+      color: #333; }
+    #dirTree a span {
+      margin-right: 5px; }
+    #dirTree a.btnFile .iconfont {
+      color: burlywood; }
 
 .filelist-container {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: calc(100% - 50px); }
 
 .fileList {
@@ -121,7 +130,8 @@
         .fileList .itembox .qnz-card .qnz-card-footer .buttons .qnz-btn {
           border: none;
           background-color: #fff;
-          margin-right: 3px; }
+          margin-right: 3px;
+          padding: .2rem .5rem; }
           .fileList .itembox .qnz-card .qnz-card-footer .buttons .qnz-btn:hover {
             background-color: #ccc; }
         .fileList .itembox .qnz-card .qnz-card-footer .buttons .fileSize {
@@ -190,4 +200,30 @@
   background-color: #0066aa; }
 
 .tinymce-footer {
-  padding: 8px 15px; }
+  padding: 8px 15px 0;
+  height: 35px;
+  font-size: 12px;
+  color: #999; }
+
+button {
+  cursor: pointer; }
+
+.qnz-btn {
+  border: none;
+  border-radius: 3px;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  padding: .5rem .8rem; }
+  .qnz-btn:hover {
+    background-color: #fff; }
+  .qnz-btn.qnz-btn-primary {
+    background-color: steelblue;
+    color: #fff; }
+    .qnz-btn.qnz-btn-primary:hover {
+      background-color: #3f75a2; }
+
+[hidden] {
+  display: none !important; }
+
+.text-right {
+  text-align: right; }

@@ -1,4 +1,7 @@
-﻿html,body{
+﻿*{
+    box-sizing:border-box;
+}
+html,body{
     margin:0;
     padding:0;
     height:100%;
@@ -7,7 +10,7 @@
 .container-media {
     border: 1px #ddd solid;
     position: relative;
-    height: calc(100% - 50px);
+    height: calc(100% - 35px);
     display: grid;
     grid-template-columns: 220px auto;
 
@@ -55,10 +58,10 @@
     .qnz-navbar {
         background-color: #f7f7f7;
         padding: .5rem 1rem;
-        border-bottom: 1px #ddd solid;
-
+        border-bottom: 1px #ddd solid;      
         .filePath {
             color: #999;
+            font-size:12px;
         }
     }
 
@@ -72,6 +75,10 @@
 
 
 #dirTree {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
     li {
         ul.subTree {
             margin: 0 0 0 22px;
@@ -81,7 +88,7 @@
 
         &.plus {
             ul.subTree {
-                display:none;
+                display: none;
             }
         }
     }
@@ -96,24 +103,32 @@
 
     a {
         text-decoration: none;
-        color: #666;
+        color: #999;
+        display: inline-block;
+        padding: .2rem 0;
 
         &:hover {
             text-decoration: none;
         }
 
         &.active {
-            color: tomato;
+            color: #333;
         }
 
         span {
             margin-right: 5px;
         }
+
+        &.btnFile{
+            .iconfont{
+                color:burlywood;
+            }
+        }
     }
 }
 
 .filelist-container {
-    overflow-y: scroll;
+    overflow-y: auto;
    // max-height: 600px;
     height: calc(100% - 50px);
 }
@@ -184,6 +199,7 @@
                         border: none;
                         background-color: #fff;
                         margin-right: 3px;
+                        padding:.2rem .5rem;
 
                         &:hover {
                             background-color: #ccc;
@@ -277,5 +293,40 @@
 
 
 .tinymce-footer{
-    padding:8px 15px;
+    padding:8px 15px 0;
+    height:35px;
+    font-size:12px;
+    color:#999;
+}
+
+button{
+    cursor:pointer;
+}
+
+.qnz-btn {
+    border: none;
+    border-radius: 3px;
+    background-color: #f7f7f7;
+    box-shadow: 0 0 6px rgba(0,0,0,.1);
+    padding: .5rem .8rem;
+
+    &:hover {
+        background-color: #fff;
+    }
+
+    &.qnz-btn-primary {
+        background-color: steelblue;
+        color: #fff;
+
+        &:hover {
+            background-color: darken(steelblue,5%);
+        }
+    }
+}
+
+[hidden] {
+    display: none !important;
+}
+.text-right{
+    text-align:right;
 }
