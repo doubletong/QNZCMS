@@ -1,4 +1,13 @@
-﻿var SIG = (function () {
+﻿/*!
+ * QNZFinder - file manager for web
+ * Version 1.0.1 (2020-01-31)
+ * http://heiniaozhi.cn
+ *
+ * Copyright 2012-2020, 黑鸟志
+ * Licensed under a 3-clauses BSD license
+ */
+
+var SIG = (function () {
     var instance;
 
     //获取根目录列表
