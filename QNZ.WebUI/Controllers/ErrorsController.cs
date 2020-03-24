@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace QNZCMS.Controllers
@@ -13,20 +14,12 @@ namespace QNZCMS.Controllers
             return View();
         }
 
-        // GET: /<controller>/
-        public IActionResult InternalServerError()
+        [Route("errors/{code}")]
+        public IActionResult InternalServerError(int code)
         {
-            return View();
+            
+            return View(code);
         }
-        [Route("errors/404")]
-        public IActionResult StatusCode404()
-        {
-            return View();
-        }
-        [Route("errors/400")]
-        public IActionResult StatusCode400()
-        {
-            return View();
-        }
+      
     }
 }

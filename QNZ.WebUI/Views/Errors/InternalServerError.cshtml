@@ -1,7 +1,25 @@
-﻿
+﻿@model int
 @{
-    ViewData["Title"] = "InternalServerError";
+    if (Model == 404)
+    {
+        ViewData["Title"] = "未找到页面";
+    }
+    else
+    {
+        ViewData["Title"] = "服务器错误";
+    }
+
 }
 
-<h1>InternalServerError</h1>
-
+ @if(Model == 404)
+{
+    <figure style="padding-top:5rem;">
+        <img src="~/img/404.svg" alt="未找到页面" />
+    </figure>
+}
+else
+{
+    <div class="alert alert-danger">
+        服务器错误
+    </div>
+}

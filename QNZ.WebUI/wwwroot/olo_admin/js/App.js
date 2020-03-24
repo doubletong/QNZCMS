@@ -1,52 +1,49 @@
-$(function () {
+Ôªø$(function() {
 
-    //var resetwidth = function () {
+    var resetwidth = function () {
 
-    //    var winwidth = $(window).width();
-    //    // alert(winwidth)
+        var winwidth = $(window).width();
+        // alert(winwidth)
 
 
-    //    if (winwidth <= 768) {
-    //        $('#rightcol').css({ 'width': winwidth + "px" })
-    //    } else {
-    //        $('#rightcol').css({ 'width': (winwidth - 170) + "px" })
-    //    }
-    //};
+        if (winwidth <= 768) {
+            $('#rightcol').css({ 'width': winwidth + "px" })
+        } else {
+            $('#rightcol').css({ 'width': (winwidth - 170) + "px" })
+        }
+    };
 
-    //resetwidth();
+    resetwidth();
 
-    //$(window).resize(function () {
-    //    resetwidth();
-    //});
+    $(window).resize(function() {
+        resetwidth();
+    });
 
     $('.mainmenu li.active').closest('li.down-nav').addClass('nav-open');
     var pid = $('.mainmenu li.active').attr("data-parent");
     $('.mainmenu li[data-parent=' + pid + ']').fadeIn();
 
-
-    $("#mainmenu .down-nav>a").click(function (e) {
-        e.preventDefault();
-        var $that = $(this);
-        $that.next('.submenu').slideToggle(function () {
-            $that.closest('li.down-nav').toggleClass('open')
-        });
-    })
-
-
-
-    $('a.expand').click(function (e) {
-        $(this).closest('.card').addClass('card-fixed');
-        e.preventDefault();
+    //Êü•Â≠êÈ°πÊï∞Èáè
+    $.each($(".down-nav>a"), function(index, value) {
+        var id = $(value).attr("data-id");
+        var licount = $('.mainmenu li[data-parent=' + id + ']').length;
+        var html = '<i class="iconfont icon-right haschild"></i>';
+        $(value).append(html);
     });
-    $('a.compress').click(function (e) {
-        $(this).closest('.card').removeClass('card-fixed');
+
+    $(".down-nav>a").click(function(e) {
         e.preventDefault();
+
+        $(this).next(".submenu").slideToggle();
+        var li = $(this).closest('li');
+        li.toggleClass('nav-open');
+
     });
-   
+
 
     $('#closemenu').on('click', function (e) {
         $(this).toggleClass("openav");
-        var marginLeft = $('#rightcol').css("margin-left");
+        var marginLeft = $('#rightcol').css("margin-left");    
         if (!$(this).hasClass("openav")) {
             opennav();
         } else {
@@ -72,13 +69,26 @@ $(function () {
     };
 
 
+
+    $('a.expand').click(function(e) {
+        $(this).closest('.box').addClass('box-fixed');
+        $(this).hide();
+        $(this).next('a').show()
+        e.preventDefault();
+    });
+    $('a.compress').click(function(e) {
+        $(this).closest('.box').removeClass('box-fixed');
+        $(this).hide();
+        $(this).prev('a').show()
+        e.preventDefault();
+    });
 });
 
 
 
 var Common = {
-    //œ˚œ¢Ã· æ
-    ShowBox: function (status, message, title) {
+    //Ê∂àÊÅØÊèêÁ§∫
+    ShowBox: function(status, message, title) {
         switch (status) {
             case 1:
                 toastr.success(message, title)
@@ -93,7 +103,7 @@ var Common = {
                 toastr.warning(message, title)
         }
     },
-    ShowBoxWithFunc: function (data, title, func) {
+    ShowBoxWithFunc: function(data, title, func) {
 
         switch (data.status) {
             case 1:
@@ -110,7 +120,7 @@ var Common = {
                 toastr.warning(data.message, title)
         }
     },
-    ShowBoxWithFuncBack: function (data, title, func) {
+    ShowBoxWithFuncBack: function(data, title, func) {
 
         switch (data.status) {
             case 1:
@@ -127,7 +137,7 @@ var Common = {
                 toastr.warning(data.message, title);
         }
     },
-    SubmitBack: function (data, title, container) {
+    SubmitBack: function(data, title, container) {
 
         switch (data.status) {
             case 1:
@@ -145,9 +155,9 @@ var Common = {
                 toastr.warning(data.message, title)
         }
     },
-    PageSizeSet: function (url, title, pageSize, func) { //∑÷“≥…Ë÷√
+    PageSizeSet: function(url, title, pageSize, func) { //ÂàÜÈ°µËÆæÁΩÆ
 
-        $.post(url, { pageSize: pageSize }, function (data) {
+        $.post(url, { pageSize: pageSize }, function(data) {
 
             switch (data.status) {
                 case 1:
@@ -167,9 +177,9 @@ var Common = {
         });
     },
 
-    SingleActionWithFunc: function (url, title, that, func) { //’ÊºŸ÷µ–ﬁ∏ƒ≤Ÿ◊˜
+    SingleActionWithFunc: function(url, title, that, func) { //ÁúüÂÅáÂÄº‰øÆÊîπÊìç‰Ωú
 
-        $.post(url, $("#anti-form").serialize(), function (data) {
+        $.post(url, $("#anti-form").serialize(), function(data) {
 
             switch (data.status) {
                 case 1:
@@ -188,9 +198,9 @@ var Common = {
             }
         });
     },
-    SingleActionWithFuncBack: function (url, title, that, func) { //’ÊºŸ÷µ–ﬁ∏ƒ≤Ÿ◊˜
+    SingleActionWithFuncBack: function(url, title, that, func) { //ÁúüÂÅáÂÄº‰øÆÊîπÊìç‰Ωú
 
-        $.post(url, $("#anti-form").serialize(), function (data) {
+        $.post(url, $("#anti-form").serialize(), function(data) {
 
             switch (data.status) {
                 case 1:
@@ -210,15 +220,15 @@ var Common = {
         });
     },
 
-    SingleAction: function (url, title, isTips) { //’ÊºŸ÷µ–ﬁ∏ƒ≤Ÿ◊˜
-        $.post(url, $("#anti-form").serialize(), function (data) {
+    SingleAction: function(url, title, isTips) { //ÁúüÂÅáÂÄº‰øÆÊîπÊìç‰Ωú
+        $.post(url, $("#anti-form").serialize(), function(data) {
             if (!isTips)
                 return;
 
             switch (data.status) {
                 case 1:
                     toastr.success(data.message, title);
-                    setTimeout(function () {
+                    setTimeout(function() {
                         location.reload();
                     }, 1000);
                     break;
@@ -237,9 +247,9 @@ var Common = {
 
 
 
-    DeleteItem: function (url, title, that) { //…æ≥˝
+    DeleteItem: function(url, title, that) { //Âà†Èô§
 
-        $.post(url, $("#anti-form").serialize(), function (data) {
+        $.post(url, $("#anti-form").serialize(), function(data) {
             switch (data.status) {
                 case 1:
                     toastr.success(data.message, title);
@@ -265,10 +275,10 @@ var singleEelFinder = {
     percent: 70,
     baseUrl: "/plugins/elFinder/elfinder-single.html",
     selectActionFunction: null,
-    elFinderCallback: function (fileUrl) {
+    elFinderCallback: function(fileUrl) {
         this.selectActionFunction(fileUrl);
     },
-    open: function () {
+    open: function() {
         var w = 1140,
             h = 600; // default sizes
         if (window.screen) {
@@ -335,7 +345,7 @@ var QNZ = {
     },
     open: function () {
         var w = 1140,
-            h = 600; // default sizes
+            h =600; // default sizes
         if (window.screen) {
             w = window.screen.width * this.percent / 100;
             h = window.screen.height * this.percent / 100;
@@ -365,7 +375,7 @@ var QNZ = {
         var finderUrl = '/Admin/QNZFinder/FinderForTinyMce';
         tinyMCE.activeEditor.windowManager.openUrl({
             url: finderUrl,
-            title: 'QNZFinder 1.0 Œƒº˛π‹¿Ì',
+            title: 'QNZFinder 1.0 Êñá‰ª∂ÁÆ°ÁêÜ',
             width: 1140,
             height: 700
             // onMessage: function (api, data) {
@@ -386,5 +396,5 @@ var QNZ = {
 };
 
 //var singleEelFinder = {
-
+   
 //};

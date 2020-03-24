@@ -22,5 +22,9 @@
   {
     "outputFile": "wwwroot/plugins/QNZFinder/QNZFinder.css",
     "inputFile": "wwwroot/plugins/QNZFinder/QNZFinder.scss"
+  },
+  {
+    "outputFile": "wwwroot/admin/js/app.es5.js",
+    "inputFile": "wwwroot/admin/js/app.js"
   }
 ]

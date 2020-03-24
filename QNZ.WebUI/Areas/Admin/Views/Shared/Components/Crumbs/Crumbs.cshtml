@@ -6,30 +6,35 @@
     int i = 0;
 }
 
+    <div class="breadcrumb-container">
+        <div class="row">
+            <div class="col-md">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        @foreach (var item in Model)
+                        {
+                            i++;
+                            if (i == Model.Count())
+                            {
+                                <li class="breadcrumb-item active">@item.Title</li>
 
-<div class="toolbar">  
-   
-    <nav aria-label="breadcrumb" role="navigation">       
-    
-    <ol class="breadcrumb">
-        @foreach (var item in Model)
-        {
-            i++;
-            if (i == Model.Count())
-            {
-                <li class="breadcrumb-item active">@item.Title</li>
+                            }
+                            else if (i == 1)
+                            {
+                                <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                            }
+                            else
+                            {
 
-            }
-            else if (i == 1)
-            {
-                <li class="breadcrumb-item"><a href="@item.Url" >@item.Title</a></li>
-            }
-            else
-            {
+                                <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                            }
+                        }
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-auto">
+                <time id="sitetime">@DateTime.Now</time>
+            </div>
+        </div>
+    </div>
 
-                <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
-            }
-        }
-    </ol>
-    </nav>
-</div>

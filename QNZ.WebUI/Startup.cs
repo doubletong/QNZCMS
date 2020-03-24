@@ -102,82 +102,35 @@ namespace QNZCMS
             services.AddScoped<ICacheService, CacheService>();
 
 
-            // To list physical files from a path provided by configuration:
-            //var physicalProvider = new PhysicalFileProvider(Configuration.GetValue<string>("StoredFilesPath"));
-
-            //// To list physical files in the temporary files folder, use:
-            ////var physicalProvider = new PhysicalFileProvider(Path.GetTempPath());
-            //services.AddSingleton<IFileProvider>(physicalProvider);
-
             // If using Kestrel:
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
-
-            // If using IIS:
-            //services.Configure<IISServerOptions>(options =>
+            //services.Configure<KestrelServerOptions>(options =>
             //{
             //    options.AllowSynchronousIO = true;
             //});
+
+            // If using IIS:
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseDatabaseErrorPage();
-            //}
-            //else
-            //{
-                // app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                // app.UseHsts();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
 
-                app.UseStatusCodePagesWithReExecute("/errors/{0}");
-                app.UseExceptionHandler("/errors/500");
-                app.Use(async (context, next) =>
-                {
-                    if (context != null)
-                    {
-                        await next();
-                        var code = context.Response.StatusCode;
+                //app.UseHsts();
+                app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
-                        var newPath = new PathString("/errors/" + code);
-                        var originalPath = context.Request.Path;
-                        var originalQueryString = context.Request.QueryString;
-                        context.Features.Set<IStatusCodeReExecuteFeature>(new StatusCodeReExecuteFeature()
-                        {
-                            OriginalPathBase = context.Request.PathBase.Value,
-                            OriginalPath = originalPath.Value,
-                            OriginalQueryString = originalQueryString.HasValue ? originalQueryString.Value : null,
-                        });
-
-                        // An endpoint may have already been set. Since we're going to re-invoke the middleware pipeline we need to reset
-                        // the endpoint and route values to ensure things are re-calculated.
-
-                        context.SetEndpoint(endpoint: null);
-                        var routeValuesFeature = context.Features.Get<IRouteValuesFeature>();
-                        routeValuesFeature?.RouteValues?.Clear();
-
-                        context.Request.Path = newPath;
-                        try
-                        {
-                            await next();
-                        }
-                        finally
-                        {
-                            context.Request.QueryString = originalQueryString;
-                            context.Request.Path = originalPath;
-                            context.Features.Set<IStatusCodeReExecuteFeature>(null);
-                        }
-                    }
-                    await next();
-                });
-            //}
+            }
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
