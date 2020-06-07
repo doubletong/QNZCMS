@@ -84,8 +84,7 @@
     <None Remove="Utilities\PagedList\**" />
     <None Remove="Views\News\**" />
     <Content Remove="bundleconfig.json" />
-    <Content Remove="wwwroot\admin\js\app.es5.js" />
-    <Content Remove="wwwroot\admin\js\app.es5.min.js" />
+    <Content Remove="wwwroot\admin\js\App.min.js" />
     <Content Remove="wwwroot\olo_admin\js\App.min.js" />
     <Content Remove="wwwroot\css\EmptySCSSFile.scss" />
   </ItemGroup>
@@ -121,8 +120,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\admin\js\app.es5.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\admin\js\app.es5.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\admin\js\App.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\olo_admin\js\App.min.js" />
   </ItemGroup>
 
@@ -161,8 +159,7 @@
     <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
-    <None Include="wwwroot\admin\js\app.es5.js" />
-    <None Include="wwwroot\admin\js\app.es5.min.js" />
+    <None Include="wwwroot\admin\js\App.min.js" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-grid.scss" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-reboot.scss" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap.scss" />

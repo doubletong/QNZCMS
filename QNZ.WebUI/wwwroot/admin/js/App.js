@@ -1,4 +1,4 @@
-$(function () {
+ï»¿$(function () {
 
     //var resetwidth = function () {
 
@@ -77,7 +77,7 @@ $(function () {
 
 
 var Common = {
-    //ÏûÏ¢ÌáÊ¾
+    //æ¶ˆæ¯æç¤º
     ShowBox: function (status, message, title) {
         switch (status) {
             case 1:
@@ -145,7 +145,7 @@ var Common = {
                 toastr.warning(data.message, title)
         }
     },
-    PageSizeSet: function (url, title, pageSize, func) { //·ÖÒ³ÉèÖÃ
+    PageSizeSet: function (url, title, pageSize, func) { //åˆ†é¡µè®¾ç½®
 
         $.post(url, { pageSize: pageSize }, function (data) {
 
@@ -167,7 +167,7 @@ var Common = {
         });
     },
 
-    SingleActionWithFunc: function (url, title, that, func) { //Õæ¼ÙÖµĞŞ¸Ä²Ù×÷
+    SingleActionWithFunc: function (url, title, that, func) { //çœŸå‡å€¼ä¿®æ”¹æ“ä½œ
 
         $.post(url, $("#anti-form").serialize(), function (data) {
 
@@ -188,7 +188,7 @@ var Common = {
             }
         });
     },
-    SingleActionWithFuncBack: function (url, title, that, func) { //Õæ¼ÙÖµĞŞ¸Ä²Ù×÷
+    SingleActionWithFuncBack: function (url, title, that, func) { //çœŸå‡å€¼ä¿®æ”¹æ“ä½œ
 
         $.post(url, $("#anti-form").serialize(), function (data) {
 
@@ -210,7 +210,7 @@ var Common = {
         });
     },
 
-    SingleAction: function (url, title, isTips) { //Õæ¼ÙÖµĞŞ¸Ä²Ù×÷
+    SingleAction: function (url, title, isTips) { //çœŸå‡å€¼ä¿®æ”¹æ“ä½œ
         $.post(url, $("#anti-form").serialize(), function (data) {
             if (!isTips)
                 return;
@@ -237,7 +237,7 @@ var Common = {
 
 
 
-    DeleteItem: function (url, title, that) { //É¾³ı
+    DeleteItem: function (url, title, that) { //åˆ é™¤
 
         $.post(url, $("#anti-form").serialize(), function (data) {
             switch (data.status) {
@@ -365,7 +365,7 @@ var QNZ = {
         var finderUrl = '/Admin/QNZFinder/FinderForTinyMce';
         tinyMCE.activeEditor.windowManager.openUrl({
             url: finderUrl,
-            title: 'QNZFinder 1.0 ÎÄ¼ş¹ÜÀí',
+            title: 'QNZFinder 1.0 æ–‡ä»¶ç®¡ç†',
             width: 1140,
             height: 700
             // onMessage: function (api, data) {

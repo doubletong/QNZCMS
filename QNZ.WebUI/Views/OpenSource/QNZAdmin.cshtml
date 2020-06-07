@@ -4,38 +4,35 @@
 }
 
 
-<div class="page page-opensource">
+    <div class="page page-opensource">
 
-    <div class="container">
-        <header class="se-header">
-            <h3>开源项目</h3>
-            <p>open source</p>
-        </header>
-        <div class="row">
-            <div class="col-md-auto">
-                <aside class="nav-os">
-                    <ul>
-                        <li>
-                            <a href="/opensource">
-                                青鸟内容管理系统 / QNZCMS
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/opensource/qnzadmin" class="active">
-                                青鸟控制台模板 / QNZAdmin
-                            </a>
-                        </li>
-                        <li><a href="javascript:void(0);"><del>青鸟数据采集工具</del></a></li>
-                        <li><a href="javascript:void(0);"><del>青鸟办公系统</del></a></li>
-
-                    </ul>
-                </aside>
-            </div>
-            <div class="col-md">
-                @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.Body))
-            </div>
+        <div class="container">
+            <header class="se-header">
+                <h3>开源项目</h3>
+                <p>open source</p>
+            </header>
         </div>
+        <div class="container">
+            <ul class="projects">
+                <li>
+                    <a href="/opensource">
+                        QNZCMS
+                    </a>
+                </li>
+                <li>
+                    <a href="/opensource/qnzadmin" class="active">
+                        QNZAdmin
+                    </a>
+                </li>
+                <li><a href="javascript:void(0);"><del>QNZFinder</del></a></li>
+                <li><a href="javascript:void(0);"><del>青鸟数据采集工具</del></a></li>
+                <li><a href="javascript:void(0);"><del>QNZOA</del></a></li>
+
+            </ul>
+        </div>
+        @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.Body))
+
+
 
     </div>
-</div>
 

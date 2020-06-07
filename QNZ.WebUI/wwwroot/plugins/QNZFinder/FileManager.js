@@ -649,21 +649,27 @@ function uploadFiles(inputId) {
 
 // 拖拽上传 打开弹窗
 var btnDropUpload = document.getElementById("btnDropUpload");
-btnDropUpload.addEventListener("click", function () {
-  
-    var uploadbox = document.getElementById("uploadbox");
-    uploadbox.style.display = "block";
-    
-});
+if (btnDropUpload != null) {
+    btnDropUpload.addEventListener("click", function () {
+
+        var uploadbox = document.getElementById("uploadbox");
+        uploadbox.style.display = "block";
+
+    });
+}
+
 
 // 关闭弹窗
 var btnClose = document.getElementById("btnClose");
-btnClose.addEventListener("click", function () {
+if (btnClose != null) {
+    btnClose.addEventListener("click", function () {
 
-    var uploadbox = document.getElementById("uploadbox");
-    uploadbox.style.display = "none";
+        var uploadbox = document.getElementById("uploadbox");
+        uploadbox.style.display = "none";
 
-});
+    });
+
+}
 
 
 
