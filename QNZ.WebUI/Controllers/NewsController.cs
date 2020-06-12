@@ -28,9 +28,9 @@ namespace QNZCMS.Controllers
         {
             var vm = new ArticlePageVM()
             {
-                Categories = await _context.ArticleCategories.Where(d => d.Active == true)
-                    .OrderByDescending(d => d.Importance)
-                    .ProjectTo<ArticleCategoryVM>(_mapper.ConfigurationProvider).ToListAsync(),
+                //Categories = await _context.ArticleCategories.Where(d => d.Active == true)
+                //    .OrderByDescending(d => d.Importance)
+                //    .ProjectTo<ArticleCategoryVM>(_mapper.ConfigurationProvider).ToListAsync(),
                 PageIndex = page == null || page <= 0 ? 1 : page.Value
             };
             var pageSize = 20;
@@ -52,9 +52,9 @@ namespace QNZCMS.Controllers
         {
             var vm = new ArticlePageVM()
             {
-                Categories = await _context.ArticleCategories.Where(d => d.Active == true)
-                    .OrderByDescending(d => d.Importance)
-                    .ProjectTo<ArticleCategoryVM>(_mapper.ConfigurationProvider).ToListAsync(),
+                //Categories = await _context.ArticleCategories.Where(d => d.Active == true)
+                //    .OrderByDescending(d => d.Importance)
+                //    .ProjectTo<ArticleCategoryVM>(_mapper.ConfigurationProvider).ToListAsync(),
                 PageIndex = page == null || page <= 0 ? 1 : page.Value
             };
             var pageSize = 20;

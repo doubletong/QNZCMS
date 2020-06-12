@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 using System.Linq;
 using System.Threading.Tasks;
-using SIG.Infrastructure.Extensions;
+using QNZ.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 

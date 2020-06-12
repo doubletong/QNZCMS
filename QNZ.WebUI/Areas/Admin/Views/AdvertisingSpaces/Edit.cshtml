@@ -1,6 +1,7 @@
 ﻿@model AdvertisingSpaceIM
 
 @{
+    Layout = "_LayoutPlugins";
     ViewData["Title"] = (Model.Id > 0 ? "编辑" : "创建") + EntityNames.Position;
 }
 
@@ -64,9 +65,12 @@
                             <img data-src="holder.js/300x200?text=示意图 \n 240x180像素" id="imgImageUrl" src="@(Model!=null?Model.Sketch:"")">
                             <input type="hidden" asp-for="Sketch" />
                         </div>
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-info btn-block" id="btnImageUrl">
+                        <div class="card-footer text-center">
+                            <button type="button" class="btn btn-info" id="btnImageUrl">
                                 <i class="iconfont icon-upload"></i> 上传图片
+                            </button>
+                            <button type="button" class="btn btn-danger" id="btnDelete">
+                                <i class="iconfont icon-delete"></i> 删除
                             </button>
                         </div>
                     </div>
@@ -79,7 +83,6 @@
         </div>
 
     </div>
-
 
 
 
@@ -105,7 +108,6 @@
 
             $('#imgImageUrl').attr("src",fileUrl);
             $('#Sketch').val(fileUrl);
-
 
         }
 
@@ -149,6 +151,16 @@
 
             });
 
+            $("#btnDelete").click(function () {
+                var orgImage = $("#imgImageUrl").attr("data-src");
+                $("#imgImageUrl").attr("src", orgImage);
+                $("#Sketch").val("");
+
+                var myImage = document.getElementById('imgImageUrl');
+                Holder.run({
+                    images: myImage
+                });
+            });
 
         });
     </script>

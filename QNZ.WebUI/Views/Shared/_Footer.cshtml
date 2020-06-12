@@ -1,13 +1,25 @@
 
-
-<footer class="site-footer">
-
-    Copyright &copy; 2012-2019 @SIG.Infrastructure.Configs.SettingsManager.Site.SiteName All rights reserved. 工信部备案号：
-    <a href="http://beian.miit.gov.cn/" target="_blank">@SIG.Infrastructure.Configs.SettingsManager.Site.WebNumber</a>
-
+<footer class="site-footer" id="pagefooter">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-auto">
+                <div class="logo"><img src="/assets/img/logo_bot.png" alt=""></div>
+            </div>
+            <div class="col-md">
+                @await Component.InvokeAsync("SiteNav", new { categoryId = 2 })
+              
+            </div>
+            <div class="col-md-auto">
+                <div class="social"><a href="#"> <i class="iconfont icon-wechat"></i></a><a href="#"> <i class="iconfont icon-linkedin"></i></a><a href="#"> <i class="iconfont icon-facebook"></i></a><a href="#"> <i class="iconfont icon-twitter"></i></a><a href="#"> <i class="iconfont icon-YouTube"></i></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="bot">
+        <ul class="contact">
+            <li>联系电话：0392-2298000  </li>
+            <li>邮箱：info@sjphotons.com</li>
+            <li>地址：河南省鹤壁国家经济技术开发区延河路201号</li>
+        </ul>
+        <p class="copyright">Copyright 2015-@DateTime.Now.Year &copy; @SettingsManager.Company.Name  <a href="http://www.beian.miit.gov.cn/">@SettingsManager.Site.WebNumber</a></p>
+    </div>
 </footer>
-
-<a href="javascript:void();" class="backtop" id="totop" title="返回顶部">
-    <img src="~/img/totop.png" alt="">
-</a>
-<audio src="~/img/wuyajiao.mp3" id="myMusic"></audio>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace SIG.Infrastructure.Helper
+namespace QNZ.Infrastructure.Helper
 {
     public static class PlatformServicesExtensions
     {

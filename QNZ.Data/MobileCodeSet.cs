@@ -13,12 +13,24 @@ namespace QNZ.Data
         public int Id { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 手机号
+        /// </summary>
         public string Mobile { get; set; }
         [Required]
         [StringLength(6)]
+        /// <summary>
+        /// 验证码
+        /// </summary>
         public string ValidateCode { get; set; }
         [Column(TypeName = "datetime")]
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CreatedDate { get; set; }
+        /// <summary>
+        /// 是否使用
+        /// </summary>
         public bool IsUsed { get; set; }
     }
 }

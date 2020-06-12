@@ -1,5 +1,5 @@
 ﻿using QNZ.Data.Enums;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

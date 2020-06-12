@@ -1,4 +1,4 @@
-﻿@using SIG.Infrastructure.Configs
+﻿@using QNZ.Infrastructure.Configs
 @using QNZ.Data.Enums
 @model LeftNavVM
 
@@ -10,8 +10,7 @@
 @if (menus != null)
 {
 
-    <aside class="leftcol" id="leftcol">
-        <div class="logo"><a asp-action="Index" asp-controller="Home" asp-area="Admin"><img src="@SettingsManager.Site.DashboardLogo" alt="logo" /></a></div>
+   
 
 
         <nav id="menu">
@@ -22,12 +21,12 @@
                     string url = string.IsNullOrEmpty(item.Url) ? "#" : item.Url;
                     string hasChilds = string.IsNullOrEmpty(item.Url) ? "down-nav" : "";
 
-                    //if (Model.CurrentMenu != null)
-                    //{
-                    string linkActive = item.Id == Model.CurrentMenu.Id ? "active" : "";
-                    string openav = Model.CurrentMenu.ParentId == item.Id && item.Id != 3 ? "nav-open" : "";
+              
 
-                    var childMenus = Model.Menus.Where(d => d.ParentId == item.Id);
+                    var childMenus = Model.Menus.Where(d => d.ParentId == item.Id && d.Active).OrderBy(d => d.Importance).ToList();
+
+                    string openav = Model.CurrentMenu.ParentId == item.Id && item.Id != 3 && childMenus.Any() ? "open" : "";
+                    string linkActive = item.Id == Model.CurrentMenu.Id || (Model.CurrentMenu.ParentId == item.Id && !childMenus.Any()) ? "active" : "";
 
                     <li class="@hasChilds @string.Format("level{0}", item.LayoutLevel) @openav" data-parent="@(item.ParentId??0)">
                         <a href="@url" class="@linkActive" data-id="@item.Id">
@@ -41,18 +40,17 @@
                         @if (childMenus.Any() && item.ParentId != null)
                         {
                             <ul class="submenu">
-                                @foreach (var sub in childMenus.OrderBy(d => d.Importance))
+                                @foreach (var sub in childMenus)
                                 {
-                                    if (sub.Active)
-                                    {
+                                  
 
-                                        string subLinkActive = (sub.Id == Model.CurrentMenu.Id || sub.Id == Model.CurrentMenu.ParentId) ? "active" : "";
-                                        <li class="@string.Format("level{0}", sub.LayoutLevel)" data-parent="@(sub.ParentId ?? 0)">
-                                            <a href="@sub.Url" data-id="@sub.Id" class="@subLinkActive">
-                                                <i class="@sub.Iconfont"></i>@sub.Title
-                                            </a>
-                                        </li>
-                                    }
+                                    string subLinkActive = (sub.Id == Model.CurrentMenu.Id || sub.Id == Model.CurrentMenu.ParentId) ? "active" : "";
+                                    <li class="@string.Format("level{0}", sub.LayoutLevel)" data-parent="@(sub.ParentId ?? 0)">
+                                        <a href="@sub.Url" data-id="@sub.Id" class="@subLinkActive">
+                                            <i class="@sub.Iconfont"></i>@sub.Title
+                                        </a>
+                                    </li>
+                                    
 
                                 }
 
@@ -68,5 +66,5 @@
         <div class="closemenu"><a href="#"><i class="iconfont icon-chevron-circle-left"></i></a></div>
 
 
-    </aside>
+   
 }

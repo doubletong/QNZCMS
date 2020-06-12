@@ -14,8 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using QNZCMS.Utilities;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {

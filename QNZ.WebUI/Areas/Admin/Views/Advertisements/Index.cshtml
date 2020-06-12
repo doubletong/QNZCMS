@@ -1,8 +1,13 @@
 ﻿@model AdvertisementListVM
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @{
+    Layout = "_LayoutPlugins";
     var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["Title"] = EntityNames.Carousel;
+}
+
+@section Header{ 
+    <link href="~/plugins/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
 }
 
 <div class="card">
@@ -66,7 +71,9 @@
             <tr id="@(item.Id)tr">
                 <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
                 <td>
-                    <img src="@item.ImageUrl" alt="@item.Title" style="height:50px;" />
+                    <a href="@item.ImageUrl" data-lightbox="advertisments" data-title="@item.Title">
+                        <img src="@item.ImageUrl" alt="@item.Title" style="height:50px;" />
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
@@ -92,7 +99,7 @@
 
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="iconfont icon-info-circle"></i></a>
+                    <a asp-action="Copy" asp-route-id="@item.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>                   
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
                 </td>
             </tr>
@@ -128,6 +135,7 @@
 </div>
 
 @section footer{
+    <script src="~/plugins/lightbox2/dist/js/lightbox.min.js"></script>
     <script>
             document.getElementById('allSelect').onclick = function() {
                 selectAllPages(this.checked);
@@ -139,7 +147,7 @@
             var tops = el.getElementsByTagName('input');
 
             for (var i=0, len=tops.length; i<len; i++) {
-                if ( tops[i].type === 'checkbox' ) {
+                if (tops[i].type === 'checkbox' && tops[i].disabled == false) {
                     //tops[i].onclick = updateTotal;
                     tops[i].checked = isChecked;
                 }
@@ -318,15 +326,43 @@
 
         });
 
-         $(function () {
+        $(function () {
 
-          $(document).on("change", '#PageSize', function (e) {
+            //copy item
+            $(".btn-copy").click(function (e) {
                 e.preventDefault();
+                var url = $(this).attr("href");
+                var backUrl = "@Url.Action("Index")";
 
-                var url = "@Url.Action("PageSizeSet")", title = "分页设置", pageSize = $(this).val();
-                Common.PageSizeSet(url, title, pageSize, setPageSizeFunc);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    headers: { 'RequestVerificationToken': antiforgeryToken },
+                    success: function (data) {
 
-          });
+                        if (data.status === 1) {
+                            toastr.success(data.message);
+                            location.href = backUrl;
+
+                        }
+                        if (data.status === 2) {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(error);
+                    }
+                });
+            });
+
+
+              $(document).on("change", '#PageSize', function (e) {
+                    e.preventDefault();
+
+                    var url = "@Url.Action("PageSizeSet")", title = "分页设置", pageSize = $(this).val();
+                    Common.PageSizeSet(url, title, pageSize, setPageSizeFunc);
+
+              });
 
             function setPageSizeFunc() {
                 location.reload();

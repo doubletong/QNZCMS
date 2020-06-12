@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SIG.Infrastructure.Cache
+namespace QNZ.Infrastructure.Cache
 {
     public interface ICacheService
     {

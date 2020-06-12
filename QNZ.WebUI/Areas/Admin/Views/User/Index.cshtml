@@ -1,10 +1,10 @@
 ﻿
-@using SIG.Resources.Admin
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @model UserListVM
 
 
 @{
+    Layout = "_LayoutSystem";
     var modelName = EntityNames.User;
     ViewBag.Title = modelName;
 

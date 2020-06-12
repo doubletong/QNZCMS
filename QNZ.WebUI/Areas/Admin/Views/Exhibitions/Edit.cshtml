@@ -1,0 +1,266 @@
+﻿@model ExhibitionIM
+@{
+    ViewData["Title"] = Model.Id > 0 ? "编辑展会" : "添加展会";
+}
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      asp-antiforgery="true"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="card">
+        <h5 class="card-header">
+            @ViewData["Title"]
+        </h5>
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section class="row">
+
+                <div class="col-md">
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title"></span>
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+                        <label asp-for="Body" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Body"></textarea>
+                        </div>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Summary" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Summary" class="form-control" style="width: 100%;"></textarea>
+                        </div>
+                        <span asp-validation-for="Summary"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" type="date" />
+                        <span asp-validation-for="DateStart"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DateEnd" class="control-label"></label>
+                        <input asp-for="DateEnd" class="form-control"  type="date" />
+                        <span asp-validation-for="DateEnd"></span>
+                    </div>
+                
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Booth" class="control-label"></label>
+                        <input asp-for="Booth" class="form-control" />
+                        <span asp-validation-for="Booth"></span>
+                    </div>
+
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="Active">
+                        <label asp-for="Active" class="form-check-label"></label>
+                        <span asp-validation-for="Active"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="Recommend">
+                        <label asp-for="Recommend" class="form-check-label"></label>
+                        <span asp-validation-for="Recommend"></span>
+                    </div>
+
+
+                </div>
+                <aside class="col-md-auto">
+                    <div class="card mb-3" style="width:320px;">
+                        <div class="card-header text-center">
+                            图一
+                        </div>
+                        <div class="card-body">
+                            <img data-src="holder.js/300x160?text=规格 \n 480x280像素" id="imgThumbnail" src="@(Model!=null?Model.Thumbnail:"")">
+
+                            <input asp-for="Thumbnail" type="hidden" />
+                            <span asp-validation-for="Thumbnail"></span>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-info btn-block" id="setImageUrl">
+                                <i class="iconfont icon-upload"></i> 浏览图片
+                            </button>
+                        </div>
+                    </div>
+
+                   
+                    <div class="card" style="width:320px;">
+                        <h5 class="card-header">SEO</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="SEOTitle" class="control-label"></label>
+                                <input asp-for="SEOTitle" class="form-control" />
+                                <span asp-validation-for="SEOTitle" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEOKeywords" class="control-label"></label>
+                                <input asp-for="SEOKeywords" class="form-control" />
+                                <span asp-validation-for="SEOKeywords" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEODescription" class="control-label"></label>
+                                <textarea asp-for="SEODescription" class="form-control"></textarea>
+                                <span asp-validation-for="SEODescription" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+@*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
+
+@section header{
+    @*<link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+        <link href="~/plugins/webuploader/webuploader.css" rel="stylesheet" />*@
+    <style>
+        .thumb {
+            height: 200px;
+            margin: 0 auto 1rem;
+            line-height: 200px;
+            cursor: pointer;
+            background-color: #ddd;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+        }
+    </style>
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/plugins/holder/holder.min.js"></script>
+    @*<script src="/Plugins/webuploader/webuploader.min.js"></script>
+        <script src="/Plugins/SigFinder/FileManager.js"></script>*@
+
+    <script src="~/plugins/tinymce5/tinymce.min.js"></script>
+    <script>
+        var url = "@Url.Action("Index")";
+
+        tinymce.init({
+            selector: '#Body',  // change this value according to your HTML
+            height: 400,
+            language: 'zh_CN',
+
+            convert_urls: false,
+            //extended_valid_elements: 'span,i[class]',
+            valid_children : 'a[p|span|div|strong|i]',
+            valid_elements : "*[*]",
+            //picture manager
+            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
+            images_upload_handler: QNZ.ImagesUploadHandler,
+            plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
+
+              toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
+
+        autosave_ask_before_unload: true,
+              autosave_interval: "30s",
+              autosave_prefix: "{path}{query}-{id}-",
+              autosave_restore_when_empty: false,
+            autosave_retention: "2m",
+
+          image_advtab: true,
+                    importcss_append: true,
+             image_caption: true,
+          templates: [
+                { title: '新表格', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            { title: '展会样式', description: 'A cure for writers block', content: 'Once upon a time...' },
+            { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+          ],
+
+
+
+        });
+
+
+        function SetThumbnail(fileUrl) {
+    
+            $('#imgThumbnail').attr("src", fileUrl);
+            $('#Thumbnail').val(fileUrl);
+
+        }
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+
+        $(function () {
+
+            $("#setImageUrl").on("click", function () {
+                QNZ.selectActionFunction = SetThumbnail;
+                QNZ.open();
+
+            });
+
+          
+
+
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

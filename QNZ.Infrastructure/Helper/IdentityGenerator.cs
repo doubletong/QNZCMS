@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SIG.Infrastructure.Helper
+namespace QNZ.Infrastructure.Helper
 {
     public static class IdentityGenerator
     {

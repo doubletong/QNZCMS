@@ -1,49 +1,65 @@
 ﻿@model QNZ.Model.ViewModel.NavigationCategoryIM
 @{
-    ViewData["Title"] = "创建分类";
+    Layout = "_LayoutPlugins";
+    ViewData["Title"] = "编辑导航组";
 }
 
 
-<div class="row">
-
-    <div class="col-md-4">
-        <form asp-action="SaveCategory" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
-              data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
-              data-ajax="true" data-ajax-method="POST">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id" type="hidden" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-     
-
-            <div class="form-group">
-                <label asp-for="Importance" class="control-label"></label>
-                <input asp-for="Importance" class="form-control" />
-                <span asp-validation-for="Importance" class="text-danger"></span>
-            </div>
-        
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                    </label>
+<form asp-action="SaveCategory" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+    <div class="card">
+        <header class="card-header">
+            <div class="row">
+                <div class="col">@ViewData["Title"]</div>
+                <div class="col-auto">
+                    <div class="control"><a class="expand" href="#"><i class="iconfont icon-fullscreen"></i></a><a class="compress" href="#"><i class="iconfont icon-shrink"></i></a></div>
                 </div>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> 保存</button>
-                <a asp-action="Index" class="btn btn-secondary">返回</a>
+        </header>
+        <section class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Id" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" />
+                        <span asp-validation-for="Importance" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="spinner-border" role="status" style="display:none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+
             </div>
-        </form>
+        </section>
+        <footer class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-left"></i> 返回</a>
+        </footer>
     </div>
-
-    
-</div>
-
-
-
+</form>
 
 @section header{
     <style>
@@ -72,17 +88,20 @@
     <script>
 
 
-     
+
         function onFailed() {
             toastr.error("操作失败！");
         }
 
+    
         function onBeginSave() {
-            $("#btnSave i").removeClass("fa-save").addClass("fa-spinner fa-spin");
+            $(".spinner-border").fadeIn();
+
         }
         function onCompleteSave() {
-            $("#btnSave i").removeClass("fa-spinner fa-spin").addClass("fa-save");
+            $(".spinner-border").fadeOut();
         }
+
 
 
         function onSuccessSave(data) {
@@ -103,11 +122,11 @@
 
         $(function () {
 
-          
 
 
 
-           
+
+
 
 
         });

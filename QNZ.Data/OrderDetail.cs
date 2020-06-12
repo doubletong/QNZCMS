@@ -21,9 +21,6 @@ namespace QNZ.Data
         [ForeignKey(nameof(OrderId))]
         [InverseProperty("OrderDetails")]
         public virtual Order Order { get; set; }
-        [ForeignKey(nameof(ProductId))]
-        [InverseProperty("OrderDetails")]
-        public virtual Product Product { get; set; }
         [ForeignKey(nameof(StoreId))]
         [InverseProperty("OrderDetails")]
         public virtual Store Store { get; set; }

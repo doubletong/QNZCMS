@@ -12,22 +12,43 @@ namespace QNZ.Data
         [Key]
         public int Id { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 微信号
+        /// </summary>
         public string WechatId { get; set; }
         [Required]
         [StringLength(11)]
+        /// <summary>
+        /// 手机
+        /// </summary>
         public string Mobile { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 名称
+        /// </summary>
         public string Name { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 省
+        /// </summary>
         public string Province { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 市
+        /// </summary>
         public string City { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 区/县
+        /// </summary>
         public string District { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 负责人
+        /// </summary>
         public string Principal { get; set; }
         [Required]
         [StringLength(50)]

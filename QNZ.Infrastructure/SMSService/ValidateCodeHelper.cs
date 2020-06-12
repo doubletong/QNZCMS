@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SIG.Infrastructure.SMSService
+namespace QNZ.Infrastructure.SMSService
 {
     public static class ValidateCodeHelper
     {

@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZ.Model", "QNZ.Model\QNZ.Model.csproj", "{5971EF9D-F1A7-439B-A40C-4AB2DE9BF105}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIG.Resources", "SIG.Resources\SIG.Resources.csproj", "{B969761D-E76F-474D-9FB1-8107FC53D1A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZ.Resources", "SIG.Resources\QNZ.Resources.csproj", "{B969761D-E76F-474D-9FB1-8107FC53D1A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZ.Data", "QNZ.Data\QNZ.Data.csproj", "{F01A1F27-CA4B-4697-B48C-F0E75D0D4C4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNZCMS", "QNZ.WebUI\QNZCMS.csproj", "{805FB076-E39A-4F01-B32F-B36D94256AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZCMS", "QNZ.WebUI\QNZCMS.csproj", "{805FB076-E39A-4F01-B32F-B36D94256AB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNZ.Infrastructure", "QNZ.Infrastructure\QNZ.Infrastructure.csproj", "{1B20067E-E1B7-492B-8B1F-1E8E96A21998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZ.Infrastructure", "QNZ.Infrastructure\QNZ.Infrastructure.csproj", "{1B20067E-E1B7-492B-8B1F-1E8E96A21998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNZ.Services", "QNZ.Services\QNZ.Services.csproj", "{23A536A3-F15D-4769-836F-99D6CBBAC3B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNZ.Services", "QNZ.Services\QNZ.Services.csproj", "{23A536A3-F15D-4769-836F-99D6CBBAC3B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

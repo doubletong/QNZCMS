@@ -20,9 +20,9 @@ using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Services;
 using QNZ.Services.Identity;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
-using SIG.Resources.Admin;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Admin;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers

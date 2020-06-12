@@ -1,0 +1,84 @@
+﻿@model StaffDetailVM
+
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : Model.StaffDetail.Name;
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1004" })
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <ul class="breadcrumb">
+                    <li><a href="/">首页 </a></li>
+                    <li>
+                        <a href="/about">关于我们 </a>
+                    </li>
+                    <li>
+                        <a href="/about/@Model.StaffDetail.Organization.Alias">@Model.StaffDetail.Organization.Title </a>
+                    </li>
+                    <li class="active">
+                        查看详情
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "投资者关系" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-egm page-egm-detail">
+    <section class="s1 container">
+        <div class="title-section">
+            <h2 class="text-center">@Model.StaffDetail.Organization.Title</h2>
+        </div>
+        <div class="item">
+            <div class="item-header">
+                <div class="row align-items-center no-gutters">
+                    <div class="col-auto">
+                        <div class="name">@Model.StaffDetail.Name</div>
+                    </div>
+                    <div class="col">
+                        <div class="post">@Model.StaffDetail.Post</div>
+                    </div>
+                    <div class="col-auto"><a class="back" href="javascript:window.history.back();">返回<i class="iconfont icon-next"></i></a></div>
+                </div>
+            </div>
+            <div class="item-body">
+                <ul class="list">
+                    <li>性别：@Model.StaffDetail.Gender</li>
+                    <li>任职期间：@Model.StaffDetail.MasterTime</li>
+                    <li>提名人：@Model.StaffDetail.Referrer</li>
+                </ul>
+                <p>@Model.StaffDetail.Description</p>
+            </div>
+        </div>
+    </section>
+    <section class="s2">
+        <div class="container">
+            <div class="title-section">
+                <h2 class="text-center">更多成员           </h2>
+            </div>
+            <div class="egmlist">
+                <div class="row">
+                    @foreach (var item in Model.Staffs)
+                    {
+                        @await Html.PartialAsync("_StaffItem", item)
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

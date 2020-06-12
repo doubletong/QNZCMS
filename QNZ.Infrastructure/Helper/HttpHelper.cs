@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace SIG.Infrastructure.Helper
+namespace QNZ.Infrastructure.Helper
 {
     
     [Obsolete]

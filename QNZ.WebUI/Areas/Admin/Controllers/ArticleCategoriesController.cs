@@ -14,8 +14,8 @@ using QNZ.Model.ViewModel;
 using QNZ.Model.Admin.InputModel;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using SIG.Resources.Admin;
-using SIG.Infrastructure.Helper;
+using QNZ.Resources.Admin;
+using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
 
@@ -38,30 +38,33 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
         // GET: Admin/ArticleCategories
-        public async Task<IActionResult> Index(string sort,string keyword)
+        public async Task<IActionResult> Index( string keyword, string orderby = "importance", string sort = "desc")
         {
             var vm = new ArticleCategoryList
             {
-                Keyword = keyword
+                Keyword = keyword,
+                OrderBy = orderby,
+                Sort = sort
             };
 
             var query = _context.ArticleCategories.AsNoTracking().AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
                 query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
-         
-            ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
-            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
-            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
 
-            query = sort switch
+            //ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
+            //ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+            //ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+            var gosort = $"{orderby}_{sort}";
+
+            query = gosort switch
             {              
                 "title" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
                 "date" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
-                "importance" => query.OrderBy(s => s.CreatedDate),
-                "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
-                _ => query.OrderByDescending(s => s.Importance),
+                "importance" => query.OrderBy(s => s.Importance),
+                "importance_desc" => query.OrderByDescending(s => s.Importance),
+                _ => query.OrderByDescending(s => s.Id),
             };
 
             vm.Categories = await query.ProjectTo<ArticleCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
@@ -69,24 +72,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             return View(vm);
         }
 
-        // GET: Admin/ArticleCategories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _context.ArticleCategories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            // var model = _mapper.Map<ArticleCategoryIM>(productCategory);
-            return View(model);
-        }
-
+     
 
         // GET: Admin/ArticleCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -200,6 +186,30 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Copy(int id)
+        {
+
+            var article = await _context.ArticleCategories.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+
+            if (article == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            article.Id = 0;
+            article.CreatedBy = User.Identity.Name;
+            article.CreatedDate = DateTime.Now;   
+            article.Active = false;
+            article.Title = $"{article.Title}【拷贝】";
+
+            _context.ArticleCategories.Add(article);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
         // POST: Admin/Articles/Delete/5
         [HttpDelete]
         [ValidateAntiForgeryToken]
@@ -308,9 +318,9 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<JsonResult> IsAliasUnique(string seoName, int? id)
+        public async Task<JsonResult> IsAliasUnique(string Alias, int? id)
         {
-            var query = _context.Pages.Where(d => d.SeoName == seoName).AsQueryable();
+            var query = _context.ArticleCategories.Where(d => d.Alias == Alias).AsQueryable();
             if (id > 0)
             {
                 query = query.Where(d => d.Id != id.Value);

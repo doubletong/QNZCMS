@@ -1,7 +1,43 @@
 ﻿using System.Xml.Serialization;
 
-namespace SIG.Infrastructure.Configs
+namespace QNZ.Infrastructure.Configs
 {
+    public class GlobalConfig
+    {
+        /// <summary>
+        /// 网站名称
+        /// </summary>       
+        public string SiteName { get; set; }
+
+        /// <summary>
+        /// 域名
+        /// </summary>      
+        public string SiteDomainName { get; set; }
+
+      
+        /// <summary>
+        /// 备案号
+        /// </summary>
+        public string WebNumber { get; set; }
+
+
+        /// <summary>
+        /// 百度统计ID
+        /// </summary>
+        public string BaiduSiteID { get; set; }
+
+ 
+    }
+
+    public class CompanyConfig
+    {
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string Fax { get; set; }
+        public string  Email { get; set; }
+    }
+
     /// <summary>
     /// 全局设置
     /// </summary>
@@ -50,10 +86,10 @@ namespace SIG.Infrastructure.Configs
         public string BaiduSiteID { get; set; }
 
         /// <summary>
-        /// 谷歌分析跟踪ID
+        /// 招聘接收简历邮箱
         /// </summary>
-        [XmlElement("GoogleAnalyticsID")]
-        public string GoogleAnalyticsID { get; set; }
+        [XmlElement("EmailHr")]
+        public string EmailHr { get; set; }
 
         [XmlElement("DatabaseBackupDir")]
         public string DatabaseBackupDir { get; set; }               
@@ -72,11 +108,7 @@ namespace SIG.Infrastructure.Configs
         public bool IsClose { get; set; }
         [XmlElement("CloseInfo")]
         public string CloseInfo { get; set; }
-        /// <summary>
-        /// 登录页logo设置
-        /// </summary>
-        [XmlElement("LoginLogo")]
-        public string LoginLogo { get; set; }
+ 
 
         /// <summary>
         /// 控制台logo设置

@@ -1,0 +1,12 @@
+@model IEnumerable<QNZ.Data.Navigation>
+@{
+    var url = Context.Request.Path.ToString();
+}
+
+    <div class="submenus">
+        @foreach (var item in Model)
+        {
+            <a class="@((url==item.Url || url.Contains(item.Url)) ?"active":"")" href="@item.Url">@item.Title</a>
+        }     
+    </div>
+

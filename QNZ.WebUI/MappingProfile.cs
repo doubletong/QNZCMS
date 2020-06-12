@@ -44,13 +44,22 @@ namespace QNZCMS
             //CreateMap<StoreIM, Store>();
             //CreateMap<Store, StoreIM>();
 
-            CreateMap<ArticleCategory, ArticleCategoryVM>();
-            CreateMap<ArticleCategory, ArticleCategoryBVM>();
-            CreateMap<ArticleCategory, ArticleCategoryIM>();
-            CreateMap<ArticleCategoryIM, ArticleCategory>();
+         
 
-            CreateMap<Customer, CustomerVM>();
-            CreateMap<Team, TeamVM>();
+            CreateMap<Album, AlbumVM>();
+            CreateMap<Album, AlbumBVM>();
+            CreateMap<Album, AlbumIM>();
+            CreateMap<AlbumIM, Album>();
+
+            CreateMap<Photo, PhotoVM>();
+            CreateMap<Photo, PhotoBVM>()
+                 .ForMember(d => d.AlbumTitle, opt => opt.MapFrom(source => source.Album.Title));
+
+            CreateMap<Photo, PhotoIM>();
+            CreateMap<PhotoIM, Photo>();
+
+         
+    
 
             //CreateMap<Recipe, RecipeVM>()
             //        .ForMember(d => d.Username, opt => opt.MapFrom(source => source.User.UserName));
@@ -78,8 +87,10 @@ namespace QNZCMS
             CreateMap<Page, PageIM>();
             CreateMap<PageIM, Page>();
 
-            CreateMap<Team, TeamIM>();
-            CreateMap<TeamIM, Team>();
+            CreateMap<Memorabilium, MemorabiliaVM>();
+            CreateMap<Memorabilium, MemorabiliaIM>();
+            CreateMap<MemorabiliaIM, Memorabilium>();
+  
 
             CreateMap<AdvertisingSpace, AdvertisingSpaceVM>();
             CreateMap<AdvertisingSpace, AdvertisingSpaceIM>();
@@ -118,12 +129,78 @@ namespace QNZCMS
             CreateMap<Client, ClientIM>();
             CreateMap<ClientIM, Client>();
 
+            CreateMap<ArticleCategory, ArticleCategoryVM>();
+            CreateMap<ArticleCategory, ArticleCategoryBVM>();
+            CreateMap<ArticleCategory, ArticleCategoryIM>();
+            CreateMap<ArticleCategoryIM, ArticleCategory>();
+
             CreateMap<Article, ArticleVM>();
             CreateMap<Article, ArticleBVM>()
                  .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
 
             CreateMap<Article, ArticleIM>();
             CreateMap<ArticleIM, Article>();
+
+            CreateMap<Exhibition, ExhibitionVM>();
+            CreateMap<Exhibition, ExhibitionBVM>();           
+            CreateMap<Exhibition, ExhibitionIM>();
+            CreateMap<ExhibitionIM, Exhibition>();
+
+            CreateMap<Branch, BranchVM>();
+            CreateMap<Branch, BranchBVM>();
+            CreateMap<Branch, BranchIM>();
+            CreateMap<BranchIM, Branch>();
+
+
+            CreateMap<DocCategory, DocCategoryVM>();
+            CreateMap<DocCategory, DocCategoryBVM>();
+            CreateMap<DocCategory, DocCategoryIM>();
+            CreateMap<DocCategoryIM, DocCategory>();
+
+            CreateMap<Document, DocumentVM>();
+            CreateMap<Document, DocumentBVM>()
+                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
+
+            CreateMap<Document, DocumentIM>();
+            CreateMap<DocumentIM, Document>();
+
+
+            CreateMap<Organization, OrganizationVM>();
+            CreateMap<Organization, OrganizationBVM>();
+            CreateMap<Organization, OrganizationIM>();
+            CreateMap<OrganizationIM, Organization>();
+
+            CreateMap<Staff, StaffVM>();
+            CreateMap<Staff, StaffBVM>()
+                 .ForMember(d => d.OrganizationName, opt => opt.MapFrom(source => source.Organization.Title));
+
+            CreateMap<Staff, StaffIM>();
+            CreateMap<StaffIM, Staff>();
+
+            CreateMap<JobCategory, JobCategoryVM>();
+            CreateMap<JobCategory, JobCategoryBVM>();
+            CreateMap<JobCategory, JobCategoryIM>();
+            CreateMap<JobCategoryIM, JobCategory>();
+
+            CreateMap<Job, JobVM>();
+            CreateMap<Job, JobBVM>()
+                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
+
+            CreateMap<Job, JobIM>();
+            CreateMap<JobIM, Job>();
+
+
+            CreateMap<ProductCategory, ProductCategoryVM>();
+            CreateMap<ProductCategory, ProductCategoryBVM>();
+            CreateMap<ProductCategory, ProductCategoryIM>();
+            CreateMap<ProductCategoryIM, ProductCategory>();
+
+            CreateMap<Product, ProductVM>();
+            CreateMap<Product, ProductBVM>()
+                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
+
+            CreateMap<Product, ProductIM>();
+            CreateMap<ProductIM, Product>();
         }
     }
 }

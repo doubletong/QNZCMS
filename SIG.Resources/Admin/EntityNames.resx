@@ -141,9 +141,6 @@
   <data name="Category" xml:space="preserve">
     <value>分类</value>
   </data>
-  <data name="Chronicle" xml:space="preserve">
-    <value>纪事</value>
-  </data>
   <data name="City" xml:space="preserve">
     <value>城市</value>
   </data>
@@ -152,6 +149,12 @@
   </data>
   <data name="District" xml:space="preserve">
     <value>区县</value>
+  </data>
+  <data name="DocCategory" xml:space="preserve">
+    <value>文档分类</value>
+  </data>
+  <data name="Document" xml:space="preserve">
+    <value>文档</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>邮件</value>
@@ -164,6 +167,9 @@
   </data>
   <data name="Equipment" xml:space="preserve">
     <value>仪器设备</value>
+  </data>
+  <data name="Exhibition" xml:space="preserve">
+    <value>展会</value>
   </data>
   <data name="Feedback" xml:space="preserve">
     <value>反馈意见</value>
@@ -186,6 +192,9 @@
   <data name="Job" xml:space="preserve">
     <value>人才招聘</value>
   </data>
+  <data name="JobCategory" xml:space="preserve">
+    <value>招聘类型</value>
+  </data>
   <data name="Link" xml:space="preserve">
     <value>链接</value>
   </data>
@@ -194,6 +203,9 @@
   </data>
   <data name="Log" xml:space="preserve">
     <value>日志</value>
+  </data>
+  <data name="Memorabilia" xml:space="preserve">
+    <value>纪事</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>菜单</value>
@@ -206,6 +218,9 @@
   </data>
   <data name="OrderDetail" xml:space="preserve">
     <value>订单明细</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>组织团队</value>
   </data>
   <data name="Page" xml:space="preserve">
     <value>页面</value>
@@ -254,6 +269,9 @@
   </data>
   <data name="Solution" xml:space="preserve">
     <value>解决方案</value>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>人员</value>
   </data>
   <data name="Store" xml:space="preserve">
     <value>门店</value>

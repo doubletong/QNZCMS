@@ -1,5 +1,5 @@
 ﻿using QNZ.Data.Enums;
-using SIG.Resources.Front;
+using QNZ.Resources.Front;
 using System.ComponentModel.DataAnnotations;
 
 namespace QNZ.Model.Front.InputModel

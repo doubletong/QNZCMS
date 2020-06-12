@@ -4,20 +4,86 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.PlatformAbstractions;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
 
 using QNZ.Model.Admin.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Model.ViewModel;
+using System.Text;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
-    [Authorize(Policy = "Permission")]
+     // [Authorize(Policy = "Permission")]
+    [Authorize]
     public class GeneralController : BaseController
     {
+
+        private IWebHostEnvironment _hostingEnvironment;
+    
+        public GeneralController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        
+        }
+
+
+        public IActionResult Company()
+        {
+            var info = SettingsManager.Company;
+
+            var vm = new CompanyIM
+            {
+                Name = info.Name,
+                Address = info.Address,
+                Phone = info.Phone,
+                Email = info.Email,
+                Fax = info.Fax             
+            };
+
+            return View(vm);
+         
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCompany(CompanyIM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = GetModelErrorMessage();
+                AR.Setfailure(errorMessage);
+                return Json(AR);
+            }
+
+            try
+            {
+                var configFile = PlatformServices.Default.MapPath("/Config/CompanyConfig.json");
+                string json = System.IO.File.ReadAllText(configFile, Encoding.UTF8);
+                var ci = Newtonsoft.Json.JsonConvert.DeserializeObject<CompanyConfig>(json);
+                ci.Name = vm.Name;
+                ci.Address = vm.Address;
+                ci.Email = vm.Email;
+                ci.Phone = vm.Phone;
+                ci.Fax = vm.Fax;
+                
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(ci, Newtonsoft.Json.Formatting.Indented);
+                System.IO.File.WriteAllText(configFile, output);
+
+                return Json(AR);
+            }
+            catch (Exception ex)
+            {
+
+                AR.Setfailure(ex.Message);
+                return Json(AR);
+            }
+
+        }
+
         //   const string folderName = "Config";
         //private IHostingEnvironment _hostingEnvironment;
         //public GeneralController(IHostingEnvironment hostingEnvironment)
@@ -28,7 +94,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         //public ViewResult Site()
         //{
 
-        //    var info = SettingsManager.Site;
+
         //    var sle = SettingsManager.Article;
         //    var blog = SettingsManager.Blog;
         //    var caseSet = SettingsManager.Case;
@@ -39,19 +105,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         //    ModuleSetIM vm = new ModuleSetIM
         //    {
 
-        //        SiteInfo = new SiteInfoIM
-        //        {
-        //            SiteName = info.SiteName,
-        //            SiteDomainName = info.SiteDomainName,
-        //            WebNumber = info.WebNumber,
-        //            BaiduSiteID = info.BaiduSiteID,
-        //            IsClose = info.IsClose,
-        //            CloseInfo = info.CloseInfo,
-        //            GoogleAnalyticsID = info.GoogleAnalyticsID,
-        //            LoginLogo = info.LoginLogo,
-        //            DashboardLogo = info.DashboardLogo,
-        //            MailTo = info.MailTo
-        //        },
+        //    
         //        ProductSet = new ProductSetIM
         //        {
         //            EnableCaching = productSet.EnableCaching,
@@ -379,8 +433,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 BaiduSiteID = info.BaiduSiteID,
                 IsClose = info.IsClose,
                 CloseInfo = info.CloseInfo,
-                GoogleAnalyticsID = info.GoogleAnalyticsID,
-                LoginLogo = info.LoginLogo,
+                EmailHr = info.EmailHr,           
                 DashboardLogo = info.DashboardLogo,
                 MailTo = info.MailTo
             };
@@ -409,11 +462,11 @@ namespace QNZCMS.Areas.Admin.Controllers
                 item.Element("SiteDomainName").SetValue(vm.SiteDomainName ?? "");
                 item.Element("WebNumber").SetValue(vm.WebNumber ?? "");
                 item.Element("BaiduSiteID").SetValue(vm.BaiduSiteID ?? "");
-                item.Element("GoogleAnalyticsID").SetValue(vm.GoogleAnalyticsID ?? "");
+                item.Element("EmailHr").SetValue(vm.EmailHr ?? "");
                 item.Element("IsClose").SetValue(vm.IsClose);
                 item.Element("CloseInfo").SetValue(vm.CloseInfo ?? "");
                 item.Element("DashboardLogo").SetValue(vm.DashboardLogo ?? "");
-                item.Element("LoginLogo").SetValue(vm.LoginLogo ?? "");
+            
                 item.Element("MailTo").SetValue(vm.MailTo ?? "");
                 doc.Save(xmlFile);
 

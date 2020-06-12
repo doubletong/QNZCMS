@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SIG.Basic.Extensions
+namespace QNZ.Basic.Extensions
 {
     public static class LinqQuery
     {

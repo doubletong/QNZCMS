@@ -1,0 +1,126 @@
+﻿@model CompanyIM
+@{
+    Layout = "_LayoutSystem";
+
+    ViewData["Title"] = "企业资料";
+}
+
+
+<form asp-action="EditCompany" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+    <div class="card">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+
+        <div class="card-body">
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Name, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Address, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Address)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Email, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Phone, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Phone)
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Fax, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Fax, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Fax)
+                </div>
+
+            </div>
+           
+          
+
+          
+
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+        </div>
+
+    </div>
+</form>
+
+
+@section header{
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+    
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+            function onBeginSave() {
+                $(".spinner-border").fadeIn();
+
+        }
+        function onCompleteSave() {
+             $(".spinner-border").fadeOut();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {
+                toastr.success(data.message);
+
+            }
+            if (data.status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+   
+
+
+        });
+    </script>
+}

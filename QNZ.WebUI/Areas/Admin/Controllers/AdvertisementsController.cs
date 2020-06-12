@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
-using SIG.Resources.Admin;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Admin;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -64,7 +64,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 "date" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
 
-                _ => query.OrderByDescending(s => s.Importance),
+                _ => query.OrderByDescending(s => s.Id),
             };
 
 
@@ -84,24 +84,6 @@ namespace QNZCMS.Areas.Admin.Controllers
             return View(vm);
         }
 
-        // GET: Admin/Advertisements/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var advertisement = await _context.Advertisements
-                .Include(a => a.Space)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (advertisement == null)
-            {
-                return NotFound();
-            }
-
-            return View(advertisement);
-        }
 
 
         // GET: Admin/Advertisements/Edit/5
@@ -208,7 +190,30 @@ namespace QNZCMS.Areas.Admin.Controllers
            
         }
 
-    
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Copy(int id)
+        {
+
+            var article = await _context.Advertisements.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+
+            if (article == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            article.Id = 0;
+            article.CreatedBy = User.Identity.Name;
+            article.CreatedDate = DateTime.Now;        
+            article.Active = false;
+            article.Title = $"{article.Title}【拷贝】";
+
+            _context.Advertisements.Add(article);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
 
         // POST: Admin/Advertisements/Delete/5
         [HttpPost, ActionName("Delete")]

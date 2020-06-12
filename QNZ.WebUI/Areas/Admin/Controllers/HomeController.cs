@@ -44,7 +44,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             };
             return View(vm);
         }
-        public IActionResult Report()
+        public IActionResult Plugins()
         {           
             return View();
         }

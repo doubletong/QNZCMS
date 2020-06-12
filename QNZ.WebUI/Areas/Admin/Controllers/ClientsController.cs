@@ -14,11 +14,11 @@ using QNZ.Model.ViewModel;
 using QNZ.Model.Admin.InputModel;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using SIG.Resources.Admin;
-using SIG.Infrastructure.Helper;
+using QNZ.Resources.Admin;
+using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers

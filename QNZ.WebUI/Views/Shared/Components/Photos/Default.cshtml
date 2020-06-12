@@ -1,0 +1,28 @@
+@model Album
+@{
+   
+}
+
+    <section class="s1 container">
+        <div class="title-section">
+            <h2 class="text-center">@Model.Title</h2>
+        </div>
+        <div class="photos row">
+            @foreach (var item in Model.Photos)
+            {
+                <div class="col-6 col-md-4">
+                    <div class="des">
+                        <a class="item" href="@item.ImageUrl" data-lightbox="quality" data-title="@item.Title">
+                            <img src="@item.ImageUrl" alt="">
+                            <div class="overly">
+                                <div class="view">²é¿´´óÍ¼</div>
+                            </div>
+                        </a>
+                        <div class="title">@item.Title</div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </section>

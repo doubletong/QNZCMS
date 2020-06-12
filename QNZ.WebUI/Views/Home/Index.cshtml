@@ -1,272 +1,218 @@
 ﻿@using System;
 @{
-    ViewData["Title"] = "深圳网站建设_深圳高端网站建设_深圳网页设计_微信小程序定制开发";
+    ViewData["Title"] = SettingsManager.Site.SiteName;
 }
 @section Header{
-    <meta name="keywords" content="深圳网站建设公司,深圳网站建设公司,深圳高端网站建设,用户体验设计,ui设计公司,响应式网站设计,界面设计公司,网站界面设计,微信小程序开发">
-    <meta name="description" content="黑鸟志为企业提供网站建设、服务设计、产品策略研究、用户体验研究、交互设计、视觉ui设计、网站界面设计、用户体验设计以及vi设计；包括app设计、ui设计、界面设计、微信小程序开发等。">
+    @*<meta name="keywords" content="深圳网站建设公司,深圳网站建设公司,深圳高端网站建设,用户体验设计,ui设计公司,响应式网站设计,界面设计公司,网站界面设计,微信小程序开发">
+    <meta name="description" content="黑鸟志为企业提供网站建设、服务设计、产品策略研究、用户体验研究、交互设计、视觉ui设计、网站界面设计、用户体验设计以及vi设计；包括app设计、ui设计、界面设计、微信小程序开发等。">*@
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
 }
 
-<div class="banner">
-    <img src="img/bird.svg" alt="bird">
-    <div id="parallax">
-        <div class="layer" data-depth="0.6">
-            <div class="some-space">
-                <h1>致力于<span class="typed"></span></h1>
-            </div>
-        </div>
-        <div class="layer" data-depth="0.4">
-            <div id="particles-js"></div>
-        </div>
-        <div class="layer" data-depth="0.3">
-            <div class="some-more-space">Professional / trend / perfect</div>
-        </div>
-    </div>
-</div>
 
-<section class="page-home section2" style="background-color:#f7f7f7;">
-    <header class="se-header">
-        <h3>服务项目</h3>
-        <p>service</p>
-    </header>
-    <div class="service">
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-site"></i>
-            </div>
-            <h3>网站建设</h3>
-            <p>精美的设计，规范的编码<br />打造一流的网站</p>
-        </div>
-
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-xcu"></i>
-            </div>
-            <h3>小程序与公众号开发</h3>
-            <p>对接微信公众号接口定制开发<br />精美UI设计，个性化服务</p>
-        </div>
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-software"></i>
-            </div>
-            <h3>软件开发</h3>
-            <p>桌面软件定制开发，合理设计<br />提供二次扩展</p>
-        </div>
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-html"></i>
-            </div>
-            <h3>设计稿html化</h3>
-            <p>Html5、CSS3 规范编码，响应式设计<br />打造精美时尚的页面</p>
-        </div>
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-design"></i>
-            </div>
-            <h3>UI交互设计</h3>
-            <p>用户体验至上、精美界面辅助、<br />多年成功能经验积累，细节到位</p>
-        </div>
-        <div class="item">
-            <div class="icon">
-                <i class="iconfont icon-app"></i>
-            </div>
-            <h3>APP开发</h3>
-            <p>H5/原生APP开发，良好的交互体验<br />多年的开发经验</p>
-        </div>
-    </div>
-</section>
-
-@await Component.InvokeAsync("HomeWorks")
-<section class="page-home section1">
-    <div class="yh">
-        <i class="iconfont icon-yinghao"></i>
-    </div>
-    <div class="slider-container">
-        <div class="sliders" id="sliders">
-            <div class="item">
-                <p>"经过多次的深入合作。非常专业的团队，有着丰富的实战经验和专业的技术水平，对细节的把控入微细致，对需求的完成到位。与其合作非常是一场非常愉快的旅程，有着的共同的信念和精益求精的执着！"</p>
-                <div class="star">
-                    ★★★★☆
-                </div>
-                <p class="client">闲人设计公司 / 闲人张 / 项目经理</p>
-                <div class="photo">
-                    <img src="img/client/afu.jpg" alt="">
-                </div>
-            </div>
-            <div class="item">
-                <p>"长期的合作伙伴，对响应式网站建设有着丰富的实战经验，对我们提出交互需求能够完美的呈现。非常有创新精神的团队，有着对技术的执着追求。到了一痴迷的地步。每一次合作都会会带来一些新的东西，让人意外的惊喜！"</p>
-                <div class="star">
-                    ★★★★☆
-                </div>
-                <p class="client">无事设计公司 / 搞事李 / 项目总监</p>
-                <div class="photo">
-                    <img src="img/client/hely.jpg" alt="">
-                </div>
-            </div>
-            <div class="item">
-                <p>"Thank you so much for all your hard work, your flexibility and diligence in pulling together a very successful event. We’ve had great feedback from our clients, it has been considered a massive success all round. It was a pleasure working with you. We hope to work with you again in the future."</p>
-                <div class="star">
-                    ★★★★☆
-                </div>
-                <p class="client">吹牛皮设计公司 / 吹牛金 / 项目经理</p>
-                <div class="photo">
-                    <img src="img/client/tina.jpg" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@*@await Component.InvokeAsync("HomeWorks")
 @await Component.InvokeAsync("HomeArticles")
 @await Component.InvokeAsync("HomePosts")
 @await Component.InvokeAsync("HomeClients")
+    *@
 
-
+<section class="s0">
+    <div class="sliders swiper-container wow fadeInUp">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
+            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
+            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
+        </div>
+        <div class="swiper-button-next"><i class="iconfont icon-next"></i></div>
+        <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
+    </div>
+    <div class="gupiao">
+        <div class="container">
+            <div class="gupiao-container wow fadeInUp">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-auto">
+                        <div class="name">仕佳光子</div>
+                    </div>
+                    <div class="col-md-auto">
+                        <div class="code">股票代码：000000</div>
+                    </div>
+                    <div class="col-md-auto">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="val">57.81<i class="iconfont icon-ziyuan"></i></div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="up">+0.440 （+0.76%）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">2020-05-12  15:00:03  已收盘 （北京时间）</div>
+                    <div class="col-md-auto">
+                        <ul class="zhishu">
+                            <li>今天   66.32</li>
+                            <li>昨收   66.52</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="page page-home">
+    <section class="section s1 container">
+        <div class="intro">
+            <h2 class="title">引领光通信核心领域技术进步</h2>
+            <p>公司聚焦光通信行业，主营业务覆盖光芯片及器件、室内光缆、线缆材料三大板块，主要产品包括PLC分路器芯片系列产品、AWG芯片系列产品、DFB激光器芯片系列产品、光纤连接器、室内光缆、线缆材料等。公司产品主要应用于骨干网和城域网、光纤到户、数据中心、4G/5G建设等，成功实现了部分光芯片产品的国产化和进口替代。           </p><a class="more" href="about.html">了解更多</a>
+        </div>
+    </section>
+    <section class="section s2">
+        <section class="solutions swiper-container wow fadeInUp">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="des">
+                            <h3 class="title">城市骨干光纤网</h3>
+                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
+                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="des">
+                            <h3 class="title">城市骨干光纤网</h3>
+                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
+                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="des">
+                            <h3 class="title">城市骨干光纤网</h3>
+                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
+                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-next"><i class="iconfont icon-next"></i></div>
+            <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
+        </section>
+    </section>
+    <section class="s3 section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-auto">
+                    <div class="ziben">
+                        <div class="row">
+                            <div class="col-12 col-md-4 col-lg-12">
+                                <div class="box">
+                                    <div class="row align-items-end no-gutters">
+                                        <div class="col-auto">
+                                            <div class="num">
+                                                <div class="numup">4.13</div><span>+ </span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="unit">亿元</div>
+                                        </div>
+                                    </div>
+                                    <div class="name">注册资本 </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-12">
+                                <div class="box">
+                                    <div class="row align-items-end no-gutters">
+                                        <div class="col-auto">
+                                            <div class="num">
+                                                <div class="numup">107</div><span>+ </span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="unit">项</div>
+                                        </div>
+                                    </div>
+                                    <div class="name">拥有授权专利</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-12">
+                                <div class="box">
+                                    <div class="row align-items-end no-gutters">
+                                        <div class="col-auto">
+                                            <div class="num">
+                                                <div class="numup">50</div><span>+ </span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="unit">%</div>
+                                        </div>
+                                    </div>
+                                    <div class="name">PLC全球市场份额</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg">
+                    <div class="video-container">
+                        <video src="/assets/img/Background02.mp4" poster="/assets/img/poster_01.jpg" width="100%" height="100%" controls="controls"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s4 section">
+        <div class="title-section">
+            <h2 class="text-center">服务全球</h2>
+        </div>
+        <figure class="text-center"><img src="/assets/img/map.png" alt="服务全球"></figure>
+    </section>
+</div>
 
 @section Scripts
     {
-    <script src="js/libs/particles.min.js"></script>
-    <script src="plugins/bxslider/jquery.bxslider.min.js"></script>
-    <script src="js/libs/typed.min.js"></script>
-    <script src="js/libs/jquery.parallax.js "></script>
+    <script src="~/plugins/swiper/js/swiper.min.js"></script>
 
     <!-- Google Analytics -->
     <script>
-        $('#parallax').parallax({
-            invertX: true,
-            invertY: true,
-            scalarX: 10,
-            frictionY: .1
+        //Make sure that the dom is ready
+        var swiper = new Swiper('.sliders', {
+            //- pagination: {
+            //-     el: '.swiper-pagination',
+            //-     clickable: true
+            //- },
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
         });
 
+        $(function () {
 
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 120,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#eeeeee"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    },
-                    "image": {
-                        "src": "img/github.svg",
-                        "width": 100,
-                        "height": 100
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 5,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#eeeeee",
-                    "opacity": 1,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab "
-                    },
-                    "onclick": {
-                        "enable ": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked ": {
-                            "opacity ": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
+            $('video, audio').mediaelementplayer();
+
+            $('.numup').counterUp({
+                delay: 10, // the delay time in ms
+                time: 2000 // the speed time in ms
+            });
         });
-        $(document).ready(function () {
 
-            $(".typed").typed({
-                strings: ["网站建设", "软件开发", "交互设计", "用户体验", "APP开发"],
-                // typing speed
-                typeSpeed: 200,
-                // time before typing starts
-                backSpeed: 20,
-                // loop
-                loop: true,
-            });
-            $("#sliders").bxSlider({
-                "auto": true,
-                "controls": false
-            });
+        var swiper = new Swiper('.solutions', {
 
-            $(".nav__list li:nth-of-type(1)").addClass("active");
-
+            spaceBetween: 0,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            //- pagination: {
+            //-     el: '.swiper-pagination',
+            //-     clickable: true,
+            //- },
         });
     </script>
 

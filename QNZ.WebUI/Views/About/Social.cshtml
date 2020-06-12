@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Job>
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "社会招聘";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }
+
+}
+@await Component.InvokeAsync("Banner", new { code = "A1005" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "人力资源" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-jobs">
+    <section class="s1 container">
+        <div class="title-section wow fadeInUp">
+            <h2 class="text-center">社会招聘</h2>
+        </div>
+        <div class="joblist">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync("_JobItem", item)
+            }
+        </div>
+    </section>
+</div>
+
+@section Scripts{
+
+    <script>
+        $('.joblist .box-header').click(function (e) {
+            //e.preventdefault();
+            $(this).next('.box-body').slideToggle();
+            $(this).closest(".box").toggleClass('open');
+        })
+    </script>
+}

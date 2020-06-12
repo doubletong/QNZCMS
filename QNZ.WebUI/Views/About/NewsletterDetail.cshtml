@@ -1,0 +1,68 @@
+﻿@model ArticleDetailVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : Model.ArticleDetail.Title;
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1003" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <ul class="breadcrumb">
+                    <li><a href="/">首页 </a></li>
+                    <li>
+                        <a href="/about">关于我们 </a>
+                    </li>
+                    <li>
+                        <a href="/about/newsletter">企业快讯 </a>
+                    </li>
+                    <li class="active">
+                        查看详情
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "新闻资讯" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page page-contact page-branch-detail page-news-detail">
+    <section class="s1 container">
+        <header class="branch-header">
+            <div class="row align-items-center">
+                <div class="col-md">
+                    <h2 class="title">@Model.ArticleDetail.Title</h2>
+                </div>
+                <div class="col-md-auto"><a class="back" href="javascript:window.history.back();">返回上一页<i class="iconfont icon-next"></i></a></div>
+            </div>
+            <div class="note">@Model.ArticleDetail.Pubdate.ToShortDateString()</div>
+        </header>
+    </section>
+    <article class="container">
+        @Html.Raw(Model.ArticleDetail.Body)
+    </article>
+    <footer class="container prenextnav">
+        @if (Model.ArticlePrev != null)
+        {
+            <div class="prev"><a asp-action="NewsletterDetail" asp-route-id="@Model.ArticlePrev.Id">上一篇    @Model.ArticlePrev.Title</a></div>
+        }
+        @if (Model.ArticleNext != null)
+        {
+            <div class="next"><a asp-action="NewsletterDetail" asp-route-id="@Model.ArticleNext.Id">下一篇    @Model.ArticleNext.Title</a></div>
+        }
+
+    </footer>
+</div>

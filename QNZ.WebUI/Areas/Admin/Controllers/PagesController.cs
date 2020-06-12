@@ -16,9 +16,9 @@ using QNZ.Data;
 using QNZ.Data.Enums;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
-using SIG.Resources.Admin;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Admin;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -40,13 +40,15 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages
-        public async Task<IActionResult> Index(string keyword, string sort, int? page)
+        public async Task<IActionResult> Index(string keyword, int? page, string orderby = "importance", string sort = "desc")
         {
            PageListVM vm = new PageListVM()
             {
                 PageIndex = page??1,
                 PageSize = SettingsManager.Page.PageSize,
-                Keyword = keyword
+                Keyword = keyword,
+                OrderBy = orderby,
+                Sort = sort
             };
         
 
@@ -56,22 +58,19 @@ namespace QNZCMS.Areas.Admin.Controllers
 
 
             vm.TotalCount = await query.CountAsync();
-            ViewData["ViewSortParm"] = sort == "view" ? "view_desc" : "view";
-            ViewData["ImportanceSortParm"] = sort== "importance" ? "importance_desc" : "importance";
-            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
-            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+            var gosort = $"{orderby}_{sort}";         
 
-            query = sort switch
+            query = gosort switch
             {
-                "view" => query.OrderBy(s => s.ViewCount),
+                "view_asc" => query.OrderBy(s => s.ViewCount),
                 "view_desc" => query.OrderByDescending(s => s.ViewCount),
-                "title" => query.OrderBy(s => s.Title),
+                "title_asc" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
-                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
-                "importance" => query.OrderBy(s => s.Importance),
+                "importance_asc" => query.OrderBy(s => s.Importance),
                 "importance_desc" => query.OrderByDescending(s => s.Importance),
-                _ => query.OrderByDescending(s => s.Importance),
+                _ => query.OrderByDescending(s => s.Id),
             };
 
             var pages = await query

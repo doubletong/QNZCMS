@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using SIG.Basic.Extensions;
-using SIG.Infrastructure.Helper;
+using QNZ.Basic.Extensions;
+using QNZ.Infrastructure.Helper;
 
 using QNZ.Data;
 

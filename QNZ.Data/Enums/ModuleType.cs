@@ -38,14 +38,16 @@ namespace QNZ.Data.Enums
         [Display(Name = "博客")]
         BLOG = 15,
         [Display(Name = "团队")]
-        TEAM = 16,
+        STAFF = 16,
         [Display(Name = "产品分类")]
         CATEGORY = 17,
         [Display(Name = "视频分类")]
         VIDEOCATEGORY = 18,
         [Display(Name = "博客文章")]
-        POST = 18
+        POST = 19,
 
+        [Display(Name = "展会")]
+        EXHIBITION = 20
 
     }
 }

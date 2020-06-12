@@ -16,7 +16,7 @@ using QNZ.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
-using SIG.Infrastructure.Cache;
+using QNZ.Infrastructure.Cache;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 
@@ -103,15 +103,16 @@ namespace QNZCMS
 
 
             // If using Kestrel:
-            //services.Configure<KestrelServerOptions>(options =>
-            //{
-            //    options.AllowSynchronousIO = true;
-            //});
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
 
             // If using IIS:
             services.Configure<IISServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
+
             });
 
         }
@@ -142,14 +143,16 @@ namespace QNZCMS
 
             app.UseEndpoints(endpoints =>
             {
+              
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapAreaControllerRoute(
-                 name: "areaAdminRoute", "Admin",
-                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                   name: "areaAdminRoute",
+                   areaName: "Admin",
+                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages();
             });

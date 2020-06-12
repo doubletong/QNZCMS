@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SIG.Infrastructure.SMSService
+namespace QNZ.Infrastructure.SMSService
 {
     public class AESHelper
     {

@@ -1,0 +1,55 @@
+﻿@model Page
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "实验室简介";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1006" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "河南省重点实验室" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page page-contact page-branch-detail page-lab-intro" style="background-image:url(/assets/img/lab_04.jpg)">
+    <section class="s1 container">
+        <header class="branch-header">
+            <div class="row align-items-center">
+                <div class="col-md">
+                    <h2 class="title">实验室简介</h2>
+                </div>
+                <div class="col-md-auto"><a class="back" href="javascript:window.history.back();">返回上一页<i class="iconfont icon-next"></i></a></div>
+            </div>
+        </header>
+    </section>
+    <article class="container">
+        @Html.Raw(WebUtility.HtmlDecode(Model.Body))
+    </article>
+</div>
+@section Scripts
+    {
+
+
+    <script>
+      
+    </script>
+
+}

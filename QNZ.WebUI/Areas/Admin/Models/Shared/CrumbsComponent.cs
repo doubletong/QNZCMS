@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data;
 using QNZ.Data.Enums;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 
 namespace QNZCMS.Areas.Admin.Models.Shared
 {
@@ -24,9 +24,9 @@ namespace QNZCMS.Areas.Admin.Models.Shared
         }
 
       
-        public async Task<IViewComponentResult> InvokeAsync(ViewContext viewContext)
+        public async Task<IViewComponentResult> InvokeAsync(int categoryId, ViewContext viewContext)
         {
-            return View("Crumbs", await CurrenMenuCrumbsAsync(SettingsManager.Menu.BackMenuCId, viewContext));
+            return View("Crumbs", await CurrenMenuCrumbsAsync(categoryId, viewContext));
         }
 
 

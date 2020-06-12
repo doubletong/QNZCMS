@@ -64,19 +64,21 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="SEODescription" class="control-label"></label>
-                                <textarea asp-for="SEODescription" class="form-control" ></textarea>
+                                <textarea asp-for="SEODescription" class="form-control"></textarea>
                                 <span asp-validation-for="SEODescription" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
         <div class="card-footer ">
             <div class="text-center">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
-                <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-angle-left"></i> 返回</a>
+                <button type="submit" class="btn btn-primary"><i class="iconfont icon-save"></i> 保存</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="iconfont icon-left"></i> 返回</a>
             </div>
         </div>
     </div>
@@ -143,12 +145,11 @@
 
       
         function onBeginSave() {
-            var htmlCode = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  提交中...'
-            $("#btnSave").html(htmlCode);
+            $(".spinner-border").fadeIn();
+
         }
         function onCompleteSave() {
-            var htmlCode = '<i class="iconfont icon-save"></i> 保存';
-            $("#btnSave").html(htmlCode);
+            $(".spinner-border").fadeOut();
         }
 
 
@@ -176,5 +177,5 @@
         });
 
     </script>
-    <script src="~/plugins/QNZFinder/FileManager.js"></script>
+   
 }

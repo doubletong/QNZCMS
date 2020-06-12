@@ -1,0 +1,76 @@
+﻿@model DocumentPageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "信息披露";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
+}
+
+
+@await Component.InvokeAsync("Banner", new { code = "A1004" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "投资者关系" })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="page page-downloads">
+    <section class="s1 container">
+        <div class="title-section">
+            <h2 class="text-center">信息披露</h2>
+        </div>
+        <div class="downloadlist">
+            @foreach (var item in Model.Documents)
+            {
+                <div class="item">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <time>@item.Pubdate.ToShortDateString()</time>
+                        </div>
+                        <div class="col-md">
+                            <div class="title">@item.Title</div>
+                        </div>
+                        <div class="col-md-auto"><a class="down"  asp-controller="Documents" asp-action="Download" asp-route-id="@item.Id"> <i class="iconfont icon-down-load"></i><span>下载</span></a></div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+        @if (Model.TotalCount > Model.PageSize)
+        {
+            <footer class="news-footer">
+                @Html.PagedListPager(Model.Documents, page => Url.Action("Disclosure", new { page = page }),
+                     new PagedListRenderOptions
+                     {
+                         LiElementClasses = new string[] { "page-item" },
+                         PageClasses = new string[] { "page-link" },
+                         LinkToFirstPageFormat = "首页",
+                         LinkToNextPageFormat = "下一页",
+                         LinkToPreviousPageFormat = "上一页",
+                         LinkToLastPageFormat = "尾页",
+                         MaximumPageNumbersToDisplay = 4
+                     })
+
+            </footer>
+        }
+    </section>
+</div>

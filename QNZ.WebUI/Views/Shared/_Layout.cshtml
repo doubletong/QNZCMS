@@ -13,29 +13,32 @@
     <link rel="manifest" href="site.webmanifest">
     <link rel="apple-touch-icon" href="icon.png">
 
-    <!-- CSS, you gotta have style -->
-    <link href="~/bootstrap/css/bootstrap-reboot.css" rel="stylesheet" />
-    <link href="~/bootstrap/css/bootstrap-grid.css" rel="stylesheet" />
-    <link href="~/fonts/iconfont.css" rel="stylesheet" />
-    <link href="~/plugins/bxslider/jquery.bxslider.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/styles.css">
+    <link href="~/assets/fonts/iconfont.css" rel="stylesheet" />
+    <link href="~/plugins/wow/css/libs/animate.css" rel="stylesheet" />
+    <link href="~/assets/css/styles.min.css" rel="stylesheet" />
+    <script src="~/plugins/wow/dist/wow.js"></script>
+    <script>
+        new WOW().init();
+
+
+    </script>
     @RenderSection("Header", required: false)
 </head>
 <body>
-<!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-<![endif]-->
-@await Html.PartialAsync("_Header")
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+    @await Html.PartialAsync("_Header")
 
     @RenderBody()
 
-@await Html.PartialAsync("_Footer")
+    @await Html.PartialAsync("_Footer")
 
 
-<script src="~/js/libs/jquery-1.12.4.min.js"></script>
-<script src="~/js/app.js "></script>
+    <script src="~/assets/js/libs/jquery-1.12.4.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
 
-@RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 
 </body>
 </html>

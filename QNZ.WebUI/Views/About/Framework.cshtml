@@ -1,0 +1,32 @@
+﻿@model Page
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "组织架构";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }
+
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1002" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "公司概况" })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Html.Raw(WebUtility.HtmlDecode(Model.Body))

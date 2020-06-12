@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SIG.Infrastructure.Helper
+namespace QNZ.Infrastructure.Helper
 {
     public class Hash
     {

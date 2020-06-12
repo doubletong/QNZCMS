@@ -1,11 +1,155 @@
-<div class="site-logo">
-    <a href="/" title="深圳网站建设，深圳网页设计，深圳网站制作，深圳网站设计，深圳营销型网站建设"><i class="iconfont icon-logo"></i></a>
-</div>
-
-<div class="menu-icon">
-    <span class="menu-icon__line menu-icon__line-left"></span>
-    <span class="menu-icon__line"></span>
-    <span class="menu-icon__line menu-icon__line-right"></span>
-</div>
-
-@await Component.InvokeAsync("SiteNav",new { categoryId = 1})
+<header class="site-header" id="site-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-auto"><a class="logo" href="/"><img src="/assets/img/logo.png" alt=""></a></div>
+            <div class="col">
+                @await Component.InvokeAsync("SiteNav", new { categoryId = 1 })
+                @*<ul class="mainav">
+                    <li>
+                        <a href="about.html">关于我们</a>
+                        <div class="subnav-container" id="subnav-container">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>公司概况</dt>
+                                            <dd> <a class="active" href="about.html">仕佳简介</a></dd>
+                                            <dd> <a href="history.html">发展历程</a></dd>
+                                            <dd> <a href="framework.html">组织架构</a></dd>
+                                            <dd> <a href="quality.html">质量体系</a></dd>
+                                            <dd> <a href="honors.html">荣誉资质</a></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>新闻资讯</dt>
+                                            <dd> <a href="news.html">企业动态</a></dd>
+                                            <dd> <a href="media.html">媒体报导</a></dd>
+                                            <dd> <a href="exhibition.html">参展信息</a></dd>
+                                            <dd> <a href="newsletter.html">快讯</a></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>投资者关系</dt>
+                                            <dd> <a href="disclosure.html">信息披露</a></dd>
+                                            <dd> <a href="financial.html">财务报告</a></dd>
+                                            <dd> <a href="egm.html">股东大会</a></dd>
+                                            <dd> <a href="directorate.html">董事会</a></dd>
+                                            <dd> <a href="aufsichtsrat.html">监事会</a></dd>
+                                            <dd> <a href="executives.html">企业高管</a></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>人力资源</dt>
+                                            <dd> <a href="job.html">社会招聘</a></dd>
+                                            <dd> <a href="job1.html">校园招聘</a></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>河南重点实验室</dt>
+                                            <dd> <a href="lab.html">实验室简介</a></dd>
+                                            <dd> <a href="research.html">研究方向</a></dd>
+                                            <dd> <a href="team.html">队伍建设和人才培养</a></dd>
+                                            <dd> <a href="exchange.html">学术交流和开放流动</a></dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="solutions.html">解决方案       </a></li>
+                    <li><a href="products.html">产品中心</a></li>
+                    <li><a href="contact.html">联系我们           </a></li>
+                </ul>*@
+            </div>
+            <div class="col-auto search"><a id="btnSearch" href="javascript:void(0);"><i class="iconfont icon-search"></i></a></div>
+            <div class="col-auto langs"><a href="#"><img src="/assets/img/cn.png" alt="中文"></a><a href="#"><img src="/assets/img/en.png" alt="English"></a></div>
+            <div class="col-auto mobilemenu">
+                <div class="menu-toggle">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlysearch" id="overlySearch">
+        <div class="searchbox">
+            <div class="container">
+                <form action="search.html" method="get">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <input id="keywords" type="search" name="keywords" placeholder="请输入您要搜索的内容" required="required">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit">搜索</button>
+                        </div>
+                    </div>
+                </form><a class="btnclose" id="btnClose" href="javascript:void(0);"><i class="iconfont icon-close"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="menu-over" id="overmenu">
+        <ul class="mobilenav">
+            <li><a class="active" href="index.html">首页</a></li>
+            <li class="down">
+                <a href="#">关于我们</a>
+                <ul class="subnav">
+                    <li class="down">
+                        <a href="#">公司概况</a>
+                        <ul class="subnav">
+                            <li> <a class="active" href="about.html">仕佳简介</a></li>
+                            <li> <a href="history.html">发展历程</a></li>
+                            <li> <a href="framework.html">组织架构</a></li>
+                            <li> <a href="quality.html">质量体系</a></li>
+                            <li> <a href="honors.html">荣誉资质</a></li>
+                        </ul>
+                    </li>
+                    <li class="down">
+                        <a href="#">新闻资讯</a>
+                        <ul class="subnav">
+                            <li> <a href="news.html">企业动态</a></li>
+                            <li> <a href="media.html">媒体报导</a></li>
+                            <li> <a href="exhibition.html">参展信息</a></li>
+                            <li> <a href="newsletter.html">快讯</a></li>
+                        </ul>
+                    </li>
+                    <li class="down">
+                        <a href="#">投资者关系</a>
+                        <ul class="subnav">
+                            <li> <a href="disclosure.html">信息披露</a></li>
+                            <li> <a href="financial.html">财务报告</a></li>
+                            <li> <a href="egm.html">股东大会</a></li>
+                            <li> <a href="directorate.html">董事会</a></li>
+                            <li> <a href="aufsichtsrat.html">监事会</a></li>
+                            <li> <a href="executives.html">企业高管</a></li>
+                        </ul>
+                    </li>
+                    <li class="down">
+                        <a href="#">人力资源</a>
+                        <ul class="subnav">
+                            <li> <a href="job.html">社会招聘</a></li>
+                            <li> <a href="job1.html">校园招聘</a></li>
+                        </ul>
+                    </li>
+                    <li class="down">
+                        <a href="#">河南重点实验室</a>
+                        <ul class="subnav">
+                            <li> <a href="lab.html">实验室简介</a></li>
+                            <li> <a href="research.html">研究方向</a></li>
+                            <li> <a href="team.html">队伍建设和人才培养</a></li>
+                            <li> <a href="exchange.html">学术交流和开放流动</a></li>
+                            <li> <a href="lab_honors.html">实验室荣誉</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="solutions.html">解决方案       </a></li>
+            <li><a href="products.html">产品中心</a></li>
+            <li><a href="contact.html">联系我们     </a></li>
+        </ul>
+    </div>
+</header>

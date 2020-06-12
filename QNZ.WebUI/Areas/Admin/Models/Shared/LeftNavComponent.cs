@@ -9,8 +9,8 @@ using Microsoft.Extensions.Caching.Memory;
 using QNZ.Data;
 using QNZ.Data.Enums;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Cache;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Cache;
+using QNZ.Infrastructure.Configs;
 
 namespace QNZCMS.Areas.Admin.Models.Shared
 {

@@ -9792,33 +9792,35 @@ img {
   }
 }
 
-.site-header .logo {
-  padding-top: .4rem;
-}
-
-@media (min-width: 768px) {
-  .site-header .logo {
-    padding-top: .6rem;
-  }
-}
-
 .site-header .logo img {
   height: 36px;
 }
 
 @media (min-width: 768px) {
   .site-header .logo img {
-    height: 46px;
+    height: 40px;
   }
+}
+
+.navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show > .nav-link {
+  color: #fff;
+  background-color: #1d829a;
+  border-radius: 1.8rem;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+  padding: .3rem 1.3rem;
 }
 
 .page-home .box {
   background-color: #1d829a;
+  display: block;
   color: #fff;
   padding: 1rem;
   border-radius: 6px;
   position: relative;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .page-home .box .iconfont {
@@ -9903,7 +9905,12 @@ img {
 .leftcol .logo a img {
   display: block;
   margin: 0 auto;
-  height: 60px;
+}
+
+@media (min-width: 768px) {
+  .leftcol .logo a img {
+    max-width: 80%;
+  }
 }
 
 .leftcol .mainmenu {
@@ -9963,12 +9970,16 @@ img {
   transition: all .25s;
 }
 
-.leftcol .mainmenu > li > a.open {
+.leftcol .mainmenu > li.open {
   color: #fff;
 }
 
-.leftcol .mainmenu > li > a.open .arrow {
+.leftcol .mainmenu > li.open > a .arrow {
   transform: rotate(180deg);
+}
+
+.leftcol .mainmenu > li.open .submenu {
+  display: block !important;
 }
 
 .leftcol .mainmenu > li .submenu {
@@ -11063,6 +11074,65 @@ img {
   }
 }
 
+.menuTree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menuTree li {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: 1.7rem;
+  position: relative;
+}
+
+.menuTree li .expmenu {
+  position: absolute;
+  left: 0;
+  top: .5rem;
+  z-index: 1000;
+}
+
+.menuTree li span.title {
+  display: inline-block;
+  padding: 0 1rem 0 0;
+}
+
+.menuTree li a {
+  margin-right: .3rem;
+}
+
+.menuTree li .menuTree.hidden {
+  display: none;
+}
+
+.menuTree li .menuTree li {
+  border-bottom: 1px #eee dotted;
+}
+
+.menuTree li .menuTree li::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 1px;
+  background-color: #ccc;
+  left: -1rem;
+  top: 1.3rem;
+  z-index: 100;
+}
+
+.menuTree li .menuTree li::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: #ccc;
+  left: -1rem;
+  top: 0;
+  z-index: 100;
+}
+
 @font-face {
   font-family: 'pt_sansregular';
   src: url("../fonts/PTS55F-webfont.eot");
@@ -11192,8 +11262,22 @@ body {
   height: 100%;
 }
 
+.page-login .container {
+  height: 100%;
+}
+
+.page-login .row {
+  height: 100%;
+}
+
 .page-login .site-footer a {
   color: #ccc;
+}
+
+.page-login h1.title {
+  color: #fff;
+  margin: 0;
+  font-size: 1.25rem;
 }
 
 .loginbox {
@@ -11208,13 +11292,7 @@ body {
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-}
-
-.loginbox header.loginbox-header {
-  text-align: center;
-  border-radius: 6px 6px 0 0;
-  background: #f7f7f7;
-  padding: 1rem;
+  border-top: 5px #d04b44 solid;
 }
 
 .loginbox .loginForm {
@@ -11227,7 +11305,7 @@ body {
 }
 
 .loginbox .loginForm .btn {
-  padding: .6rem 1rem;
+  margin: .5rem .3rem;
 }
 
 .page-customer ul {

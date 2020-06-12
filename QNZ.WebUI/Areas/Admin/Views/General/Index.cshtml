@@ -1,5 +1,7 @@
 ﻿@model SiteInfoIM
 @{
+    Layout = "_LayoutSystem";
+
     ViewData["Title"] = "基本信息";
 }
 
@@ -58,10 +60,10 @@
 
                 </div>
                 <div class="form-group row">
-                    @Html.LabelFor(model => model.GoogleAnalyticsID, new { @class = "col-md-2 col-form-label" })
+                    @Html.LabelFor(model => model.EmailHr, new { @class = "col-md-2 col-form-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.GoogleAnalyticsID, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.GoogleAnalyticsID)
+                        @Html.TextBoxFor(model => model.EmailHr, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailHr)
                     </div>
                 </div>
                 <div class="form-group row">
@@ -80,23 +82,7 @@
                         @Html.ValidationMessageFor(model => model.DashboardLogo)
                     </div>
                 </div>
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.LoginLogo, new { @class = "col-md-2 col-form-label" })
-                    <div class="col-md-10">
-                        @if (!string.IsNullOrEmpty(Model.LoginLogo))
-                        {
-                            <img src='@Model.LoginLogo' id="imgLoginLogo" class="img-thumbnail m-b-10" style="max-width:200px; background-color:#333;" />
-                        }
-                        <div class="input-group">
-                            @Html.TextBoxFor(model => model.LoginLogo, new { @class = "form-control" })
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" id="btnLoginLogo" type="button">浏览…</button>
-                            </div>
-                        </div>
-                        @Html.ValidationMessageFor(model => model.DashboardLogo)
-
-                    </div>
-                </div>
+            
 
                 <hr />
                 <div class="form-group row">
@@ -149,17 +135,13 @@
                 $('#imgDashboardLogo').attr("src",fileUrl);
                 $('#DashboardLogo').val(fileUrl);  
             }
-             function SetLoginLogo(fileUrl) {
-             
-                $('#imgLoginLogo').attr("src",fileUrl);
-                $('#LoginLogo').val(fileUrl);  
-            }
+       
 
         function onFailed() {
             toastr.error("操作失败！");
         }
 
-            function onBeginSave() {
+       function onBeginSave() {
                 $(".spinner-border").fadeIn();
            
         }
@@ -189,11 +171,6 @@
                   
             });
 
-            $("#btnLoginLogo").on("click", function () {            
-                QNZ.selectActionFunction = SetLoginLogo;
-                QNZ.open();
-            });
-        
 
         });
         </script>

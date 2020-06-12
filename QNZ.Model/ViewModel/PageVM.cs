@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -55,6 +55,8 @@ namespace QNZ.Model.ViewModel
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public string Keyword { get; set; }
+        public string OrderBy { get; set; }
+        public string Sort { get; set; }
         public int TotalCount { get; set; }
         public StaticPagedList<PageVM> Pages { get; set; }
     }

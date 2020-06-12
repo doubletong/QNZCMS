@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SIG.Infrastructure.Helper
+namespace QNZ.Infrastructure.Helper
 {
     public sealed class ImageHandler
     {

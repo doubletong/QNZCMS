@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using QNZ.Model;
-using SIG.Infrastructure.Helper;
+using QNZ.Infrastructure.Helper;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {

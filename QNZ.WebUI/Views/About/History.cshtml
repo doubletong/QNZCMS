@@ -1,0 +1,130 @@
+﻿@model HistoryVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "发展历程";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1002" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "公司概况" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-history">
+    <section class="s1 container">
+        <div class="years">
+            <div class="swiper-container gallery-thumbs">
+                <div class="swiper-wrapper">
+                    @foreach (var item in Model.Years)
+                    {
+                        <div class="swiper-slide">
+                            <div class="year">
+                                <div class="txt">@item</div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="swiper-next"><i class="iconfont icon-next"></i></div>
+            <div class="swiper-prev"><i class="iconfont icon-prev"></i></div>
+        </div>
+        <div class="swiper-container gallery-top chronicle">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.Years)
+                {
+                    <div class="swiper-slide">
+                        <h3 class="title">@item 年</h3>
+                        <ul class="list">
+                            @foreach (var m in Model.Memorabilias.Where(d => d.DateAt.Year == item))
+                            {
+                                <li>
+                                    <time>@string.Format("{0:yyyy.MM}", m.DateAt)</time> @m.Description
+                                </li>
+                            }
+
+
+                        </ul>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts
+    {
+    <script src="~/plugins/swiper/js/swiper.min.js"></script>
+
+    <!-- Google Analytics -->
+    <script>
+        var galleryThumbs = new Swiper('.gallery-thumbs', {
+            spaceBetween: 10,
+            slidesPerView: 6,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            navigation: {
+                nextEl: '.swiper-next',
+                prevEl: '.swiper-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 3,
+
+                },
+                768: {
+                    slidesPerView: 4,
+
+                },
+                992: {
+                    slidesPerView: 4,
+
+                },
+                1200: {
+                    slidesPerView: 4,
+
+                },
+                1600: {
+                    slidesPerView: 5,
+
+                },
+            }
+        });
+
+
+        var galleryTop = new Swiper('.gallery-top', {
+            spaceBetween: 10,
+            // loop:true,
+            //loopedSlides: 5, //looped slides should be the same
+            thumbs: {
+                swiper: galleryThumbs
+            }
+
+        });
+              // galleryThumbs.slideTo($('.year').length,1000,false);
+              // galleryTop.slideTo($('.year').length,1000,false);
+    </script>
+
+}

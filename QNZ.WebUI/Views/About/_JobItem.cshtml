@@ -1,0 +1,24 @@
+﻿@model Job
+    <div class="box wow fadeInUp">
+        <a class="box-header" href="javascript:void(0);">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="post">@Model.Title</div>
+                </div>
+                <div class="col-auto">
+                    <ul class="pro">
+                        <li>所属部门：@Model.Department</li>
+                        <li>工作地点：@Model.Address </li>
+                        <li>招聘人数：@Model.Number 人</li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <div class="iconfont icon-down"></div>
+                </div>
+            </div>
+        </a>
+        <div class="box-body">
+            @Html.Raw(Model.Description)
+            <div class="note">请将简历发送至邮箱：@SettingsManager.Site.EmailHr，我们会尽快与你联系。</div>
+        </div>
+    </div>

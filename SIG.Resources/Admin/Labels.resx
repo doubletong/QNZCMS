@@ -120,17 +120,17 @@
   <data name="Active" xml:space="preserve">
     <value>激活</value>
   </data>
-  <data name="BLayout" xml:space="preserve">
-    <value>比料的皮子分布</value>
+  <data name="EmailHr" xml:space="preserve">
+    <value>招聘接收简历邮箱</value>
   </data>
   <data name="Barcode" xml:space="preserve">
     <value>条形码</value>
   </data>
-  <data name="BottomColor" xml:space="preserve">
-    <value>底颜色</value>
+  <data name="Referrer" xml:space="preserve">
+    <value>提名人</value>
   </data>
-  <data name="BSize" xml:space="preserve">
-    <value>比料规格</value>
+  <data name="MasterTime" xml:space="preserve">
+    <value>任职时间</value>
   </data>
   <data name="Category" xml:space="preserve">
     <value>分类</value>
@@ -243,11 +243,11 @@
   <data name="ProductNo" xml:space="preserve">
     <value>产品编号</value>
   </data>
-  <data name="QLayout" xml:space="preserve">
-    <value>圈料的皮子分布</value>
+  <data name="Document" xml:space="preserve">
+    <value>文档</value>
   </data>
-  <data name="QSize" xml:space="preserve">
-    <value>圈料规格</value>
+  <data name="Booth" xml:space="preserve">
+    <value>展位</value>
   </data>
   <data name="Recommend" xml:space="preserve">
     <value>推荐</value>
@@ -486,11 +486,11 @@
   <data name="Area" xml:space="preserve">
     <value>面积</value>
   </data>
-  <data name="Brightness" xml:space="preserve">
-    <value>亮度</value>
+  <data name="Department" xml:space="preserve">
+    <value>部门</value>
   </data>
-  <data name="Construction" xml:space="preserve">
-    <value>结构尺寸</value>
+  <data name="Number" xml:space="preserve">
+    <value>数量</value>
   </data>
   <data name="Photos" xml:space="preserve">
     <value>产品图片</value>
@@ -537,8 +537,8 @@
   <data name="Agent" xml:space="preserve">
     <value>代理商</value>
   </data>
-  <data name="EquipmentId" xml:space="preserve">
-    <value>分配仪器</value>
+  <data name="Organization" xml:space="preserve">
+    <value>团队组织</value>
   </data>
   <data name="StoreName" xml:space="preserve">
     <value>门店名称</value>
@@ -629,5 +629,23 @@
   </data>
   <data name="AdvertisingSpace" xml:space="preserve">
     <value>广告位</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>传真</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="DateEnd" xml:space="preserve">
+    <value>结束日期</value>
+  </data>
+  <data name="DateStart" xml:space="preserve">
+    <value>开始日期</value>
+  </data>
+  <data name="FileUrl" xml:space="preserve">
+    <value>文档</value>
   </data>
 </root>

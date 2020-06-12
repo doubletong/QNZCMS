@@ -1,0 +1,231 @@
+﻿@model StaffIM
+@{
+    ViewData["Title"] = Model.Id > 0 ? "编辑人员" : "添加人员";
+}
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      asp-antiforgery="true"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="card">
+        <h5 class="card-header">
+            @ViewData["Title"]
+        </h5>
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section class="row">
+
+                <div class="col-md">
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="OrganizationId" class="control-label"></label>
+                        <select asp-for="OrganizationId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])"></select>
+                        <span asp-validation-for="OrganizationId"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                        <span asp-validation-for="Gender"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Post" class="control-label"></label>
+                        <input asp-for="Post" class="form-control" />
+                        <span asp-validation-for="Post"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="MasterTime" class="control-label"></label>
+                        <input asp-for="MasterTime" class="form-control" />
+                        <span asp-validation-for="MasterTime"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Referrer" class="control-label"></label>
+                        <input asp-for="Referrer" class="form-control" />
+                        <span asp-validation-for="Referrer"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                        </div>
+                        <span asp-validation-for="Description"></span>
+                    </div>
+
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="Active">
+                        <label asp-for="Active" class="form-check-label"></label>
+                        <span asp-validation-for="Active"></span>
+                    </div>
+
+
+
+                </div>
+                <aside class="col-md-auto">
+                    <div class="card mb-3" style="width:320px;">
+                        <div class="card-header text-center">
+                            图一
+                        </div>
+                        <div class="card-body">
+                            <img data-src="holder.js/300x270?text=规格 \n 480x480像素" id="imgPhoto" src="@(Model!=null?Model.Photo:"")">
+
+                            <input asp-for="Photo" type="hidden" />
+                            <span asp-validation-for="Photo"></span>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-info btn-block" id="setImageUrl">
+                                <i class="iconfont icon-upload"></i> 浏览图片
+                            </button>
+                        </div>
+                    </div>                
+
+                    <div class="card" style="width:320px;">
+                        <h5 class="card-header">SEO</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="SEOTitle" class="control-label"></label>
+                                <input asp-for="SEOTitle" class="form-control" />
+                                <span asp-validation-for="SEOTitle" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEOKeywords" class="control-label"></label>
+                                <input asp-for="SEOKeywords" class="form-control" />
+                                <span asp-validation-for="SEOKeywords" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SEODescription" class="control-label"></label>
+                                <textarea asp-for="SEODescription" class="form-control"></textarea>
+                                <span asp-validation-for="SEODescription" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+@*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
+
+@section header{
+    @*<link href="~/plugins/SigFinder/SigFinder.min.css" rel="stylesheet" />
+        <link href="~/plugins/webuploader/webuploader.css" rel="stylesheet" />*@
+    <style>
+        .thumb {
+            height: 200px;
+            margin: 0 auto 1rem;
+            line-height: 200px;
+            cursor: pointer;
+            background-color: #ddd;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+        }
+    </style>
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/plugins/holder/holder.min.js"></script>
+
+    <script>
+        var url = "@Url.Action("Index")";
+
+
+
+
+        function SetPhoto(fileUrl) {
+    
+            $('#imgPhoto').attr("src", fileUrl);
+            $('#Photo').val(fileUrl);
+
+        }
+
+        function SetSliderImage(fileUrl) {
+
+            $('#imgSliderImage').attr("src", fileUrl);
+            $('#SliderImage').val(fileUrl);
+        }
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+
+        $(function () {
+
+            $("#setImageUrl").on("click", function () {
+                QNZ.selectActionFunction = SetPhoto;
+                QNZ.open();
+
+            });
+
+            $("#btnSliderImage").on("click", function () {
+                QNZ.selectActionFunction = SetSliderImage;
+                QNZ.open();
+
+            });
+
+
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

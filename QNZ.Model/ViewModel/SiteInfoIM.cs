@@ -1,4 +1,4 @@
-﻿using SIG.Resources.Admin;
+﻿using QNZ.Resources.Admin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -165,8 +165,8 @@ namespace QNZ.Model.ViewModel
 
         [Display(ResourceType = typeof(Labels), Name = "BaiduSiteID")]
         public string BaiduSiteID { get; set; }
-        [Display(ResourceType = typeof(Labels), Name = "GoogleAnalyticsID")]
-        public string GoogleAnalyticsID { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "EmailHr")]
+        public string EmailHr { get; set; }
 
         [Display(ResourceType = typeof(Labels), Name = "Email")]
         [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
@@ -185,5 +185,24 @@ namespace QNZ.Model.ViewModel
         public bool IsClose { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "CloseInfo")]
         public string CloseInfo { get; set; }
+    }
+
+    public class CompanyIM
+    {
+        [Display(ResourceType = typeof(Labels), Name = "CompanyName")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Name { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Phone")]
+        [StringLength(50, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Phone { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Address")]
+        [StringLength(250, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Address { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Fax")]
+        [StringLength(50, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Fax { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Email")]
+        [StringLength(150, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Email { get; set; }
     }
 }

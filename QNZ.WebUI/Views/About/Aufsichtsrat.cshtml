@@ -1,0 +1,45 @@
+﻿@model IEnumerable<StaffVM>
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "监事会";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1004" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "投资者关系" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-egm">
+    <section class="s1 container">
+        <div class="title-section">
+            <h2 class="text-center">监事会                           </h2>
+        </div>
+        <div class="egmlist">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    @await Html.PartialAsync("_StaffItem", item)
+                }
+            </div>
+        </div>
+    </section>
+</div>

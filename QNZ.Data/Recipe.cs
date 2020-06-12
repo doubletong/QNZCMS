@@ -8,28 +8,23 @@ namespace QNZ.Data
 {
     public partial class Recipe
     {
-        public Recipe()
-        {
-            CustomerRecipes = new HashSet<CustomerRecipe>();
-            RecipesItems = new HashSet<RecipesItem>();
-        }
-
         [Key]
         public int Id { get; set; }
         public Guid UserId { get; set; }
         [Required]
         [StringLength(100)]
+        /// <summary>
+        /// 营养食谱名称
+        /// </summary>
         public string Title { get; set; }
         [Required]
+        /// <summary>
+        /// 吃法说明
+        /// </summary>
         public string Description { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
         [StringLength(50)]
         public string CustomerMobile { get; set; }
-
-        [InverseProperty(nameof(CustomerRecipe.Recipes))]
-        public virtual ICollection<CustomerRecipe> CustomerRecipes { get; set; }
-        [InverseProperty(nameof(RecipesItem.Recipes))]
-        public virtual ICollection<RecipesItem> RecipesItems { get; set; }
     }
 }

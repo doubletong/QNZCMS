@@ -1,7 +1,9 @@
-﻿namespace SIG.Infrastructure.Configs
+﻿namespace QNZ.Infrastructure.Configs
 {
-    public class SettingsManager
+    public static class SettingsManager
     {
+        public static CompanyConfig Company => SettingLoader.LoadJsonConfig<CompanyConfig>();
+        public static GlobalConfig SiteInfo => SettingLoader.LoadJsonConfig<GlobalConfig>();
         public static GlobalSettings Site => SettingLoader.LoadConfig<GlobalSettings>();
 
         public static QuestionSettings Question => SettingLoader.LoadConfig<QuestionSettings>();
@@ -30,35 +32,11 @@
 
         public static ProductSettings Product => SettingLoader.LoadConfig<ProductSettings>();
 
-        public static ArticleSettings Article
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<ArticleSettings>();
-            }
-        }
-        public static PageSettings Page
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<PageSettings>();
-            }
-        }
-        public static PageMetaSettings PageMeta
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<PageMetaSettings>();
-            }
-        }
+        public static ArticleSettings Article => SettingLoader.LoadConfig<ArticleSettings>();
+        public static PageSettings Page => SettingLoader.LoadConfig<PageSettings>();
+        public static PageMetaSettings PageMeta => SettingLoader.LoadConfig<PageMetaSettings>();
 
-        public static AdsSettings Ads
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<AdsSettings>();
-            }
-        }
+        public static AdsSettings Ads => SettingLoader.LoadConfig<AdsSettings>();
 
         public static TeamSettings Team => SettingLoader.LoadConfig<TeamSettings>();
 
@@ -66,46 +44,16 @@
 
         public static LogSettings Log => SettingLoader.LoadConfig<LogSettings>();
 
-        public static ContactSettings Contact
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<ContactSettings>();
-            }
-        }
+        public static ContactSettings Contact => SettingLoader.LoadConfig<ContactSettings>();
 
-        public static SocialSettings Social
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<SocialSettings>();
-            }
-        }
-        
+        public static SocialSettings Social => SettingLoader.LoadConfig<SocialSettings>();
 
-        public static RoleSettings Role
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<RoleSettings>();
-            }
-        }
 
-        public static UserSettings User
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<UserSettings>();
-            }
-        }
+        public static RoleSettings Role => SettingLoader.LoadConfig<RoleSettings>();
 
-        public static MenuSettings Menu
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<MenuSettings>();
-            }
-        }
+        public static UserSettings User => SettingLoader.LoadConfig<UserSettings>();
+
+        public static MenuSettings Menu => SettingLoader.LoadConfig<MenuSettings>();
 
         //public static SMTPSettings SMTP
         //{
@@ -121,53 +69,17 @@
                 return SettingLoader.LoadConfig<EmailSettings>();
             }
         }
-        public static EmailAccountSettings EmailAccount
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<EmailAccountSettings>();
-            }
-        }
-        public static EmailTemplateSettings EmailTemplate
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<EmailTemplateSettings>();
-            }
-        }
+        public static EmailAccountSettings EmailAccount => SettingLoader.LoadConfig<EmailAccountSettings>();
+        public static EmailTemplateSettings EmailTemplate => SettingLoader.LoadConfig<EmailTemplateSettings>();
 
-        public static WeiXinSettings WeiXin
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<WeiXinSettings>();
-            }
-        }
+        public static WeiXinSettings WeiXin => SettingLoader.LoadConfig<WeiXinSettings>();
 
 
-        public static ChronicleSettings Chronicle
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<ChronicleSettings>();
-            }
-        }
+        public static ChronicleSettings Chronicle => SettingLoader.LoadConfig<ChronicleSettings>();
 
-        public static AlbumSettings Album
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<AlbumSettings>();
-            }
-        }
+        public static AlbumSettings Album => SettingLoader.LoadConfig<AlbumSettings>();
 
-        public static PhotoSettings Photo
-        {
-            get
-            {
-                return SettingLoader.LoadConfig<PhotoSettings>();
-            }
-        }
+        public static PhotoSettings Photo => SettingLoader.LoadConfig<PhotoSettings>();
 
     }
 }

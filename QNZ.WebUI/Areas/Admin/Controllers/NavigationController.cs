@@ -7,16 +7,16 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QNZ.Data.Enums;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Services;
 using QNZ.Services.Menus;
 using QNZ.Data;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using QNZ.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model;
-using SIG.Infrastructure.Cache;
+using QNZ.Infrastructure.Cache;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -170,6 +170,16 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             var vMenu = await _context.Navigations.FindAsync(id);
             NavIM dto = _mapper.Map<NavIM>(vMenu);
+
+            var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.MENU && d.ObjectId == dto.Url);
+
+            if (pm != null)
+            {
+                dto.SEOTitle = pm.Title;
+                dto.SEOKeywords = pm.Keywords;
+                dto.SEODescription = pm.Description;
+            }
+
             return PartialView("_MenuEdit", dto);
 
         }
@@ -198,9 +208,7 @@ namespace QNZCMS.Areas.Admin.Controllers
               
 
                 var cacheKey = "NAVIGATION";
-
                 _cache.Invalidate(cacheKey);
-
                 // _menuService.ResetSort(orgMenu.CategoryId);
                 //  var menus = _menuService.GetLevelMenusByCategoryId(vMenu.CategoryId);
                 AR.Id = im.CategoryId;
@@ -212,8 +220,19 @@ namespace QNZCMS.Areas.Admin.Controllers
                 //viewData["Name"] = "123456";
 
                 //string html = view.Render("Emails/Test", viewData);
-
                 //AR.Data = await _viewRenderService.RenderToStringAsync("_MenuList", menus);
+
+                var pm = new PageMeta
+                {
+                    Title = menu.SEOTitle,
+                    Description = menu.SEODescription,
+                    Keywords = menu.SEOKeywords,
+                    ModuleType = (short)ModuleType.MENU,
+                    ObjectId = menu.Url
+                };
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+
 
                 AR.SetSuccess("已成功保存菜单");
                 return Json(AR);

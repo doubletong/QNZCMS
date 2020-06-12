@@ -133,7 +133,7 @@
             var tops = el.getElementsByTagName('input');
 
             for (var i=0, len=tops.length; i<len; i++) {
-                if ( tops[i].type === 'checkbox' ) {
+                if (tops[i].type === 'checkbox' && tops[i].disabled == false) {
                     //tops[i].onclick = updateTotal;
                     tops[i].checked = isChecked;
                 }

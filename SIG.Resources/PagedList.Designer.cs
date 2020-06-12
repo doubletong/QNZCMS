@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIG.Resources {
+namespace QNZ.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SIG.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SIG.Resources.PagedList", typeof(PagedList).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("QNZ.Resources.PagedList", typeof(PagedList).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

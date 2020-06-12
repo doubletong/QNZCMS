@@ -19,19 +19,23 @@ namespace QNZ.Data
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<AdvertisingSpace> AdvertisingSpaces { get; set; }
         public virtual DbSet<AgentSet> AgentSets { get; set; }
+        public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<CustomerRecipe> CustomerRecipes { get; set; }
         public virtual DbSet<District> Districts { get; set; }
-        public virtual DbSet<FeedbackSet> FeedbackSets { get; set; }
-        public virtual DbSet<FeedbackTypeSet> FeedbackTypeSets { get; set; }
+        public virtual DbSet<DocCategory> DocCategories { get; set; }
+        public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<Exhibition> Exhibitions { get; set; }
+        public virtual DbSet<Job> Jobs { get; set; }
+        public virtual DbSet<JobCategory> JobCategories { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MailingAddress> MailingAddresses { get; set; }
+        public virtual DbSet<Memorabilium> Memorabilia { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<MenuCategory> MenuCategories { get; set; }
         public virtual DbSet<MobileCodeSet> MobileCodeSets { get; set; }
@@ -40,9 +44,10 @@ namespace QNZ.Data
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderComment> OrderComments { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Organization> Organizations { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<PageMeta> PageMetas { get; set; }
-        public virtual DbSet<PcategoryProduct> PcategoryProducts { get; set; }
+        public virtual DbSet<Photo> Photos { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostCategory> PostCategories { get; set; }
         public virtual DbSet<PostTag> PostTags { get; set; }
@@ -51,22 +56,14 @@ namespace QNZ.Data
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
-        public virtual DbSet<RecipesItem> RecipesItems { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RoleMenu> RoleMenus { get; set; }
         public virtual DbSet<Solution> Solutions { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
-        public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Work> Works { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -96,6 +93,14 @@ namespace QNZ.Data
                 entity.Property(e => e.WechatId).HasComment("微信号");
             });
 
+            modelBuilder.Entity<Album>(entity =>
+            {
+                entity.HasIndex(e => e.Alias)
+                    .IsUnique();
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+            });
+
             modelBuilder.Entity<Article>(entity =>
             {
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
@@ -116,18 +121,21 @@ namespace QNZ.Data
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
+            modelBuilder.Entity<Branch>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            });
+
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.CartItems)
                     .HasForeignKey(d => d.CartId)
                     .HasConstraintName("FK_CartItemSet_CartSet");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.CartItems)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CartItemSet_ProductSet");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.CartItems)
@@ -149,31 +157,6 @@ namespace QNZ.Data
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
-            modelBuilder.Entity<Customer>(entity =>
-            {
-                entity.HasKey(e => e.OpenId)
-                    .HasName("PK_CustomerSet");
-
-                entity.Property(e => e.Avatar).HasComment("用户头像");
-
-                entity.Property(e => e.CreatedDate).HasComment("创建时间");
-
-                entity.Property(e => e.LastLogin).HasComment("最后一次登录时间");
-
-                entity.Property(e => e.Mobile).HasComment("手机");
-
-                entity.Property(e => e.WechatNickName).HasComment("微信号");
-            });
-
-            modelBuilder.Entity<CustomerRecipe>(entity =>
-            {
-                entity.HasOne(d => d.Recipes)
-                    .WithMany(p => p.CustomerRecipes)
-                    .HasForeignKey(d => d.RecipesId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CustomerRecipes_Recipes");
-            });
-
             modelBuilder.Entity<District>(entity =>
             {
                 entity.HasOne(d => d.City)
@@ -183,38 +166,53 @@ namespace QNZ.Data
                     .HasConstraintName("FK_T_District_T_City");
             });
 
-            modelBuilder.Entity<FeedbackSet>(entity =>
+            modelBuilder.Entity<DocCategory>(entity =>
             {
-                entity.Property(e => e.CreatedDate).HasComment("反馈时间");
-
-                entity.Property(e => e.FeedbackTypeId).HasComment("反馈类型ID");
-
-                entity.Property(e => e.Message).HasComment("内容");
-
-                entity.Property(e => e.Mobile).HasComment("手机号");
-
-                entity.Property(e => e.OpenId).HasComment("顾客ID");
-
-                entity.HasOne(d => d.FeedbackType)
-                    .WithMany(p => p.FeedbackSets)
-                    .HasForeignKey(d => d.FeedbackTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FeedbackSet_FeedbackTypeSet");
-
-                entity.HasOne(d => d.Open)
-                    .WithMany(p => p.FeedbackSets)
-                    .HasForeignKey(d => d.OpenId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FeedbackSet_CustomerSet");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
-            modelBuilder.Entity<FeedbackTypeSet>(entity =>
+            modelBuilder.Entity<Document>(entity =>
             {
-                entity.Property(e => e.CreatedBy).HasComment("创建人");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.CreatedDate).HasComment("创建时间");
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Title).HasComment("反馈类型");
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Documents)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_Documents_DocCategories");
+            });
+
+            modelBuilder.Entity<Exhibition>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<Job>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Number).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Jobs)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_Jobs_JobCategories");
+            });
+
+            modelBuilder.Entity<JobCategory>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<MailingAddress>(entity =>
@@ -224,11 +222,11 @@ namespace QNZ.Data
                 entity.Property(e => e.Mobile)
                     .IsUnicode(false)
                     .IsFixedLength();
+            });
 
-                entity.HasOne(d => d.Open)
-                    .WithMany(p => p.MailingAddresses)
-                    .HasForeignKey(d => d.OpenId)
-                    .HasConstraintName("FK_MailingAddress_CustomerSet");
+            modelBuilder.Entity<Memorabilium>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Menu>(entity =>
@@ -284,12 +282,6 @@ namespace QNZ.Data
                 entity.Property(e => e.Remark).HasComment("备注");
 
                 entity.Property(e => e.Status).HasComment("订单状态（0：待付款；1：待发货；2：已发货；3：待评价；4：已完成；10：已取消）");
-
-                entity.HasOne(d => d.Open)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.OpenId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Customers_OrderSet");
             });
 
             modelBuilder.Entity<OrderComment>(entity =>
@@ -311,17 +303,16 @@ namespace QNZ.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetail_Order");
 
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetail_Products");
-
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.StoreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetail_Store");
+            });
+
+            modelBuilder.Entity<Organization>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Page>(entity =>
@@ -336,21 +327,13 @@ namespace QNZ.Data
                 entity.HasKey(e => new { e.ModuleType, e.ObjectId });
             });
 
-            modelBuilder.Entity<PcategoryProduct>(entity =>
+            modelBuilder.Entity<Photo>(entity =>
             {
-                entity.HasKey(e => new { e.CategoryId, e.ProductId });
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.PcategoryProducts)
-                    .HasForeignKey(d => d.CategoryId)
+                entity.HasOne(d => d.Album)
+                    .WithMany(p => p.Photos)
+                    .HasForeignKey(d => d.AlbumId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PCategoryProducts_ProductCategory");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.PcategoryProducts)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PCategoryProducts_Products");
+                    .HasConstraintName("FK_Photos_Albums");
             });
 
             modelBuilder.Entity<Post>(entity =>
@@ -398,38 +381,24 @@ namespace QNZ.Data
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.Active).HasComment("上下架");
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Description).HasComment("详情描述");
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Name).HasComment("产品名称");
-
-                entity.Property(e => e.Price).HasComment("价格");
-
-                entity.Property(e => e.Specification).HasComment("规格");
-
-                entity.Property(e => e.Stock).HasComment("库存");
-
-                entity.Property(e => e.StoreId).HasComment("店铺基地ID");
-
-                entity.Property(e => e.Summary).HasComment("简介");
-
-                entity.Property(e => e.Thumbnail).HasComment("图片");
-
-                entity.Property(e => e.Unit).HasComment("单位");
-
-                entity.HasOne(d => d.Store)
+                entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
-                    .HasForeignKey(d => d.StoreId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Products_Store");
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_Products_ProductCategories");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                entity.HasIndex(e => e.Alias)
+                    .IsUnique();
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Recipe>(entity =>
@@ -437,21 +406,6 @@ namespace QNZ.Data
                 entity.Property(e => e.Description).HasComment("吃法说明");
 
                 entity.Property(e => e.Title).HasComment("营养食谱名称");
-            });
-
-            modelBuilder.Entity<RecipesItem>(entity =>
-            {
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.RecipesItems)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RecipesItem_Products");
-
-                entity.HasOne(d => d.Recipes)
-                    .WithMany(p => p.RecipesItems)
-                    .HasForeignKey(d => d.RecipesId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RecipesItem_Recipes");
             });
 
             modelBuilder.Entity<RoleMenu>(entity =>
@@ -473,6 +427,24 @@ namespace QNZ.Data
             modelBuilder.Entity<Solution>(entity =>
             {
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<Staff>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Gender).HasDefaultValueSql("(N'男')");
+
+                entity.Property(e => e.MasterTime).HasDefaultValueSql("(N'男')");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Organization)
+                    .WithMany(p => p.staff)
+                    .HasForeignKey(d => d.OrganizationId)
+                    .HasConstraintName("FK_Staffs_Organizations");
             });
 
             modelBuilder.Entity<Store>(entity =>
@@ -502,11 +474,6 @@ namespace QNZ.Data
                 entity.Property(e => e.UpdatedBy).HasComment("最后更新人");
 
                 entity.Property(e => e.UpdatedDate).HasComment("最后更新时间");
-            });
-
-            modelBuilder.Entity<Team>(entity =>
-            {
-                entity.Property(e => e.Email).IsFixedLength();
             });
 
             modelBuilder.Entity<User>(entity =>

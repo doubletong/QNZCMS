@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QNZ.Data\QNZ.Data.csproj" />
     <ProjectReference Include="..\QNZ.Infrastructure\QNZ.Infrastructure.csproj" />
-    <ProjectReference Include="..\SIG.Resources\SIG.Resources.csproj" />
+    <ProjectReference Include="..\SIG.Resources\QNZ.Resources.csproj" />
   </ItemGroup>
 
   <ItemGroup>

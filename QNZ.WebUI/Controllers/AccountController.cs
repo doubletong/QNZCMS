@@ -13,8 +13,8 @@ using Microsoft.Extensions.Options;
 using QNZ.Data;
 using QNZ.Model.Front.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Helper;
-using SIG.Resources.Front;
+using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Front;
 
 namespace QNZCMS.Controllers
 {

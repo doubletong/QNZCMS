@@ -1,0 +1,127 @@
+﻿@model ArticlePageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "媒体报导";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
+}
+@await Component.InvokeAsync("Banner", new { code = "A1003" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "新闻资讯" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-media">
+    <section class="section s1 container">
+        <div class="title-section">
+            <h2 class="text-center">最新报导</h2>
+        </div>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.RecommendArticles)
+                {
+                    <div class="swiper-slide">
+                        <a class="item" asp-action="MediaDetail" asp-route-id="@item.Id">
+                            <div class="row align-items-center">
+                                <div class="col-lg"><img class="pic" src="@item.SliderImage" alt="@item.Title"></div>
+                                <div class="col-lg">
+                                    <div class="txt">
+                                        <div class="source">@item.Source</div>
+                                        <h3 class="title">@item.Title</h3>
+                                        <time>@item.Pubdate.ToShortDateString()</time>
+                                        <p>@item.Summary</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+             
+            </div>
+            <div class="swiper-button-next"><i class="iconfont icon-next"></i></div>
+            <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
+        </div>
+    </section>
+    <section class="s2 container">
+        <div class="title-section">
+            <h2 class="text-center">更多报导</h2>
+        </div>
+        <div class="medialist">
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-lg-6">
+                        <a class="item" asp-action="MediaDetail" asp-route-id="@item.Id">
+                            <div class="row align-items-center">
+                                <div class="col-md"><img class="pic" src="@item.Thumbnail" alt="@item.Title"></div>
+                                <div class="col-md">
+                                    <div class="txt">
+                                        <div class="source">@item.Source</div>
+                                        <h3 class="title">@item.Title</h3>
+                                        <time>@item.Pubdate.ToShortDateString()</time>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+        @if (Model.TotalCount > Model.PageSize)
+        {
+            <footer class="news-footer">
+                @Html.PagedListPager(Model.Articles, page => Url.Action("Media", new { page = page }),
+                   new PagedListRenderOptions
+                   {
+                       LiElementClasses = new string[] { "page-item" },
+                       PageClasses = new string[] { "page-link" },
+                       LinkToFirstPageFormat = "首页",
+                       LinkToNextPageFormat = "下一页",
+                       LinkToPreviousPageFormat = "上一页",
+                       LinkToLastPageFormat = "尾页",
+                       MaximumPageNumbersToDisplay = 4
+                   })
+
+            </footer>
+        }
+
+    </section>
+</div>
+
+@section Scripts
+    {
+    <script src="~/plugins/swiper/js/swiper.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: true,
+            effect: 'fade',
+        });
+    </script>
+}

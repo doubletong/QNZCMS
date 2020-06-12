@@ -1,6 +1,6 @@
 ﻿using QNZ.Data.Enums;
 
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 
 namespace QNZ.Model.Admin.ViewModel
 {

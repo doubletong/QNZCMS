@@ -1,49 +1,47 @@
-﻿@using System;
+﻿@using System.Net;
+@model Page
 @{
-    ViewData["Title"] = "关于我们_深圳网站设计_高端网站建设哪家好_小程序开发_APP开发_用户体验设计_公众号开发";
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "公司概况";
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
 }
 
-<div class="page-about">
-    <header class="se-header">
-        <h3>关于</h3>
-        <p>about</p>
-    </header>
-    <div class="wrapper">
-        <div class="counter">
+@await Component.InvokeAsync("Banner", new { code = "A1002" })
 
-            <h2 class="timer count-title count-number" data-to="226" data-speed="1500"></h2>
-            <p class="count-text ">完成项目</p>
-        </div>
-
-        <div class="counter">
-            <h2 class="timer count-title count-number" data-to="157" data-speed="1500"></h2>
-            <p class="count-text ">客户</p>
-        </div>
-
-        <div class="counter">
-            <h2 class="timer count-title count-number" data-to="10" data-speed="1500"></h2>
-            <p class="count-text ">从业年限</p>
-        </div>
-
-        <div class="counter">
-
-            <h2 class="timer count-title count-number" data-to="2" data-speed="1500"></h2>
-            <p class="count-text ">团队人数</p>
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "公司概况" })
+            </div>
         </div>
     </div>
 </div>
-@await Component.InvokeAsync("AllTeams")
-@await Component.InvokeAsync("AllClients")
+
+
+@Html.Raw(WebUtility.HtmlDecode(Model.Body))
 
 
 @section Scripts
 {
     <script>
-        (function($) {
-            $.fn.countTo = function(options) {
+        (function ($) {
+            $.fn.countTo = function (options) {
                 options = options || {};
 
-                return $(this).each(function() {
+                return $(this).each(function () {
                     // set options for current element
                     var settings = $.extend({}, $.fn.countTo.defaults, {
                         from: $(this).data('from'),
@@ -81,7 +79,7 @@
 
                         render(value);
 
-                        if (typeof(settings.onUpdate) == 'function') {
+                        if (typeof (settings.onUpdate) == 'function') {
                             settings.onUpdate.call(self, value);
                         }
 
@@ -91,7 +89,7 @@
                             clearInterval(data.interval);
                             value = settings.to;
 
-                            if (typeof(settings.onComplete) == 'function') {
+                            if (typeof (settings.onComplete) == 'function') {
                                 settings.onComplete.call(self, value);
                             }
                         }
@@ -120,10 +118,10 @@
             }
         }(jQuery));
 
-        jQuery(function($) {
+        jQuery(function ($) {
             // custom formatting example
             $('.count-number').data('countToOptions', {
-                formatter: function(value, options) {
+                formatter: function (value, options) {
                     return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
                 }
             });
@@ -141,9 +139,9 @@
 
 
 
-            $(document).ready(function () {
-              
-            });
+        $(document).ready(function () {
+
+        });
 
     </script>
 }

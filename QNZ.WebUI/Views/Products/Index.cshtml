@@ -1,0 +1,142 @@
+﻿@model ProductPageVM
+
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "产品中心";
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }  
+
+}
+
+<div class="banner banner-about">
+    <img src="/assets/img/temp/banner-product.jpg" alt="产品中心">
+    <div class="txt">
+        <div class="container">
+            <h1>产品中心</h1>
+        </div>
+    </div>
+</div>
+
+<div class="page page-products">
+    <section class="s1 container">
+        <div class="submenu">
+            @foreach (var item in Model.Categories)
+            {
+                <a class="@(Model.CategoryId == item.Id?"active":"")" asp-action="Index" asp-route-cid="@item.Id">@item.Title</a>
+            }
+
+            @*<a href="products.html">AWG芯片</a><a href="products.html">DFB激光器芯片</a><a href="products.html">光纤连接器</a><a href="products.html">室内光缆</a><a href="products.html">线缆材料</a>*@
+        </div>
+        <div class="video-container">
+            <video id="myVideo" poster="/assets/img/poster.jpg" width="100%">
+                <source src="/assets/img/temp/field.mp4" type="video/mp4">Your browser does not support the video tag.
+            </video><a class="btnplay" id="btnplay" href="javascript:void(0);" onclick="myFunction()"><img src="/assets/img/play.png" alt="播放"></a>
+        </div>
+        <div class="productlist">
+            @foreach (var item in Model.Products)
+            {
+                <div class="item">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 col-lg-auto"><img class="pic" src="@item.Thumbnail" alt=""></div>
+                        <div class="col-md-6 col-lg">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                @Html.Raw(item.Body)
+
+                            </div>
+                        </div>
+                        <div class="col-lg-auto">
+                            <a class="view" href="@item.FileUrl">
+                                <i class="iconfont icon-view"></i>
+                                <div class="more">查看</div>
+                            </a><a class="view"  asp-action="Download" asp-route-id="@item.Id">
+                                <i class="iconfont icon-download"></i>
+                                <div class="more">下载</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @*<div class="item">
+                <div class="row">
+                    <div class="col-md-auto"><img class="pic" src="/assets/img/temp/p1.jpg" alt=""></div>
+                    <div class="col">
+                        <div class="txt">
+                            <h3 class="title">裸纤型光分路器</h3>
+                            <ul class="list">
+                                <li>产品类别： 光分路器产品</li>
+                                <li>特性： 高稳定性，低损耗 结构紧凑</li>
+                                <li>应用范围： 光纤网络</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <a class="view" href="#">
+                            <div class="iconfont icon-view"></div>
+                            <div class="more">查看</div>
+                        </a><a class="view" href="#">
+                            <div class="iconfont icon-download"></div>
+                            <div class="more">下载</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row">
+                    <div class="col-md-auto"><img class="pic" src="/assets/img/temp/p1.jpg" alt=""></div>
+                    <div class="col-md">
+                        <div class="txt">
+                            <h3 class="title">裸纤型光分路器</h3>
+                            <ul class="list">
+                                <li>产品类别： 光分路器产品</li>
+                                <li>特性： 高稳定性，低损耗 结构紧凑</li>
+                                <li>应用范围： 光纤网络</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <a class="view" href="#">
+                            <div class="iconfont icon-view"></div>
+                            <div class="more">查看</div>
+                        </a><a class="view" href="#">
+                            <div class="iconfont icon-download"></div>
+                            <div class="more">下载</div>
+                        </a>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </section>
+</div>
+
+@section Scripts
+    {
+    <script>
+        //$('video, audio').mediaelementplayer();
+        // Get the video
+        var video = document.getElementById("myVideo");
+
+        // Get the button
+        var btn = document.getElementById("btnplay");
+
+        // Pause and play the video, and change the button text
+        function myFunction() {
+            if (video.paused) {
+                video.play();
+                //btn.innerHTML = "Pause";
+                btn.style.display = "none";
+            } else {
+                video.pause();
+                btn.innerHTML = "Play";
+            }
+        }
+    </script>
+
+}

@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using X.PagedList;
 
 namespace QNZ.Model.ViewModel

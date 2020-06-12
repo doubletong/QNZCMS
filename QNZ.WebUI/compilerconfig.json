@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/admin/js/app.es5.js",
     "inputFile": "wwwroot/admin/js/app.js"
+  },
+  {
+    "outputFile": "wwwroot/admin/css/patch.css",
+    "inputFile": "wwwroot/admin/css/patch.scss"
   }
 ]

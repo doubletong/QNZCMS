@@ -1,0 +1,109 @@
+﻿@model MemorabiliaIM
+@{
+    var pageTitle = Model.Id > 0 ? "编辑发展历程" : "创建发展历程";
+    ViewData["Title"] = pageTitle;
+}
+
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="Id" type="hidden" />
+    <div class="card">
+        <h5 class="card-header">
+           @pageTitle
+        </h5>
+        <div class="card-body">
+
+            <div class="form-group">
+                <label asp-for="DateAt" class="control-label"></label>
+                <input asp-for="DateAt" class="form-control" type="date" />
+                <span asp-validation-for="DateAt" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows="6" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+            </div>
+
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="card-footer ">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary"><i class="iconfont icon-save"></i> 保存</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="iconfont icon-left"></i> 返回</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section header{
+
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script>
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $(".spinner-border").fadeIn();
+
+        }
+        function onCompleteSave() {
+            $(".spinner-border").fadeOut();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {
+                var url = "@Url.Action("Index")";
+             
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+
+
+
+        });
+
+    </script>
+   
+}

@@ -1,4 +1,4 @@
-﻿using SIG.Infrastructure.Configs;
+﻿using QNZ.Infrastructure.Configs;
 using System;
 using System.Collections.Generic;
 using System.IO;

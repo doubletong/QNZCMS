@@ -1,0 +1,159 @@
+﻿@model DocumentIM
+@{
+    ViewData["Title"] = Model.Id > 0 ? "编辑文章" : "添加文章";
+}
+
+
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      asp-antiforgery="true"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="card">
+        <h5 class="card-header">
+            @ViewData["Title"]
+        </h5>
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section class="row">
+
+                <div class="col-md">
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])"></select>
+                        <span asp-validation-for="CategoryId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FileUrl" class="control-label"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" asp-for="FileUrl" aria-label="file url" aria-describedby="btnFileUrl">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="btnFileUrl">选择...</button>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <div style="flex: 2">
+                                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            </div>
+                            <span asp-validation-for="Description"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="PubDate" class="control-label"></label>
+                            <input asp-for="PubDate" class="form-control" type="date" />
+                            <span asp-validation-for="PubDate"></span>
+                        </div>
+
+
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" asp-for="Active">
+                            <label asp-for="Active" class="form-check-label"></label>
+                            <span asp-validation-for="Active"></span>
+                        </div>
+
+
+
+
+                    </div>
+                    <aside class="col-md-auto">
+                    </aside>
+</section>
+
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <button type="button" class="btn btn-secondary" id="btnBack"><i class="iconfont icon-left"></i> 返回</button>
+        </div>
+    </div>
+</form>
+
+@*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
+
+@section header{
+
+    <style>
+     
+    </style>
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/plugins/holder/holder.min.js"></script>
+ 
+    <script>
+        var url = "@Url.Action("Index")";
+
+
+        function SetThumbnail(fileUrl) {
+            $('#FileUrl').val(fileUrl);
+        }
+
+      
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $("#btnSave i").removeClass("icon-save").addClass("icon-sync icon-spin");
+        }
+        function onCompleteSave() {
+            $("#btnSave i").removeClass("icon-sync icon-spin").addClass("icon-save");
+        }
+
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                toastr.success(data.message);
+                location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+        }
+
+
+
+
+        $(function () {
+
+            $("#btnFileUrl").on("click", function () {
+                QNZ.selectActionFunction = SetThumbnail;
+                QNZ.open();
+
+            });
+
+        
+
+
+
+            $('#btnBack').on('click',
+                function() {
+                    location.href = url;
+                });
+
+
+        });
+    </script>
+}

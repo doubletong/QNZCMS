@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace SIG.Infrastructure.Configs
+namespace QNZ.Infrastructure.Configs
 {
   
         public abstract class BaseSettings

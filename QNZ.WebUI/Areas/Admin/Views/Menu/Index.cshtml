@@ -1,35 +1,41 @@
 ﻿@using QNZ.Data
-@using SIG.Resources.Admin
-@model MenuCategory
+@using QNZ.Resources.Admin
+@model IEnumerable<MenuCategoryVM>
 @{
+    Layout = "_LayoutSystem";
     ViewBag.Title = EntityNames.Menu;
 }
 
-
-    <div class="row">
-     
-        <div class="col-sm-12 col-md-12 col-lg-6">
+<div class="text-right mb-2">
+    <a asp-action="EditCategory" class="btn btn-primary"><i class="iconfont icon-plus"></i> 创建导航组</a>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-12 col-lg-4">
             <div class="card">
                 <header class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h5>@Model.Title</h5>
-                          
+                            <h5>@item.Title</h5>
+
                         </div>
                         <h3 class="col-auto">
-                            <button type="button" class="btn btn-info btn-sm btn-refresh" data-id="@Model.Id" data-url="@Url.Action("ResetSort",new { id=Model.Id})"><i class="iconfont icon-sort-ascending"></i></button>
+                            <a title="新增栏目" data-ajax="true" asp-action="CreateMenu" asp-route-categoryId="@item.Id" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#edit-container" data-ajax-begin="onBegin"
+                               data-ajax-complete="onComplete" data-ajax-failure="onFailed" data-ajax-success="onSuccess" class="btn btn-primary btn-sm" id="btnAdd"><i class="iconfont icon-plus"></i></a>
+                            <button type="button" class="btn btn-info btn-sm btn-refresh" data-id="@item.Id" data-url="@Url.Action("ResetSort", new { id = item.Id })"><i class="iconfont icon-sort-ascending"></i></button>
                         </h3>
                     </div>
                 </header>
-                <section class="card-body" id="@string.Format("menu{0}", Model.Id)">               
+                <section class="card-body" id="@string.Format("menu{0}", item.Id)">
 
-                    @await Component.InvokeAsync("MenuList", new {categoryId = Model.Id})
+                    @await Component.InvokeAsync("MenuList", new { categoryId = item.Id })
                 </section>
                 <footer class="panel-footer">
                 </footer>
             </div>
-            </div>
-     
+        </div>
+    }
     </div>
 
 <div id="edit-container">
@@ -43,21 +49,25 @@
     <style>
         .panel {
             box-shadow: 0 0 1rem rgba(0, 0, 0, .15);
-            padding:0 2rem 2rem;
-        }
-        .panel-heading {
-            border-bottom: 1px #eee solid;
-            margin: 0 -2rem;position: relative;
-        }
-        .panel-title {
-            font-size: 1rem;padding: 1rem 1rem;margin: 0;
+            padding: 0 2rem 2rem;
         }
 
- 
+        .panel-heading {
+            border-bottom: 1px #eee solid;
+            margin: 0 -2rem;
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            padding: 1rem 1rem;
+            margin: 0;
+        }
+
+
         .card-body li a {
             margin-left: .3rem;
         }
-        
     </style>
 }
 
@@ -66,7 +76,7 @@
     <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
 
-        <script>
+    <script>
             function onBegin() {
                 var iconEl = $(this).find("i.fa");
                 var icon = iconEl.attr("data-icon");
@@ -103,14 +113,14 @@
             }
 
             function submitSuccess(id, htmlData) {
-               
+
                 $('#ModalMenuForm').modal('hide');
-               
+
                 $.ajax({
                     method: 'GET',
                     url: '@Url.Action("GetMenus", "Menu")?categoryId=' + id
                 }).done(function (data, statusText, xhdr) {
-               
+
                     $("#menu" + id).html(data);
 
                     }).fail(function (xhdr, statusText, errorText) {
@@ -118,7 +128,7 @@
                     //$("#result").text(JSON.stringify(xhdr));
                 });
 
-              
+
             }
 
 
@@ -152,8 +162,8 @@
 
                     var url = $(this).attr('data-url');
                     var that = $(this);
-                    
-                    
+
+
                     swal({
                             title: "您确定要删除此项？",
                             text: "此删除操作不可恢复！",
@@ -163,18 +173,18 @@
                         })
                         .then((willDelete) => {
                             if (willDelete) {
-                            
+
                                 var title = "@ViewBag.Title";
                                 Common.DeleteItem(url, title, that);
-                            
+
                             } else {
                                 //swal("Your imaginary file is safe!");
                             }
                         });
 
-                    
-                    
-                  
+
+
+
 
                 });
 
@@ -208,7 +218,7 @@
                 });
 
 
-              
+
 
                 //激活
                 $('.active-item').click(function (e) {
@@ -236,6 +246,6 @@
             function resetSortSuccess(id,htmlData) {
                 $("#menu" + id).html(htmlData);
             }
-        </script>
+    </script>
 
-    }
+}

@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace SIG.Infrastructure.SMSService
+namespace QNZ.Infrastructure.SMSService
 {
 
     public class GzipHelper

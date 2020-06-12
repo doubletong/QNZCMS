@@ -26,11 +26,19 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[Albums]"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[ArticleCategories]"
       },
       {
          "HasPrimaryKey": true,
          "Name": "[dbo].[Articles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Branches]"
       },
       {
          "HasPrimaryKey": true,
@@ -50,23 +58,27 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Customer]"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[CustomerRecipes]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[District]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[FeedbackSet]"
+         "Name": "[dbo].[DocCategories]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[FeedbackTypeSet]"
+         "Name": "[dbo].[Documents]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Exhibition]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[JobCategories]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Jobs]"
       },
       {
          "HasPrimaryKey": true,
@@ -75,6 +87,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "[dbo].[MailingAddress]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Memorabilia]"
       },
       {
          "HasPrimaryKey": true,
@@ -110,6 +126,10 @@
       },
       {
          "HasPrimaryKey": true,
+         "Name": "[dbo].[Organizations]"
+      },
+      {
+         "HasPrimaryKey": true,
          "Name": "[dbo].[PageMetas]"
       },
       {
@@ -118,7 +138,7 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[PCategoryProducts]"
+         "Name": "[dbo].[Photos]"
       },
       {
          "HasPrimaryKey": true,
@@ -138,7 +158,7 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[ProductCategory]"
+         "Name": "[dbo].[ProductCategories]"
       },
       {
          "HasPrimaryKey": true,
@@ -154,10 +174,6 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[RecipesItem]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Role]"
       },
       {
@@ -170,11 +186,11 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Store]"
+         "Name": "[dbo].[Staffs]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Team]"
+         "Name": "[dbo].[Store]"
       },
       {
          "HasPrimaryKey": true,
@@ -190,6 +206,7 @@
       }
    ],
    "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
    "UseFluentApiOnly": false,
    "UseHandleBars": false,
    "UseInflector": true,

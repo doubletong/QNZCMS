@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIG.Resources.Admin {
+namespace QNZ.Resources.Admin {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace SIG.Resources.Admin {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EntityNames {
@@ -39,7 +39,7 @@ namespace SIG.Resources.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SIG.Resources.Admin.EntityNames", typeof(EntityNames).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("QNZ.Resources.Admin.EntityNames", typeof(EntityNames).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -133,15 +133,6 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
-        ///   查找类似 纪事 的本地化字符串。
-        /// </summary>
-        public static string Chronicle {
-            get {
-                return ResourceManager.GetString("Chronicle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 城市 的本地化字符串。
         /// </summary>
         public static string City {
@@ -165,6 +156,24 @@ namespace SIG.Resources.Admin {
         public static string District {
             get {
                 return ResourceManager.GetString("District", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文档分类 的本地化字符串。
+        /// </summary>
+        public static string DocCategory {
+            get {
+                return ResourceManager.GetString("DocCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文档 的本地化字符串。
+        /// </summary>
+        public static string Document {
+            get {
+                return ResourceManager.GetString("Document", resourceCulture);
             }
         }
         
@@ -201,6 +210,15 @@ namespace SIG.Resources.Admin {
         public static string Equipment {
             get {
                 return ResourceManager.GetString("Equipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 展会 的本地化字符串。
+        /// </summary>
+        public static string Exhibition {
+            get {
+                return ResourceManager.GetString("Exhibition", resourceCulture);
             }
         }
         
@@ -268,6 +286,15 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 招聘类型 的本地化字符串。
+        /// </summary>
+        public static string JobCategory {
+            get {
+                return ResourceManager.GetString("JobCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 链接 的本地化字符串。
         /// </summary>
         public static string Link {
@@ -291,6 +318,15 @@ namespace SIG.Resources.Admin {
         public static string Log {
             get {
                 return ResourceManager.GetString("Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 纪事 的本地化字符串。
+        /// </summary>
+        public static string Memorabilia {
+            get {
+                return ResourceManager.GetString("Memorabilia", resourceCulture);
             }
         }
         
@@ -327,6 +363,15 @@ namespace SIG.Resources.Admin {
         public static string OrderDetail {
             get {
                 return ResourceManager.GetString("OrderDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 组织团队 的本地化字符串。
+        /// </summary>
+        public static string Organization {
+            get {
+                return ResourceManager.GetString("Organization", resourceCulture);
             }
         }
         
@@ -471,6 +516,15 @@ namespace SIG.Resources.Admin {
         public static string Solution {
             get {
                 return ResourceManager.GetString("Solution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 人员 的本地化字符串。
+        /// </summary>
+        public static string Staff {
+            get {
+                return ResourceManager.GetString("Staff", resourceCulture);
             }
         }
         

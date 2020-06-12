@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
-using SIG.Resources.Admin;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Admin;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -76,24 +76,6 @@ namespace QNZCMS.Areas.Admin.Controllers
             ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
-        }
-
-        // GET: Admin/AdvertisingSpaces/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var advertisingSpace = await _context.AdvertisingSpaces
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (advertisingSpace == null)
-            {
-                return NotFound();
-            }
-
-            return View(advertisingSpace);
         }
 
        

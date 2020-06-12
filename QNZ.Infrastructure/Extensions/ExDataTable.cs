@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-namespace SIG.Infrastructure.Extensions
+namespace QNZ.Infrastructure.Extensions
 {
     public static class ExDataTable
     {

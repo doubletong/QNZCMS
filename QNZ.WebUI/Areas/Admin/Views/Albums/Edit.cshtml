@@ -1,0 +1,156 @@
+﻿@model AlbumIM
+
+@{
+    ViewData["Title"] =  Model.Id>0 ? "编辑" :"创建";
+}
+
+
+
+    <form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+          data-ajax="true" data-ajax-method="POST">
+
+        <div class="card">
+            <h5 class="card-header">@ViewData["Title"]</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" asp-for="Id" />
+
+
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Alias" class="control-label"></label>
+                            <input asp-for="Alias" class="form-control" />
+                            <span asp-validation-for="Alias" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Importance" class="control-label"></label>
+                            <input asp-for="Importance" class="form-control" />
+                            <span asp-validation-for="Importance" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-md-auto">
+                        <div class="card" style="width:300px;">
+                            <div class="card-header text-center">
+                                图片
+                            </div>
+                            <div class="card-body">
+                                <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgCover" src="@(Model!=null?Model.Cover:"")">
+                                <input type="hidden" asp-for="Cover" />
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-info btn-block" id="btnCover">
+                                    <i class="iconfont icon-upload"></i> 上传图片
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spinner-border" role="status" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+                <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-arrowleft"></i> 返回</a>
+            </div>
+        </div>
+        
+    </form>
+
+
+
+@section header{
+
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/plugins/holder/holder.min.js"></script>
+
+    <script>
+
+          function SetThumbnail(fileUrl) {
+
+            $('#imgCover').attr("src",fileUrl);
+            $('#Cover').val(fileUrl);
+
+
+        }
+
+
+        var modelName = "代理商";
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $(".spinner-border").fadeIn();
+
+        }
+        function onCompleteSave() {
+            $(".spinner-border").fadeOut();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {
+                var url = "@Url.Action("Index")";
+                toastr.success(data.message);
+               // location.href = url;
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+
+
+            $("#btnCover").on("click", function () {
+                QNZ.selectActionFunction = SetThumbnail;
+                QNZ.open();
+
+            });
+
+
+
+
+        });
+    </script>
+}

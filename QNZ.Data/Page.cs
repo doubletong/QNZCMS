@@ -28,6 +28,9 @@ namespace QNZ.Data
         public DateTime? UpdatedDate { get; set; }
         [StringLength(50)]
         public string UpdatedBy { get; set; }
+        /// <summary>
+        /// 权重，值越高越排前
+        /// </summary>
         public int? Importance { get; set; }
     }
 }

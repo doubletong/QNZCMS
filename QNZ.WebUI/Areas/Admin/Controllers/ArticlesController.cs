@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using QNZ.Data;
 using X.PagedList;
-using SIG.Infrastructure.Configs;
-using SIG.Infrastructure.Helper;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
 using System.Xml.Linq;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -34,14 +34,16 @@ namespace QNZCMS.Areas.Admin.Controllers
             _mapper = mapper;
         }
         // GET: Admin/Articles
-        public async Task<IActionResult> Index(string keyword, string sort, int? categoryId, int? page)
+        public async Task<IActionResult> Index(string keyword, string orderby, string sort, int? categoryId, int? page)
         {
             var vm = new ArticleListVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
                 Keyword = keyword,
                 CategoryId = categoryId,
-                PageSize = SettingsManager.Article.PageSize
+                PageSize = SettingsManager.Article.PageSize,
+                   OrderBy = orderby,
+                Sort = sort
             };
 
             //var pageSize = SettingsManager.Article.PageSize;
@@ -54,11 +56,8 @@ namespace QNZCMS.Areas.Admin.Controllers
                 query = query.Where(d => d.CategoryId == categoryId);
 
 
-            ViewData["ViewSortParm"] = sort == "view" ? "view_desc" : "view";
-            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
-            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
-
-            query = sort switch
+            var gosort = $"{orderby}_{sort}";
+            query = gosort switch
             {
                 "view" => query.OrderBy(s => s.ViewCount),
                 "view_desc" => query.OrderByDescending(s => s.ViewCount),
@@ -67,7 +66,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 "date" => query.OrderBy(s => s.Pubdate),
                 "date_desc" => query.OrderByDescending(s => s.Pubdate),
               
-                _ => query.OrderByDescending(s => s.Pubdate),
+                _ => query.OrderByDescending(s => s.Id),
             };
 
 
@@ -87,23 +86,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             return View(vm);
         }
 
-        // GET: Admin/Articles/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var article = await _context.Articles.Include(d=>d.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (article == null)
-            {
-                return NotFound();
-            }
-
-            return View(article);
-        }
+      
 
       
         // GET: Admin/Articles/Edit/5
@@ -274,6 +257,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             article.CreatedDate = DateTime.Now;
             article.Pubdate = DateTime.Now;
             article.Active = false;
+            article.Recommend = false;
             article.Title = $"{article.Title}【拷贝】"; 
 
             _context.Articles.Add(article);
@@ -337,6 +321,31 @@ namespace QNZCMS.Areas.Admin.Controllers
             foreach (var item in c)
             {
                 item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsTop(int[] ids, bool isTop)
+        {
+
+            var c = await _context.Articles.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Recommend = isTop ? false : true;
                 _context.Entry(item).State = EntityState.Modified;
             }
 

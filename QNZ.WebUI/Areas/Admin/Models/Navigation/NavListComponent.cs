@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using QNZ.Data;
-using SIG.Infrastructure.Cache;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Cache;
+using QNZ.Infrastructure.Configs;
 
 namespace QNZCMS.Areas.Admin.Models.Navigation
 {
@@ -80,14 +80,14 @@ namespace QNZCMS.Areas.Admin.Models.Navigation
                     if (item.IsExpand)
                     {
 
-                        menuTree = menuTree + $"<a href = \"#\" class=\"expmenu expandmenu\" data-url=\"{url}\"><i class=\"iconfont icon-minus-square-fill\"></i></a>";
+                        menuTree = menuTree + $"<a href = \"#\" class=\"expmenu expandmenu\" data-url=\"{url}\"><span class=\"iconfont icon-minus-square-fill\"></i></a>";
                     }
                     else
                     {
                         menuTree = menuTree + $"<a href = \"#\" class=\"expmenu\" data-url=\"{url}\"><span class=\"iconfont icon-plus-square-fill\"></span></a>";
                     }
                 }
-                menuTree = menuTree + item.Title;
+                menuTree = menuTree + $"<span class=\"title\">{item.Title}</span>";
                 menuTree = menuTree + $"<a href = \"{Url.Action("UpDownMove", new { id = item.Id, isUp = true, categoryId = item.CategoryId })}\" title=\"向上\" data-ajax = \"true\"  " +
                            $"data-ajax-method = \"POST\" data-ajax-mode = \"replace\" data-ajax-update=\"#edit-container\" data-ajax-begin = \"onBegin\" " +
                            $"data-ajax-complete = \"onComplete\" data-ajax-failure = \"onFailed\" data-ajax-success = \"onSuccessSave\" ><i class=\"iconfont icon-up-circle\" data-icon=\"icon-up-circle\"></i></a>";

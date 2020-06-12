@@ -11,24 +11,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using QNZCMS.Models;
-using SIG.Infrastructure.Cache;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Cache;
+using QNZ.Infrastructure.Configs;
+using QNZ.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace QNZCMS.Controllers
 {
     public class HomeController : Controller
     {
-        private IWebHostEnvironment _hostingEnvironment;
-        private ICacheService _cache;
-        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache)
+        private IWebHostEnvironment _hostingEnvironment;      
+        private readonly ICacheService _cacheService;
+        private readonly YicaiyunContext _context;
+        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context)
         {
             _hostingEnvironment = hostingEnvironment;
-            _cache = cache;
+            _cacheService = cache;
+            _context = context;
         }
     
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            //var configFile = _hostingEnvironment.WebRootPath + "\\Config\\Global.json";
+            //string json = System.IO.File.ReadAllText(configFile);
+            //dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            //jsonObj["Bots"][0]["Password"] = "new password123";
+            //string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+            //System.IO.File.WriteAllText(configFile, output);
+
+            string keyNav = $"ADVERTISEMENTS_TRUE_ALL";
+
+            if (!_cacheService.IsSet(keyNav))
+            {
+                var adverts = await _context.Advertisements.Include(d => d.Space).Where(d => d.Active)
+                    .OrderByDescending(d => d.Importance).ToListAsync();
+                _cacheService.Set(keyNav, adverts, 30);
+            }
+
+            var advertList = (List<Advertisement>)_cacheService.Get(keyNav);
+            var advert = advertList.FirstOrDefault(d => d.Space.Code == "A1001");
+
+
             return View();
         }
 
@@ -39,15 +63,15 @@ namespace QNZCMS.Controllers
 
         public IActionResult ChacheShow()
         {
-            _cache.Set("test", "this is test", 15);
+            _cacheService.Set("test", "this is test", 15);
 
-            return Content(_cache.IsSet("MENUS_CATEGORY_1").ToString());
+            return Content(_cacheService.IsSet("MENUS_CATEGORY_1").ToString());
         }
         public IActionResult ChacheShow1()
         {
-            _cache.Invalidate("MENU");
+            _cacheService.Invalidate("MENU");
 
-            return Content(_cache.IsSet("MENUS_CATEGORY_1").ToString());
+            return Content(_cacheService.IsSet("MENUS_CATEGORY_1").ToString());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Cache;
-using SIG.Resources.Admin;
+using QNZ.Infrastructure.Cache;
+using QNZ.Resources.Admin;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {

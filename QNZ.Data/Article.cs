@@ -13,17 +13,24 @@ namespace QNZ.Data
         [Required]
         [StringLength(150)]
         public string Title { get; set; }
+        [StringLength(150)]
+        public string SubTitle { get; set; }
         [StringLength(500)]
         public string Summary { get; set; }
         [Required]
         public string Body { get; set; }
+        [StringLength(100)]
+        public string Source { get; set; }
         [StringLength(50)]
         public string Author { get; set; }
         [StringLength(150)]
         public string Thumbnail { get; set; }
+        [StringLength(150)]
+        public string SliderImage { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime Pubdate { get; set; }
         public int ViewCount { get; set; }
+        public bool Recommend { get; set; }
         [Required]
         public bool? Active { get; set; }
         public int CategoryId { get; set; }

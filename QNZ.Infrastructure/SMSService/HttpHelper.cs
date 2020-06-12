@@ -5,7 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace SIG.Infrastructure.SMSService
+namespace QNZ.Infrastructure.SMSService
 {
     public class HttpHelper
     {

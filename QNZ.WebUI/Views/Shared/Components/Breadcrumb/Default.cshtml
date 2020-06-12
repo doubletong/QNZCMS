@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Navigation>
+@{
+    var lastItem = Model.LastOrDefault();
+}
+    <ul class="breadcrumb">
+        <li><a href="/">首页 </a></li>
+        @foreach (var item in Model)
+        {
+            if (lastItem.Id ==  item.Id)
+            {
+                <li class="active">
+                    @item.Title
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="@item.Url">@item.Title </a>
+                </li>
+            }
+
+        }
+    </ul>

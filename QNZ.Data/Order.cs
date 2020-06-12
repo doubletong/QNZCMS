@@ -17,14 +17,29 @@ namespace QNZ.Data
         [Key]
         public int Id { get; set; }
         [Column(TypeName = "datetime")]
+        /// <summary>
+        /// 购买时间
+        /// </summary>
         public DateTime CreatedDate { get; set; }
         [Required]
         [StringLength(100)]
+        /// <summary>
+        /// 客户ID
+        /// </summary>
         public string OpenId { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
+        /// <summary>
+        /// 优惠金额
+        /// </summary>
         public decimal Amount { get; set; }
         [StringLength(250)]
+        /// <summary>
+        /// 备注
+        /// </summary>
         public string Remark { get; set; }
+        /// <summary>
+        /// 订单状态（0：待付款；1：待发货；2：已发货；3：待评价；4：已完成；10：已取消）
+        /// </summary>
         public byte Status { get; set; }
         [StringLength(50)]
         public string Province { get; set; }
@@ -35,15 +50,15 @@ namespace QNZ.Data
         [StringLength(150)]
         public string Address { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 收件人
+        /// </summary>
         public string Consignee { get; set; }
         [StringLength(50)]
         public string Mobile { get; set; }
         [StringLength(50)]
         public string ZipCode { get; set; }
 
-        [ForeignKey(nameof(OpenId))]
-        [InverseProperty(nameof(Customer.Orders))]
-        public virtual Customer Open { get; set; }
         [InverseProperty("Order")]
         public virtual OrderComment OrderComment { get; set; }
         [InverseProperty(nameof(OrderDetail.Order))]

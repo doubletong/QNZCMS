@@ -13,44 +13,79 @@ namespace QNZ.Data
         {
             CartItems = new HashSet<CartItem>();
             OrderDetails = new HashSet<OrderDetail>();
-            Products = new HashSet<Product>();
         }
 
         [Key]
         public int Id { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 店铺名称
+        /// </summary>
         public string Name { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 联系人
+        /// </summary>
         public string Contact { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 电话
+        /// </summary>
         public string Phone { get; set; }
         [Required]
         [StringLength(250)]
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string Address { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 省
+        /// </summary>
         public string Province { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 城市 
+        /// </summary>
         public string City { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 区/县
+        /// </summary>
         public string District { get; set; }
         [StringLength(150)]
         public string Thumbnail { get; set; }
         [Column(TypeName = "decimal(10, 6)")]
+        /// <summary>
+        /// 经度
+        /// </summary>
         public decimal Longitude { get; set; }
         [Column(TypeName = "decimal(10, 6)")]
         public decimal Latitude { get; set; }
         [Required]
         [StringLength(50)]
+        /// <summary>
+        /// 创建人
+        /// </summary>
         public string CreatedBy { get; set; }
         [Column(TypeName = "datetime")]
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CreatedDate { get; set; }
         [StringLength(50)]
+        /// <summary>
+        /// 最后更新人
+        /// </summary>
         public string UpdatedBy { get; set; }
         [Column(TypeName = "datetime")]
+        /// <summary>
+        /// 最后更新时间
+        /// </summary>
         public DateTime? UpdatedDate { get; set; }
         public string Body { get; set; }
 
@@ -58,7 +93,5 @@ namespace QNZ.Data
         public virtual ICollection<CartItem> CartItems { get; set; }
         [InverseProperty(nameof(OrderDetail.Store))]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        [InverseProperty(nameof(Product.Store))]
-        public virtual ICollection<Product> Products { get; set; }
     }
 }

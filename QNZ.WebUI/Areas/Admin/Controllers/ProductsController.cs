@@ -1,167 +1,132 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using PagedList.Core;
-using SIG.Infrastructure.Helper;
-using SIG.Model.Admin.InputModel;
-using SIG.Model.Admin.ViewModel;
-using SIG.Model.ViewModel;
-using SIG.Resources.Admin;
-using YCY.Data;
+using QNZ.Model.Admin.ViewModel;
+using QNZ.Model.ViewModel;
+using QNZ.Resources.Admin;
+using QNZ.Data;
+using X.PagedList;
+using QNZ.Infrastructure.Configs;
+using QNZ.Infrastructure.Helper;
+using QNZ.Data.Enums;
+using System.Xml.Linq;
+using Microsoft.Extensions.PlatformAbstractions;
 
-namespace SIG.SIGCMS.Areas.Admin.Controllers
+namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class ProductsController : BaseController
     {
-        private IHostingEnvironment _hostingEnvironment;
-
         private readonly IMapper _mapper;
         private readonly YicaiyunContext _context;
-        public ProductsController(YicaiyunContext context, IMapper mapper, IHostingEnvironment hostingEnvironment)
+        public ProductsController(YicaiyunContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _hostingEnvironment = hostingEnvironment;
         }
         // GET: Admin/Products
-        public async Task<IActionResult> Index(string keyword, int? page)
+        public async Task<IActionResult> Index(string keyword, string orderby, string sort, int? categoryId, int? page)
         {
-            ProductPageVM vm = new ProductPageVM()
+            var vm = new ProductListVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
-                Keyword = keyword
+                Keyword = keyword,
+                CategoryId = categoryId,
+                PageSize = SettingsManager.Product.PageSize,
+                OrderBy = orderby,
+                Sort = sort
             };
-            var pageSize = 10;
 
-            var query = _context.Products.AsNoTracking().AsQueryable();
+            //var pageSize = SettingsManager.Product.PageSize;
+            var query = _context.Products.Include(d => d.Category).AsNoTracking().AsQueryable();
+
             if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(d => d.Name.Contains(keyword) || d.SubName.Contains(keyword));
+                query = query.Where(d => d.Title.Contains(keyword));
+
+            if (categoryId > 0)
+                query = query.Where(d => d.CategoryId == categoryId);
+
+
+            var gosort = $"{orderby}_{sort}";
+            query = gosort switch
+            {
+                "view" => query.OrderBy(s => s.DownloadCount),
+                "view_desc" => query.OrderByDescending(s => s.DownloadCount),
+                "title" => query.OrderBy(s => s.Title),
+                "title_desc" => query.OrderByDescending(s => s.Title),
+                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_desc" => query.OrderByDescending(s => s.CreatedDate),
+
+                _ => query.OrderByDescending(s => s.Id),
+            };
 
 
             vm.TotalCount = await query.CountAsync();
-            var products = await query.OrderByDescending(d=>d.Id).ProjectTo<ProductVM>(_mapper.ConfigurationProvider)
-                .Skip((vm.PageIndex - 1) * pageSize).Take(pageSize)
-                .ToListAsync();
+            var clients = await query
+                .Skip((vm.PageIndex - 1) * vm.PageSize).Take(vm.PageSize).ProjectTo<ProductBVM>(_mapper.ConfigurationProvider).ToListAsync();
 
 
-           foreach(var item in products)
-            {
-                var categories = _context.ProductCategories.Where(d => d.PcategoryProducts.Any(c => c.ProductId == item.Id)).ToList();
-                item.CategoryTitle = string.Join("、", categories.Select(d=>d.Title).ToArray());
-            }
+            vm.Products = new StaticPagedList<ProductBVM>(clients, vm.PageIndex, vm.PageSize, vm.TotalCount);
 
-            vm.Products = new StaticPagedList<ProductVM>(products, vm.PageIndex, pageSize, vm.TotalCount);
+            var categories = await _context.ProductCategories.AsNoTracking()
+                 .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 
+            ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
         }
 
-        // GET: Admin/Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var product = await _context.Products
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
 
-            var model = _mapper.Map<ProductDetailVM>(product);
-            model.Description = WebUtility.HtmlDecode(product.Description);
-
-            return View(model);
-        }
-      
-        // GET: Admin/Products/Create
-        public async Task<IActionResult> Create()
-        {
-            ViewData["Stores"] = new SelectList(await _context.Stores.AsNoTracking().ToListAsync(), "Id", "Name");
-            ViewData["Categories"] = new SelectList(await _context.ProductCategories.AsNoTracking().ToListAsync(), "Id", "Title");
-
-            return View();
-        }
-
-        // POST: Admin/Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-       
-        public async Task<IActionResult> Create([Bind("Id,StoreId,CategoryIds ,Name,SubName,Specification,Price, OriginalPrice,Stock, Description,Summary,Thumbnail,FullImages,Active")] ProductIM product)
-        {
-            if (!ModelState.IsValid)
-            {
-                AR.Setfailure(GetModelErrorMessage());
-                return Json(AR);
-            }
-            try
-            {
-                var model = _mapper.Map<Product>(product);
-
-                model.Description = WebUtility.HtmlEncode(product.Description);
-
-                foreach (var item in product.CategoryIds)
-                {
-                    model.PcategoryProducts.Add(new PcategoryProduct { CategoryId = item, ProductId = product.Id });
-                }
-
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-
-                AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Product));
-                return Json(AR);
-            }catch(Exception er)
-            {
-                AR.Setfailure(er.Message);
-                return Json(AR);
-            }
-           
-        }
 
         // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var vm = new ProductIM();
             if (id == null)
             {
-                return NotFound();
-            }
+                vm.Active = true;
+              
 
-            var product = await _context.Products.Include(d=>d.PcategoryProducts).SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            }
+            else
             {
-                return NotFound();
+                var article = await _context.Products.FindAsync(id);
+                if (article == null)
+                {
+                    return NotFound();
+                }
+
+                vm = _mapper.Map<ProductIM>(article);
+
+                var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLE && d.ObjectId == vm.Id.ToString());
+
+                if (pm != null)
+                {
+                    vm.SEOTitle = pm.Title;
+                    vm.SEOKeywords = pm.Keywords;
+                    vm.SEODescription = pm.Description;
+                }
+
             }
-            var model = _mapper.Map<ProductIM>(product);
-            model.Description = WebUtility.HtmlDecode(product.Description);
-            model.CategoryIds = product.PcategoryProducts.Select(d => d.CategoryId).ToArray();
+            var categories = await _context.ProductCategories.AsNoTracking()
+               .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 
-            ViewData["Stores"] = new SelectList(await _context.Stores.AsNoTracking().ToListAsync(), "Id", "Name");
-            ViewData["Categories"] = new SelectList(await _context.ProductCategories.AsNoTracking().ToListAsync(), "Id", "Title");
 
-            return View(model);
+
+            return View(vm);
+
         }
 
         // POST: Admin/Products/Edit/5
@@ -169,14 +134,9 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StoreId,CategoryIds ,Name,SubName,Specification,Price, OriginalPrice,Stock, Description,Summary,Thumbnail,FullImages,Active")] ProductIM product)
+        public async Task<IActionResult> Edit(ProductIM article)
         {
-            if (id != product.Id)
-            {
-                AR.Setfailure(Messages.HttpNotFound);
-                return Json(AR);
-            }
+
 
             if (!ModelState.IsValid)
             {
@@ -187,28 +147,66 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
 
             try
             {
-                var model = await _context.Products.SingleOrDefaultAsync(d => d.Id == id);
-
-                model = _mapper.Map(product, model);
-                model.Description = WebUtility.HtmlEncode(product.Description);
-
-                var list = _context.PcategoryProducts.Where(d => d.ProductId == model.Id).ToList();
-                _context.RemoveRange(list);
-
-                foreach(var item in product.CategoryIds)
+                var pm = new PageMeta
                 {
-                    _context.Add(new PcategoryProduct { CategoryId = item, ProductId = product.Id });
+                    Title = article.SEOTitle,
+                    Description = article.SEODescription,
+                    Keywords = article.SEOKeywords,
+                    ModuleType = (short)ModuleType.ARTICLE
+
+                };
+
+
+                if (article.Id > 0)
+                {
+                    var model = await _context.Products.FirstOrDefaultAsync(d => d.Id == article.Id);
+                    if (model == null)
+                    {
+                        AR.Setfailure(Messages.HttpNotFound);
+                        return Json(AR);
+                    }
+                    model = _mapper.Map(article, model);
+
+                    model.UpdatedBy = User.Identity.Name;
+                    model.UpdatedDate = DateTime.Now;
+
+
+                    _context.Entry(model).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Product));
+                    pm.ObjectId = model.Id.ToString();
+
+
+                }
+                else
+                {
+                    var model = _mapper.Map<Product>(article);
+
+                    model.CreatedBy = User.Identity.Name;
+                    model.CreatedDate = DateTime.Now;
+
+
+                    //model.Body = WebUtility.HtmlEncode(page.Body);
+
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    pm.ObjectId = model.Id.ToString();
+
+                    AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Product));
+
                 }
 
-                _context.Update(model);
-                await _context.SaveChangesAsync();
 
-                AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Product));
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+
                 return Json(AR);
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(product.Id))
+                if (!ProductExists(article.Id))
                 {
                     AR.Setfailure(Messages.HttpNotFound);
                     return Json(AR);
@@ -218,151 +216,21 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                     throw;
                 }
             }
-            
         }
-
-        // GET: Admin/Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.Include(d=>d.CartItems)
-                .Include(d=>d.OrderDetails)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            var model = _mapper.Map<ProductDetailVM>(product);
-            model.Description = WebUtility.HtmlDecode(product.Description);
-
-            model.HasData = product.OrderDetails.Any() || product.CartItems.Any();
-
-            return View(model);
-        }
-
-        // POST: Admin/Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
-
 
         [HttpPost]
-   
-        public async Task<IActionResult> UploadAsync()
-        {
-            string filePathName = string.Empty;
-            //  long size = 0;
-            var files = Request.Form.Files;
-            //foreach (var file in files)
-            //{
-            //var filename = ContentDispositionHeaderValue
-            //                .Parse(files[0].ContentDisposition)
-            //                .FileName
-            //                .Trim('"');
-            var folderDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
-            string localPath = _hostingEnvironment.ContentRootPath + $@"\upload\image\{folderDate}";
-
-            if (!Directory.Exists(localPath))
-            {
-                Directory.CreateDirectory(localPath);
-            }
-          
-
-            var fileName = Path.GetFileNameWithoutExtension(files[0].FileName);
-            string ex = Path.GetExtension(files[0].FileName);
-            fileName = FileHelper.GetFileName(fileName, localPath, ex);
-            filePathName = localPath + "\\" + fileName + ex;
-        
-            // size += file.Length;
-            using (FileStream fs = System.IO.File.Create(filePathName))
-            {
-                await files[0].CopyToAsync(fs);
-                await fs.FlushAsync();
-            }
-
-            var imgUrl = $"/upload/image/{folderDate}/{fileName}{ex}";
-            //}
-            // string message = $"{files.Count} file(s) / {size} bytes uploaded successfully!";
-            return Json(imgUrl);
-
-          
-        }
-
-
-        [HttpPost]
-      
-        public async Task<ActionResult> UpLoadImages(string id, string name, string type, string lastModifiedDate, int size, IFormFile file)
-        {
-            string filePathName = string.Empty;
-
-            //
-            var folderDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
-            string dir = $"/upload/image/{folderDate}";
-            string localPath = _hostingEnvironment.ContentRootPath + $@"\upload\image\{folderDate}"; 
-            // string localPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Uploads");
-            if (Request.Form.Files.Count == 0)
-            {
-                return Json(new { jsonrpc = 2.0, error = new { code = 102, message = "保存失败" }, id = "id" });
-            }
-            var fileName = Path.GetFileNameWithoutExtension(file.FileName);
-            string ex = Path.GetExtension(file.FileName);
-            fileName = FileHelper.GetFileName(fileName, localPath, ex);
-            filePathName = fileName + ex;
-            if (!Directory.Exists(localPath))
-            {
-                Directory.CreateDirectory(localPath);
-            }
-            var orgUrl = Path.Combine(localPath, filePathName);
-
-            using (var stream = new FileStream(orgUrl, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            //using (FileStream fs = System.IO.File.Create(orgUrl))
-            //{
-            //    await file.CopyToAsync(fs);
-            //    await fs.FlushAsync();
-            //}
-
-            return Json(new
-            {
-                jsonrpc = "2.0",
-                id = id,
-                fileName = dir + "/" + filePathName
-            });
-
-        }
-        [HttpPost]
-        [Authorize]
-        public ActionResult RemoveImage(string img)
+        public JsonResult PageSizeSet(int pageSize)
         {
             try
-            {             
-                var filePath = img.Replace("/","\\");
-              //  string localPath = _hostingEnvironment.ContentRootPath + $@"\upload\image\{folderDate}";
-                var orgUrl = _hostingEnvironment.ContentRootPath + filePath;
-                if (System.IO.File.Exists(orgUrl))
-                {
-                    System.IO.File.Delete(orgUrl);
-                }
+            {
+                var xmlFile = PlatformServices.Default.MapPath("/Config/ProductSettings.config");
+                XDocument doc = XDocument.Load(xmlFile);
 
-                AR.SetSuccess(Messages.AlertActionSuccess);
+                var item = doc.Descendants("Settings").FirstOrDefault();
+                item.Element("PageSize").SetValue(pageSize);
+                doc.Save(xmlFile);
+
+
                 return Json(AR);
             }
             catch (Exception ex)
@@ -370,8 +238,125 @@ namespace SIG.SIGCMS.Areas.Admin.Controllers
                 AR.Setfailure(ex.Message);
                 return Json(AR);
             }
-
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Copy(int id)
+        {
+
+            var article = await _context.Products.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+
+            if (article == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            article.Id = 0;
+            article.CreatedBy = User.Identity.Name;
+            article.CreatedDate = DateTime.Now;
+
+            article.Active = false;
+            //article.Recommend = false;
+            article.Title = $"{article.Title}【拷贝】";
+
+            _context.Products.Add(article);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+        // POST: Admin/Products/Delete/5
+        [HttpDelete, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+
+
+            var c = await _context.Products.FirstOrDefaultAsync(d => d.Id == id);
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Products.Remove(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        // POST: Admin/Products/Delete/5
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMulti(int[] ids)
+        {
+
+            var c = await _context.Products.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+
+            _context.Products.RemoveRange(c);
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsLock(int[] ids, bool isLock)
+        {
+
+            var c = await _context.Products.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Active = isLock ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IsTop(int[] ids, bool isTop)
+        {
+
+            var c = await _context.Products.Where(d => ids.Contains(d.Id)).ToListAsync();
+
+            if (c == null)
+            {
+                AR.Setfailure(Messages.HttpNotFound);
+                return Json(AR);
+            }
+            foreach (var item in c)
+            {
+                item.Recommend = isTop ? false : true;
+                _context.Entry(item).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(AR);
+        }
+
+        private bool ProductExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
+        }
     }
 }

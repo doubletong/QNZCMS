@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace SIG.Infrastructure.Extensions
+namespace QNZ.Infrastructure.Extensions
 {
     public static class ExJson
     {

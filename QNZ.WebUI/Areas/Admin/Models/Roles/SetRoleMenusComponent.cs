@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QNZ.Services.Identity;
 using QNZ.Services.Menus;
 using QNZ.Data.Enums;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 
 
 namespace QNZCMS.Areas.Admin.Models.Menu

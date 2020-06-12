@@ -1,6 +1,7 @@
 ﻿@model AdvertisementIM
 
 @{
+    Layout = "_LayoutPlugins";
     ViewData["Title"] = Model.Id > 0 ? "编辑" : "创建";
 }
 
@@ -33,6 +34,11 @@
                         <span asp-validation-for="SpaceId"></span>
                     </div>
 
+                    <div class="form-group">
+                        <label asp-for="WebLink" class="control-label"></label>
+                        <input asp-for="WebLink" class="form-control" />
+                        <span asp-validation-for="WebLink" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
@@ -63,7 +69,7 @@
                             PC图片
                         </div>
                         <div class="card-body">
-                            <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgImageUrl" src="@(Model!=null?Model.ImageUrl:"")">
+                            <img data-src="holder.js/300x200?text=图片" id="imgImageUrl" src="@(Model!=null?Model.ImageUrl:"")">
                             <input type="hidden" asp-for="ImageUrl" />
                         </div>
                         <div class="card-footer">
@@ -78,7 +84,7 @@
                            手机图片
                         </div>
                         <div class="card-body">
-                            <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgImageUrlMobile" src="@(Model!=null?Model.ImageUrlMobile:"")">
+                            <img data-src="holder.js/300x200?text=图片" id="imgImageUrlMobile" src="@(Model!=null?Model.ImageUrlMobile:"")">
                             <input type="hidden" asp-for="ImageUrlMobile" />
                         </div>
                         <div class="card-footer">

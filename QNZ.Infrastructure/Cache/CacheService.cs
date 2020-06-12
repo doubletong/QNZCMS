@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 
-namespace SIG.Infrastructure.Cache
+namespace QNZ.Infrastructure.Cache
 {
     public class CacheService : ICacheService
     {

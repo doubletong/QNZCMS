@@ -1,0 +1,98 @@
+﻿@model LabPageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "实验室简介";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1006" })
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "河南省重点实验室" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-lab">
+    @Html.Raw(WebUtility.HtmlDecode(Model.LabIntro.Body))
+
+    <section class="s2 section">
+        <div class="container-fluid">
+            <div class="title-section">
+                <h2 class="text-center">研究方向</h2>
+            </div>
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a class="item" asp-action="ResearchesDetail" asp-route-id="@item.Id">
+                            <img src="@item.Thumbnail" alt="@item.Title">
+                            <div class="des">
+                                <h3 class="title">@item.Title</h3>
+                                <div class="more">了解更多</div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+    @Html.Raw(WebUtility.HtmlDecode(Model.LabIntro2.Body))
+
+    @if (Model.Photos.Any())
+    {
+        <section class="s4 container">
+            <div class="title-section">
+                <h2 class="text-center">荣誉资质</h2>
+            </div>
+            <div class="photos row">
+                @foreach (var item in Model.Photos)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="des">
+                            <a class="item" href="@item.ImageUrl" data-lightbox="quality" data-title="@item.Title">
+                                <img src="@item.ImageUrl" alt="">
+                                <div class="overly">
+                                    <div class="view">查看大图</div>
+                                </div>
+                            </a>
+                            <div class="title">"@item.Title</div>
+                        </div>
+                    </div>
+                }
+
+
+            </div><a class="more" asp-action="HonorsLab">了解更多</a>
+        </section>
+    }
+
+</div>
+@section Scripts
+    {
+
+    <script src="~/plugins/lightbox2/dist/js/lightbox.min.js"></script>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'disableScrolling': true
+
+        })
+    </script>
+
+}

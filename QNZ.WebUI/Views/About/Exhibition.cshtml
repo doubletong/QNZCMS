@@ -1,0 +1,73 @@
+﻿@model ExhibitionPageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "展会信息";
+}
+
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1003" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "企业资讯" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-news page-exhibition">
+    <section class="s1 container">
+        <div class="submenu"><a class="@(Model.Type==null?"active":"")" asp-action="Exhibition">全部展览</a><a asp-action="Exhibition" asp-route-type="1" class="@(Model.Type==1?"active":"")">即将举办</a><a asp-action="Exhibition"  asp-route-type="2" class="@(Model.Type==2?"active":"")">已过期</a></div>
+    </section>
+    <section class="s2 container">
+        <div class="newslist">
+            <div class="row">
+                @foreach (var item in Model.Exhibitions)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a class="item wow fadeInUp" asp-action="ExhibitionDetail" asp-route-id="@item.Id">
+                            <div class="pic"><img src="@item.Thumbnail"></div>
+                            <div class="txt">
+                                <h3>@item.Title</h3>
+                                <ul class="addtime">
+                                    <li><i class="iconfont icon-marker1"></i>地点：@item.Address</li>
+                                    <li><i class="iconfont icon-time"></i>时间：@string.Format("{0:d}-{1:d}", item.DateStart, item.DateEnd)</li>
+                                </ul>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        @if (Model.TotalCount > Model.PageSize)
+        {
+            <footer class="news-footer">
+                @Html.PagedListPager(Model.Exhibitions, page => Url.Action("Exhibition", new { page = page }),
+                   new PagedListRenderOptions
+                   {
+                       LiElementClasses = new string[] { "page-item" },
+                       PageClasses = new string[] { "page-link" },
+                       LinkToFirstPageFormat = "首页",
+                       LinkToNextPageFormat = "下一页",
+                       LinkToPreviousPageFormat = "上一页",
+                       LinkToLastPageFormat = "尾页",
+                       MaximumPageNumbersToDisplay = 4
+                   })
+
+            </footer>
+        }
+    </section>
+</div>

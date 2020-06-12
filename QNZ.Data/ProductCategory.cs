@@ -6,30 +6,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QNZ.Data
 {
-    [Table("ProductCategory")]
     public partial class ProductCategory
     {
         public ProductCategory()
         {
-            PcategoryProducts = new HashSet<PcategoryProduct>();
+            Products = new HashSet<Product>();
         }
 
         [Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(50)]
-        public string Title { get; set; }
-        [StringLength(50)]
-        public string SubTitle { get; set; }
         [StringLength(150)]
-        public string ImageUrl { get; set; }
+        public string Title { get; set; }
+        [StringLength(256)]
+        public string Description { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Alias { get; set; }
+        public int Importance { get; set; }
+        public bool? Active { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string CreatedBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
-        public int Importance { get; set; }
-        public bool InMenu { get; set; }
-        public bool Recommend { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? UpdatedDate { get; set; }
+        [StringLength(50)]
+        public string UpdatedBy { get; set; }
 
-        [InverseProperty(nameof(PcategoryProduct.Category))]
-        public virtual ICollection<PcategoryProduct> PcategoryProducts { get; set; }
+        [InverseProperty(nameof(Product.Category))]
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model Article
+
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : Model.Title;
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+   
+    <link href="~/plugins/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1007" })
+
+<div class="page page-solution-detail">
+    <section class="s1 container">
+        <header class="branch-header">
+            <div class="row">
+                <div class="col">
+                    <div class="title-section">
+                        <h2>@Model.Title</h2>
+                    </div>
+                </div>
+                <div class="col-auto"><a class="back" href="javascript:window.history.back();">返回<i class="iconfont icon-next"></i></a></div>
+            </div>
+        </header>
+        <div class="title-section-v2">
+            <h2>方案介绍</h2>
+        </div>
+        <article>
+            @Html.Raw(Model.Body)
+
+        </article>
+    </section>
+</div>
+
+
+@section Scripts
+    {
+
+    <script src="~/plugins/mediaelement/mediaelement-and-player.min.js"></script>
+
+    <script>
+        $(function () {
+
+            $('video, audio').mediaelementplayer();
+
+        });
+    </script>
+
+}

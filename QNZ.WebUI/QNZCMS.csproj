@@ -16,8 +16,6 @@
     <Compile Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Compile Remove="Areas\Admin\Views\Orders\**" />
     <Compile Remove="Areas\Admin\Views\Post\**" />
-    <Compile Remove="Areas\Admin\Views\ProductCategories\**" />
-    <Compile Remove="Areas\Admin\Views\Products\**" />
     <Compile Remove="Areas\Admin\Views\Recipes\**" />
     <Compile Remove="Areas\Admin\Views\Solutions00\**" />
     <Compile Remove="Areas\Admin\Views\Stores\**" />
@@ -35,8 +33,6 @@
     <Content Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <Content Remove="Areas\Admin\Views\Orders\**" />
     <Content Remove="Areas\Admin\Views\Post\**" />
-    <Content Remove="Areas\Admin\Views\ProductCategories\**" />
-    <Content Remove="Areas\Admin\Views\Products\**" />
     <Content Remove="Areas\Admin\Views\Recipes\**" />
     <Content Remove="Areas\Admin\Views\Solutions00\**" />
     <Content Remove="Areas\Admin\Views\Stores\**" />
@@ -54,8 +50,6 @@
     <EmbeddedResource Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Orders\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Post\**" />
-    <EmbeddedResource Remove="Areas\Admin\Views\ProductCategories\**" />
-    <EmbeddedResource Remove="Areas\Admin\Views\Products\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Recipes\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Solutions00\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Stores\**" />
@@ -73,8 +67,6 @@
     <None Remove="Areas\Admin\Views\FeedbackTypes\**" />
     <None Remove="Areas\Admin\Views\Orders\**" />
     <None Remove="Areas\Admin\Views\Post\**" />
-    <None Remove="Areas\Admin\Views\ProductCategories\**" />
-    <None Remove="Areas\Admin\Views\Products\**" />
     <None Remove="Areas\Admin\Views\Recipes\**" />
     <None Remove="Areas\Admin\Views\Solutions00\**" />
     <None Remove="Areas\Admin\Views\Stores\**" />
@@ -99,8 +91,6 @@
     <Compile Remove="Areas\Admin\Controllers\LogController.cs" />
     <Compile Remove="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Remove="Areas\Admin\Controllers\PostController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\ProductCategoriesController.cs" />
-    <Compile Remove="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Remove="Areas\Admin\Controllers\RecipesController.cs" />
     <Compile Remove="Areas\Admin\Controllers\Solutions888Controller.cs" />
     <Compile Remove="Areas\Admin\Controllers\StoresController.cs" />
@@ -135,7 +125,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
     <PackageReference Include="X.PagedList" Version="7.9.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
   </ItemGroup>
@@ -147,6 +137,7 @@
     <Folder Include="Areas\Member\Data\" />
     <Folder Include="Areas\Member\Models\" />
     <Folder Include="Areas\Member\Views\" />
+    <Folder Include="wwwroot\assets\css\" />
     <Folder Include="wwwroot\Files\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\Uploads\" />
@@ -155,11 +146,20 @@
 
   <ItemGroup>
     <None Include="Areas\Admin\Views\Articles\Edit.cshtml" />
-    <None Include="Areas\Admin\Views\Articles\Details.cshtml" />
     <None Include="Areas\Admin\Views\Articles\Index.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\admin\js\App.min.js" />
+    <None Include="wwwroot\assets\js\libs\jquery-1.12.4.min.js" />
+    <None Include="wwwroot\assets\js\libs\jquery.DEPreLoad.js" />
+    <None Include="wwwroot\assets\js\libs\jquery.parallax.js" />
+    <None Include="wwwroot\assets\js\libs\modernizr.min.js" />
+    <None Include="wwwroot\assets\js\libs\particles.min.js" />
+    <None Include="wwwroot\assets\js\libs\responsiveslides.js" />
+    <None Include="wwwroot\assets\js\libs\snabbt.min.js" />
+    <None Include="wwwroot\assets\js\libs\typed.min.js" />
+    <None Include="wwwroot\assets\js\libs\velocity.min.js" />
+    <None Include="wwwroot\assets\js\libs\waypoints.min.js" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-grid.scss" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-reboot.scss" />
     <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap.scss" />
@@ -299,5 +299,13 @@
     <ProjectReference Include="..\QNZ.Infrastructure\QNZ.Infrastructure.csproj" />
     <ProjectReference Include="..\QNZ.Model\QNZ.Model.csproj" />
     <ProjectReference Include="..\QNZ.Services\QNZ.Services.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\Memorabilium\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

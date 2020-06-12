@@ -1,0 +1,76 @@
+﻿
+@model Album
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "质量体系";
+
+}
+
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }
+    <link href="~/plugins/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1002" })
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "公司概况" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-quality">
+    <section class="s1 container">
+        <div class="title-section">
+            <h2 class="text-center">@Model.Title</h2>
+        </div>
+        <div class="photos ">
+            <div class="row">
+                @foreach (var item in Model.Photos.Where(d => d.Active).OrderByDescending(d => d.Importance).ThenBy(d => d.Id))
+                {
+                    <div class="col-6 col-md-4">
+                        <div class="des">
+                            <a class="item" href="@item.ImageUrl" data-lightbox="quality" data-title="@item.Title">
+                                <img src="@item.ImageUrl" alt="">
+                                <div class="overly">
+                                    <div class="view">查看大图</div>
+                                </div>
+                            </a>
+                            <div class="title">@item.Title</div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+       
+    </section>
+</div>
+
+
+
+
+
+@section Scripts
+    {
+
+    <script src="~/plugins/lightbox2/dist/js/lightbox.min.js"></script>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'disableScrolling': true
+
+        })
+    </script>
+
+}

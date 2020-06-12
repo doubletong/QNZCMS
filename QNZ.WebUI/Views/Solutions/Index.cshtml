@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ArticleVM>
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "解决方案";
+  
+    int i = 0;
+}
+
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+
+}
+@await Component.InvokeAsync("Banner", new { code = "A1007" })
+
+<div class="page-solutions">
+
+    @foreach (var item in Model)
+    {
+        i++;
+
+        <div class="item row no-gutters align-items-center">
+            <div class="col-md @(i%2==0?"order-md-last":"")"><a class="pic" asp-action="detail" asp-route-id="@item.Id"> <img src="@item.Thumbnail" alt="光纤入户应用"></a></div>
+            <div class="col-md">
+                <div class="txt @(i%2==0?"txt_r":"")">
+                    <h3 class="title">@item.Title </h3>
+                    <p>@item.SubTitle</p><a class="more" asp-action="detail" asp-route-id="@item.Id">了解更多</a>
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+    <div class="download">
+        <div class="txt">
+            <h3 class="title">下载中心</h3>
+            <p>提供最新研究文档下载</p><a class="more" href="/solutions/downloads">了解更多</a>
+        </div>
+    </div>
+</div>

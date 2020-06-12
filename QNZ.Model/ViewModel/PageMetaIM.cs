@@ -1,4 +1,4 @@
-﻿using SIG.Resources.Admin;
+﻿using QNZ.Resources.Admin;
 using System.ComponentModel.DataAnnotations;
 
 namespace QNZ.Model.ViewModel

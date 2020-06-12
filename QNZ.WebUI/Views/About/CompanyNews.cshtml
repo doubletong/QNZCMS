@@ -1,0 +1,120 @@
+﻿@model ArticlePageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "企业动态";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+    <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
+
+}
+
+@await Component.InvokeAsync("Banner", new { code = "A1003" })
+
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "新闻资讯" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-news">
+    <section class="section s1">
+        <div class="title-section">
+            <h2 class="text-center">重点关注</h2>
+        </div>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.RecommendArticles)
+                {
+                    <div class="swiper-slide">
+                        <a class="item" asp-action="CompanyNewsDetail" asp-route-id="@item.Id">
+                            <img src="@item.SliderImage" alt="@item.Title">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <p>@item.Summary</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </section>
+    <section class="s2 container">
+        <div class="title-section">
+            <h2 class="text-center">更多新闻</h2>
+        </div>
+        <div class="newslist">
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a class="item wow fadeInUp" asp-action="CompanyNewsDetail" asp-route-id="@item.Id">
+                            <div class="pic"><img src="@item.Thumbnail"></div>
+                            <div class="txt">
+                                <h3>@item.Title</h3>
+                                <time>@item.Pubdate</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        @if (Model.TotalCount > Model.PageSize)
+        {
+            <footer class="news-footer">
+                @Html.PagedListPager(Model.Articles, page => Url.Action("CompanyNews", new { page = page }),
+                     new PagedListRenderOptions
+                     {
+                         LiElementClasses = new string[] { "page-item" },
+                         PageClasses = new string[] { "page-link" },
+                         LinkToFirstPageFormat = "首页",
+                         LinkToNextPageFormat = "下一页",
+                         LinkToPreviousPageFormat = "上一页",
+                         LinkToLastPageFormat = "尾页",
+                         MaximumPageNumbersToDisplay = 4
+                     })
+
+            </footer>
+        }
+        </section>
+</div>
+
+
+@section Scripts
+    {
+    <script src="~/plugins/swiper/js/swiper.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            loop: true
+        });
+    </script>
+}

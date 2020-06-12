@@ -1,0 +1,23 @@
+﻿@model StaffVM
+
+<div class="col-md-6 col-lg-4">
+    <a class="item" asp-action="Profile" asp-route-id="@Model.Id">
+        <div class="item-header">
+            <div class="row align-items-center no-gutters">
+                <div class="col-auto">
+                    <div class="name">@Model.Name</div>
+                </div>
+                <div class="col">
+                    <div class="post">@Model.Post</div>
+                </div>
+            </div>
+        </div>
+        <div class="item-body">
+            <ul class="list">
+                <li>性别：@Model.Gender</li>
+                <li>任职期间：@Model.MasterTime</li>
+                <li>提名人：@Model.Referrer</li>
+            </ul>
+        </div>
+    </a>
+</div>

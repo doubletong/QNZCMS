@@ -1,15 +1,44 @@
 @model IEnumerable<QNZ.Data.Navigation>
 @{
-    var url = Context.Request.Path;
+    var url = Context.Request.Path.ToString();
 }
-    <div class="nav">
-        <div class="nav__content">
-            <ul class="nav__list">
-                @foreach (var item in Model)
-                {
-                    <li class="nav_list-item @(url==item.Url?"active":"")"><a href="@item.Url">@item.Title</a></li>
-                }
-           
-            </ul>
-        </div>
-    </div>
+
+    <ul class="mainav">
+        @foreach (var item in Model)
+        {
+        <li>
+            <a href="@item.Url" class="@((url==item.Url || url.Contains(item.Url)) ?"active":"")">@item.Title</a>
+            @if (item.InverseParent.Any())
+            {
+              
+                <div class="subnav-container" id="subnav-container">
+                    <div class="container">
+                        <div class="row">
+                            @foreach (var subitem in item.InverseParent)
+                            {
+                                if (subitem.InverseParent.Any() && subitem.Active)
+                                {
+                                    <div class="col-md-auto">
+                                        <dl>
+                                            <dt>@subitem.Title</dt>
+                                            @foreach (var minsub in subitem.InverseParent)
+                                            {
+                                                if (minsub.Active)
+                                                {
+                                                    <dd><a class="@(url==item.Url ?"active":"")" href="@minsub.Url">@minsub.Title</a></dd>
+                                                }
+
+                                            }
+                                        </dl>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </li>
+        }
+       
+    </ul>

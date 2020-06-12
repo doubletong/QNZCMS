@@ -30,10 +30,9 @@ namespace QNZ.Data
         public string ZipCode { get; set; }
         [StringLength(100)]
         public string OpenId { get; set; }
+        /// <summary>
+        /// 是否默认
+        /// </summary>
         public bool Active { get; set; }
-
-        [ForeignKey(nameof(OpenId))]
-        [InverseProperty(nameof(Customer.MailingAddresses))]
-        public virtual Customer Open { get; set; }
     }
 }

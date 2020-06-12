@@ -1,0 +1,79 @@
+﻿@model ArticlePageVM
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "企业快讯";
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+    }
+
+
+}
+@await Component.InvokeAsync("Banner", new { code = "A1003" })
+<div class="bcsubnav">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                @await Component.InvokeAsync("Breadcrumb", new { categoryId = 1 })
+            </div>
+            <div class="col-lg-auto">
+                @await Component.InvokeAsync("PageSubNav", new { categoryId = 1, title = "新闻资讯" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page page-news page-newsletter">
+    <section class="section s1 container">
+        <div class="title-section">
+            <h2 class="text-center">企业快讯</h2>
+        </div>
+        <div class="des">快讯将会直接寄送到您的信箱中，您可以通过它及时了解最新的“连接故事”、应用、产品亮点和其他与“卓越的连接解决方案”有关的主题信息。快讯内容将按月以德文或英文形式寄送给注册用户。</div>
+        <div class="dingyue">
+            <button class="btn btn-primary" id="dingyue">订阅新闻期刊</button>
+            <button class="btn canncel" id="tuiding">退订新闻期刊</button>
+        </div>
+    </section>
+    <section class="s2 container">
+        <div class="newslist">
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <a class="item wow fadeInUp"  asp-action="NewsletterDetail" asp-route-id="@item.Id">
+                            <div class="pic"><img src="@item.Thumbnail"></div>
+                            <div class="txt">
+                                <h3>@item.Title</h3>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+               
+            </div>
+        </div>
+      
+            @if (Model.TotalCount > Model.PageSize)
+            {
+                <footer class="news-footer">
+                    @Html.PagedListPager(Model.Articles, page => Url.Action("Newsletter", new { page = page }),
+                       new PagedListRenderOptions
+                       {
+                           LiElementClasses = new string[] { "page-item" },
+                           PageClasses = new string[] { "page-link" },
+                           LinkToFirstPageFormat = "首页",
+                           LinkToNextPageFormat = "下一页",
+                           LinkToPreviousPageFormat = "上一页",
+                           LinkToLastPageFormat = "尾页",
+                           MaximumPageNumbersToDisplay = 4
+                       })
+
+                </footer>
+            }
+
+     
+    </section>
+</div>

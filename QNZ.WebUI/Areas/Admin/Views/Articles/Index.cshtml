@@ -6,120 +6,204 @@
 
 }
     <div class="card">
-        <div class="card-header">
+        <header class="card-header">
             <div class="row">
-                <div class="col-md">
-                    <form asp-action="Index" method="get" class="form-inline">
-                        <div class="form-group mr-2">
-                            <input asp-for="Keyword" class="form-control" placeholder="关键字" />
-                        </div>
-                        <div class="form-group">
-                            <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])"></select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mx-sm-3"><i class="iconfont icon-search"></i> 搜索</button>
-                    </form>
-                </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-primary" asp-action="Edit"><i class="iconfont icon-plus"></i> 添加</a>
-                </div>
-            </div>
-        </div>
-        <table class="table table-hover table-striped table-vmiddle">
-            <thead class="thead-primary">
-                <tr>
-                    <th style="width:30px;">
-                        <input type="checkbox" id="allSelect" />
-                    </th>
-                    <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
-                    </th>
-                    <th>
-                        所属分类
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ViewSortParm"]">查看次数</a>
-                    </th>
-
-                    <th>
-                        激活
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">发布日期</a>
-
-                    </th>
-                    <th>
-                        作者
-                    </th>
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="tbList">
-                @foreach (var item in Model.Articles)
-                {
-                <tr id="@(item.Id)tr">
-                    <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ViewCount)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Active)
-                    </td>
-
-                    <td>
-                        @item.Pubdate.ToShortDateString()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Author)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
-                        <a asp-action="Copy" asp-route-id="@item.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm" title="详情"><i class="iconfont icon-info-circle"></i></a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-
-        <div class="card-footer">
-            <div class="row align-items-center">
                 <div class="col">
-                    <button type="button" class="btn btn-danger btn-sm" id="btn-delete-multi"><i class="iconfont icon-delete"></i> 删除</button>
-                    <button type="button" class="btn btn-info btn-sm" id="btn-lock"><i class="iconfont icon-lock"></i> 锁定</button>
-                    <button type="button" class="btn btn-info btn-sm" id="btn-unlock"><i class="iconfont icon-unlock"></i> 激活</button>
+                    <div class="card-title-v1"><i class="iconfont icon-file-text"></i>文章列表</div>
+                </div>
+                <div class="col-auto">
+                    <div class="control"><a class="expand" href="#"><i class="iconfont icon-fullscreen"></i></a><a class="compress" href="#" style="display: none;"><i class="iconfont icon-shrink"></i></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="card-toolbar mb-3">
+                <div class="row">
+                    <div class="col-md">
+                        <form asp-action="Index" method="get" class="form-inline">
+                            <div class="form-group mr-2">
+                                <input asp-for="Keyword" class="form-control" placeholder="关键字" />
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])">
+                                    <option value="">按分类过滤</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary mx-sm-3"><i class="iconfont icon-search"></i> 搜索</button>
+                        </form>
+                    </div>
+                    <div class="col-md-auto">
+                        <a class="btn btn-primary" asp-action="Edit"><i class="iconfont icon-plus"></i> 添加</a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-vmiddle">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th style="width:30px;">
+                                <input type="checkbox" id="allSelect" />
+                            </th>
+                            <th>
+                                图片
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@((Model.OrderBy=="title" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="title">
+                                    主题
+                                    @if (Model.OrderBy == "title")
+                                    {
+                                        if (Model.Sort == "asc")
+                                        {
+                                            <i class="iconfont icon-order-up"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-order-down"></i>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-orderby"></i>
+                                    }
 
-                </div>
-                <div class="col-auto">
-                    @Html.PagedListPager(Model.Articles, page => Url.Action("Index", new { page = page, keyword = Model.Keyword,categoryId = Model.CategoryId }),
-                     new PagedListRenderOptions
-                          {
-                         LiElementClasses = new string[] { "page-item" },
-                         PageClasses = new string[] { "page-link" }
-                 })
-                </div>
+                                </a>
+                            </th>
 
-                <div class="col-auto">
-                    <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
-                </div>
-                <div class="col-auto">
-                    <select asp-for="@Model.PageSize" asp-items="(SelectList)ViewBag.PageSizes" class="form-control" style="min-width:60px;">
-                    </select>
+                            <th>
+                                所属分类
+                            </th>
+
+                            <th>
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@((Model.OrderBy=="view" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="view">
+                                    查看
+                                    @if (Model.OrderBy == "view")
+                                    {
+                                        if (Model.Sort == "asc")
+                                        {
+                                            <i class="iconfont icon-order-up"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-order-down"></i>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-orderby"></i>
+                                    }
+
+                                </a>
+
+                            </th>
+
+                            <th>
+                                激活
+                            </th>
+                            <th>
+                                推荐
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@((Model.OrderBy=="date" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="date">
+                                    发布日期
+                                    @if (Model.OrderBy == "date")
+                                    {
+                                        if (Model.Sort == "asc")
+                                        {
+                                            <i class="iconfont icon-order-up"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-order-down"></i>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-orderby"></i>
+                                    }
+
+                                </a>
+
+
+
+                            </th>
+
+
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbList">
+                        @foreach (var item in Model.Articles)
+                        {
+                        <tr id="@(item.Id)tr">
+                            <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Thumbnail))
+                                {
+                                    <img src="@item.Thumbnail" style="height:50px"/>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategoryTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ViewCount)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Active)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Recommend)
+                            </td>
+                            <td>
+                                @item.Pubdate.ToShortDateString()
+                            </td>
+
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                                <a asp-action="Copy" asp-route-id="@item.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <div class="card-footer">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <button type="button" class="btn btn-danger btn-sm" id="btn-delete-multi"><i class="iconfont icon-delete"></i> 删除</button>
+                        <button type="button" class="btn btn-info btn-sm" id="btn-lock"><i class="iconfont icon-lock"></i> 锁定</button>
+                        <button type="button" class="btn btn-info btn-sm" id="btn-unlock"><i class="iconfont icon-unlock"></i> 激活</button>
+
+                        <button type="button" class="btn btn-info btn-sm" id="btn-top"><i class="iconfont icon-up"></i> 推荐</button>
+                        <button type="button" class="btn btn-info btn-sm" id="btn-untop"><i class="iconfont icon-down"></i> 不推荐</button>
+
+                    </div>
+                    <div class="col-auto">
+                        @Html.PagedListPager(Model.Articles, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId }),
+                         new PagedListRenderOptions
+                              {
+                             LiElementClasses = new string[] { "page-item" },
+                             PageClasses = new string[] { "page-link" }
+                     })
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="tag"> 总记录<strong>@Model.TotalCount</strong>条</div>
+                    </div>
+                    <div class="col-auto">
+                        <select asp-for="@Model.PageSize" asp-items="(SelectList)ViewBag.PageSizes" class="form-control" style="min-width:60px;">
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 @section footer{
     <script>
@@ -133,7 +217,7 @@
             var tops = el.getElementsByTagName('input');
 
             for (var i=0, len=tops.length; i<len; i++) {
-                if ( tops[i].type === 'checkbox' ) {
+                if (tops[i].type === 'checkbox' && tops[i].disabled == false) {
                     //tops[i].onclick = updateTotal;
                     tops[i].checked = isChecked;
                 }
@@ -144,13 +228,25 @@
 
         //锁定
         $("#btn-lock").click(function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
             isLockPages(true);
         });
           //激活
         $("#btn-unlock").click(function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
             isLockPages(false);
+        });
+
+
+        //推荐
+        $("#btn-top").click(function (e) {
+            e.preventDefault();
+            isTopPages(false);
+        });
+        //不推荐
+        $("#btn-untop").click(function (e) {
+            e.preventDefault();
+            isTopPages(true);
         });
 
         function isLockPages(isLock) {
@@ -165,13 +261,13 @@
             }
             console.log(ids);
             if (ids.length === 0) {
-                swal("激活/锁定页面", "请选择要激活/锁定的页面!", "error");             
+                swal("激活/锁定页面", "请选择要激活/锁定的页面!", "error");
             } else {
                 //to doing
 
                 var url = "@Url.Action("IsLock")";
 
-            
+
 
                 $.ajax({
                     url: url,
@@ -183,7 +279,7 @@
                         if (data.status === 1) {
                             toastr.success(data.message);
                             location.reload();
-                            //for (var i = 0, len = ids.length; i < len; i++) {                                      
+                            //for (var i = 0, len = ids.length; i < len; i++) {
                             //    $("#" + ids[i] + "tr").remove();
                             //  }
 
@@ -195,7 +291,56 @@
                     error: function (xhr, status, error) {
                         toastr.error(error);
                     }
-                });               
+                });
+
+
+            }
+        }
+
+
+        function isTopPages(isTop) {
+             var ids = [];
+            var el = document.getElementById('tbList');
+            var tops = el.getElementsByClassName('itemSelect');
+
+            for (var i = 0, len = tops.length; i < len; i++) {
+                if (tops[i].checked === true) {
+                    ids.push(tops[i].value);
+                }
+            }
+            console.log(ids);
+            if (ids.length === 0) {
+                swal("推荐/撤销", "请选择要推荐/撤销的文章！", "error");
+            } else {
+                //to doing
+
+                var url = "@Url.Action("IsTop")";
+
+
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: { ids: ids, isTop: isTop },
+                    headers: { 'RequestVerificationToken': antiforgeryToken },
+                    success: function (data) {
+
+                        if (data.status === 1) {
+                            toastr.success(data.message);
+                            location.reload();
+                            //for (var i = 0, len = ids.length; i < len; i++) {
+                            //    $("#" + ids[i] + "tr").remove();
+                            //  }
+
+                        }
+                        if (data.status === 2) {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error(error);
+                    }
+                });
 
 
             }
@@ -204,7 +349,7 @@
 
         $("#btn-delete-multi").click(function (e) {
             e.preventDefault();
-       
+
 
             var ids = [];
             var el = document.getElementById('tbList');
@@ -217,7 +362,7 @@
             }
             console.log(ids);
             if (ids.length === 0) {
-                swal("删除页面", "请选择要删除的页面!", "error");             
+                swal("删除页面", "请选择要删除的页面!", "error");
             } else {
                 //to doing
 
@@ -243,7 +388,7 @@
                                 if (data.status === 1) {
                                     toastr.success(data.message);
                                     //location.reload();
-                                  for (var i = 0, len = ids.length; i < len; i++) {                                      
+                                  for (var i = 0, len = ids.length; i < len; i++) {
                                       $("#" + ids[i] + "tr").remove();
                                     }
 
@@ -267,7 +412,7 @@
         });
 
 
-          //single delete 
+          //single delete
         $(".btn-delete").click(function (e) {
             e.preventDefault();
             var url = $(this).attr("href");

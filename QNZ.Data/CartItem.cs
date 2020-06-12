@@ -19,9 +19,6 @@ namespace QNZ.Data
         [ForeignKey(nameof(CartId))]
         [InverseProperty("CartItems")]
         public virtual Cart Cart { get; set; }
-        [ForeignKey(nameof(ProductId))]
-        [InverseProperty("CartItems")]
-        public virtual Product Product { get; set; }
         [ForeignKey(nameof(StoreId))]
         [InverseProperty("CartItems")]
         public virtual Store Store { get; set; }

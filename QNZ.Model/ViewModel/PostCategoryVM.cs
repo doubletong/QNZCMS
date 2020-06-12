@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 
 namespace QNZ.Model.ViewModel
 {

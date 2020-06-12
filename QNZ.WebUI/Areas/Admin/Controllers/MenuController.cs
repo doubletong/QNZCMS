@@ -7,12 +7,14 @@ using QNZ.Data;
 using QNZ.Services;
 using QNZ.Services.Menus;
 using QNZ.Data.Enums;
-using SIG.Infrastructure.Configs;
+using QNZ.Infrastructure.Configs;
 using QNZ.Model.Admin.ViewModel;
-using SIG.Resources.Admin;
+using QNZ.Resources.Admin;
 using QNZ.Model.ViewModel;
-using SIG.Infrastructure.Cache;
+using QNZ.Infrastructure.Cache;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper.QueryableExtensions;
+using System.Linq;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -44,10 +46,43 @@ namespace QNZCMS.Areas.Admin.Controllers
         // GET: /Admin/Menu/ 
         public async Task<ActionResult> Index()
         {
-            var menuCategory = await _context.MenuCategories.FindAsync(SettingsManager.Menu.BackMenuCId);
-                //_menuCategoryService.GetById(SettingsManager.Menu.BackMenuCId);
-            //  var vm = _mapper.Map<MenuCategoryVM>(menuCategory);      
-            return View(menuCategory);
+            var vm = await _context.MenuCategories.OrderByDescending(d=>d.Importance)
+                .ProjectTo<MenuCategoryVM>(_mapper.ConfigurationProvider).ToListAsync();
+            return View(vm);
+        }
+
+
+        [HttpGet]
+        public ActionResult EditCategory()
+        {
+            var im = new MenuCategoryIM
+            {
+                Importance = 0,
+                Active = true
+            };
+            return View(im);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory([Bind("Id, Title, Importance, Active")] MenuCategoryIM im)
+        {
+            if (!ModelState.IsValid)
+            {
+                AR.Setfailure(GetModelErrorMessage());
+                return Json(AR);
+            }
+
+            var model = _mapper.Map<MenuCategory>(im);
+            model.CreatedDate = DateTime.Now;
+            model.CreatedBy = User.Identity.Name;
+            model.IsSys = false;
+
+            _context.Add(model);
+
+            await _context.SaveChangesAsync();      
+            AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.MenuCategory));
+            return Json(AR);
         }
 
         /// <summary>
@@ -82,10 +117,19 @@ namespace QNZCMS.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var vMenu = _mapper.Map<Menu>(menu);
+                if (vMenu.ParentId > 0)
+                {
+                    var parentMenu = await _context.Menus.FindAsync(vMenu.ParentId.Value);
+                  
+                        vMenu.LayoutLevel = parentMenu.LayoutLevel + 1;
 
-                var parentMenu = await _context.Menus.FindAsync(vMenu.ParentId.Value);
-                    //_menuService.GetById(vMenu.ParentId.Value);
-                vMenu.LayoutLevel = parentMenu.LayoutLevel + 1;
+                }
+                else
+                {
+                    vMenu.LayoutLevel = 0;
+                    vMenu.ParentId = null;
+                }
+          
                 vMenu.CreatedBy = User.Identity.Name;
                 vMenu.CreatedDate = DateTime.Now;
 
@@ -101,7 +145,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                         Controller = vMenu.Controller,
                         Action = "Edit",
                         Area = vMenu.Area,
-                        MenuType = (short)MenuType.ACTION,
+                        MenuType = (short)MenuType.PAGE,
                         CategoryId = vMenu.CategoryId,
                         LayoutLevel = vMenu.LayoutLevel + 1,
 
@@ -113,7 +157,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     {
                         Title = "显示/隐藏",
                         Controller = vMenu.Controller,
-                        Action = "IsActive",
+                        Action = "IsLock",
                         Area = vMenu.Area,
                         MenuType = (short)MenuType.ACTION,
                         CategoryId = vMenu.CategoryId,
@@ -139,16 +183,30 @@ namespace QNZCMS.Areas.Admin.Controllers
 
                     vMenu.InverseParent.Add(new Menu
                     {
-                        Title = "分页设置",
+                        Title = "批量删除",
                         Controller = vMenu.Controller,
-                        Action = "PageSizeSet",
+                        Action = "DeleteMulti",
                         Area = vMenu.Area,
                         MenuType = (short)MenuType.ACTION,
                         CategoryId = vMenu.CategoryId,
                         LayoutLevel = vMenu.LayoutLevel + 1,
-                        // ParentId = result,
+
                         CreatedBy = User.Identity.Name,
-                    CreatedDate = DateTime.Now,
+                        CreatedDate = DateTime.Now,
+                    });
+
+                    vMenu.InverseParent.Add(new Menu
+                    {
+                        Title = "拷贝",
+                        Controller = vMenu.Controller,
+                        Action = "Copy",
+                        Area = vMenu.Area,
+                        MenuType = (short)MenuType.ACTION,
+                        CategoryId = vMenu.CategoryId,
+                        LayoutLevel = vMenu.LayoutLevel + 1,
+
+                        CreatedBy = User.Identity.Name,
+                        CreatedDate = DateTime.Now,
                     });
 
                 }
@@ -421,7 +479,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 Id = id,
              //   Menus = menus, //_mapper.Map<List<Menu>, List<MenuVM>>(menus),
-                CurrentParentId = (int)menu.ParentId,
+                CurrentParentId = menu.ParentId,
                 CategoryId = menu.CategoryId
             };
 

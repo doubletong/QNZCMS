@@ -1,0 +1,16 @@
+@model Advertisement
+@{
+
+}
+@if (Model != null)
+{
+    <div class="banner banner-about">
+        <img src="@Model.ImageUrl" alt="@Model.Title">
+        <div class="txt">
+            <div class="container">
+                <h1>@Model.Title</h1>
+            </div>
+        </div>
+    </div>
+}
+

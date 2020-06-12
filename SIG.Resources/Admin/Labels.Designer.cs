@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIG.Resources.Admin {
+namespace QNZ.Resources.Admin {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SIG.Resources.Admin {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SIG.Resources.Admin.Labels", typeof(Labels).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("QNZ.Resources.Admin.Labels", typeof(Labels).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -214,38 +214,11 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
-        ///   查找类似 比料的皮子分布 的本地化字符串。
+        ///   查找类似 展位 的本地化字符串。
         /// </summary>
-        public static string BLayout {
+        public static string Booth {
             get {
-                return ResourceManager.GetString("BLayout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 底颜色 的本地化字符串。
-        /// </summary>
-        public static string BottomColor {
-            get {
-                return ResourceManager.GetString("BottomColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 亮度 的本地化字符串。
-        /// </summary>
-        public static string Brightness {
-            get {
-                return ResourceManager.GetString("Brightness", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 比料规格 的本地化字符串。
-        /// </summary>
-        public static string BSize {
-            get {
-                return ResourceManager.GetString("BSize", resourceCulture);
+                return ResourceManager.GetString("Booth", resourceCulture);
             }
         }
         
@@ -351,6 +324,15 @@ namespace SIG.Resources.Admin {
         /// <summary>
         ///   查找类似 公司名称 的本地化字符串。
         /// </summary>
+        public static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 公司名称 的本地化字符串。
+        /// </summary>
         public static string CompayName {
             get {
                 return ResourceManager.GetString("CompayName", resourceCulture);
@@ -363,15 +345,6 @@ namespace SIG.Resources.Admin {
         public static string ConfirmPassword {
             get {
                 return ResourceManager.GetString("ConfirmPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 结构尺寸 的本地化字符串。
-        /// </summary>
-        public static string Construction {
-            get {
-                return ResourceManager.GetString("Construction", resourceCulture);
             }
         }
         
@@ -475,6 +448,33 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 日期 的本地化字符串。
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 结束日期 的本地化字符串。
+        /// </summary>
+        public static string DateEnd {
+            get {
+                return ResourceManager.GetString("DateEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 开始日期 的本地化字符串。
+        /// </summary>
+        public static string DateStart {
+            get {
+                return ResourceManager.GetString("DateStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 日 的本地化字符串。
         /// </summary>
         public static string Day {
@@ -489,6 +489,15 @@ namespace SIG.Resources.Admin {
         public static string Demourl {
             get {
                 return ResourceManager.GetString("Demourl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 部门 的本地化字符串。
+        /// </summary>
+        public static string Department {
+            get {
+                return ResourceManager.GetString("Department", resourceCulture);
             }
         }
         
@@ -520,6 +529,15 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 文档 的本地化字符串。
+        /// </summary>
+        public static string Document {
+            get {
+                return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 电子邮箱 的本地化字符串。
         /// </summary>
         public static string Email {
@@ -534,6 +552,15 @@ namespace SIG.Resources.Admin {
         public static string EmailAccount {
             get {
                 return ResourceManager.GetString("EmailAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 招聘接收简历邮箱 的本地化字符串。
+        /// </summary>
+        public static string EmailHr {
+            get {
+                return ResourceManager.GetString("EmailHr", resourceCulture);
             }
         }
         
@@ -565,15 +592,6 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
-        ///   查找类似 分配仪器 的本地化字符串。
-        /// </summary>
-        public static string EquipmentId {
-            get {
-                return ResourceManager.GetString("EquipmentId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 面料 的本地化字符串。
         /// </summary>
         public static string FABRIC {
@@ -583,11 +601,29 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 传真 的本地化字符串。
+        /// </summary>
+        public static string Fax {
+            get {
+                return ResourceManager.GetString("Fax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 反馈类型 的本地化字符串。
         /// </summary>
         public static string FeedbackType {
             get {
                 return ResourceManager.GetString("FeedbackType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文档 的本地化字符串。
+        /// </summary>
+        public static string FileUrl {
+            get {
+                return ResourceManager.GetString("FileUrl", resourceCulture);
             }
         }
         
@@ -853,6 +889,15 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 任职时间 的本地化字符串。
+        /// </summary>
+        public static string MasterTime {
+            get {
+                return ResourceManager.GetString("MasterTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 菜单名称 的本地化字符串。
         /// </summary>
         public static string MenuName {
@@ -925,6 +970,15 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 数量 的本地化字符串。
+        /// </summary>
+        public static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 视频(OGV) 的本地化字符串。
         /// </summary>
         public static string OgvUrl {
@@ -939,6 +993,15 @@ namespace SIG.Resources.Admin {
         public static string OldPassword {
             get {
                 return ResourceManager.GetString("OldPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 团队组织 的本地化字符串。
+        /// </summary>
+        public static string Organization {
+            get {
+                return ResourceManager.GetString("Organization", resourceCulture);
             }
         }
         
@@ -1123,24 +1186,6 @@ namespace SIG.Resources.Admin {
         }
         
         /// <summary>
-        ///   查找类似 圈料的皮子分布 的本地化字符串。
-        /// </summary>
-        public static string QLayout {
-            get {
-                return ResourceManager.GetString("QLayout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 圈料规格 的本地化字符串。
-        /// </summary>
-        public static string QSize {
-            get {
-                return ResourceManager.GetString("QSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 数量 的本地化字符串。
         /// </summary>
         public static string Quantity {
@@ -1173,6 +1218,15 @@ namespace SIG.Resources.Admin {
         public static string Recommend {
             get {
                 return ResourceManager.GetString("Recommend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 提名人 的本地化字符串。
+        /// </summary>
+        public static string Referrer {
+            get {
+                return ResourceManager.GetString("Referrer", resourceCulture);
             }
         }
         
