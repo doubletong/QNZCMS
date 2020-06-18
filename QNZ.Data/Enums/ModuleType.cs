@@ -47,7 +47,9 @@ namespace QNZ.Data.Enums
         POST = 19,
 
         [Display(Name = "展会")]
-        EXHIBITION = 20
+        EXHIBITION = 20,
+        [Display(Name = "分公司")]
+        BRANCH = 21
 
     }
 }

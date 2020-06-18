@@ -544,7 +544,7 @@
     <value>门店名称</value>
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>联系人</value>
+    <value>联系方式</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>地址</value>
@@ -647,5 +647,29 @@
   </data>
   <data name="FileUrl" xml:space="preserve">
     <value>文档</value>
+  </data>
+  <data name="MainBusiness" xml:space="preserve">
+    <value>主营业务</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>视频</value>
+  </data>
+  <data name="IconType" xml:space="preserve">
+    <value>图标类型</value>
+  </data>
+  <data name="ToLeft" xml:space="preserve">
+    <value>距离左边</value>
+  </data>
+  <data name="ToTop" xml:space="preserve">
+    <value>距离顶部</value>
+  </data>
+  <data name="ShopName" xml:space="preserve">
+    <value>网点名称</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>帐号ID</value>
+  </data>
+  <data name="QRCode" xml:space="preserve">
+    <value>二维码</value>
   </data>
 </root>

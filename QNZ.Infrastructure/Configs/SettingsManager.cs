@@ -55,13 +55,7 @@
 
         public static MenuSettings Menu => SettingLoader.LoadConfig<MenuSettings>();
 
-        //public static SMTPSettings SMTP
-        //{
-        //    get
-        //    {
-        //        return SettingLoader.LoadConfig<SMTPSettings>();
-        //    }
-        //}
+        public static SMTPSettings SMTP => SettingLoader.LoadConfig<SMTPSettings>();
         public static EmailSettings Email
         {
             get

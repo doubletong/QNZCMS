@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
+using QNZ.Infrastructure.Extensions;
 using QNZ.Model.Admin.ViewModel;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -28,25 +29,38 @@ namespace QNZCMS.Areas.Admin.Controllers
         [Route("/admin")]
         [Route("/admin/home")]
         [Route("/admin/home/index")]
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             HomePageVM vm = new HomePageVM
             {
-                //FeedbackCount = await _context.Feedbacks.CountAsync(),
-                //FeedbackTodayCount = await _context.Feedbacks.CountAsync(d => d.CreatedDate >= DateTime.Today && d.CreatedDate < DateTime.Today.AddDays(1)),
-                //CustomerGZHCount = await _context.Customers.CountAsync(d => d.AppType == Data.Enums.AppType.GongZongHao),
-                //CustomerGZHTodayCount = await _context.Customers.CountAsync(d => d.AppType == Data.Enums.AppType.GongZongHao && d.CreatedDate >= DateTime.Today && d.CreatedDate < DateTime.Today.AddDays(1)),
-                //CustomerXCXCount = await _context.Customers.CountAsync(d => d.AppType == Data.Enums.AppType.XiaoChengXu),
-                //CustomerXCXTodayCount = await _context.Customers.CountAsync(d => d.AppType == Data.Enums.AppType.XiaoChengXu && d.CreatedDate >= DateTime.Today && d.CreatedDate < DateTime.Today.AddDays(1)),
-                //TodayRevenue = await _context.Orders.Where(d => d.CreatedDate >= DateTime.Today && d.CreatedDate < DateTime.Today.AddDays(1) && !d.Cancelled).SumAsync(d=>d.Amount),
-                //TotalRevenue = await _context.Orders.Where(d=>!d.Cancelled).SumAsync(d => d.Amount)
-
+                ArticleCount = await _context.Articles.CountAsync(),
+                ProductCount = await _context.Products.CountAsync(),
+                ExhibitionCount = await _context.Exhibitions.CountAsync(),
+                VideoCount = await _context.Videos.CountAsync(),
+                PhotoCount = await _context.Photos.CountAsync(),
+                JobCount = await _context.Jobs.CountAsync(),
+                DocumentCount = await _context.Documents.CountAsync(),
+                BranchCount = await _context.Branches.CountAsync(),
+                PageCount = await _context.Pages.CountAsync(),
+                MemoCount = await _context.Memorabilia.CountAsync(),
+                StaffCount = await _context.Staffs.CountAsync()
             };
+           
+        
+
+
             return View(vm);
         }
-        public IActionResult Plugins()
-        {           
-            return View();
+        public async Task<IActionResult> PluginsAsync()
+        {
+            PluginsPageVM vm = new PluginsPageVM
+            {
+                NavCount = await _context.Navigations.CountAsync(),
+                AdvertCount = await _context.Advertisements.CountAsync(),
+                SocialCount = await _context.SocialApps.CountAsync()
+          
+            };
+            return View(vm);
         }
 
     }

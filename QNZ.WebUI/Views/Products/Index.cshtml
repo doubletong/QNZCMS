@@ -9,18 +9,12 @@
     {
         <meta name="keywords" content="@pageMeta.Keywords">
         <meta name="description" content="@pageMeta.Description">
-    }  
+    }
 
 }
 
-<div class="banner banner-about">
-    <img src="/assets/img/temp/banner-product.jpg" alt="产品中心">
-    <div class="txt">
-        <div class="container">
-            <h1>产品中心</h1>
-        </div>
-    </div>
-</div>
+@await Component.InvokeAsync("Banner", new { code = "A1008" })
+
 
 <div class="page page-products">
     <section class="s1 container">
@@ -30,13 +24,17 @@
                 <a class="@(Model.CategoryId == item.Id?"active":"")" asp-action="Index" asp-route-cid="@item.Id">@item.Title</a>
             }
 
-            @*<a href="products.html">AWG芯片</a><a href="products.html">DFB激光器芯片</a><a href="products.html">光纤连接器</a><a href="products.html">室内光缆</a><a href="products.html">线缆材料</a>*@
+
         </div>
-        <div class="video-container">
-            <video id="myVideo" poster="/assets/img/poster.jpg" width="100%">
-                <source src="/assets/img/temp/field.mp4" type="video/mp4">Your browser does not support the video tag.
-            </video><a class="btnplay" id="btnplay" href="javascript:void(0);" onclick="myFunction()"><img src="/assets/img/play.png" alt="播放"></a>
-        </div>
+        @if (Model.Video!=null)
+        {
+            <div class="video-container">
+                <video id="myVideo" poster="@Model.Video.Cover" width="100%">
+                    <source src="@Model.Video.VideoUrl" type="video/mp4">Your browser does not support the video tag.
+                </video><a class="btnplay" id="btnplay" href="javascript:void(0);" onclick="myFunction()"><img src="/assets/img/play.png" alt="播放"></a>
+            </div>
+        }
+
         <div class="productlist">
             @foreach (var item in Model.Products)
             {
@@ -54,7 +52,7 @@
                             <a class="view" href="@item.FileUrl">
                                 <i class="iconfont icon-view"></i>
                                 <div class="more">查看</div>
-                            </a><a class="view"  asp-action="Download" asp-route-id="@item.Id">
+                            </a><a class="view" asp-action="Download" asp-route-id="@item.Id">
                                 <i class="iconfont icon-download"></i>
                                 <div class="more">下载</div>
                             </a>

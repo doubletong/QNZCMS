@@ -525,34 +525,30 @@ namespace QNZ.Infrastructure.Configs
         [XmlElement("ThumbHeight")]
         public int ThumbHeight { get; set; }
     }
-    ///// <summary>
-    ///// 邮件服务设置
-    ///// </summary>
-    //[XmlRoot("Settings")]
-    //public class SMTPSettings
-    //{
-    //    [XmlElement("From")]
-    //    public string From { get; set; }
+    /// <summary>
+    /// 邮件服务设置
+    /// </summary>
+    [XmlRoot("Settings")]
+    public class SMTPSettings
+    {
+        [XmlElement("From")]
+        public string From { get; set; }
 
-    //    [XmlElement(DataType = "string", ElementName = "SmtpServer")]
-    //    public string SmtpServer { get; set; }
+        [XmlElement(DataType = "string", ElementName = "SmtpServer")]
+        public string SmtpServer { get; set; }
 
-    //    [XmlElement(DataType = "int", ElementName = "Port")]
-    //    public int Port { get; set; }
+        [XmlElement(DataType = "int", ElementName = "Port")]
+        public int Port { get; set; }
 
-    //    [XmlElement(DataType = "string", ElementName = "UserName")]
-    //    public string UserName { get; set; }
+        [XmlElement(DataType = "string", ElementName = "UserName")]
+        public string UserName { get; set; }
 
-    //    [XmlElement(DataType = "string", ElementName = "Password")]
-    //    public string Password { get; set; }
+        [XmlElement(DataType = "string", ElementName = "Password")]
+        public string Password { get; set; }
 
-    //    [XmlElement(DataType = "boolean", ElementName = "EnableSsl")]
-    //    public bool EnableSsl { get; set; }
+        [XmlElement(DataType = "boolean", ElementName = "EnableSsl")]
+        public bool EnableSsl { get; set; }
 
-    //    [XmlElement("iconClass")]
-    //    public string IconClass { get; set; }
-
-
-
-    //}
+   
+    }
 }

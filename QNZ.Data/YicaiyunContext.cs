@@ -18,7 +18,6 @@ namespace QNZ.Data
 
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<AdvertisingSpace> AdvertisingSpaces { get; set; }
-        public virtual DbSet<AgentSet> AgentSets { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleCategory> ArticleCategories { get; set; }
@@ -55,14 +54,16 @@ namespace QNZ.Data
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
-        public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RoleMenu> RoleMenus { get; set; }
+        public virtual DbSet<Shope> Shopes { get; set; }
+        public virtual DbSet<SocialApp> SocialApps { get; set; }
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<Work> Works { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -74,23 +75,6 @@ namespace QNZ.Data
                     .HasForeignKey(d => d.SpaceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Advertisements_AdvertisingSpaces");
-            });
-
-            modelBuilder.Entity<AgentSet>(entity =>
-            {
-                entity.Property(e => e.City).HasComment("市");
-
-                entity.Property(e => e.District).HasComment("区/县");
-
-                entity.Property(e => e.Mobile).HasComment("手机");
-
-                entity.Property(e => e.Name).HasComment("名称");
-
-                entity.Property(e => e.Principal).HasComment("负责人");
-
-                entity.Property(e => e.Province).HasComment("省");
-
-                entity.Property(e => e.WechatId).HasComment("微信号");
             });
 
             modelBuilder.Entity<Album>(entity =>
@@ -401,13 +385,6 @@ namespace QNZ.Data
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
             });
 
-            modelBuilder.Entity<Recipe>(entity =>
-            {
-                entity.Property(e => e.Description).HasComment("吃法说明");
-
-                entity.Property(e => e.Title).HasComment("营养食谱名称");
-            });
-
             modelBuilder.Entity<RoleMenu>(entity =>
             {
                 entity.HasKey(e => new { e.RoleId, e.MenuId })
@@ -422,6 +399,26 @@ namespace QNZ.Data
                     .WithMany(p => p.RoleMenus)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK_RoleMenuSet_RoleSet_RoleId");
+            });
+
+            modelBuilder.Entity<Shope>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IconType).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.ToLeft).HasComment("");
+
+                entity.Property(e => e.ToTop).HasComment("");
+            });
+
+            modelBuilder.Entity<SocialApp>(entity =>
+            {
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<Solution>(entity =>
@@ -495,6 +492,17 @@ namespace QNZ.Data
                     .WithMany(p => p.UserRoles)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_UserRoleSet_UserSet_UserId");
+            });
+
+            modelBuilder.Entity<Video>(entity =>
+            {
+                entity.Property(e => e.Cover).HasComment("手机");
+
+                entity.Property(e => e.Description).HasComment("省");
+
+                entity.Property(e => e.Title).HasComment("微信号");
+
+                entity.Property(e => e.VideoUrl).HasComment("名称");
             });
 
             modelBuilder.Entity<Work>(entity =>

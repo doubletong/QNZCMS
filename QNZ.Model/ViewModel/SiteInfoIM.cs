@@ -205,4 +205,37 @@ namespace QNZ.Model.ViewModel
         [StringLength(150, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
         public string Email { get; set; }
     }
+
+
+    public class SMTPServerIM
+    {
+        [Display(ResourceType = typeof(Labels), Name = "SmtpServer")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string SmtpServer { get; set; }
+
+        [Display(ResourceType = typeof(Labels), Name = "Port")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        public int Port { get; set; }
+
+        [Display(ResourceType = typeof(Labels), Name = "UserName")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [StringLength(150, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string UserName { get; set; }
+
+
+        [Display(ResourceType = typeof(Labels), Name = "Password")]
+        //[Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string Password { get; set; }
+
+        [Display(ResourceType = typeof(Labels), Name = "Email")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [StringLength(150, ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "MaxLength")]
+        public string From { get; set; }
+
+  
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        public bool EnableSsl { get; set; }
+    }
 }

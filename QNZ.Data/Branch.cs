@@ -29,6 +29,7 @@ namespace QNZ.Data
         [StringLength(300)]
         public string Business { get; set; }
         public int ViewCount { get; set; }
+        public int Importance { get; set; }
         [Required]
         public bool? Active { get; set; }
         [Required]

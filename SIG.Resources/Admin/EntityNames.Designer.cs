@@ -106,6 +106,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 分公司 的本地化字符串。
+        /// </summary>
+        public static string Branch {
+            get {
+                return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 轮播图 的本地化字符串。
         /// </summary>
         public static string Carousel {
@@ -507,6 +516,24 @@ namespace QNZ.Resources.Admin {
         public static string Role {
             get {
                 return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 门店 的本地化字符串。
+        /// </summary>
+        public static string Shop {
+            get {
+                return ResourceManager.GetString("Shop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 社交应用 的本地化字符串。
+        /// </summary>
+        public static string SocialApp {
+            get {
+                return ResourceManager.GetString("SocialApp", resourceCulture);
             }
         }
         

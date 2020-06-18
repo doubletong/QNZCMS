@@ -141,11 +141,11 @@
   <data name="Company" xml:space="preserve">
     <value>公司</value>
   </data>
-  <data name="CompayAddress" xml:space="preserve">
+  <data name="CompanyAddress" xml:space="preserve">
     <value>温州市瓯海区潘桥仙门路口亨得利金属内3号楼</value>
   </data>
-  <data name="CompayName" xml:space="preserve">
-    <value>温州西普胶板有限公司</value>
+  <data name="CompanyName" xml:space="preserve">
+    <value>公司名称</value>
   </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>确认新密码</value>
@@ -269,6 +269,9 @@
   </data>
   <data name="SpecificSpecification" xml:space="preserve">
     <value>比料规格</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>主题</value>
   </data>
   <data name="SurfaceColor" xml:space="preserve">
     <value>面颜色</value>

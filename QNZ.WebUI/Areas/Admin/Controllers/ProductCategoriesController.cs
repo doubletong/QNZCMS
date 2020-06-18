@@ -79,6 +79,11 @@ namespace QNZCMS.Areas.Admin.Controllers
                 Active = true,
                 Importance = 0
             };
+
+            var categories = await _context.Videos.AsNoTracking()
+                .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
+            ViewData["Videos"] = new SelectList(categories, "Id", "Title");
+
             if (id == null)
             {
                 return View(vm);
@@ -100,6 +105,9 @@ namespace QNZCMS.Areas.Admin.Controllers
                 model.SEODescription = pm.Description;
             }
 
+
+       
+
             return View(model);
           
         }
@@ -109,7 +117,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("Id,Title,Alias,Description,Importance,Active,SEOTitle,SEOKeywords,SEODescription")] ProductCategoryIM im, int id = 0)
+        public async Task<IActionResult> Edit( [Bind("Id,Title,Alias,Description,Importance,Active,VideoId,SEOTitle,SEOKeywords,SEODescription")] ProductCategoryIM im, int id = 0)
         {
             if (!ModelState.IsValid)
             {

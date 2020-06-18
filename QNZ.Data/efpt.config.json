@@ -22,10 +22,6 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[AgentSet]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Albums]"
       },
       {
@@ -170,15 +166,19 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Recipes]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Role]"
       },
       {
          "HasPrimaryKey": true,
          "Name": "[dbo].[RoleMenu]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Shopes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SocialApps]"
       },
       {
          "HasPrimaryKey": true,
@@ -199,6 +199,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "[dbo].[UserRole]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Videos]"
       },
       {
          "HasPrimaryKey": true,

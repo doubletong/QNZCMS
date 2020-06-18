@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1589384",
+      "name": "youtube",
+      "font_class": "youtube",
+      "unicode": "e7ed",
+      "unicode_decimal": 59373
+    },
+    {
+      "icon_id": "836702",
+      "name": "language",
+      "font_class": "language",
+      "unicode": "e757",
+      "unicode_decimal": 59223
+    },
+    {
       "icon_id": "681191",
       "name": "排序箭头上",
       "font_class": "order-up",
@@ -148,7 +162,7 @@
     {
       "icon_id": "4936991",
       "name": "wechat-fill",
-      "font_class": "wechat-fill",
+      "font_class": "wechat",
       "unicode": "e95d",
       "unicode_decimal": 59741
     },

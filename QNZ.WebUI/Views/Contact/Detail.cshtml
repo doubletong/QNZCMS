@@ -1,0 +1,42 @@
+﻿@model Branch
+@{
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : Model.Name;
+
+}
+@section Header{
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
+}
+@await Component.InvokeAsync("Banner", new { code = "A1009" })
+
+<div class="page page-contact page-branch-detail">
+    <section class="s1 container">
+        <header class="branch-header">
+            <div class="row">
+                <div class="col-md">
+                    <h2 class="title">
+                        @Model.Name
+                        @if (!string.IsNullOrEmpty(Model.Homepage))
+                        {
+                            <a class="home" href="//www.baidu.com">进入官网</a>
+                        }
+                    </h2>
+                </div>
+                <div class="col-md-auto"><a class="back1" href="javascript:window.history.back();">返回上一页<i class="iconfont icon-next"></i></a></div>
+            </div>
+        </header>
+        <ul class="contact">
+            <li>联系方式：@Model.Contact</li>
+            <li>公司地址：@Model.Address</li>
+            <li>主营业务：@Model.Business</li>
+        </ul>
+        <article>
+           @Html.Raw(Model.Body)
+        </article>
+    </section>
+</div>

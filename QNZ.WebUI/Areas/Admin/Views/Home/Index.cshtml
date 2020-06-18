@@ -1,94 +1,124 @@
 ﻿@using QNZ.Infrastructure.Configs
 @model QNZ.Model.Admin.ViewModel.HomePageVM
-
+@inject Shyjus.BrowserDetection.IBrowserDetector browserDetector
 @{
     ViewData["Title"] = "控制台";
 }
+<div class="page page-home">
+    <div class="row mb-4">
 
-<div class="row">
-    @*<div class="col-sm-3">
-        <div class="card mb-3">
-            <div class="card-body">
-                今日营业额：
-                <p>@string.Format("{0:c}", Model.TodayRevenue)</p>
-            </div>
+        <div class="col">
+            <a asp-controller="Articles" asp-area="Admin" asp-action="Index" class="box">
+                <h3 class="title">@Model.ArticleCount <small>篇</small></h3>
+                <p>新闻资讯</p><i class="iconfont icon-newspaper"></i>
+            </a>
         </div>
-        <div class="card">
-            <div class="card-body">
-                总营业额：
-                <p>@string.Format("{0:c}", Model.TotalRevenue)</p>
-            </div>
+
+        <div class="col">
+            <a asp-controller="Pages" asp-area="Admin" asp-action="Index" class="box b2">
+                <h3 class="title">@Model.PageCount <small>个</small></h3>
+                <p>页面</p><i class="iconfont icon-file-text"></i>
+            </a>
         </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="card mb-3">
-            <div class="card-body">
-                今日反馈：
-                <p>@string.Format("{0}条", Model.FeedbackTodayCount)</p>
-            </div>
+        <div class="col">
+            <a asp-controller="Products" asp-area="Admin" asp-action="Index" class="box b3">
+                <h3 class="title">@Model.ProductCount <small>个</small></h3>
+                <p>产品展示</p><i class="iconfont icon-windows"></i>
+            </a>
         </div>
-        <div class="card">
-            <div class="card-body">
-                总反馈：
-                <p>@string.Format("{0}条", Model.FeedbackCount)</p>
-            </div>
+        <div class="col">
+            <a asp-controller="Photos" asp-area="Admin" asp-action="Index" class="box b4">
+                <h3 class="title">@Model.PhotoCount <small>张</small></h3>
+                <p>图片</p><i class="iconfont icon-image"></i>
+            </a>
         </div>
+        <div class="w-100"></div>
+        <div class="col">
+            <a asp-controller="Staffs" asp-area="Admin" asp-action="Index" class="box b2">
+                <h3 class="title">
+                    @Model.StaffCount <small>pcs</small>
+                </h3>
+                <p>团队人员</p><i class="iconfont icon-file-copy"></i>
+            </a>
+        </div>
+        <div class="col">
+
+            <a asp-controller="Memorabilium" asp-area="Admin" asp-action="Index" class="box">
+                <h3 class="title">
+                    @Model.MemoCount <small>pcs</small>
+                </h3>
+                <p>发展历程</p><i class="iconfont icon-file-copy"></i>
+            </a>
+
+        </div>
+
+        <div class="col">
+
+            <a asp-controller="Jobs" asp-area="Admin" asp-action="Index" class="box b4">
+                <h3 class="title">
+                    @Model.JobCount <small>pcs</small>
+                </h3>
+                <p>招聘岗位</p><i class="iconfont icon-file-copy"></i>
+            </a>
+
+        </div>
+        <div class="col">
+            <a asp-controller="Exhibitions" asp-area="Admin" asp-action="Index" class="box b3">
+                <h3 class="title">
+                    @Model.ExhibitionCount <small>pcs</small>
+                </h3>
+                <p>展会信息</p><i class="iconfont icon-deploymentunit"></i>
+            </a>
+        </div>
+
+
+
+
+
+
+
     </div>
 
-    <div class="col-sm-3">
-        <div class="card mb-3">
-            <div class="card-body">
-                公众号今日注册：
-                <p>@string.Format("{0}人", Model.CustomerGZHTodayCount)</p>
-            </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item active">@SettingsManager.Company.Name</li>
+                <li class="list-group-item">网址：@SettingsManager.Site.SiteDomainName</li>
+                <li class="list-group-item">地址：@SettingsManager.Company.Email</li>
+                <li class="list-group-item">电话：@SettingsManager.Company.Phone</li>
+                <li class="list-group-item">邮箱：@SettingsManager.Site.MailTo</li>
+                <li class="list-group-item">备案号：@SettingsManager.Site.WebNumber</li>
+            </ul>
         </div>
-        <div class="card">
-            <div class="card-body">
-                公众号总注册：
-                <p>@string.Format("{0}人", Model.CustomerGZHCount)</p>
-            </div>
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item active">主机环境</li>
+                <li class="list-group-item">IP: @ViewContext.HttpContext.Connection.RemoteIpAddress.ToString()</li>
+                <li class="list-group-item">网址：@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}")</li>
+                <li class="list-group-item">主机系统：@System.Runtime.InteropServices.RuntimeInformation.OSDescription;</li>
+                <li class="list-group-item">浏览器: @browserDetector.Browser.Name @browserDetector.Browser.Version</li>
+                <li class="list-group-item">客户端OS: @browserDetector.Browser.OS</li>
+            </ul>
+        </div>
+
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item active">软件信息</li>
+                <li class="list-group-item">软件系统：QNZCMS 1.0.0</li>
+                <li class="list-group-item">数据库：SQL Server 2014</li>
+                <li class="list-group-item">开发者：荷勒互动</li>
+                <li class="list-group-item">邮箱：twotong@gmail.com</li>
+                <li class="list-group-item">网址：http://www.inholy.com</li>
+            </ul>
         </div>
     </div>
-    <div class="col-sm-3">
-        <div class="card mb-3">
-            <div class="card-body">
-                小程序今日注册：
-                <p>@string.Format("{0}人", Model.CustomerXCXTodayCount)</p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                小程序总注册：
-                <p>@string.Format("{0}人", Model.CustomerXCXCount)</p>
-            </div>
-        </div>
-    </div>*@
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <ul class="list-group">
-            <li class="list-group-item">@SettingsManager.Site.SiteName</li>
-            <li class="list-group-item">网址：@SettingsManager.Site.SiteDomainName</li>
-            <li class="list-group-item">邮箱：@SettingsManager.Site.MailTo</li>
-            <li class="list-group-item">备案号：@SettingsManager.Site.WebNumber</li>
-        </ul>
-    </div>
-    <div class="col-md-4">
-        <ul class="list-group">
-            <li class="list-group-item">IP: @ViewContext.HttpContext.Connection.RemoteIpAddress.ToString()</li>
-            <li class="list-group-item">网址：@ViewContext.HttpContext.Request.Headers["User-Agent"].ToString() </li>
-            <li class="list-group-item">当前主机名称：@System.Net.Dns.GetHostName()</li>
-
-
-  
-        </ul>
-    </div>
-</div>
-
-@section header{ 
+@section header{
     <style>
-        .card p{
-          margin:0;font-size:1.5rem;
+        .card p {
+            margin: 0;
+            font-size: 1.5rem;
         }
     </style>
 }

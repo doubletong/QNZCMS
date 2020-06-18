@@ -61,6 +61,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 帐号ID 的本地化字符串。
+        /// </summary>
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 激活 的本地化字符串。
         /// </summary>
         public static string Active {
@@ -349,7 +358,7 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
-        ///   查找类似 联系人 的本地化字符串。
+        ///   查找类似 联系方式 的本地化字符串。
         /// </summary>
         public static string Contact {
             get {
@@ -727,6 +736,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 图标类型 的本地化字符串。
+        /// </summary>
+        public static string IconType {
+            get {
+                return ResourceManager.GetString("IconType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 图片 的本地化字符串。
         /// </summary>
         public static string Image {
@@ -885,6 +903,15 @@ namespace QNZ.Resources.Admin {
         public static string MailTo {
             get {
                 return ResourceManager.GetString("MailTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 主营业务 的本地化字符串。
+        /// </summary>
+        public static string MainBusiness {
+            get {
+                return ResourceManager.GetString("MainBusiness", resourceCulture);
             }
         }
         
@@ -1186,6 +1213,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 二维码 的本地化字符串。
+        /// </summary>
+        public static string QRCode {
+            get {
+                return ResourceManager.GetString("QRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 数量 的本地化字符串。
         /// </summary>
         public static string Quantity {
@@ -1290,6 +1326,15 @@ namespace QNZ.Resources.Admin {
         public static string Serie {
             get {
                 return ResourceManager.GetString("Serie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 网点名称 的本地化字符串。
+        /// </summary>
+        public static string ShopName {
+            get {
+                return ResourceManager.GetString("ShopName", resourceCulture);
             }
         }
         
@@ -1519,6 +1564,24 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 距离左边 的本地化字符串。
+        /// </summary>
+        public static string ToLeft {
+            get {
+                return ResourceManager.GetString("ToLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 距离顶部 的本地化字符串。
+        /// </summary>
+        public static string ToTop {
+            get {
+                return ResourceManager.GetString("ToTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 单位 的本地化字符串。
         /// </summary>
         public static string Unit {
@@ -1551,6 +1614,15 @@ namespace QNZ.Resources.Admin {
         public static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 视频 的本地化字符串。
+        /// </summary>
+        public static string Video {
+            get {
+                return ResourceManager.GetString("Video", resourceCulture);
             }
         }
         

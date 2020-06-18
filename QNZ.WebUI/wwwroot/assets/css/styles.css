@@ -5666,6 +5666,30 @@ img {
   }
 }
 
+.page-home .s4 .service {
+  position: relative;
+  max-width: 1521px;
+  margin: 0 auto;
+}
+
+.page-home .s4 .service .dot {
+  position: absolute;
+  z-index: 100;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  margin-top: -6px;
+}
+
+.page-home .s4 .service .star {
+  position: absolute;
+  z-index: 100;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+
 @media (min-width: 1601px) {
   .page-about .s1.container {
     max-width: 1180px;
@@ -8887,6 +8911,10 @@ img {
 
 .page-search .results .item .pic img {
   display: block;
+  width: 340px;
+  max-height: 190px;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .page-search .results .item .txt {
@@ -9012,6 +9040,8 @@ img {
 .site-footer .social a {
   color: #fff;
   margin-left: .4rem;
+  position: relative;
+  display: inline-block;
 }
 
 .site-footer .social a .iconfont {
@@ -9028,6 +9058,39 @@ img {
   .site-footer .social a .iconfont {
     font-size: 2rem;
   }
+}
+
+.site-footer .social a .qr {
+  display: none;
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  bottom: 3rem;
+  left: 50%;
+  margin-left: -60px;
+  z-index: 100;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.site-footer .social a .qr::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  bottom: -10px;
+  border: 5px transparent solid;
+  border-top-color: #fff;
+  z-index: 100;
+  left: 50%;
+  margin-left: -5px;
+}
+
+.site-footer .social a .qr img {
+  display: block;
+  width: 100%;
+}
+
+.site-footer .social a:hover .qr {
+  display: block;
 }
 
 @media (min-width: 992px) {

@@ -147,6 +147,9 @@
   <data name="MaxLength" xml:space="preserve">
     <value>{0}字符长度不可大于{1}</value>
   </data>
+  <data name="Range" xml:space="preserve">
+    <value>输入的值必须是{1}到{2}之间</value>
+  </data>
   <data name="RENotWhiteSpace" xml:space="preserve">
     <value>不允许输入空白</value>
   </data>

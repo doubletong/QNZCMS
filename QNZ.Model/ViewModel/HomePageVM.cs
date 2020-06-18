@@ -6,33 +6,27 @@ namespace QNZ.Model.Admin.ViewModel
 {
     public class HomePageVM
     {
-        public int FeedbackTodayCount { get; set; }
-        public int FeedbackCount { get; set; }
+        public int ArticleCount { get; set; }
+        public int ExhibitionCount { get; set; }
+        public int DocumentCount { get; set; }
+        public int VideoCount { get; set; }
+        public int ProductCount { get; set; }
+        public int JobCount { get; set; }
+        public int BranchCount { get; set; }
 
-        public int CustomerXCXTodayCount { get; set; }
-        public int CustomerXCXCount { get; set; }
-        public int CustomerGZHTodayCount { get; set; }
-        public int CustomerGZHCount { get; set; }
-
-        public decimal TodayRevenue { get; set; }
-        public decimal TotalRevenue { get; set; }
+        public int PageCount { get; set; }
+        public int PhotoCount { get; set; }
+        public int MemoCount { get; set; }
+        public int StaffCount { get; set; }
     }
 
-    public class StatisticsVM
+    public class PluginsPageVM
     {
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-
-        public int CustomerXCXTodayCount { get; set; }
-        public int CustomerXCXCount { get; set; }
-        public int CustomerXCXCustomCount { get; set; }
-        public int CustomerGZHTodayCount { get; set; }
-        public int CustomerGZHCount { get; set; }
-        public int CustomerGZHCustomCount { get; set; }
-
-        public decimal TodayRevenue { get; set; }
-        public decimal TotalRevenue { get; set; }
-        public decimal CustomRevenue { get; set; }
+     
+        public int AdvertCount { get; set; }
+        public int SocialCount { get; set; }
+        public int NavCount { get; set; }
+    
 
 
     }

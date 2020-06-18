@@ -14,6 +14,7 @@ namespace QNZ.Model.ViewModel
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")]
         public string Title { get; set; }
+        public int? VideoId { get; set; }
 
     }
     public class ProductVM
@@ -36,6 +37,8 @@ namespace QNZ.Model.ViewModel
         public IEnumerable<ProductVM> Products { get; set; }
         public int? CategoryId { get; set; }
 
+        public ProductCategoryVM Category { get; set; }
+        public VideoVM Video { get; set; }
     }
 
     
@@ -98,6 +101,9 @@ namespace QNZ.Model.ViewModel
 
         [Display(ResourceType = typeof(Labels), Name = "Importance")]
         public int Importance { get; set; }
+
+        [Display(ResourceType = typeof(Labels), Name = "Video")]
+        public int? VideoId { get; set; }
 
         [Display(ResourceType = typeof(Labels), Name = "Description")]
         public string Description { get; set; }

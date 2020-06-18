@@ -37,6 +37,8 @@ namespace QNZCMS.Controllers
 
             if (cid > 0)
             {
+                vm.Category = vm.Categories.FirstOrDefault(d => d.Id == cid);
+
                 vm.Products = await _context.Products.Where(d => d.CategoryId == cid)
                         .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id)
                         .ProjectTo<ProductVM>(_mapper.ConfigurationProvider).ToListAsync();
@@ -45,17 +47,23 @@ namespace QNZCMS.Controllers
             }
             else
             {
-                var c = vm.Categories.FirstOrDefault();
+               vm.Category = vm.Categories.FirstOrDefault();
 
-                if (c != null)
+                if (vm.Category != null)
                 {
-                    vm.Products = await _context.Products.Where(d => d.CategoryId == c.Id)
+                    vm.Products = await _context.Products.Where(d => d.CategoryId == vm.Category.Id)
                         .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id)
                         .ProjectTo<ProductVM>(_mapper.ConfigurationProvider).ToListAsync();
 
-                    vm.CategoryId = c.Id;
+                    vm.CategoryId = vm.Category.Id;
                 }
             }
+            if (vm.Category.VideoId > 0)
+            {
+                var video = await _context.Videos.FirstOrDefaultAsync(d => d.Id == vm.Category.VideoId);
+                vm.Video = _mapper.Map<VideoVM>(video);
+            }
+         
           
         
 

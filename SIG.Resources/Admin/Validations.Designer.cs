@@ -151,6 +151,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 输入的值必须是{1}到{2}之间 的本地化字符串。
+        /// </summary>
+        public static string Range {
+            get {
+                return ResourceManager.GetString("Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 不允许输入空白 的本地化字符串。
         /// </summary>
         public static string RENotWhiteSpace {

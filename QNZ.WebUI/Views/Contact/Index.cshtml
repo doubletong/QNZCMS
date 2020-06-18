@@ -1,4 +1,5 @@
-﻿@using System;
+﻿@model ContactIM
+@using System;
 @{
     ViewData["Title"] = "联系我们_高端网站建设哪家好_深圳网站设计_用户体验设计_小程序开发_APP开发_公众号开发";
 
@@ -6,21 +7,27 @@
 @section Header{
     <meta name="keywords" content="网站制作公司,网站建设公司哪家好,网站建设哪家公司好,小程序开发,响应式网站">
     <meta name="description" content="黑鸟志拥有多年的网站建设经验，网站建设公司哪家好,手机网站建设，小程序开发，网站建设哪家公司好首选深圳黑鸟志。">
-
+    <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <style>
+        .validation-summary-errors ul{
+            list-style:none;
+            text-align:center;
+            color:#cb2c2c;
+            margin:0;padding:1rem;
+           
+        }
+        .page-contact .quoteform .input-validation-error {
+            background-color: #fbdede;
+        }
+    </style>
 }
 
 
-<div class="banner banner-about">
-    <img src="/assets/img/temp/banner-contact.jpg" alt="联系我们">
-    <div class="txt">
-        <div class="container">
-            <h1>联系我们</h1>
-        </div>
-    </div>
-</div>
+@await Component.InvokeAsync("Banner", new { code = "A1009" })
+
 <div class="page page-contact">
     <section class="s1 container">
-        <div class="submenu"><a class="active" href="contact.html">联系我们</a><a href="branch.html">分子公司</a></div>
+        <div class="submenu"><a class="active" href="/contact">联系我们</a><a href="/contact/branches">分子公司</a></div>
         <div class="contact row">
             <div class="col-md">
                 <div class="item">
@@ -36,7 +43,7 @@
                         </div>
                         <div class="col col-md-12">
                             <h4>联系电话</h4>
-                            <p>0392-2298000</p>
+                            <p>@SettingsManager.Company.Phone</p>
                         </div>
                     </div>
                 </div>
@@ -55,7 +62,7 @@
                         </div>
                         <div class="col col-md-12">
                             <h4>邮箱</h4>
-                            <p>info@sjphotons.com</p>
+                            <p>@SettingsManager.Company.Email</p>
                         </div>
                     </div>
                 </div>
@@ -74,7 +81,7 @@
                         </div>
                         <div class="col col-md-12">
                             <h4>地址</h4>
-                            <p>河南省鹤壁国家经济技术开发区延河路201号</p>
+                            <p>@SettingsManager.Company.Address</p>
                         </div>
                     </div>
                 </div>
@@ -87,18 +94,22 @@
             <div class="title-section">
                 <h2 class="text-center">给我们留言</h2>
             </div>
-            <form class="quoteform" action="#">
+        
+            <form asp-action="SendEmail" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave" class="quoteform"
+                  data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+                  data-ajax="true" data-ajax-method="POST">
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <i class="iconfont icon-user"></i>
-                            <input class="form-control" type="text" name="name" placeholder="姓名">
+                            <input class="form-control" asp-for="Name" placeholder="姓名">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <i class="iconfont icon-gongwenbao-copy"></i>
-                            <input class="form-control" type="text" name="company" placeholder="公司">
+                            <input class="form-control" asp-for="CompanyName" placeholder="公司">
                         </div>
                     </div>
                 </div>
@@ -106,13 +117,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <i class="iconfont icon-youxiang"></i>
-                            <input class="form-control" type="text" name="email" placeholder="邮箱">
+                            <input class="form-control" asp-for="Email" placeholder="邮箱">
+
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <i class="iconfont icon-homephone"></i>
-                            <input class="form-control" type="text" name="phone" placeholder="电话">
+                            <input class="form-control" asp-for="Phone" placeholder="电话">
                         </div>
                     </div>
                 </div>
@@ -120,19 +132,21 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <i class="iconfont icon-tagkaobei"></i>
-                            <input class="form-control" type="text" name="subject" placeholder="主题">
+                            <input class="form-control" asp-for="Subject" placeholder="主题">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <i class="iconfont icon-neirong"></i>
-                    <textarea class="form-control" name="message" cols="30" rows="10" placeholder="内容"></textarea>
+                    <textarea class="form-control" asp-for="Message" cols="30" rows="10" placeholder="内容"></textarea>
                 </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+
                 <div class="text-center">
                     <button class="btn btn-primary" type="submit">提交</button>
                 </div>
             </form>
-        </div>
+</div>
     </section>
 </div>
 
@@ -142,9 +156,41 @@
 
 @section Scripts
     {
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="~/plugins/blockui/jquery.blockUI.js"></script>
     <script language="javascript" src="http://api.map.baidu.com/api?v=2.0&ak=G7h0sKsr60IFU3OrHRmKTRzD"></script>
 
     <script>
+
+         function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+        function onBeginSave() {
+            $.blockUI({ message: '<h4 style="padding:2rem;">提交中...</h4>' });
+        }
+        function onCompleteSave() {
+            $.unblockUI();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status === 1) {             
+                toastr.success(data.message);        
+
+            }
+            if (data.status === 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
         // 百度地图API功能
         var map = new BMap.Map("baidumap");
 
@@ -159,7 +205,7 @@
         //var myIcon = new BMap.Icon("/assets/img/marker.png", new BMap.Size(132, 132));
         //var marker1 = new BMap.Marker(point, {
         //    icon: myIcon
-        //}); 
+        //});
 
         var marker = new BMap.Marker(point);
 
@@ -177,6 +223,9 @@
         marker.addEventListener("click", function () {
             this.openInfoWindow(infoWindow1);
         });
+
+
+
 
 
 

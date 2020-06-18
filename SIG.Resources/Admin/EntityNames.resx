@@ -132,6 +132,9 @@
   <data name="ArticleCategory" xml:space="preserve">
     <value>文章分类</value>
   </data>
+  <data name="Branch" xml:space="preserve">
+    <value>分公司</value>
+  </data>
   <data name="Carousel" xml:space="preserve">
     <value>轮播图</value>
   </data>
@@ -266,6 +269,12 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>角色</value>
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value>门店</value>
+  </data>
+  <data name="SocialApp" xml:space="preserve">
+    <value>社交应用</value>
   </data>
   <data name="Solution" xml:space="preserve">
     <value>解决方案</value>

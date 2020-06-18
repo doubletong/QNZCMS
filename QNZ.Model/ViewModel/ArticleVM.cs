@@ -27,6 +27,7 @@ namespace QNZ.Model.ViewModel
         public DateTime Pubdate { get; set; }
         public string Thumbnail { get; set; }
         public string SliderImage { get; set; }
+        public string CategoryAlias { get; set; }
     }
    
 
@@ -38,8 +39,15 @@ namespace QNZ.Model.ViewModel
         public int TotalCount { get; set; }
         public StaticPagedList<ArticleVM> Articles { get; set; }
     }
+    public class SearchArticlePageVM
+    {
+        public string Keyword { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public StaticPagedList<ArticleVM> Articles { get; set; }
+    }
 
-    
 
     public class ArticleDetailVM
     {

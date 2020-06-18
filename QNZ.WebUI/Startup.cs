@@ -15,10 +15,8 @@ using QNZ.Services.Menus;
 using QNZ.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
-using Microsoft.Extensions.FileProviders;
 using QNZ.Infrastructure.Cache;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http.Features;
+using QNZ.Infrastructure.Email;
 
 namespace QNZCMS
 {
@@ -87,10 +85,12 @@ namespace QNZCMS
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddBrowserDetection();
+
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
             services.AddRazorPages();
-
+         
 
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -100,8 +100,8 @@ namespace QNZCMS
             services.AddTransient<IMenuCategoryServices, MenuCategoryServices>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<ICacheService, CacheService>();
-
-
+            services.AddScoped<IEmailService, MimeKitService>();
+            
             // If using Kestrel:
             services.Configure<KestrelServerOptions>(options =>
             {

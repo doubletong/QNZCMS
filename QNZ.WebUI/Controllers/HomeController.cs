@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using QNZCMS.Models;
 using QNZ.Infrastructure.Cache;
-using QNZ.Infrastructure.Configs;
 using QNZ.Data;
 using Microsoft.EntityFrameworkCore;
+using QNZ.Model.Front.ViewModel;
+using QNZ.Model.ViewModel;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace QNZCMS.Controllers
 {
@@ -23,14 +21,15 @@ namespace QNZCMS.Controllers
         private IWebHostEnvironment _hostingEnvironment;      
         private readonly ICacheService _cacheService;
         private readonly YicaiyunContext _context;
-        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context)
+        private readonly IMapper _mapper;
+        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context, IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
             _cacheService = cache;
             _context = context;
+            _mapper = mapper;
         }
     
-
         public async Task<IActionResult> IndexAsync()
         {
             //var configFile = _hostingEnvironment.WebRootPath + "\\Config\\Global.json";
@@ -50,10 +49,24 @@ namespace QNZCMS.Controllers
             }
 
             var advertList = (List<Advertisement>)_cacheService.Get(keyNav);
-            var advert = advertList.FirstOrDefault(d => d.Space.Code == "A1001");
+
+            var ads = _mapper.Map<List<AdvertisementVM>>(advertList.Where(d => d.Space.Code == "A1001"));
+
+            var video = await _context.Videos.FirstOrDefaultAsync(d => d.Recommend == true);
+
+            var vm = new HomePageVM
+            {
+                Solutions = await _context.Articles.Where(d => d.Active == true && d.Category.Alias == "solutions")
+                 .OrderByDescending(d => d.Pubdate).ThenByDescending(d => d.Id)
+                 .ProjectTo<ArticleVM>(_mapper.ConfigurationProvider).ToListAsync(),
+                Adverts = ads,
+
+                Shopes = await _context.Shopes.Where(d => d.Active == true).ProjectTo<ShopeVM>(_mapper.ConfigurationProvider).ToListAsync(),
+                Video = _mapper.Map<VideoVM>(video)
+            };
 
 
-            return View();
+            return View(vm);
         }
 
         public IActionResult Privacy()

@@ -135,18 +135,18 @@ namespace QNZ.Resources.Front {
         /// <summary>
         ///   查找类似 温州市瓯海区潘桥仙门路口亨得利金属内3号楼 的本地化字符串。
         /// </summary>
-        public static string CompayAddress {
+        public static string CompanyAddress {
             get {
-                return ResourceManager.GetString("CompayAddress", resourceCulture);
+                return ResourceManager.GetString("CompanyAddress", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 温州西普胶板有限公司 的本地化字符串。
+        ///   查找类似 公司名称 的本地化字符串。
         /// </summary>
-        public static string CompayName {
+        public static string CompanyName {
             get {
-                return ResourceManager.GetString("CompayName", resourceCulture);
+                return ResourceManager.GetString("CompanyName", resourceCulture);
             }
         }
         
@@ -516,6 +516,15 @@ namespace QNZ.Resources.Front {
         public static string SpecificSpecification {
             get {
                 return ResourceManager.GetString("SpecificSpecification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 主题 的本地化字符串。
+        /// </summary>
+        public static string Subject {
+            get {
+                return ResourceManager.GetString("Subject", resourceCulture);
             }
         }
         

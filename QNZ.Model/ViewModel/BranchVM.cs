@@ -14,12 +14,13 @@ namespace QNZ.Model.ViewModel
     {
 
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Summary { get; set; }
         public string Address { get; set; }
-        public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
-        public string Thumbnail { get; set; }
+        public string ImageUrl { get; set; }
+        public string Contact { get; set; }
+        public string Homepage { get; set; }
+        public string Business { get; set; }
 
     }
    
@@ -52,16 +53,15 @@ namespace QNZ.Model.ViewModel
     {
 
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Booth { get; set; }
-        public string Thumbnail { get; set; }
+        public string Name { get; set; }
+        public string Homepage { get; set; }
+        public string Contact { get; set; }
+        public string ImageUrl { get; set; }
         public int ViewCount { get; set; }
-        public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
+        public DateTime CreatedDate { get; set; }
         public string Address { get; set; }
         public bool Active { get; set; }
-      
-        public bool Recommend { get; set; }
+
 
     }
     public class BranchListVM
@@ -73,7 +73,7 @@ namespace QNZ.Model.ViewModel
         public string Sort { get; set; }
         public int TotalCount { get; set; }
         public int PageSize { get; set; }
-        public StaticPagedList<BranchBVM> Branchs { get; set; }
+        public StaticPagedList<BranchBVM> Branches { get; set; }
     }
 
     public class BranchIM:PageMetaIM
@@ -113,7 +113,8 @@ namespace QNZ.Model.ViewModel
         [StringLength(300, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         [Display(ResourceType = typeof(Labels), Name = "MainBusiness")]
         public string Business { get; set; }
-
+        [Display(ResourceType = typeof(Labels), Name = "Importance")]
+        public int Importance { get; set; }
 
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }

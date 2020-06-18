@@ -1,0 +1,137 @@
+﻿@model SearchArticlePageVM
+@{
+    ViewData["Title"] = "搜索";
+}
+
+<div class="searchbox wow fadeInUp">
+    <div class="container">
+        <form action="search.html" method="get">
+            <div class="row align-items-center">
+                <div class="col">
+                    <input id="keywords" type="search" name="keywords" value="@Model.Keyword" placeholder="请输入您要搜索的内容" required="required">
+                </div>
+                <div class="col-auto">
+                    <button type="submit">搜索</button>
+                </div>
+            </div>
+        </form>
+        @if (Model != null)
+        {
+            <p class="count wow fadeInUp">找到 <strong>@Model.TotalCount</strong> 条相配的记录</p>
+        }
+
+    </div>
+</div>
+<div class="page page-search container">
+    <div class="results">
+        @foreach (var item in Model.Articles)
+        {
+            if (item.CategoryAlias == "news")
+            {
+                <a class="item wow fadeInUp" asp-controller="About" asp-action="CompanyNewsDetail" asp-route-id="@item.Id">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <div class="pic"><img src="@item.Thumbnail" alt=""></div>
+                        </div>
+                        <div class="col-md">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <time>@item.Pubdate.ToShortDateString()</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+            if (item.CategoryAlias == "media")
+            {
+                <a class="item wow fadeInUp" asp-controller="About" asp-action="MediaDetail" asp-route-id="@item.Id">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <div class="pic"><img src="@item.Thumbnail" alt=""></div>
+                        </div>
+                        <div class="col-md">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <time>@item.Pubdate.ToShortDateString()</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+            if (item.CategoryAlias == "NewsletterDetail")
+            {
+                <a class="item wow fadeInUp" asp-controller="About" asp-action="MediaDetail" asp-route-id="@item.Id">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <div class="pic"><img src="@item.Thumbnail" alt=""></div>
+                        </div>
+                        <div class="col-md">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <time>@item.Pubdate.ToShortDateString()</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+
+            if (item.CategoryAlias == "researches")
+            {
+                <a class="item wow fadeInUp" asp-controller="About" asp-action="ResearchesDetail" asp-route-id="@item.Id">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <div class="pic"><img src="@item.Thumbnail" alt=""></div>
+                        </div>
+                        <div class="col-md">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <time>@item.Pubdate.ToShortDateString()</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            }
+            if (item.CategoryAlias == "solutions")
+            {
+                <a class="item wow fadeInUp" asp-controller="Solutions" asp-action="Detail" asp-route-id="@item.Id">
+                    <div class="row">
+                        <div class="col-md-auto">
+                            <div class="pic"><img src="@item.Thumbnail" alt=""></div>
+                        </div>
+                        <div class="col-md">
+                            <div class="txt">
+                                <h3 class="title">@item.Title</h3>
+                                <time>@item.Pubdate.ToShortDateString()</time>
+                                <p>@item.Summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+
+    </div>
+    @if (Model.TotalCount > Model.PageSize)
+    {
+        <footer class="news-footer">
+            @Html.PagedListPager(Model.Articles, page => Url.Action("Index", new { page = page ,keyword = Model.Keyword}),
+                 new PagedListRenderOptions
+                 {
+                     LiElementClasses = new string[] { "page-item" },
+                     PageClasses = new string[] { "page-link" },
+                     LinkToFirstPageFormat = "首页",
+                     LinkToNextPageFormat = "下一页",
+                     LinkToPreviousPageFormat = "上一页",
+                     LinkToLastPageFormat = "尾页",
+                     MaximumPageNumbersToDisplay = 4
+                 })
+
+        </footer>
+    }
+  
+</div>

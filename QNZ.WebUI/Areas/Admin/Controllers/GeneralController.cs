@@ -84,6 +84,64 @@ namespace QNZCMS.Areas.Admin.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult SMTPServer()
+        {
+            var info = SettingsManager.SMTP;
+
+            var vm = new SMTPServerIM
+            {
+                From = info.From,
+                SmtpServer = info.SmtpServer,
+                Port = info.Port,
+                UserName = info.UserName,
+                EnableSsl = info.EnableSsl,
+                Password = info.Password
+
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditSMTPServer(SMTPServerIM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = GetModelErrorMessage();
+                AR.Setfailure(errorMessage);
+                return Json(AR);
+            }
+
+            try
+            {
+
+
+                var xmlFile = PlatformServices.Default.MapPath("/Config/SMTPSettings.config");
+                XDocument doc = XDocument.Load(xmlFile);
+
+                var item = doc.Descendants("Settings").FirstOrDefault();
+                item.Element("From").SetValue(vm.From ?? "");
+                item.Element("SmtpServer").SetValue(vm.SmtpServer ?? "");
+                item.Element("Port").SetValue(vm.Port);
+                item.Element("UserName").SetValue(vm.UserName ?? "");
+                item.Element("Password").SetValue(vm.Password ?? "");
+                item.Element("EnableSsl").SetValue(vm.EnableSsl);
+            
+                doc.Save(xmlFile);
+
+                return Json(AR);
+            }
+            catch (Exception ex)
+            {
+
+                AR.Setfailure(ex.Message);
+                return Json(AR);
+            }
+
+        }
+
+
         //   const string folderName = "Config";
         //private IHostingEnvironment _hostingEnvironment;
         //public GeneralController(IHostingEnvironment hostingEnvironment)

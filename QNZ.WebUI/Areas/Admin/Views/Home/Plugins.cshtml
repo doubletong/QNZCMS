@@ -1,8 +1,34 @@
-﻿
+﻿@model QNZ.Model.Admin.ViewModel.PluginsPageVM
 @{
     ViewData["Title"] = "组件";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPlugins.cshtml";
 }
+    <div class="page page-home">
+        <div class="row mb-4">
 
-<h1>Plugins</h1>
+            <div class="col">
+                <a asp-controller="Navigation" asp-area="Admin" asp-action="Index" class="box">
+                    <h3 class="title">@Model.NavCount <small>个</small></h3>
+                    <p>栏目</p><i class="iconfont icon-menu"></i>
+                </a>
+            </div>
 
+
+            <div class="col">
+                <a asp-controller="Advertisements" asp-area="Admin" asp-action="Index" class="box b4">
+                    <h3 class="title">@Model.AdvertCount <small>张</small></h3>
+                    <p>广告图片</p><i class="iconfont icon-image"></i>
+                </a>
+            </div>
+            <div class="col">
+                <a asp-controller="SocialApps" asp-area="Admin" asp-action="Index" class="box b2">
+                    <h3 class="title">@Model.SocialCount <small>个</small></h3>
+                    <p>社交帐号</p><i class="iconfont icon-message"></i>
+                </a>
+            </div>
+
+
+
+
+        </div>
+    </div>

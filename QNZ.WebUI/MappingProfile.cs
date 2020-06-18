@@ -134,7 +134,8 @@ namespace QNZCMS
             CreateMap<ArticleCategory, ArticleCategoryIM>();
             CreateMap<ArticleCategoryIM, ArticleCategory>();
 
-            CreateMap<Article, ArticleVM>();
+            CreateMap<Article, ArticleVM>()
+                .ForMember(d => d.CategoryAlias, opt => opt.MapFrom(source => source.Category.Alias));
             CreateMap<Article, ArticleBVM>()
                  .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
 
@@ -145,6 +146,22 @@ namespace QNZCMS
             CreateMap<Exhibition, ExhibitionBVM>();           
             CreateMap<Exhibition, ExhibitionIM>();
             CreateMap<ExhibitionIM, Exhibition>();
+
+            CreateMap<Shope, ShopeVM>();
+            CreateMap<Shope, ShopeBVM>();
+            CreateMap<Shope, ShopeIM>();
+            CreateMap<ShopeIM, Shope>();
+
+            CreateMap<SocialApp, SocialAppVM>();
+            CreateMap<SocialApp, SocialAppBVM>();
+            CreateMap<SocialApp, SocialAppIM>();
+            CreateMap<SocialAppIM, SocialApp>();
+
+            CreateMap<Video, VideoVM>();
+            CreateMap<Video, VideoBVM>();
+            CreateMap<VideoBVM, Video>();
+            CreateMap<Video, VideoIM>();
+            CreateMap<VideoIM, Video>();
 
             CreateMap<Branch, BranchVM>();
             CreateMap<Branch, BranchBVM>();

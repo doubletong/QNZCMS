@@ -1,4 +1,5 @@
-﻿@using System;
+﻿@model HomePageVM
+
 @{
     ViewData["Title"] = SettingsManager.Site.SiteName;
 }
@@ -19,9 +20,10 @@
 <section class="s0">
     <div class="sliders swiper-container wow fadeInUp">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
-            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
-            <div class="swiper-slide"><a href="//www.baidu.com"><img src="/assets/img/temp/banner-home.jpg" alt=""></a></div>
+            @foreach (var item in Model.Adverts)
+            {
+                <div class="swiper-slide"><a href="@item.WebLink"><img src="@item.ImageUrl" alt="@item.Title"></a></div>
+            }          
         </div>
         <div class="swiper-button-next"><i class="iconfont icon-next"></i></div>
         <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
@@ -62,39 +64,27 @@
     <section class="section s1 container">
         <div class="intro">
             <h2 class="title">引领光通信核心领域技术进步</h2>
-            <p>公司聚焦光通信行业，主营业务覆盖光芯片及器件、室内光缆、线缆材料三大板块，主要产品包括PLC分路器芯片系列产品、AWG芯片系列产品、DFB激光器芯片系列产品、光纤连接器、室内光缆、线缆材料等。公司产品主要应用于骨干网和城域网、光纤到户、数据中心、4G/5G建设等，成功实现了部分光芯片产品的国产化和进口替代。           </p><a class="more" href="about.html">了解更多</a>
+            <p>公司聚焦光通信行业，主营业务覆盖光芯片及器件、室内光缆、线缆材料三大板块，主要产品包括PLC分路器芯片系列产品、AWG芯片系列产品、DFB激光器芯片系列产品、光纤连接器、室内光缆、线缆材料等。公司产品主要应用于骨干网和城域网、光纤到户、数据中心、4G/5G建设等，成功实现了部分光芯片产品的国产化和进口替代。</p>
+            <a class="more" href="/products">了解更多</a>
         </div>
     </section>
     <section class="section s2">
         <section class="solutions swiper-container wow fadeInUp">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="container">
-                        <div class="des">
-                            <h3 class="title">城市骨干光纤网</h3>
-                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
-                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
+                @foreach (var item in Model.Solutions)
+                {
+                    <div class="swiper-slide" style="background-image:url('@item.SliderImage');">
+                        <div class="container">
+                            <div class="des">
+                                <h3 class="title">@item.Title</h3>
+                                <h4 class="subtitle">@item.SubTitle</h4>
+                                <p>@item.Summary</p><a class="more" asp-controller="solutions" asp-action="detail" asp-route-id="@item.Id">查看更多 <i class="iconfont icon-next"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="container">
-                        <div class="des">
-                            <h3 class="title">城市骨干光纤网</h3>
-                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
-                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="container">
-                        <div class="des">
-                            <h3 class="title">城市骨干光纤网</h3>
-                            <h4 class="subtitle">提高光纤网络的传播效率，达到稳定优异的工作状态</h4>
-                            <p>AWG，VOA协同系统 将多波长的光复合到单一的光纤中，调节光通信系统的光信号的功率，从而提高光纤网络的传播效率，达到稳定优异的工作状态， 实现骨干网传输速率大幅提升。</p><a class="more" href="lab_intro.html">查看更多 <i class="iconfont icon-next"></i></a>
-                        </div>
-                    </div>
-                </div>
+                }
+
+              
             </div>
             <div class="swiper-button-next"><i class="iconfont icon-next"></i></div>
             <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
@@ -155,9 +145,13 @@
                     </div>
                 </div>
                 <div class="col-lg">
-                    <div class="video-container">
-                        <video src="/assets/img/Background02.mp4" poster="/assets/img/poster_01.jpg" width="100%" height="100%" controls="controls"></video>
-                    </div>
+                    @if (Model.Video != null)
+                    {
+                        <div class="video-container">
+                            <video src="@Model.Video.VideoUrl" poster="@Model.Video.Cover" width="100%" height="100%" controls="controls"></video>
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
@@ -166,8 +160,27 @@
         <div class="title-section">
             <h2 class="text-center">服务全球</h2>
         </div>
-        <figure class="text-center"><img src="/assets/img/map.png" alt="服务全球"></figure>
-    </section>
+        <div class="service" style="position:relative;">
+            <img src="/assets/img/map.png" alt="服务全球">
+            @foreach (var item in Model.Shopes)
+            {
+
+                @if (item.IconType == 1)
+                {
+                    <div class="dot" style="left:@string.Format("{0}%", item.ToLeft);top:@string.Format("{0}%", item.ToTop);">
+                        <img src="/assets/img/dot.png" title="@item.Name" />
+                    </div>
+                }
+                else
+                {
+                    <div class="star" style="left:@string.Format("{0}%", item.ToLeft);top:@string.Format("{0}%", item.ToTop);">
+                        <img src="/assets/img/star.png" title="@item.Name" />
+                    </div>
+                }
+
+            }
+        </div>
+</section>
 </div>
 
 @section Scripts

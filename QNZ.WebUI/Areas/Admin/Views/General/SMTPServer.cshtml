@@ -1,0 +1,152 @@
+﻿@model SMTPServerIM
+@{
+    Layout = "_LayoutSystem";
+
+    ViewData["Title"] = "SMTP服务设置";
+}
+
+
+<form asp-action="EditSMTPServer" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+    <div class="card">
+       
+        <header class="card-header">
+            <div class="row">
+                <div class="col">
+                    <div class="card-title-v1"><i class="iconfont icon-mail"></i>@ViewData["Title"]</div>
+                </div>
+                <div class="col-auto">
+                    <div class="control"><a class="expand" href="#"><i class="iconfont icon-fullscreen"></i></a><a class="compress" href="#"><i class="iconfont icon-shrink"></i></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label asp-for="From" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="From" class="form-control" />
+                    <span asp-validation-for="From"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="SmtpServer" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="SmtpServer" class="form-control" />
+                    <span asp-validation-for="SmtpServer"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label asp-for="Port" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Port" class="form-control" />
+                    <span asp-validation-for="Port"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="UserName" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label asp-for="Password" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-md-2">SSL</div>
+                <div class="col-md-10">
+                    <div class="form-check">
+                        <input asp-for="EnableSsl" class="form-check-input" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+        </div>
+
+    </div>
+</form>
+
+
+@section header{
+
+}
+
+@section footer {
+
+    <script src="~/js/lib/jquery/plugins/jquery.validate.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+
+    <script>
+            function SetDashboardLogo(fileUrl) {
+
+                $('#imgDashboardLogo').attr("src",fileUrl);
+                $('#DashboardLogo').val(fileUrl);
+            }
+
+
+        function onFailed() {
+            toastr.error("操作失败！");
+        }
+
+       function onBeginSave() {
+                $(".spinner-border").fadeIn();
+
+        }
+        function onCompleteSave() {
+             $(".spinner-border").fadeOut();
+        }
+
+
+        function onSuccessSave(data) {
+            if (data.status == 1) {
+                toastr.success(data.message);
+
+            }
+            if (data.status == 2) {
+                toastr.error(data.message);
+            }
+            //Common.ShowBoxWithFuncBack(data, title, submitSuccess);
+
+        }
+
+
+
+        $(function () {
+            $("#btnDashboardLogo").on("click", function () {
+                    QNZ.selectActionFunction = SetDashboardLogo;
+                    QNZ.open();
+
+            });
+
+
+        });
+    </script>
+}

@@ -10,15 +10,15 @@
               
             </div>
             <div class="col-md-auto">
-                <div class="social"><a href="#"> <i class="iconfont icon-wechat"></i></a><a href="#"> <i class="iconfont icon-linkedin"></i></a><a href="#"> <i class="iconfont icon-facebook"></i></a><a href="#"> <i class="iconfont icon-twitter"></i></a><a href="#"> <i class="iconfont icon-YouTube"></i></a></div>
+                @await Component.InvokeAsync("SocialApp")
             </div>
         </div>
     </div>
     <div class="bot">
         <ul class="contact">
-            <li>联系电话：0392-2298000  </li>
-            <li>邮箱：info@sjphotons.com</li>
-            <li>地址：河南省鹤壁国家经济技术开发区延河路201号</li>
+            <li>联系电话：@SettingsManager.Company.Phone</li>
+            <li>邮箱：@SettingsManager.Company.Email</li>
+            <li>地址：@SettingsManager.Company.Address</li>
         </ul>
         <p class="copyright">Copyright 2015-@DateTime.Now.Year &copy; @SettingsManager.Company.Name  <a href="http://www.beian.miit.gov.cn/">@SettingsManager.Site.WebNumber</a></p>
     </div>

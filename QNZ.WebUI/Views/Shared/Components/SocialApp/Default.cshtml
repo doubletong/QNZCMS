@@ -1,0 +1,21 @@
+@model IEnumerable<SocialApp>
+
+    <div class="social">
+        @foreach (var item in Model)
+        {
+            if (string.IsNullOrEmpty(item.Qrcode))
+            {
+                <a href="@item.Url"> <i class="iconfont @item.Icon"></i></a>
+            }
+            else
+            {
+                <a href="javascript:void(0);"> 
+                    <i class="iconfont @item.Icon"></i>
+                    <div class="qr">
+                        <img src="@item.Qrcode" alt="@item.Account" />
+                    </div>                    
+                </a>
+            }
+
+        }
+    </div>
