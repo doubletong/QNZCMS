@@ -5679,6 +5679,56 @@ img {
   height: 12px;
   margin-left: -6px;
   margin-top: -6px;
+  background-color: #f66828;
+  border-radius: 50%;
+  transition: all .2s;
+}
+
+.page-home .s4 .service .dot .city {
+  position: absolute;
+  left: 30px;
+  top: -5px;
+  z-index: 10;
+  white-space: nowrap;
+  color: #f66828;
+  display: none;
+}
+
+.page-home .s4 .service .dot::after {
+  position: absolute;
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  margin-top: 6px;
+  z-index: -10;
+  background-color: #f66828;
+  border-radius: 50%;
+  transition: all .2s;
+}
+
+.page-home .s4 .service .dot:hover {
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  background-color: #f6692871;
+  border: 1px #f66828 solid;
+  box-sizing: border-box;
+}
+
+.page-home .s4 .service .dot:hover .city {
+  top: 5px;
+  left: 40px;
+  display: block;
+}
+
+.page-home .s4 .service .dot:hover::after {
+  width: 12px;
+  height: 12px;
+  margin-left: 9px;
+  margin-top: 9px;
 }
 
 .page-home .s4 .service .star {
@@ -5688,6 +5738,16 @@ img {
   height: 20px;
   margin-left: -10px;
   margin-top: -10px;
+}
+
+.page-home .s4 .service .star .city {
+  position: absolute;
+  left: 30px;
+  top: 0px;
+  z-index: 10;
+  white-space: nowrap;
+  color: #f66828;
+  font-weight: bold;
 }
 
 @media (min-width: 1601px) {

@@ -1,6 +1,6 @@
-﻿@model int
+﻿@model QNZ.Model.Front.ErrorVM
 @{
-    if (Model == 404)
+    if (Model.StatusCode == 404)
     {
         ViewData["Title"] = "未找到页面";
     }
@@ -11,15 +11,15 @@
 
 }
 
- @if(Model == 404)
+@if (Model.StatusCode == 404)
 {
-    <figure style="padding-top:5rem;">
-        <img src="~/img/404.svg" alt="未找到页面" />
-    </figure>
+    <div class="container">
+       @Html.Raw(WebUtility.HtmlDecode(Model.PageDetail.Body))
+    </div>
 }
 else
 {
-    <div class="alert alert-danger">
-        服务器错误
+    <div class="container">
+        @Html.Raw(WebUtility.HtmlDecode(Model.PageDetail.Body))   
     </div>
 }

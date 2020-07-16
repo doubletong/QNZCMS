@@ -84,6 +84,9 @@ namespace QNZCMS
             CreateMap<Product, ProductIM>();
 
             CreateMap<Page, PageVM>();
+            CreateMap<Page, PageDetailVM>();
+            CreateMap<Page, PageBVM>();
+        
             CreateMap<Page, PageIM>();
             CreateMap<PageIM, Page>();
 

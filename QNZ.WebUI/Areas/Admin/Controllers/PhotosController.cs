@@ -37,13 +37,13 @@ namespace QNZCMS.Areas.Admin.Controllers
             _mapper = mapper;
         }
         // GET: Admin/Photos
-        public async Task<IActionResult> Index(string keyword, string orderby, string sort, int? categoryId, int? page)
+        public async Task<IActionResult> Index(string keyword, string orderby, string sort, int? albumId, int? page)
         {
             var vm = new PhotoListVM()
             {
                 PageIndex = page == null || page <= 0 ? 1 : page.Value,
                 Keyword = keyword,
-                AlbumId = categoryId,
+                AlbumId = albumId,
                 PageSize = SettingsManager.Photo.PageSize,
                    OrderBy = orderby,
                 Sort = sort
@@ -55,8 +55,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             if (!string.IsNullOrEmpty(keyword))
                 query = query.Where(d => d.Title.Contains(keyword));
 
-            if (categoryId>0)
-                query = query.Where(d => d.AlbumId == categoryId);
+            if (albumId > 0)
+                query = query.Where(d => d.AlbumId == albumId);
 
 
             var gosort = $"{orderby}_{sort}";

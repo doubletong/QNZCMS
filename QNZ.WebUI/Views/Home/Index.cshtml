@@ -4,10 +4,10 @@
     ViewData["Title"] = SettingsManager.Site.SiteName;
 }
 @section Header{
-    @*<meta name="keywords" content="深圳网站建设公司,深圳网站建设公司,深圳高端网站建设,用户体验设计,ui设计公司,响应式网站设计,界面设计公司,网站界面设计,微信小程序开发">
-    <meta name="description" content="黑鸟志为企业提供网站建设、服务设计、产品策略研究、用户体验研究、交互设计、视觉ui设计、网站界面设计、用户体验设计以及vi设计；包括app设计、ui设计、界面设计、微信小程序开发等。">*@
+    <meta name="keywords" content="">
+    <meta name="description" content="">
     <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
-
+    <link href="~/plugins/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />
 }
 
 
@@ -162,20 +162,23 @@
         </div>
         <div class="service" style="position:relative;">
             <img src="/assets/img/map.png" alt="服务全球">
+        
             @foreach (var item in Model.Shopes)
             {
 
                 @if (item.IconType == 1)
                 {
                     <div class="dot" style="left:@string.Format("{0}%", item.ToLeft);top:@string.Format("{0}%", item.ToTop);">
-                        <img src="/assets/img/dot.png" title="@item.Name" />
+                        <div class="city">@item.Name</div>
+                     
                     </div>
                 }
                 else
                 {
-                    <div class="star" style="left:@string.Format("{0}%", item.ToLeft);top:@string.Format("{0}%", item.ToTop);">
-                        <img src="/assets/img/star.png" title="@item.Name" />
-                    </div>
+        <div class="star" style="left:@string.Format("{0}%", item.ToLeft);top:@string.Format("{0}%", item.ToTop);">
+            <img src="/assets/img/star.png" title="@item.Name" />
+            <div class="city">@item.Name</div>
+        </div>
                 }
 
             }
@@ -186,7 +189,9 @@
 @section Scripts
     {
     <script src="~/plugins/swiper/js/swiper.min.js"></script>
-
+    <script src="~/plugins/mediaelement/mediaelement-and-player.min.js"></script>
+    <script src="~/plugins/counterup/waypoints.min.js"></script>
+    <script src="~/plugins/counterup/jquery.counterup.min.js"></script>
     <!-- Google Analytics -->
     <script>
         //Make sure that the dom is ready

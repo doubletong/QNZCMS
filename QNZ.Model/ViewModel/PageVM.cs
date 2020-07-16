@@ -8,7 +8,30 @@ using X.PagedList;
 
 namespace QNZ.Model.ViewModel
 {
-   public  class PageVM
+    #region Front
+    public class PageVM
+    {
+        public int Id { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Title")]
+        public string Title { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "SeoName")]
+        public string SeoName { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Importance")]
+        public int Importance { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "ViewCount")]
+        public int ViewCount { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Active")]
+        public bool Active { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "CreatedDate")]
+        public DateTime CreatedDate { get; set; }
+
+    }
+    public class PageDetailVM:PageVM
+    {
+        public string Body { get; set; }
+    }
+    #endregion
+    public class PageBVM
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")]
