@@ -7,7 +7,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <link href="~/plugins/swiper/css/swiper.min.css" rel="stylesheet" />
-    <link href="~/plugins/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />
+    @*<link href="~/plugins/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />*@
 }
 
 
@@ -36,7 +36,7 @@
                         <div class="name">仕佳光子</div>
                     </div>
                     <div class="col-md-auto">
-                        <div class="code">股票代码：000000</div>
+                        <div class="code">股票代码：688313</div>
                     </div>
                     <div class="col-md-auto">
                         <div class="row no-gutters align-items-center">
@@ -73,12 +73,12 @@
             <div class="swiper-wrapper">
                 @foreach (var item in Model.Solutions)
                 {
-                    <div class="swiper-slide" style="background-image:url('@item.SliderImage');">
+                    <div class="swiper-slide" style="background-image:url('@item.ImageUrl');">
                         <div class="container">
                             <div class="des">
                                 <h3 class="title">@item.Title</h3>
                                 <h4 class="subtitle">@item.SubTitle</h4>
-                                <p>@item.Summary</p><a class="more" asp-controller="solutions" asp-action="detail" asp-route-id="@item.Id">查看更多 <i class="iconfont icon-next"></i></a>
+                                <p>@item.Description</p><a class="more" asp-controller="solutions" asp-action="detail" asp-route-id="@item.Id">查看更多 <i class="iconfont icon-next"></i></a>
                             </div>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
 @section Scripts
     {
     <script src="~/plugins/swiper/js/swiper.min.js"></script>
-    <script src="~/plugins/mediaelement/mediaelement-and-player.min.js"></script>
+    @*<script src="~/plugins/mediaelement/mediaelement-and-player.min.js"></script>*@
     <script src="~/plugins/counterup/waypoints.min.js"></script>
     <script src="~/plugins/counterup/jquery.counterup.min.js"></script>
     <!-- Google Analytics -->
@@ -212,7 +212,7 @@
 
         $(function () {
 
-            $('video, audio').mediaelementplayer();
+            //$('video, audio').mediaelementplayer();
 
             $('.numup').counterUp({
                 delay: 10, // the delay time in ms

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Job>
+﻿@model JobPageVM
 @{
     var pageMeta = (PageMeta)ViewData["PageMeta"];
     ViewData["Title"] = pageMeta != null ? pageMeta.Title : "社会招聘";
@@ -31,8 +31,14 @@
         <div class="title-section wow fadeInUp">
             <h2 class="text-center">社会招聘</h2>
         </div>
+        <div class="filter">
+            <select class="categories text30" asp-for="@Model.BranchId"  asp-items="@((SelectList)ViewData["Branches"])">
+                <option value="0">请按公司筛选</option>
+            </select>
+        </div>
+ 
         <div class="joblist">
-            @foreach (var item in Model)
+            @foreach (var item in Model.Jobs)
             {
                 @await Html.PartialAsync("_JobItem", item)
             }
@@ -47,6 +53,15 @@
             //e.preventdefault();
             $(this).next('.box-body').slideToggle();
             $(this).closest(".box").toggleClass('open');
+
+
+        })
+
+        $(function (e) {
+            $("#BranchId").change(function (e) {
+                var bid = $(this).val();
+                location.href = "/about/social?bid=" + bid;
+            })
         })
     </script>
 }

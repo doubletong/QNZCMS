@@ -7,7 +7,7 @@
             </div>
             <div class="col-md">
                 @await Component.InvokeAsync("SiteNav", new { categoryId = 2 })
-              
+
             </div>
             <div class="col-md-auto">
                 @await Component.InvokeAsync("SocialApp")
@@ -23,3 +23,4 @@
         <p class="copyright">Copyright 2015-@DateTime.Now.Year &copy; @SettingsManager.Company.Name  <a href="http://www.beian.miit.gov.cn/">@SettingsManager.Site.WebNumber</a></p>
     </div>
 </footer>
+<a class="toTop" id="toTop" href="javascript:void(0);"><img src="/assets/img/top.png" alt=""></a>

@@ -188,6 +188,11 @@ namespace QNZ.Data
 
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
 
+                entity.HasOne(d => d.Branch)
+                    .WithMany(p => p.Jobs)
+                    .HasForeignKey(d => d.BranchId)
+                    .HasConstraintName("FK_Jobs_Branches");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Jobs)
                     .HasForeignKey(d => d.CategoryId)
@@ -211,6 +216,8 @@ namespace QNZ.Data
             modelBuilder.Entity<Memorabilium>(entity =>
             {
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Year).HasDefaultValueSql("((2016))");
             });
 
             modelBuilder.Entity<Menu>(entity =>
@@ -383,6 +390,11 @@ namespace QNZ.Data
                     .IsUnique();
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_ProductCategories_ProductCategories");
             });
 
             modelBuilder.Entity<RoleMenu>(entity =>

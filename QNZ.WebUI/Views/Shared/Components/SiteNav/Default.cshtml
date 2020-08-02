@@ -7,28 +7,36 @@
         @foreach (var item in Model)
         {
         <li>
-            <a href="@item.Url" class="@((url==item.Url || url.Contains(item.Url)) ?"active":"")">@item.Title</a>
+            <a href="@item.Url" class="@((url==item.Url || url.Contains(item.Url)) ?"active":"")" @(item.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"") >@item.Title</a>
             @if (item.InverseParent.Any())
             {
               
                 <div class="subnav-container" id="subnav-container">
                     <div class="container">
                         <div class="row">
-                            @foreach (var subitem in item.InverseParent)
+                            @foreach (var subitem in item.InverseParent.OrderBy(d=>d.Importance))
                             {
                                 if (subitem.InverseParent.Any() && subitem.Active)
                                 {
                                     <div class="col-md-auto">
                                         <dl>
-                                            <dt>@subitem.Title</dt>
-                                            @foreach (var minsub in subitem.InverseParent)
+                                            @if (subitem.InverseParent.Any())
                                             {
-                                                if (minsub.Active)
+                                                <dt>@subitem.Title</dt>
+                                                @foreach (var minsub in subitem.InverseParent)
                                                 {
-                                                    <dd><a class="@(url==minsub.Url ?"active":"")" href="@minsub.Url">@minsub.Title</a></dd>
-                                                }
+                                                    if (minsub.Active)
+                                                    {
+                                                        <dd><a class="@(url==minsub.Url ?"active":"")" href="@minsub.Url" @(minsub.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@minsub.Title</a></dd>
+                                                    }
 
+                                                }
                                             }
+                                            else
+                                            {
+                                                <dt><a class="@(url==subitem.Url ?"active":"")" href="@subitem.Url" @(subitem.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@subitem.Title</a></dt>
+                                            }
+
                                         </dl>
                                     </div>
                                 }

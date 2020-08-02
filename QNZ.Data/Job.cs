@@ -32,7 +32,13 @@ namespace QNZ.Data
         public string UpdatedBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? UpdatedDate { get; set; }
+        public int? BranchId { get; set; }
+        [StringLength(150)]
+        public string HrEmail { get; set; }
 
+        [ForeignKey(nameof(BranchId))]
+        [InverseProperty("Jobs")]
+        public virtual Branch Branch { get; set; }
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(JobCategory.Jobs))]
         public virtual JobCategory Category { get; set; }

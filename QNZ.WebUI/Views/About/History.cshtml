@@ -55,14 +55,12 @@
                     <div class="swiper-slide">
                         <h3 class="title">@item 年</h3>
                         <ul class="list">
-                            @foreach (var m in Model.Memorabilias.Where(d => d.DateAt.Year == item))
+                            @foreach (var m in Model.Memorabilias.Where(d => d.Year == item))
                             {
                                 <li>
-                                    <time>@string.Format("{0:yyyy.MM}", m.DateAt)</time> @m.Description
+                                    <time>@m.Year</time> @m.Description
                                 </li>
                             }
-
-
                         </ul>
                     </div>
                 }

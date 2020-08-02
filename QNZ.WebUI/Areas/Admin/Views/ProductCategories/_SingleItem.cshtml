@@ -1,0 +1,28 @@
+﻿@model ProductCategoryBVM
+
+
+    <tr id="@(Model.Id)tr">
+        <td><input type="checkbox" value="@Model.Id" class="ModelSelect" /></td>
+
+        <td>
+            @Html.DisplayFor(modelItem => Model.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Alias)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => Model.Importance)
+        </td>
+        <td>
+            @Model.CreatedDate.ToShortDateString()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Active)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm"><i class="iconfont icon-edit"></i></a>
+            <a asp-action="Copy" asp-route-id="@Model.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+        </td>
+    </tr>

@@ -6,7 +6,7 @@
                 @await Component.InvokeAsync("SiteNav", new { categoryId = 1 })               
             </div>
             <div class="col-auto search"><a id="btnSearch" href="javascript:void(0);"><i class="iconfont icon-search"></i></a></div>
-            <div class="col-auto langs"><a href="#"><img src="/assets/img/cn.png" alt="中文"></a><a href="#"><img src="/assets/img/en.png" alt="English"></a></div>
+            <div class="col-auto langs"><a href="http://www.sjphotons.com/"><img src="/assets/img/cn.png" alt="中文"></a><a href="http://en.sjphotons.com/"><img src="/assets/img/en.png" alt="English"></a></div>
             <div class="col-auto mobilemenu">
                 <div class="menu-toggle">
                     <div class="one"></div>
@@ -33,63 +33,6 @@
         </div>
     </div>
     <div class="menu-over" id="overmenu">
-        <ul class="mobilenav">
-            <li><a class="active" href="index.html">首页</a></li>
-            <li class="down">
-                <a href="#">关于我们</a>
-                <ul class="subnav">
-                    <li class="down">
-                        <a href="#">公司概况</a>
-                        <ul class="subnav">
-                            <li> <a class="active" href="about.html">仕佳简介</a></li>
-                            <li> <a href="history.html">发展历程</a></li>
-                            <li> <a href="framework.html">组织架构</a></li>
-                            <li> <a href="quality.html">质量体系</a></li>
-                            <li> <a href="honors.html">荣誉资质</a></li>
-                        </ul>
-                    </li>
-                    <li class="down">
-                        <a href="#">新闻资讯</a>
-                        <ul class="subnav">
-                            <li> <a href="news.html">企业动态</a></li>
-                            <li> <a href="media.html">媒体报导</a></li>
-                            <li> <a href="exhibition.html">参展信息</a></li>
-                            <li> <a href="newsletter.html">快讯</a></li>
-                        </ul>
-                    </li>
-                    <li class="down">
-                        <a href="#">投资者关系</a>
-                        <ul class="subnav">
-                            <li> <a href="disclosure.html">信息披露</a></li>
-                            <li> <a href="financial.html">财务报告</a></li>
-                            <li> <a href="egm.html">股东大会</a></li>
-                            <li> <a href="directorate.html">董事会</a></li>
-                            <li> <a href="aufsichtsrat.html">监事会</a></li>
-                            <li> <a href="executives.html">企业高管</a></li>
-                        </ul>
-                    </li>
-                    <li class="down">
-                        <a href="#">人力资源</a>
-                        <ul class="subnav">
-                            <li> <a href="job.html">社会招聘</a></li>
-                            <li> <a href="job1.html">校园招聘</a></li>
-                        </ul>
-                    </li>
-                    <li class="down">
-                        <a href="#">河南重点实验室</a>
-                        <ul class="subnav">
-                            <li> <a href="lab.html">实验室简介</a></li>
-                            <li> <a href="research.html">研究方向</a></li>
-                            <li> <a href="team.html">队伍建设和人才培养</a></li>
-                            <li> <a href="exchange.html">学术交流和开放流动</a></li>
-                            <li> <a href="lab_honors.html">实验室荣誉</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="solutions.html">解决方案       </a></li>
-            <li><a href="products.html">产品中心</a></li>
-            <li><a href="contact.html">联系我们     </a></li>
-        </ul>
+        @await Component.InvokeAsync("SiteNavMobile", new { categoryId = 1 })
     </div>
 </header>

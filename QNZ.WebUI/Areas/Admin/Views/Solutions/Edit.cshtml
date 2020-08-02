@@ -1,108 +1,143 @@
 ﻿@model SolutionIM
 
 @{
-    ViewData["Title"] =  Model.Id>0 ? "编辑" :"创建";
+    ViewData["Title"] = Model.Id > 0 ? "编辑" : "创建";
 }
 
 
 
-    <form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
-          data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
-          data-ajax="true" data-ajax-method="POST">
+<form asp-action="Edit" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave"
+      data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
+      data-ajax="true" data-ajax-method="POST">
 
-        <div class="card">
-            <h5 class="card-header">@ViewData["Title"]</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md">
+    <div class="card">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md">
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <input type="hidden" asp-for="Id" />
-
-
-                        <div class="form-group">
-                            <label asp-for="Title" class="control-label"></label>
-                            <input asp-for="Title" class="form-control" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-
-                        @*<div class="form-group">
-                            <label asp-for="Alias" class="control-label"></label>
-                            <input asp-for="Alias" class="form-control" />
-                            <span asp-validation-for="Alias" class="text-danger"></span>
-                        </div>*@
-
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label"></label>
-                            <textarea asp-for="Description" class="form-control"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="Importance" class="control-label"></label>
-                            <input asp-for="Importance" class="form-control" />
-                            <span asp-validation-for="Importance" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                                </label>
-                            </div>
-                        </div>
-                        @*<hr />
-                        <h5>SEO</h5>
-
-                        <div class="form-group">
-                            <label asp-for="SEOTitle" class="control-label"></label>
-                            <input asp-for="SEOTitle" class="form-control" />
-                            <span asp-validation-for="SEOTitle" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="SEOKeywords" class="control-label"></label>
-                            <input asp-for="SEOKeywords" class="form-control" />
-                            <span asp-validation-for="SEOKeywords" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="SEODescription" class="control-label"></label>
-                            <textarea asp-for="SEODescription" class="form-control"></textarea>
-                            <span asp-validation-for="SEODescription" class="text-danger"></span>
-                        </div>*@
+                    <input type="hidden" asp-for="Id" />
 
 
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
-                    <div class="col-md-auto">
-                        <div class="card" style="width:300px;">
-                            <div class="card-header text-center">
-                                图片
+
+                    <div class="form-group">
+                        <label asp-for="SubTitle" class="control-label"></label>
+                        <input asp-for="SubTitle" class="form-control" />
+                        <span asp-validation-for="SubTitle"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Body" class="control-label"></label>
+                        <div style="flex: 2">
+                            <textarea asp-for="Body"></textarea>
+                        </div>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Products" class="control-label"></label>
+                        <select asp-for="Products" class="form-control" asp-items="@((SelectList)ViewData["Products"])"></select>
+                        <span asp-validation-for="Products" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" />
+                        <span asp-validation-for="Importance" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-auto">
+                    <div class="card mb-3" style="width:320px;">
+                        <div class="card-header text-center">
+                            图一
+                        </div>
+                        <div class="card-body">
+                            <img data-src="holder.js/300x160?text=图片" id="imgThumbnail" src="@(Model!=null?Model.Thumbnail:"")">
+
+                            <input asp-for="Thumbnail" type="hidden" />
+                            <span asp-validation-for="Thumbnail"></span>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-info btn-block" id="setThumbnail">
+                                <i class="iconfont icon-upload"></i> 浏览图片
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3" style="width:320px;">
+                        <div class="card-header text-center">
+                            图二
+                        </div>
+                        <div class="card-body">
+                            <img data-src="holder.js/300x100?text=规格 \n 1180x473像素" id="imgImageUrl" src="@(Model!=null?Model.ImageUrl:"")">
+                            <input type="hidden" asp-for="ImageUrl" />
+                            <span asp-validation-for="ImageUrl"></span>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-info btn-block" id="btnImageUrl">
+                                <i class="iconfont icon-upload"></i> 浏览图片
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="width:320px;">
+                        <h5 class="card-header">SEO</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="SEOTitle" class="control-label"></label>
+                                <input asp-for="SEOTitle" class="form-control" />
+                                <span asp-validation-for="SEOTitle" class="text-danger"></span>
                             </div>
-                            <div class="card-body">
-                                <img data-src="holder.js/300x200?text=规格 \n 240x180像素" id="imgImageUrl" src="@(Model!=null?Model.FontIcon:"")">
-                                <input type="hidden" asp-for="FontIcon" />
+                            <div class="form-group">
+                                <label asp-for="SEOKeywords" class="control-label"></label>
+                                <input asp-for="SEOKeywords" class="form-control" />
+                                <span asp-validation-for="SEOKeywords" class="text-danger"></span>
                             </div>
-                            <div class="card-footer">
-                                <button type="button" class="btn btn-info btn-block" id="btnImageUrl">
-                                    <i class="iconfont icon-upload"></i> 上传图片
-                                </button>
+                            <div class="form-group">
+                                <label asp-for="SEODescription" class="control-label"></label>
+                                <textarea asp-for="SEODescription" class="form-control"></textarea>
+                                <span asp-validation-for="SEODescription" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
-                <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-arrowleft"></i> 返回</a>
-            </div>
         </div>
-        
-    </form>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" id="btnSave"><i class="iconfont icon-save"></i> 保存</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="iconfont icon-arrowleft"></i> 返回</a>
+        </div>
+    </div>
+
+</form>
 
 
 
 @section header{
-
+    <link href="~/plugins/select2/css/select2.min.css" rel="stylesheet" />
 
 }
 
@@ -113,18 +148,62 @@
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/plugins/holder/holder.min.js"></script>
 
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+
+    <script src="~/plugins/tinymce5/tinymce.min.js"></script>
     <script>
+        var url = "@Url.Action("Index")";
 
-          function SetThumbnail(fileUrl) {
+        tinymce.init({
+            selector: '#Body',  // change this value according to your HTML
+            height: 400,
+            language: 'zh_CN',
 
-            $('#imgImageUrl').attr("src",fileUrl);
-            $('#FontIcon').val(fileUrl);
+            convert_urls: false,
+            //extended_valid_elements: 'span,i[class]',
+            valid_children : 'a[p|span|div|strong|i]',
+            valid_elements : "*[*]",
+            //picture manager
+            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
+            images_upload_handler: QNZ.ImagesUploadHandler,
+            plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
 
+              toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
+
+        autosave_ask_before_unload: true,
+              autosave_interval: "30s",
+              autosave_prefix: "{path}{query}-{id}-",
+              autosave_restore_when_empty: false,
+            autosave_retention: "2m",
+
+          image_advtab: true,
+                    importcss_append: true,
+             image_caption: true,
+          templates: [
+                { title: '新表格', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            { title: '文章样式', description: 'A cure for writers block', content: 'Once upon a time...' },
+            { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+          ],
+
+
+
+        });
+
+
+        function SetThumbnail(fileUrl) {
+
+            $('#imgThumbnail').attr("src", fileUrl);
+            $('#Thumbnail').val(fileUrl);
 
         }
 
+        function SetImageUrl(fileUrl) {
 
-        var modelName = "代理商";
+            $('#imgImageUrl').attr("src", fileUrl);
+            $('#ImageUrl').val(fileUrl);
+        }
+
+
         function onFailed() {
             toastr.error("操作失败！");
         }
@@ -158,13 +237,26 @@
         $(function () {
 
 
-            $("#btnImageUrl").on("click", function () {
+            $("#setThumbnail").on("click", function () {
                 QNZ.selectActionFunction = SetThumbnail;
                 QNZ.open();
 
             });
 
+            $("#btnImageUrl").on("click", function () {
+                QNZ.selectActionFunction = SetImageUrl;
+                QNZ.open();
 
+            });
+
+
+
+            $('#btnBack').on('click',
+                function () {
+                    location.href = url;
+                });
+
+            $("#Products").select2();
 
 
         });

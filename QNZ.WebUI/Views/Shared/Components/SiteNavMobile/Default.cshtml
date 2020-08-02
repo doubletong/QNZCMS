@@ -1,0 +1,51 @@
+@model IEnumerable<QNZ.Data.Navigation>
+@{
+    var url = Context.Request.Path.ToString();
+}
+   
+
+    <ul class="mobilenav">
+        @foreach (var item in Model)
+        {
+
+        <li class="@(item.InverseParent.Any()?"down":"")">
+
+
+            @if (item.InverseParent.Any())
+            {
+                <a href="#">@item.Title</a>
+                <ul class="subnav">
+                    @foreach (var subitem in item.InverseParent.OrderBy(d => d.Importance))
+                    {
+                        <li class="@(subitem.InverseParent.Any()?"down":"")">
+
+                            @if (subitem.InverseParent.Any())
+                            {
+                                <a href="#">@subitem.Title</a>
+                                <ul class="subnav">
+                                    @foreach (var subsubitem in subitem.InverseParent.OrderBy(d => d.Importance))
+                                    {
+                                        <li><a class="@(url==subsubitem.Url ?"active":"")" href="@subsubitem.Url" @(subsubitem.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@subsubitem.Title</a></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+
+                                <a class="@(url==subitem.Url ?"active":"")" href="@subitem.Url" @(subitem.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@subitem.Title</a>
+                            }
+
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <a class="@(url==item.Url ?"active":"")" href="@item.Url" @(item.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@item.Title</a>
+                }
+            </li>
+
+       
+        }
+     
+    </ul>

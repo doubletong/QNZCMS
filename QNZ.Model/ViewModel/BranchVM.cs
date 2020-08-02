@@ -58,6 +58,7 @@ namespace QNZ.Model.ViewModel
         public string Contact { get; set; }
         public string ImageUrl { get; set; }
         public int ViewCount { get; set; }
+        public int Importance { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Address { get; set; }
         public bool Active { get; set; }

@@ -150,10 +150,10 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Title")]
         public string Title { get; set; }
 
-
         [StringLength(150, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         [Display(ResourceType = typeof(Labels), Name = "SubTitle")]
         public string SubTitle { get; set; }
+
 
         [StringLength(150, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         [Display(ResourceType = typeof(Labels), Name = "Thumbnail")]

@@ -30,9 +30,9 @@
                         <th style="width:30px;">
                             <input type="checkbox" id="allSelect" />
                         </th>
-                        @*<th>
+                        <th>
                             图片
-                        </th>*@
+                        </th>
                         <th>
                             <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
                         </th>
@@ -56,12 +56,12 @@
                     {
                     <tr id="@(item.Id)tr">
                         <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
-                        @*<td>
-                            @if (!string.IsNullOrEmpty(item.FontIcon))
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Thumbnail))
                             {
-                                <img src="@item.FontIcon" style="height:50px;" />
+                                <img src="@item.Thumbnail" style="height:50px;" />
                             }
-                        </td>*@
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>

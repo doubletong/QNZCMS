@@ -18,6 +18,7 @@ using QNZ.Resources.Admin;
 using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -44,13 +45,11 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 Keyword = keyword,
                 OrderBy = orderby,
-                Sort = sort
+                Sort = sort,
+               
             };
 
-            var query = _context.ProductCategories.AsNoTracking().AsQueryable();
-            if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
-
+            var query = _context.ProductCategories.AsNoTracking().AsQueryable();  
             var gosort = $"{orderby}_{sort}";
 
             query = gosort switch
@@ -64,7 +63,23 @@ namespace QNZCMS.Areas.Admin.Controllers
                 _ => query.OrderByDescending(s => s.Id),
             };
 
-            vm.Categories = await query.ProjectTo<ProductCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var categories = await query.ProjectTo<ProductCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var list = new List<ProductCategoryBVM>();
+            foreach (var item in categories.Where(d => d.ParentId == null))
+            {
+               //  vm.Categories.Add(item);
+                LoadCategories(list, item, 0, 0, categories);
+            }
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                vm.Categories = list.Where(d=>d.Title.Contains(keyword));
+            }
+            else
+            {
+                vm.Categories = list;
+            }
+                
 
             return View(vm);
         }
@@ -80,36 +95,90 @@ namespace QNZCMS.Areas.Admin.Controllers
                 Importance = 0
             };
 
-            var categories = await _context.Videos.AsNoTracking()
+            var categories = await _context.ProductCategories.OrderByDescending(d=>d.Importance).ProjectTo<ProductCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync(); 
+            var catelist = new List<ProductCategoryBVM>();
+
+
+            var videos = await _context.Videos.AsNoTracking()
                 .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
-            ViewData["Videos"] = new SelectList(categories, "Id", "Title");
+            ViewData["Videos"] = new SelectList(videos, "Id", "Title");
 
             if (id == null)
             {
+
+
+                foreach (var item in categories.Where(d => d.ParentId == null))
+                {
+                    if (item.Id != 0)
+                    {
+                        LoadCategories(catelist, item, 0, 0, categories);
+                    }
+
+                }
+                ViewData["Categories"] = new SelectList(catelist, "Id", "Title");
+
                 return View(vm);
             }
-         
-            var category = await _context.ProductCategories.FindAsync(id);
-            if (category == null)
+            else
             {
-                return NotFound();
+
+                var category = await _context.ProductCategories.FindAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                var model = _mapper.Map<ProductCategoryIM>(category);
+
+                var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.CATEGORY && d.ObjectId == category.Alias);
+
+                if (pm != null)
+                {
+                    model.SEOTitle = pm.Title;
+                    model.SEOKeywords = pm.Keywords;
+                    model.SEODescription = pm.Description;
+                }
+
+               
+                foreach (var item in categories.Where(d=>d.ParentId==null))
+                {
+                    if (item.Id != category.Id)
+                    {
+                        LoadCategories(catelist, item, 0, category.Id, categories);
+                    }
+
+                }
+                ViewData["Categories"] = new SelectList(catelist, "Id", "Title");
+
+                return View(model);
+
             }
-            var model = _mapper.Map<ProductCategoryIM>(category);
-
-            var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLECATEGORY && d.ObjectId == category.Alias);
-
-            if (pm != null)
-            {
-                model.SEOTitle = pm.Title;
-                model.SEOKeywords = pm.Keywords;
-                model.SEODescription = pm.Description;
-            }
-
-
-       
-
-            return View(model);
           
+          
+        }
+
+        private void LoadCategories(List<ProductCategoryBVM> catelist, ProductCategoryBVM item, int level,int cid, List<ProductCategoryBVM> categories)
+        {
+            level++;
+            string fuhao = "";
+            for(int i = 1; i < level; i++)
+            {
+                fuhao += "— ";
+            }
+            item.Title = fuhao + item.Title;
+            catelist.Add(item);
+            var list = categories.Where(d => d.ParentId == item.Id);
+            if (list.Any())
+            {
+                foreach (var sub in list)
+                {
+                    if (sub.Id != cid)
+                    {
+                        LoadCategories(catelist, sub, level, cid, categories);
+                    }
+                   
+                }
+
+            }
         }
 
         // POST: Admin/ProductCategories/Edit/5
@@ -117,7 +186,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("Id,Title,Alias,Description,Importance,Active,VideoId,SEOTitle,SEOKeywords,SEODescription")] ProductCategoryIM im, int id = 0)
+        public async Task<IActionResult> Edit( [Bind("Id,Title,ParentId,Alias,Description,Importance,Active,VideoId,SEOTitle,SEOKeywords,SEODescription")] ProductCategoryIM im, int id = 0)
         {
             if (!ModelState.IsValid)
             {

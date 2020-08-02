@@ -8,6 +8,11 @@ namespace QNZ.Data
 {
     public partial class Branch
     {
+        public Branch()
+        {
+            Jobs = new HashSet<Job>();
+        }
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -41,5 +46,8 @@ namespace QNZ.Data
         public string UpdatedBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? UpdatedDate { get; set; }
+
+        [InverseProperty(nameof(Job.Branch))]
+        public virtual ICollection<Job> Jobs { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace QNZCMS.Models.Shared
             if (!_cacheService.IsSet(keyNav))
             {
                // return View("Default", (List<Navigation>)_cacheService.Get(keyNav));
-                var socialapps = await _context.SocialApps.Where(d => d.Active)
+                var socialapps = await _context.SocialApps.Where(d => d.Active==true)
                     .OrderByDescending(d=>d.Importance).ThenBy(d=>d.Id).ToListAsync();
 
                 _cacheService.Set(keyNav, socialapps, 30);

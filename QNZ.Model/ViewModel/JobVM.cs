@@ -31,11 +31,11 @@ namespace QNZ.Model.ViewModel
 
     public class JobPageVM
     {
-        public IEnumerable<JobVM> RecommendJobs { get; set; }
+        public int BranchId { get; set; }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
-        public StaticPagedList<JobVM> Jobs { get; set; }
+        public StaticPagedList<Job> Jobs { get; set; }
     }
 
     
@@ -112,6 +112,7 @@ namespace QNZ.Model.ViewModel
         public string Address { get; set; }
         public DateTime CreatedDate { get; set; }     
         public string Department { get; set; }
+        public string CompanyName { get; set; }
         public int Number { get; set; }
         public int Importance { get; set; }
         public bool Active { get; set; }
@@ -159,14 +160,22 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Number")]
         public int Number { get; set; }
 
+        [EmailAddress(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "EmailAddressInvalidFormat")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [Display(ResourceType = typeof(Labels), Name = "Email")]
+        public string HrEmail { get; set; }
 
         [Display(ResourceType = typeof(Labels), Name = "Importance")]
         public int Importance { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
         [Display(ResourceType = typeof(Labels), Name = "Category")]
         public int CategoryId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
+        [Display(ResourceType = typeof(Labels), Name = "Company")]
+        public int BranchId { get; set; }
+        
 
-  
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }
        

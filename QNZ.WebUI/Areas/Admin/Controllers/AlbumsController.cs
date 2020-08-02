@@ -131,7 +131,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 // return RedirectToAction(nameof(Index));
                 _cacheService.Invalidate("PHOTO");
-                _cacheService.Invalidate("ALUBM");
+                _cacheService.Invalidate("ALBUM");
                 AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Album));
                 return Json(AR);
             }
@@ -165,7 +165,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 //await CreatedUpdatedPageMetaAsync(_context, pm);
 
                 _cacheService.Invalidate("PHOTO");
-                _cacheService.Invalidate("ALUBM");
+                _cacheService.Invalidate("ALBUM");
                 AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Album));
                     return Json(AR);
                 }
@@ -210,7 +210,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.Albums.Add(article);
 
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             await _context.SaveChangesAsync();
 
             return Json(AR);
@@ -240,7 +240,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
 
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 
@@ -264,7 +264,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 
@@ -288,7 +288,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.Albums.Remove(c);
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 

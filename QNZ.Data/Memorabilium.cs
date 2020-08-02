@@ -10,11 +10,12 @@ namespace QNZ.Data
     {
         [Key]
         public int Id { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime DateAt { get; set; }
         [Required]
         [StringLength(500)]
         public string Description { get; set; }
+        public short Year { get; set; }
+        public short? Month { get; set; }
+        public short? Date { get; set; }
         [Required]
         public bool? Active { get; set; }
         [Column(TypeName = "datetime")]

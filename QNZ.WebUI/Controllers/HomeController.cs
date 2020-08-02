@@ -56,9 +56,9 @@ namespace QNZCMS.Controllers
 
             var vm = new HomePageVM
             {
-                Solutions = await _context.Articles.Where(d => d.Active == true && d.Category.Alias == "solutions")
-                 .OrderByDescending(d => d.Pubdate).ThenByDescending(d => d.Id)
-                 .ProjectTo<ArticleVM>(_mapper.ConfigurationProvider).ToListAsync(),
+                Solutions = await _context.Solutions.Where(d => d.Active == true)
+                 .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id)
+                 .ProjectTo<SolutionVM>(_mapper.ConfigurationProvider).ToListAsync(),
                 Adverts = ads,
 
                 Shopes = await _context.Shopes.Where(d => d.Active == true).ProjectTo<ShopeVM>(_mapper.ConfigurationProvider).ToListAsync(),

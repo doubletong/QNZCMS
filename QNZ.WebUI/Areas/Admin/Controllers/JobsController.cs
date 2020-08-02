@@ -59,11 +59,11 @@ namespace QNZCMS.Areas.Admin.Controllers
             var gosort = $"{orderby}_{sort}";
             query = gosort switch
             {
-                "importance" => query.OrderBy(s => s.Importance),
+                "importance_asc" => query.OrderBy(s => s.Importance),
                 "importance_desc" => query.OrderByDescending(s => s.Importance),
-                "title" => query.OrderBy(s => s.Title),
+                "title_asc" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
-                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
               
                 _ => query.OrderByDescending(s => s.Id),
@@ -123,7 +123,9 @@ namespace QNZCMS.Areas.Admin.Controllers
                .OrderByDescending(d => d.Importance).ToListAsync();
             ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 
-           
+            var branches = await _context.Branches.AsNoTracking()
+               .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Branches"] = new SelectList(branches, "Id", "Name");
 
             return View(vm);
 
@@ -269,8 +271,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-     
+        {    
 
             var c = await _context.Jobs.FirstOrDefaultAsync(d => d.Id == id);
 

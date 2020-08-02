@@ -672,4 +672,7 @@
   <data name="QRCode" xml:space="preserve">
     <value>二维码</value>
   </data>
+  <data name="RelatedProducts" xml:space="preserve">
+    <value>相关产品</value>
+  </data>
 </root>

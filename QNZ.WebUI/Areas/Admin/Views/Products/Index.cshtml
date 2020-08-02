@@ -72,7 +72,27 @@
                             <th>
                                 所属分类
                             </th>
+                            <th>
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="importance" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="importance">
+                                    排序
+                                    @if (Model.OrderBy == "importance")
+                                    {
+                                        if (Model.Sort == "asc")
+                                        {
+                                            <i class="iconfont icon-order-up"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-order-down"></i>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-orderby"></i>
+                                    }
 
+                                </a>
+                            </th>
                             <th>
                                 <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@((Model.OrderBy=="view" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="view">
                                     查看
@@ -139,7 +159,7 @@
                             <td>
                                 @if (!string.IsNullOrEmpty(item.Thumbnail))
                                 {
-                                    <img src="@item.Thumbnail" style="height:50px"/>
+                                    <img src="@item.Thumbnail" style="height:50px" />
                                 }
                             </td>
                             <td>
@@ -148,6 +168,9 @@
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.CategoryTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Importance)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DownloadCount)
@@ -186,12 +209,12 @@
 
                     </div>
                     <div class="col-auto">
-                        @Html.PagedListPager(Model.Products, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId }),
+                        @Html.PagedListPager(Model.Products, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId, sort = Model.Sort, orderby = Model.OrderBy }),
                          new PagedListRenderOptions
-                              {
+                         {
                              LiElementClasses = new string[] { "page-item" },
                              PageClasses = new string[] { "page-link" }
-                     })
+                         })
                     </div>
 
                     <div class="col-auto">

@@ -53,11 +53,18 @@
                         <span asp-validation-for="Body" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Summary" class="control-label"></label>                       
+                        <label asp-for="Summary" class="control-label"></label>
                         <textarea asp-for="Summary" class="form-control" rows="4"></textarea>
-                       
+
                         <span asp-validation-for="Summary" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" />
+                        <span asp-validation-for="Importance"></span>
+                    </div>
+
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" asp-for="Active">
                         <label asp-for="Active" class="form-check-label"></label>

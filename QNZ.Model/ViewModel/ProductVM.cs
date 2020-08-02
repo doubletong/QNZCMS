@@ -15,6 +15,7 @@ namespace QNZ.Model.ViewModel
         [Display(ResourceType = typeof(Labels), Name = "Title")]
         public string Title { get; set; }
         public int? VideoId { get; set; }
+        public int? ParentId { get; set; }
 
     }
     public class ProductVM
@@ -34,6 +35,7 @@ namespace QNZ.Model.ViewModel
     public class ProductPageVM
     {
         public IEnumerable<ProductCategoryVM> Categories { get; set; }
+        public IEnumerable<ProductCategoryVM> SubCategories { get; set; }
         public IEnumerable<ProductVM> Products { get; set; }
         public int? CategoryId { get; set; }
 
@@ -60,6 +62,9 @@ namespace QNZ.Model.ViewModel
         public int Id { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Title")] 
         public string Title { get; set; }
+        public string Description { get; set; }
+        
+        public int? ParentId { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "ImageURL")]
         public string ImageUrl { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Alias")]
@@ -99,6 +104,9 @@ namespace QNZ.Model.ViewModel
         [Remote("IsAliasUnique", "ProductCategories", AdditionalFields = "Id", ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "IsExist")]
         public string Alias { get; set; }
 
+        [Display(ResourceType = typeof(Labels), Name = "ParentCategory")]
+        public int? ParentId { get; set; }
+
         [Display(ResourceType = typeof(Labels), Name = "Importance")]
         public int Importance { get; set; }
 
@@ -119,6 +127,7 @@ namespace QNZ.Model.ViewModel
         public string Title { get; set; }
         public string Thumbnail { get; set; }
         public string CategoryTitle { get; set; }
+        public int Importance { get; set; }
         public int DownloadCount { get; set; }
         public DateTime CreatedDate { get; set; }     
      

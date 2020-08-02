@@ -59,8 +59,8 @@ namespace QNZCMS.Areas.Admin.Controllers
    
                 "description_asc" => query.OrderBy(s => s.Description),
                 "description_desc" => query.OrderByDescending(s => s.Description),
-                "at_asc" => query.OrderBy(s => s.DateAt),
-                "at_desc" => query.OrderByDescending(s => s.DateAt),
+                "year_asc" => query.OrderBy(s => s.Year),
+                "year_desc" => query.OrderByDescending(s => s.Year),
                 "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
 
@@ -89,7 +89,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
 
                 vm.Active = true;
-                vm.DateAt = DateTime.Now;
+                vm.Year = (short)DateTime.Now.Year;
 
                 return View(vm);
             }
@@ -111,7 +111,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,DateAt,Description,Active")] MemorabiliaIM page)
+        public async Task<IActionResult> Edit([Bind("Id,Year,Month,Date,Description,Active")] MemorabiliaIM page)
         {
 
             if (!ModelState.IsValid)
@@ -225,7 +225,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
         // POST: Admin/Pages/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

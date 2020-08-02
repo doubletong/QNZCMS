@@ -10,6 +10,7 @@ namespace QNZ.Data
     {
         public ProductCategory()
         {
+            InverseParent = new HashSet<ProductCategory>();
             Products = new HashSet<Product>();
         }
 
@@ -35,7 +36,13 @@ namespace QNZ.Data
         public DateTime? UpdatedDate { get; set; }
         [StringLength(50)]
         public string UpdatedBy { get; set; }
+        public int? ParentId { get; set; }
 
+        [ForeignKey(nameof(ParentId))]
+        [InverseProperty(nameof(ProductCategory.InverseParent))]
+        public virtual ProductCategory Parent { get; set; }
+        [InverseProperty(nameof(ProductCategory.Parent))]
+        public virtual ICollection<ProductCategory> InverseParent { get; set; }
         [InverseProperty(nameof(Product.Category))]
         public virtual ICollection<Product> Products { get; set; }
     }

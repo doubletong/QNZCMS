@@ -107,15 +107,21 @@ namespace QNZCMS.Areas.Admin.Controllers
                 return NotFound();
             }
             var model = _mapper.Map<SolutionIM>(category);
+            model.Products = !string.IsNullOrEmpty(model.RelatedProducts) ? model.RelatedProducts.Split("|") : null;;
 
-            //var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLECATEGORY && d.ObjectId == category.Alias);
+            var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.SOLUTION && d.ObjectId == category.Id.ToString());
 
-            //if (pm != null)
-            //{
-            //    model.SEOTitle = pm.Title;
-            //    model.SEOKeywords = pm.Keywords;
-            //    model.SEODescription = pm.Description;
-            //}
+            if (pm != null)
+            {
+                model.SEOTitle = pm.Title;
+                model.SEOKeywords = pm.Keywords;
+                model.SEODescription = pm.Description;
+            }
+
+            var categories = await _context.Products.AsNoTracking()
+             .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Products"] = new SelectList(categories, "Id", "Title");
+
 
             return View(model);
           
@@ -126,7 +132,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( [Bind("Id,Title,ImageUrl,Alias,Description,Importance,Active,SEOTitle,SEOKeywords,SEODescription")] SolutionIM im, int id = 0)
+        public async Task<IActionResult> Edit( [Bind("Id,Title,SubTitle,Thumbnail,ImageUrl,Body,Description,RelatedProducts,Products,Importance,Active,SEOTitle,SEOKeywords,SEODescription")] SolutionIM im, int id = 0)
         {
             if (!ModelState.IsValid)
             {
@@ -134,10 +140,13 @@ namespace QNZCMS.Areas.Admin.Controllers
                 return Json(AR);
             }
 
+            im.RelatedProducts = im.Products != null ? string.Join("|", im.Products) : null; ;
+
             if (id == 0)
             {
              
                 var model = _mapper.Map<Solution>(im);
+            
                 model.CreatedBy = User.Identity.Name;
                 model.CreatedDate = DateTime.Now;
                 _context.Add(model);
@@ -148,7 +157,8 @@ namespace QNZCMS.Areas.Admin.Controllers
                 AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Solution));
                 return Json(AR);
             }
-          
+            else
+            {
                 if (id != im.Id)
                 {
                     AR.Setfailure("未发现此分类");
@@ -166,16 +176,16 @@ namespace QNZCMS.Areas.Admin.Controllers
                     _context.Update(model);
                     await _context.SaveChangesAsync();
 
-                    //var pm = new PageMeta
-                    //{
-                    //    Title = im.SEOTitle,
-                    //    Description = im.SEODescription,
-                    //    Keywords = im.SEOKeywords,
-                    //    ModuleType = (short)ModuleType.ARTICLECATEGORY,
-                    //    ObjectId = im.Alias
-                    //};
+                    var pm = new PageMeta
+                    {
+                        Title = im.SEOTitle,
+                        Description = im.SEODescription,
+                        Keywords = im.SEOKeywords,
+                        ModuleType = (short)ModuleType.SOLUTION,
+                        ObjectId = im.Id.ToString()
+                    };
 
-                    //await CreatedUpdatedPageMetaAsync(_context, pm);
+                    await CreatedUpdatedPageMetaAsync(_context, pm);
 
                     AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Solution));
                     return Json(AR);
@@ -193,9 +203,8 @@ namespace QNZCMS.Areas.Admin.Controllers
                         return Json(AR);
                     }
                 }
-               
-              
-            
+
+            }
            
         }
 

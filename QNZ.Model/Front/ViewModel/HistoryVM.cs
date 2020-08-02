@@ -8,6 +8,6 @@ namespace QNZ.Model.Front.ViewModel
     public class HistoryVM
     {
         public IEnumerable<MemorabiliaVM> Memorabilias { get; set; }
-        public IEnumerable<int> Years { get; set; }
+        public IEnumerable<short> Years { get; set; }
     }
 }

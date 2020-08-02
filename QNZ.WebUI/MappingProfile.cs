@@ -112,8 +112,8 @@ namespace QNZCMS
             CreateMap<Post, PostIM>();
             CreateMap<PostIM, Post>();
 
-            CreateMap<Solution, SolutionBVM>()
-              .ForMember(d => d.WorkCount, opt => opt.MapFrom(source => source.Works.Count()));
+            CreateMap<Solution, SolutionVM>();
+            CreateMap<Solution, SolutionBVM>();
             CreateMap<Solution, SolutionIM>();
             CreateMap<SolutionIM, Solution>();
 
@@ -204,7 +204,8 @@ namespace QNZCMS
 
             CreateMap<Job, JobVM>();
             CreateMap<Job, JobBVM>()
-                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
+                 .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title))
+                 .ForMember(d => d.CompanyName, opt => opt.MapFrom(source => source.Branch.Name));
 
             CreateMap<Job, JobIM>();
             CreateMap<JobIM, Job>();

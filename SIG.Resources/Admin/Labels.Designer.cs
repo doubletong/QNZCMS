@@ -1267,6 +1267,15 @@ namespace QNZ.Resources.Admin {
         }
         
         /// <summary>
+        ///   查找类似 相关产品 的本地化字符串。
+        /// </summary>
+        public static string RelatedProducts {
+            get {
+                return ResourceManager.GetString("RelatedProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 记住我？ 的本地化字符串。
         /// </summary>
         public static string RememberMe {

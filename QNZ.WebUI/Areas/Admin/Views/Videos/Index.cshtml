@@ -183,12 +183,12 @@
 
                     </div>
                     <div class="col-auto">
-                        @Html.PagedListPager(Model.Videos, page => Url.Action("Index", new { page = page, keyword = Model.Keyword }),
+                        @Html.PagedListPager(Model.Videos, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, sort = Model.Sort, orderby = Model.OrderBy }),
                          new PagedListRenderOptions
-                              {
+                         {
                              LiElementClasses = new string[] { "page-item" },
                              PageClasses = new string[] { "page-link" }
-                     })
+                         })
                     </div>
 
                     <div class="col-auto">

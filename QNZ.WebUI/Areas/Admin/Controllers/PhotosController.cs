@@ -45,7 +45,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 Keyword = keyword,
                 AlbumId = albumId,
                 PageSize = SettingsManager.Photo.PageSize,
-                   OrderBy = orderby,
+                OrderBy = orderby,
                 Sort = sort
             };
 
@@ -62,11 +62,11 @@ namespace QNZCMS.Areas.Admin.Controllers
             var gosort = $"{orderby}_{sort}";
             query = gosort switch
             {
-                "importance" => query.OrderBy(s => s.Importance),
+                "importance_asc" => query.OrderBy(s => s.Importance),
                 "importance_desc" => query.OrderByDescending(s => s.Importance),
-                "title" => query.OrderBy(s => s.Title),
+                "title_asc" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
-                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
               
                 _ => query.OrderByDescending(s => s.Id),
@@ -201,7 +201,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 }
 
                 _cacheService.Invalidate("PHOTO");
-                _cacheService.Invalidate("ALUBM");
+                _cacheService.Invalidate("ALBUM");
                 await CreatedUpdatedPageMetaAsync(_context, pm);
 
                 return Json(AR);
@@ -265,7 +265,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.Photos.Add(article);
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
         // POST: Admin/Photos/Delete/5
@@ -286,7 +286,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.Photos.Remove(c);
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 
@@ -307,7 +307,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.Photos.RemoveRange(c);
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 
@@ -331,7 +331,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
             _cacheService.Invalidate("PHOTO");
-            _cacheService.Invalidate("ALUBM");
+            _cacheService.Invalidate("ALBUM");
             return Json(AR);
         }
 

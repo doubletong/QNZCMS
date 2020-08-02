@@ -41,9 +41,9 @@
                                     <input type="checkbox" id="allSelect" />
                                 </th>
                                 <th>
-                                    <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="at" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="at">
-                                        日期
-                                        @if (Model.OrderBy == "at")
+                                    <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="year" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="year">
+                                        年
+                                        @if (Model.OrderBy == "year")
                                         {
                                             if (Model.Sort == "asc")
                                             {
@@ -53,7 +53,7 @@
                                             {
                                                 <i class="iconfont icon-order-down"></i>
                                             }
-                                        }                                  
+                                        }
                                         else
                                         {
                                             <i class="iconfont icon-orderby"></i>
@@ -61,7 +61,12 @@
 
                                     </a>
                                 </th>
-                         
+                                <th>
+                                    月
+                                </th>
+                                <th>
+                                    日
+                                </th>
                                 <th>
                                     <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="description" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="description">
                                         事件
@@ -83,7 +88,7 @@
 
                                     </a>
                                 </th>
-                              
+
                                 <th>
                                     激活
                                 </th>
@@ -113,28 +118,35 @@
                         <tbody id="tbList">
                             @foreach (var item in Model.Memorabilias)
                             {
-                                <tr id="@(item.Id)tr">
-                                    <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
-                                    <td>
-                                        @item.DateAt.ToShortDateString()                                  
-                                    </td>
+                            <tr id="@(item.Id)tr">
+                                <td><input type="checkbox" value="@item.Id" class="itemSelect" /></td>
+                                <td>
+                                    @item.Year
+                                </td>
+                                <td>
+                                    @item.Month
+                                </td>
+                                <td>
+                                    @item.Date
+                                </td>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                        
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Active)
-                                    </td>
-                                    <td>
-                                        @item.CreatedDate.ToShortDateString()
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
-                                        <a asp-action="Copy" asp-route-id="@item.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
-                                    </td>
-                                </tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Active)
+                                </td>
+                                <td>
+                                    @item.CreatedDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm" title="编辑"><i class="iconfont icon-edit"></i></a>
+                                    <a asp-action="Copy" asp-route-id="@item.Id" class="btn btn-info btn-sm btn-copy" title="拷贝"><i class="iconfont icon-file-copy"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm btn-delete" title="删除"><i class="iconfont icon-delete"></i></a>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -150,12 +162,12 @@
                     </div>
                     <div class="col-auto">
 
-                        @Html.PagedListPager(Model.Memorabilias, page => Url.Action("Index", new { page = page, keyword = Model.Keyword }),
+                        @Html.PagedListPager(Model.Memorabilias, page => Url.Action("Index", new { page = page, keyword = Model.Keyword , sort = Model.Sort, orderby = Model.OrderBy }),
                       new PagedListRenderOptions
-                           {
+                      {
                           LiElementClasses = new string[] { "page-item" },
                           PageClasses = new string[] { "page-link" }
-                  })
+                      })
                     </div>
                     <div class="col-auto">
                         总记录<strong>@Model.TotalCount</strong>条

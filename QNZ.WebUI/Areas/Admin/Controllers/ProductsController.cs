@@ -59,11 +59,13 @@ namespace QNZCMS.Areas.Admin.Controllers
             var gosort = $"{orderby}_{sort}";
             query = gosort switch
             {
-                "view" => query.OrderBy(s => s.DownloadCount),
+                "importance_asc" => query.OrderBy(s => s.Importance),
+                "importance_desc" => query.OrderByDescending(s => s.Importance),
+                "view_asc" => query.OrderBy(s => s.DownloadCount),
                 "view_desc" => query.OrderByDescending(s => s.DownloadCount),
-                "title" => query.OrderBy(s => s.Title),
+                "title_asc" => query.OrderBy(s => s.Title),
                 "title_desc" => query.OrderByDescending(s => s.Title),
-                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
 
                 _ => query.OrderByDescending(s => s.Id),
@@ -77,15 +79,43 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             vm.Products = new StaticPagedList<ProductBVM>(clients, vm.PageIndex, vm.PageSize, vm.TotalCount);
 
-            var categories = await _context.ProductCategories.AsNoTracking()
-                 .OrderByDescending(d => d.Importance).ToListAsync();
-            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
+
+            var categories = await _context.ProductCategories.OrderByDescending(d => d.Importance).ProjectTo<ProductCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var catelist = new List<ProductCategoryBVM>();
+            foreach (var item in categories.Where(d => d.ParentId == null))
+            {              
+                LoadCategories(catelist, item, 0, categories);
+            }
+            ViewData["Categories"] = new SelectList(catelist, "Id", "Title");
+
 
             ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
             return View(vm);
         }
 
+
+        private void LoadCategories(List<ProductCategoryBVM> catelist, ProductCategoryBVM item, int level,  List<ProductCategoryBVM> categories)
+        {
+            level++;
+            string fuhao = "";
+            for (int i = 1; i < level; i++)
+            {
+                fuhao += "— ";
+            }
+            item.Title = fuhao + item.Title;
+            catelist.Add(item);
+            var list = categories.Where(d => d.ParentId == item.Id);
+            if (list.Any())
+            {
+                foreach (var sub in list)
+                {                  
+                     LoadCategories(catelist, sub, level, categories);                  
+
+                }
+
+            }
+        }
 
 
 
@@ -119,11 +149,14 @@ namespace QNZCMS.Areas.Admin.Controllers
                 }
 
             }
-            var categories = await _context.ProductCategories.AsNoTracking()
-               .OrderByDescending(d => d.Importance).ToListAsync();
-            ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 
-
+            var categories = await _context.ProductCategories.OrderByDescending(d => d.Importance).ProjectTo<ProductCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var catelist = new List<ProductCategoryBVM>();
+            foreach (var item in categories.Where(d => d.ParentId == null))
+            {
+                LoadCategories(catelist, item, 0, categories);
+            }
+            ViewData["Categories"] = new SelectList(catelist, "Id", "Title");
 
             return View(vm);
 

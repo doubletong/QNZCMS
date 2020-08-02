@@ -18,6 +18,7 @@ using System.IO;
 using QNZ.Infrastructure.Cache;
 using QNZ.Infrastructure.Email;
 
+
 namespace QNZCMS
 {
     public class Startup
@@ -90,7 +91,8 @@ namespace QNZCMS
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
             services.AddRazorPages();
-         
+
+
 
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

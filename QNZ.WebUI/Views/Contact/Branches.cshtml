@@ -18,7 +18,7 @@
 
 <div class="page page-contact page-branch">
     <section class="s1 container">
-        <div class="submenu"><a href="/contact">联系我们</a><a class="active" href="/contact/branches">分子公司</a></div>
+        <div class="submenu"><a href="/contact">联系我们</a><a class="active" href="/contact/branches">分/子公司</a></div>
         <div class="title-section">
             <h2 class="text-center">分子公司信息</h2>
         </div>
@@ -33,7 +33,7 @@
                                 <header>
                                     @if (!string.IsNullOrEmpty(item.Homepage))
                                     {
-                                        <a class="home fr" href="//www.baidu.com">进入官网<i class="iconfont icon-next"></i></a>
+                                        <a class="home fr" href="@item.Homepage" target="_blank">进入官网<i class="iconfont icon-next"></i></a>
                                     }
                                     <h3 class="name">@item.Name</h3>
                                 </header>

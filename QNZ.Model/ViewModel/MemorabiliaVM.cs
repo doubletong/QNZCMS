@@ -11,8 +11,12 @@ namespace QNZ.Model.ViewModel
    public  class MemorabiliaVM
     {
         public int Id { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Year")]
+        public short Year { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Month")]
+        public short? Month { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Date")]
-        public DateTime DateAt { get; set; }
+        public short? Date { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Description")]
         public string Description { get; set; }     
         [Display(ResourceType = typeof(Labels), Name = "Active")]
@@ -30,9 +34,15 @@ namespace QNZ.Model.ViewModel
         [StringLength(500, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(Validations))]
         public string Description { get; set; }        
 
+        [Display(ResourceType = typeof(Labels), Name = "Year")]
+        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "RequiredSelect")]
+        public short Year { get; set; }
+        [Display(ResourceType = typeof(Labels), Name = "Month")]
+
+        public short? Month { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Date")]
-        [Required(ErrorMessageResourceType = typeof(Validations), ErrorMessageResourceName = "Required")]
-        public DateTime DateAt { get; set; }
+
+        public short? Date { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "Active")]
         public bool Active { get; set; }
 

@@ -21,12 +21,31 @@
         <div class="submenu">
             @foreach (var item in Model.Categories)
             {
-                <a class="@(Model.CategoryId == item.Id?"active":"")" asp-action="Index" asp-route-cid="@item.Id">@item.Title</a>
+                <a class="@(Model.CategoryId == item.Id || Model.Category.ParentId == item.Id ?"active":"")" asp-action="Index" asp-route-cid="@item.Id">@item.Title</a>
             }
 
 
         </div>
-        @if (Model.Video!=null)
+        @if (Model.SubCategories!=null && Model.SubCategories.Any())
+        {
+            <div class="filter">
+                <select class="categories text30" id="categories" name="categories">
+                    <option value="">分类筛选</option>
+                    @foreach (var item in Model.SubCategories)
+                    {
+                    if(Model.CategoryId == item.Id){
+
+                    <option value="@item.Id" selected>@item.Title</option>
+                        }else{
+                    <option value="@item.Id">@item.Title</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+
+
+        @if (Model.Video != null)
         {
             <div class="video-container">
                 <video id="myVideo" poster="@Model.Video.Cover" width="100%">
@@ -49,10 +68,10 @@
                             </div>
                         </div>
                         <div class="col-lg-auto">
-                            <a class="view" href="@item.FileUrl">
+                            <a class="view" href="@item.FileUrl" target="_blank">
                                 <i class="iconfont icon-view"></i>
                                 <div class="more">查看</div>
-                            </a><a class="view" asp-action="Download" asp-route-id="@item.Id">
+                            </a><a class="view" asp-action="Download" asp-route-id="@item.Id" target="_blank">
                                 <i class="iconfont icon-download"></i>
                                 <div class="more">下载</div>
                             </a>
@@ -62,54 +81,6 @@
             }
 
 
-            @*<div class="item">
-                <div class="row">
-                    <div class="col-md-auto"><img class="pic" src="/assets/img/temp/p1.jpg" alt=""></div>
-                    <div class="col">
-                        <div class="txt">
-                            <h3 class="title">裸纤型光分路器</h3>
-                            <ul class="list">
-                                <li>产品类别： 光分路器产品</li>
-                                <li>特性： 高稳定性，低损耗 结构紧凑</li>
-                                <li>应用范围： 光纤网络</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-auto">
-                        <a class="view" href="#">
-                            <div class="iconfont icon-view"></div>
-                            <div class="more">查看</div>
-                        </a><a class="view" href="#">
-                            <div class="iconfont icon-download"></div>
-                            <div class="more">下载</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="row">
-                    <div class="col-md-auto"><img class="pic" src="/assets/img/temp/p1.jpg" alt=""></div>
-                    <div class="col-md">
-                        <div class="txt">
-                            <h3 class="title">裸纤型光分路器</h3>
-                            <ul class="list">
-                                <li>产品类别： 光分路器产品</li>
-                                <li>特性： 高稳定性，低损耗 结构紧凑</li>
-                                <li>应用范围： 光纤网络</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-auto">
-                        <a class="view" href="#">
-                            <div class="iconfont icon-view"></div>
-                            <div class="more">查看</div>
-                        </a><a class="view" href="#">
-                            <div class="iconfont icon-download"></div>
-                            <div class="more">下载</div>
-                        </a>
-                    </div>
-                </div>
-            </div>*@
         </div>
     </section>
 </div>
@@ -135,6 +106,15 @@
                 btn.innerHTML = "Play";
             }
         }
+        $("#categories").change(function (e) {
+            e.preventDefault();
+
+            var id = $(this).val();
+            if (id.length > 0) {
+                location.href = "/products?cid=" + id;
+            }
+            
+        })
     </script>
 
 }

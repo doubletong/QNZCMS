@@ -1,8 +1,10 @@
-﻿@model Article
+﻿@model Solution
 
 @{
     var pageMeta = (PageMeta)ViewData["PageMeta"];
     ViewData["Title"] = pageMeta != null ? pageMeta.Title : Model.Title;
+
+    var products = (IEnumerable<Product>)ViewData["Products"];
 
 }
 @section Header{
@@ -30,13 +32,49 @@
                 <div class="col-auto"><a class="back" href="javascript:window.history.back();">返回<i class="iconfont icon-next"></i></a></div>
             </div>
         </header>
-        <div class="title-section-v2">
-            <h2>方案介绍</h2>
-        </div>
+
         <article>
             @Html.Raw(Model.Body)
 
         </article>
+        <div class="title-section">
+            <h2>相关产品</h2>
+        </div>
+        <ul class="list"  id="products">
+            @if (products != null)
+            {
+                foreach (var item in products)
+                {
+            <li>
+                <a href="javascript:void(0);">@item.Title<i class="iconfont icon-next"></i></a>
+
+                <div class="product">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 col-lg-auto"><img class="pic" src="@item.Thumbnail" alt=""></div>
+                        <div class="col-md-6 col-lg">
+                            <div class="txt">
+                                <h3 class="title">产品简介</h3>
+                                @Html.Raw(item.Body)
+                            </div>
+                        </div>
+                        <div class="col-lg-auto">
+                            <a class="view" href="@item.FileUrl">
+                                <i class="iconfont icon-view"></i>
+                                <div class="more">查看</div>
+                            </a><a class="view" asp-action="Download" asp-route-id="@item.Id">
+                                <i class="iconfont icon-download"></i>
+                                <div class="more">下载</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                }
+            }
+
+
+
+        </ul>
     </section>
 </div>
 
@@ -49,8 +87,16 @@
     <script>
         $(function () {
 
-            $('video, audio').mediaelementplayer();
+                $('video, audio').mediaelementplayer();
+                $("#products li a").click(function (e) {
+                    $(this).toggleClass('active');
+                    $(this).closest("li").siblings().find("a.active").removeClass('active');
+                    $(this).closest("li").siblings().find(".product:visible").slideToggle();
+                    $(this).next(".product").slideToggle();
+                })
 
+
+   
         });
     </script>
 

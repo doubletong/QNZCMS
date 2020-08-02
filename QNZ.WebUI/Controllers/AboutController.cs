@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Data.Enums;
@@ -45,9 +46,9 @@ namespace QNZCMS.Controllers
         }
         public async Task<IActionResult> History()
         {
-            var memoList = await _context.Memorabilia.Where(d => d.Active == true).OrderByDescending(d => d.DateAt)
+            var memoList = await _context.Memorabilia.Where(d => d.Active == true).OrderByDescending(d => d.Year)
                 .ProjectTo<MemorabiliaVM>(_mapper.ConfigurationProvider).ToListAsync();
-            var years = memoList.Select(d => d.DateAt.Year).Distinct();
+            var years = memoList.Select(d => d.Year).Distinct();
             var vm = new HistoryVM
             {
                 Memorabilias = memoList,
@@ -278,7 +279,7 @@ namespace QNZCMS.Controllers
             }
 
             vm.TotalCount = await query.CountAsync();
-            var articles = await query.OrderByDescending(d => d.DateStart).ThenByDescending(d => d.Id).ProjectTo<ExhibitionVM> (_mapper.ConfigurationProvider)
+            var articles = await query.OrderBy(d => d.DateStart).ThenByDescending(d => d.Id).ProjectTo<ExhibitionVM> (_mapper.ConfigurationProvider)
                 .Skip((vm.PageIndex - 1) * vm.PageSize).Take(vm.PageSize)
                 .ToListAsync();
 
@@ -348,7 +349,7 @@ namespace QNZCMS.Controllers
 
             var url = Request.Path.ToString();
             ViewData["PageMeta"] = await _context.PageMetas.FirstOrDefaultAsync(d => d.ObjectId == url && d.ModuleType == (short)ModuleType.MENU);
-
+            ViewData["Page"] = await _context.Pages.FirstOrDefaultAsync(d => d.SeoName == "newsletter");
             return View(vm);
         }
         public async Task<IActionResult> NewsletterDetail(int? id)
@@ -518,12 +519,27 @@ namespace QNZCMS.Controllers
         #endregion
 
         #region 人力资源
-        public async Task<IActionResult> SocialAsync()
+        public async Task<IActionResult> SocialAsync(int? bid, int? page)
         {
+            var query = _context.Jobs.Include(d => d.Branch).Where(d => d.Active == true && d.Category.Alias == "social");
+            if (bid > 0)
+            {
+                query = query.Where(d => d.BranchId == bid);
+            }
+            var list = await query.OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
+            var vm = new JobPageVM
+            {
+                PageIndex = page ?? 1,
+                PageSize = int.MaxValue,
+                BranchId = bid ?? 0,
 
-            var vm = await _context.Jobs.Where(d => d.Active == true && d.Category.Alias == "social")
-               .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
+            };
+            vm.Jobs = new StaticPagedList<Job>(list, vm.PageIndex, vm.PageSize, list.Count());
 
+
+            var branches = await _context.Branches.AsNoTracking()
+             .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Branches"] = new SelectList(branches, "Id", "Name");
 
             var url = Request.Path.ToString();
             ViewData["PageMeta"] = await _context.PageMetas.FirstOrDefaultAsync(d => d.ObjectId == url && d.ModuleType == (short)ModuleType.MENU);
@@ -531,12 +547,28 @@ namespace QNZCMS.Controllers
 
             return View(vm);
         }
-        public async Task<IActionResult> CampusAsync()
+        public async Task<IActionResult> CampusAsync(int? bid,int? page)
         {
+            var query = _context.Jobs.Include(d => d.Branch).Where(d => d.Active == true && d.Category.Alias == "campus");
+            if (bid > 0)
+            {
+               
+                query = query.Where(d => d.BranchId == bid);
+            }
 
-            var vm = await _context.Jobs.Where(d => d.Active == true && d.Category.Alias == "campus")
-               .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
+            var list = await query.OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id).ToListAsync();
+            var vm = new JobPageVM
+            {
+                PageIndex = page ?? 1,
+                PageSize = int.MaxValue,
+                BranchId = bid ?? 0,
+               
+            };
+            vm.Jobs = new StaticPagedList<Job>(list, vm.PageIndex, vm.PageSize, list.Count());
 
+            var branches = await _context.Branches.AsNoTracking()
+              .OrderByDescending(d => d.Importance).ToListAsync();
+            ViewData["Branches"] = new SelectList(branches, "Id", "Name");
 
             var url = Request.Path.ToString();
             ViewData["PageMeta"] = await _context.PageMetas.FirstOrDefaultAsync(d => d.ObjectId == url && d.ModuleType == (short)ModuleType.MENU);

@@ -30,8 +30,19 @@
 
                     <div class="form-group">
                         <label asp-for="CategoryId" class="control-label"></label>
-                        <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])"></select>
+                        <select asp-for="CategoryId" class="form-control" asp-items="@((SelectList)ViewData["Categories"])">
+                            <option value="">--请选择分类--</option>
+                        </select>
                         <span asp-validation-for="CategoryId"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="BranchId" class="control-label"></label>
+                        <select asp-for="BranchId" class="form-control" asp-items="@((SelectList)ViewData["Branches"])">
+                            <option value="">--请选择公司--</option>
+                        </select>
+                        <span asp-validation-for="BranchId"></span>
                     </div>
 
 
@@ -61,7 +72,17 @@
                     </div>
 
 
+                    <div class="form-group">
+                        <label asp-for="Importance" class="control-label"></label>
+                        <input asp-for="Importance" class="form-control" />
+                        <span asp-validation-for="Importance"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label asp-for="HrEmail" class="control-label"></label>
+                        <input asp-for="HrEmail" class="form-control" />
+                        <span asp-validation-for="HrEmail"></span>
+                    </div>
 
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" asp-for="Active">

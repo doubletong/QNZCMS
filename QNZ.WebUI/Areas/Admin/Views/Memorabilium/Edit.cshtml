@@ -2,6 +2,28 @@
 @{
     var pageTitle = Model.Id > 0 ? "编辑发展历程" : "创建发展历程";
     ViewData["Title"] = pageTitle;
+
+
+    var items = new List<int>();
+    for (var i = DateTime.Now.Year; i> 2009; i--)
+    {
+        items.Add(i);
+    }
+    var years = new SelectList(items);
+
+    var items1 = new List<int>();
+    for (var i = 1; i <= 12; i++)
+    {
+        items1.Add(i);
+    }
+    var months = new SelectList(items1);
+
+    var items2 = new List<int>();
+    for (var i = 1; i <= 31; i++)
+    {
+        items2.Add(i);
+    }
+    var dates = new SelectList(items2);
 }
 
 
@@ -18,15 +40,31 @@
         <div class="card-body">
 
             <div class="form-group">
-                <label asp-for="DateAt" class="control-label"></label>
-                <input asp-for="DateAt" class="form-control" type="date" />
-                <span asp-validation-for="DateAt" class="text-danger"></span>
+                <label asp-for="Year" class="control-label"></label>
+                <select asp-for="Year" class="form-control" asp-items="@years">
+                    <option value="">请选择年份</option>
+                </select>
+                <span asp-validation-for="Year" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="Month" class="control-label"></label>
+                <select asp-for="Month" class="form-control" asp-items="@months">
+                    <option value="">请选择月份</option>
+                </select>
+                <span asp-validation-for="Month" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <select asp-for="Date" class="form-control" asp-items="@dates">
+                    <option value="">请选择日期</option>
+                </select>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea asp-for="Description" rows="6" class="form-control"></textarea>
+
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 

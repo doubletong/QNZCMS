@@ -1,21 +1,28 @@
 ﻿@model ContactIM
 @using System;
 @{
-    ViewData["Title"] = "联系我们_高端网站建设哪家好_深圳网站设计_用户体验设计_小程序开发_APP开发_公众号开发";
+    var pageMeta = (PageMeta)ViewData["PageMeta"];
+    ViewData["Title"] = pageMeta != null ? pageMeta.Title : "联系我们";
+
 
 }
 @section Header{
-    <meta name="keywords" content="网站制作公司,网站建设公司哪家好,网站建设哪家公司好,小程序开发,响应式网站">
-    <meta name="description" content="黑鸟志拥有多年的网站建设经验，网站建设公司哪家好,手机网站建设，小程序开发，网站建设哪家公司好首选深圳黑鸟志。">
+    @if (pageMeta != null)
+    {
+        <meta name="keywords" content="@pageMeta.Keywords">
+        <meta name="description" content="@pageMeta.Description">
+
+    }
     <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
     <style>
-        .validation-summary-errors ul{
-            list-style:none;
-            text-align:center;
-            color:#cb2c2c;
-            margin:0;padding:1rem;
-           
+        .validation-summary-errors ul {
+            list-style: none;
+            text-align: center;
+            color: #cb2c2c;
+            margin: 0;
+            padding: 1rem;
         }
+
         .page-contact .quoteform .input-validation-error {
             background-color: #fbdede;
         }
@@ -27,7 +34,7 @@
 
 <div class="page page-contact">
     <section class="s1 container">
-        <div class="submenu"><a class="active" href="/contact">联系我们</a><a href="/contact/branches">分子公司</a></div>
+        <div class="submenu"><a class="active" href="/contact">联系我们</a><a href="/contact/branches">分/子公司</a></div>
         <div class="contact row">
             <div class="col-md">
                 <div class="item">
@@ -94,7 +101,7 @@
             <div class="title-section">
                 <h2 class="text-center">给我们留言</h2>
             </div>
-        
+
             <form asp-action="SendEmail" data-ajax-begin="onBeginSave" data-ajax-complete="onCompleteSave" class="quoteform"
                   data-ajax-failure="onFailed" data-ajax-success="onSuccessSave"
                   data-ajax="true" data-ajax-method="POST">
@@ -146,7 +153,7 @@
                     <button class="btn btn-primary" type="submit">提交</button>
                 </div>
             </form>
-</div>
+        </div>
     </section>
 </div>
 
@@ -178,8 +185,8 @@
 
 
         function onSuccessSave(data) {
-            if (data.status === 1) {             
-                toastr.success(data.message);        
+            if (data.status === 1) {
+                toastr.success(data.message);
 
             }
             if (data.status === 2) {

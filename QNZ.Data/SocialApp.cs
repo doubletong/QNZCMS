@@ -13,7 +13,6 @@ namespace QNZ.Data
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
-     
         [StringLength(100)]
         public string Account { get; set; }
         [StringLength(150)]
@@ -25,7 +24,7 @@ namespace QNZ.Data
         public string Qrcode { get; set; }
         public int Importance { get; set; }
         [Required]
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         [Required]
         [StringLength(50)]
         public string CreatedBy { get; set; }

@@ -44,7 +44,7 @@
                                 图片
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-keyword="@Model.Keyword"  asp-route-sort="@((Model.OrderBy=="title" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="title">
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="title" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="title">
                                     公司名称
                                     @if (Model.OrderBy == "name")
                                     {
@@ -70,7 +70,28 @@
                             </th>
 
                             <th>
-                                <a asp-action="Index" asp-route-keyword="@Model.Keyword"  asp-route-sort="@((Model.OrderBy=="view" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="view">
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="importance" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="importance">
+                                    排序
+                                    @if (Model.OrderBy == "importance")
+                                    {
+                                        if (Model.Sort == "asc")
+                                        {
+                                            <i class="iconfont icon-order-up"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-order-down"></i>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-orderby"></i>
+                                    }
+
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="view" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="view">
                                     查看
                                     @if (Model.OrderBy == "view")
                                     {
@@ -95,9 +116,9 @@
                             <th>
                                 激活
                             </th>
-                      
+
                             <th>
-                                <a asp-action="Index" asp-route-keyword="@Model.Keyword"  asp-route-sort="@((Model.OrderBy=="date" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="date">
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="date" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="date">
                                     日期
                                     @if (Model.OrderBy == "date")
                                     {
@@ -140,7 +161,9 @@
                                 @Html.DisplayFor(modelItem => item.Contact) <br />
                                 @Html.DisplayFor(modelItem => item.Address)
                             </td>
-                       
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Importance)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ViewCount)
                             </td>
@@ -176,12 +199,12 @@
 
                     </div>
                     <div class="col-auto">
-                        @Html.PagedListPager(Model.Branches, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId }),
+                        @Html.PagedListPager(Model.Branches, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId, sort = Model.Sort, orderby = Model.OrderBy }),
                          new PagedListRenderOptions
-                              {
+                         {
                              LiElementClasses = new string[] { "page-item" },
                              PageClasses = new string[] { "page-link" }
-                     })
+                         })
                     </div>
 
                     <div class="col-auto">

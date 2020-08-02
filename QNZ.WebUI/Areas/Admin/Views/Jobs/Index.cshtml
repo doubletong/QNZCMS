@@ -67,11 +67,9 @@
                             <th>
                                 所属分类
                             </th>
+                        
                             <th>
-                                工作地址
-                            </th>
-                            <th>
-                                部门
+                                公司
                             </th>
                             <th>
                                 人数
@@ -145,11 +143,9 @@
                                 @Html.DisplayFor(modelItem => item.CategoryTitle)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Address)
+                                @Html.DisplayFor(modelItem => item.CompanyName)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Department)
-                            </td>
+                          
                             <td>
                                 @Html.DisplayFor(modelItem => item.Number)
                             </td>
@@ -187,12 +183,12 @@
 
                     </div>
                     <div class="col-auto">
-                        @Html.PagedListPager(Model.Jobs, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId }),
+                        @Html.PagedListPager(Model.Jobs, page => Url.Action("Index", new { page = page, keyword = Model.Keyword, categoryId = Model.CategoryId, sort = Model.Sort, orderby = Model.OrderBy }),
                          new PagedListRenderOptions
-                              {
+                         {
                              LiElementClasses = new string[] { "page-item" },
                              PageClasses = new string[] { "page-link" }
-                     })
+                         })
                     </div>
 
                     <div class="col-auto">
@@ -413,7 +409,8 @@
         });
 
 
-          //single delete
+
+        //single delete
         $(".btn-delete").click(function (e) {
             e.preventDefault();
             var url = $(this).attr("href");
@@ -457,6 +454,11 @@
 
 
         });
+
+
+
+
+
 
         $(function () {
 

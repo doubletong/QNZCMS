@@ -26,12 +26,11 @@ namespace QNZCMS.Controllers
             _cacheService = cacheService;
         }
         public async Task<IActionResult> IndexAsync()
-        {
-            string alias = "solutions";
+        {      
 
-            var vm = await _context.Articles.Where(d => d.Active == true && d.Category.Alias == alias)
-                .OrderByDescending(d => d.Pubdate).ThenByDescending(d => d.Id)
-                .ProjectTo<ArticleVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var vm = await _context.Solutions.Where(d => d.Active == true)
+                .OrderByDescending(d => d.Importance).ThenByDescending(d => d.Id)
+                .ProjectTo<SolutionVM>(_mapper.ConfigurationProvider).ToListAsync();
 
 
             var url = Request.Path.ToString();
@@ -47,17 +46,26 @@ namespace QNZCMS.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Articles
-                .Include(a => a.Category)
+            var article = await _context.Solutions                
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
                 return NotFound();
             }
 
-            article.ViewCount++;
-            _context.Update(article);
-            await _context.SaveChangesAsync();
+            if(!string.IsNullOrEmpty(article.RelatedProducts))
+            {
+                var pids = article.RelatedProducts.Split("|");
+              
+                var listOfInts = pids.Select<string, int>(q => Convert.ToInt32(q));
+
+                ViewData["Products"] = _context.Products.Where(d => listOfInts.Contains(d.Id)).OrderByDescending(d=>d.Importance);               
+            }
+                       
+
+          // article.ViewCount++;
+         //   _context.Update(article);
+        //    await _context.SaveChangesAsync();
 
             //var vm = new ArticleDetailVM
             //{
@@ -68,7 +76,7 @@ namespace QNZCMS.Controllers
 
 
             var objectId = id.ToString();
-            ViewData["PageMeta"] = await _context.PageMetas.FirstOrDefaultAsync(d => d.ObjectId == objectId && d.ModuleType == (short)ModuleType.ARTICLE);
+            ViewData["PageMeta"] = await _context.PageMetas.FirstOrDefaultAsync(d => d.ObjectId == objectId && d.ModuleType == (short)ModuleType.SOLUTION);
 
             return View(article);
         }
