@@ -13,23 +13,28 @@ using QNZ.Model.Front.ViewModel;
 using QNZ.Model.ViewModel;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using QNZ.Infrastructure.Helper;
 
 namespace QNZCMS.Controllers
 {
     public class HomeController : Controller
     {
-        private IWebHostEnvironment _hostingEnvironment;      
+        private IWebHostEnvironment _hostingEnvironment;
         private readonly ICacheService _cacheService;
         private readonly YicaiyunContext _context;
         private readonly IMapper _mapper;
+        private readonly IFileProvider _fileProvider;
         public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context, IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
             _cacheService = cache;
             _context = context;
             _mapper = mapper;
+            _fileProvider = hostingEnvironment.WebRootFileProvider;
         }
-    
+
         public async Task<IActionResult> IndexAsync()
         {
             //var configFile = _hostingEnvironment.WebRootPath + "\\Config\\Global.json";
@@ -92,10 +97,63 @@ namespace QNZCMS.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
         public IActionResult Upload()
         {
             return View();
         }
+
+        [Route("/image/{w}/{h}/{*url}")]
+        public IActionResult ResizeImage(string url, int w, int h)
+        {
+
+            if (w < 0 || h < 0) { return BadRequest(); }
+
+
+            var fileName = url.Replace('/', '_');
+            var thumbUrl = $"ThumbCache/w{w}_h{h}_{fileName}";
+            var thumbPath = PathString.FromUriComponent("/" + thumbUrl);
+
+            var thumbInfo = _fileProvider.GetFileInfo(thumbPath);
+
+            if (thumbInfo.Exists)
+            {
+                return File(thumbInfo.CreateReadStream(), "image/jpg");
+            }
+
+
+
+            var imagePath = "/" + url;
+            imagePath = imagePath.Replace('/', '\\');
+            var orginPath = $"{_hostingEnvironment.WebRootPath}{imagePath}";
+
+            thumbUrl = ("/" + thumbUrl).Replace('/', '\\');
+            var outPath = $"{_hostingEnvironment.WebRootPath}{thumbUrl}";
+
+            System.Drawing.Image originImage = System.Drawing.Image.FromFile(orginPath);
+            var ext = Path.GetExtension(orginPath);
+
+
+            if (originImage.Height == h && originImage.Width == w)
+            {
+                imagePath = PathString.FromUriComponent("/" + url);
+                var orginInfo = _fileProvider.GetFileInfo(imagePath);
+                return File(orginInfo.CreateReadStream(), "image/jpg");
+            }
+            else
+            {
+                ImageHandler.MakeThumbnail(orginPath, outPath, w, h, "Cut", ext.ToLower());
+            }
+
+
+            thumbInfo = _fileProvider.GetFileInfo(thumbPath);
+            return File(thumbInfo.CreateReadStream(), "image/jpg");
+
+
+        }
+
+
         //[HttpPost]
         //public async Task<IActionResult> UploadSmallFile(IFormFile file)
         //{
@@ -106,7 +164,7 @@ namespace QNZCMS.Controllers
         //    // full path to file in temp location
         //    var filePath = Path.Combine(_hostingEnvironment.WebRootPath, SettingsManager.File.RootDirectory, fileName);
         //    //   var filePath = Path.GetTempFileName();
-          
+
         //    if (file.Length > 0)
         //    {
         //        using (var stream = new FileStream(filePath, FileMode.Create))

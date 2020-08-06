@@ -38,9 +38,18 @@
         </div>
  
         <div class="joblist">
-            @foreach (var item in Model.Jobs)
+            @if (Model.Jobs != null)
             {
-                @await Html.PartialAsync("_JobItem", item)
+                foreach (var item in Model.Jobs)
+                {
+                    await Html.PartialAsync("_JobItem", item)
+                }
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    暂无招聘岗位
+                </div>
             }
         </div>
     </section>
