@@ -6,11 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "10977944",
-      "name": "YouTube",
-      "font_class": "YouTube",
-      "unicode": "e7b8",
-      "unicode_decimal": 59320
+      "icon_id": "16547088",
+      "name": "up-1",
+      "font_class": "shangzhuang",
+      "unicode": "eec2",
+      "unicode_decimal": 61122
+    },
+    {
+      "icon_id": "694897",
+      "name": "up-1",
+      "font_class": "xiadie",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "5683002",
+      "name": "youtube",
+      "font_class": "youtube",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
     },
     {
       "icon_id": "2146582",
@@ -18,13 +32,6 @@
       "font_class": "twitter",
       "unicode": "e61b",
       "unicode_decimal": 58907
-    },
-    {
-      "icon_id": "6337702",
-      "name": "up",
-      "font_class": "ziyuan",
-      "unicode": "e605",
-      "unicode_decimal": 58885
     },
     {
       "icon_id": "178349",

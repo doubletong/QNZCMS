@@ -40,9 +40,9 @@
         <div class="joblist">
             @if (Model.Jobs != null)
             {
-                foreach (var item in Model.Jobs)
+                @foreach (var item in Model.Jobs)
                 {
-                    await Html.PartialAsync("_JobItem", item)
+                    @await Html.PartialAsync("_JobItem", item)
                 }
             }
             else

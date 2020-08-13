@@ -168,7 +168,7 @@
     <script src="~/js/lib/jquery/plugins/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/plugins/toastr/toastr.min.js"></script>
     <script src="~/plugins/blockui/jquery.blockUI.js"></script>
-    <script language="javascript" src="http://api.map.baidu.com/api?v=2.0&ak=G7h0sKsr60IFU3OrHRmKTRzD"></script>
+    <script language="javascript" src="//api.map.baidu.com/api?v=2.0&ak=G7h0sKsr60IFU3OrHRmKTRzD"></script>
 
     <script>
 
@@ -198,6 +198,7 @@
 
 
 
+
         // 百度地图API功能
         var map = new BMap.Map("baidumap");
 
@@ -206,8 +207,8 @@
         map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
         map.enableContinuousZoom(); //启用地图惯性拖拽，默认禁用
 
-        map.centerAndZoom(new BMap.Point(114.081866, 22.654657), 16);
-        var point = new BMap.Point(114.081866, 22.654657);
+        map.centerAndZoom(new BMap.Point(114.304557, 35.776232), 16);
+        var point = new BMap.Point(114.304557, 35.776232);
 
         //var myIcon = new BMap.Icon("/assets/img/marker.png", new BMap.Size(132, 132));
         //var marker1 = new BMap.Marker(point, {
@@ -220,8 +221,8 @@
         // marker1.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
         var sContent =
             "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>@SettingsManager.SiteInfo.SiteName</h4>" +
-            "<p>地址：深圳市龙华新区清湖花园 <br/>" +
-            "电话：15361828193</p>" +
+            "<p>地址：@SettingsManager.Company.Address <br/>" +
+            "电话：@SettingsManager.Company.Phone</p>" +
             "</div>";
 
 

@@ -29,7 +29,7 @@
         <div class="swiper-button-prev"><i class="iconfont icon-prev"></i></div>
     </div>
 
-    @*<div class="gupiao">
+    <div class="gupiao">
         <div class="container">
             <div class="gupiao-container wow fadeInUp">
                 <div class="row align-items-center justify-content-between">
@@ -42,24 +42,24 @@
                     <div class="col-md-auto">
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="val">57.81<i class="iconfont icon-ziyuan"></i></div>
+                                <div class="val" id="gpPrice">00.00</div>
                             </div>
                             <div class="col-auto">
-                                <div class="up">+0.440 （+0.76%）</div>
+                                <div class="up"> <i class="iconfont" id="gpIcon"></i>  <span id="gpZfAmount">0.00</span> <span id="gpZfBi">(0.00%)</span></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-auto">2020-05-12  15:00:03  已收盘 （北京时间）</div>
+                    <div class="col-md-auto"><span id="gpDate">0000-00-00  00:00:00</span> <span id="gpStatus"></span> （北京时间）</div>
                     <div class="col-md-auto">
                         <ul class="zhishu">
-                            <li>今天   66.32</li>
-                            <li>昨收   66.52</li>
+                            <li>今天  <span id="todayMax">00.00</span></li>
+                            <li>昨收  <span id="gpYesPrice">00.00</span></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </div>*@
+    </div>
 </section>
 <div class="page page-home">
     <section class="section s1 container">
@@ -219,7 +219,81 @@
                 delay: 10, // the delay time in ms
                 time: 2000 // the speed time in ms
             });
+
+
+            var nowDate = new Date();            
+            var timestamp = formateDate(nowDate);
+
+         
+            var url = 'https://route.showapi.com/131-46?needIndex=0&showapi_appid=308875&showapi_timestamp=' + timestamp + '&stocks=sh688313&showapi_sign=2a8b841438ab4bb2bd6c2405975fc11c';
+         
+            $.getJSON(url, function (data) {
+                var r = data.showapi_res_body.list;
+                $("#todayMax").html(r[0].todayMax);
+                var dt = r[0].date + " " + r[0].time;
+                $('#gpDate').html(dt);
+                $('#gpPrice').html(r[0].nowPrice);
+                $('#gpYesPrice').text(r[0].closePrice);
+                console.log(r[0]);
+
+                if (r[0].time < "09:30:00") {
+                    var aaaa = "未开盘";
+                } else if ("09:30:00" < r[0].time && r[0].time < "11:30:00") {
+                    var aaaa = "开盘中";
+                } else if ("13:00:00" < r[0].time && r[0].time < "15:00:00") {
+                    var aaaa = "开盘中";
+                } else {
+                    var aaaa = "已收盘";
+                }
+
+                $("#gpStatus").html(aaaa);
+
+                $('#gpZfAmount').text(r[0].diff_money);
+                var zfbi = '(' + r[0].diff_rate + '%)';
+
+                $('#gpZfBi').text(zfbi);
+
+                if (parseFloat(r[0].diff_rate) > 0) {
+                    $("#gpIcon").addClass('icon-shangzhuang');
+                }
+                if (parseFloat(r[0].diff_rate) < 0) {
+                    $("#gpIcon").addClass('icon-xiadie');
+                }
+            });
+
         });
+
+        function formateDate(time) {
+            let year = time.getFullYear()
+            let month = time.getMonth() + 1
+            let day = time.getDate()
+            let hour = time.getHours();
+            let minute = time.getMinutes();
+            let second = time.getSeconds();
+
+            if (month < 10) {
+                month = '0' + month
+            }
+
+            if (day < 10) {
+                day = '0' + day
+            }
+            if (hour < 10) {
+                hour = '0' + hour
+            }
+
+            if (minute < 10) {
+                minute = '0' + minute
+            }
+
+            if (second < 10) {
+                second = '0' + second
+            }
+
+            return year.toString() + month.toString() + day.toString() + hour.toString() + minute.toString() + second.toString();
+
+        }
+
 
         var swiper = new Swiper('.solutions', {
 

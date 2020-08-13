@@ -15,6 +15,7 @@ using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
 using QNZ.Resources.Admin;
 using X.PagedList;
+using QNZ.Infrastructure.Cache;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -25,10 +26,12 @@ namespace QNZCMS.Areas.Admin.Controllers
     {
         private readonly IMapper _mapper;
         private readonly YicaiyunContext _context;
-        public AdvertisementsController(YicaiyunContext context, IMapper mapper)
+        private readonly ICacheService _cacheService;
+        public AdvertisementsController(YicaiyunContext context, IMapper mapper, ICacheService cacheService)
         {
             _context = context;
             _mapper = mapper;
+            _cacheService = cacheService;
         }
         // GET: Admin/Advertisements
         public async Task<IActionResult> Index(string keyword, string sort, int? spaceId, int? page)
@@ -103,7 +106,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     return NotFound();
                 }
 
-                vm = _mapper.Map<AdvertisementIM>(article);              
+                vm = _mapper.Map<AdvertisementIM>(article);
 
             }
             var categories = await _context.AdvertisingSpaces.AsNoTracking()
@@ -112,7 +115,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             return View(vm);
 
-          
+
         }
 
         // POST: Admin/Advertisements/Edit/5
@@ -133,7 +136,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             try
             {
-               
+
 
                 if (advertisement.Id > 0)
                 {
@@ -152,7 +155,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     _context.Update(model);
                     await _context.SaveChangesAsync();
 
-                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Carousel));                 
+                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.Carousel));
 
 
                 }
@@ -165,12 +168,12 @@ namespace QNZCMS.Areas.Admin.Controllers
 
                     _context.Add(model);
                     await _context.SaveChangesAsync();
-            
+
 
                     AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.Carousel));
 
                 }
-
+                _cacheService.Invalidate("ADVERTISEMENT");
                 return Json(AR);
 
             }
@@ -187,7 +190,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 }
             }
 
-           
+
         }
 
 
@@ -205,13 +208,13 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             article.Id = 0;
             article.CreatedBy = User.Identity.Name;
-            article.CreatedDate = DateTime.Now;        
+            article.CreatedDate = DateTime.Now;
             article.Active = false;
             article.Title = $"{article.Title}【拷贝】";
 
             _context.Advertisements.Add(article);
             await _context.SaveChangesAsync();
-
+            _cacheService.Invalidate("ADVERTISEMENT");
             return Json(AR);
         }
 
@@ -230,7 +233,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             _context.Advertisements.Remove(c);
             await _context.SaveChangesAsync();
-
+            _cacheService.Invalidate("ADVERTISEMENT");
             return Json(AR);
         }
 
@@ -250,7 +253,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             _context.Advertisements.RemoveRange(c);
             await _context.SaveChangesAsync();
-
+            _cacheService.Invalidate("ADVERTISEMENT");
             return Json(AR);
         }
 
@@ -273,7 +276,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-
+            _cacheService.Invalidate("ADVERTISEMENT");
             return Json(AR);
         }
 

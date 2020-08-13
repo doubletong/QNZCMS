@@ -10,7 +10,6 @@
 
         <li class="@(item.InverseParent.Any()?"down":"")">
 
-
             @if (item.InverseParent.Any())
             {
                 <a href="#">@item.Title</a>
@@ -19,13 +18,16 @@
                     {
                         <li class="@(subitem.InverseParent.Any()?"down":"")">
 
-                            @if (subitem.InverseParent.Any())
+                            @if (subitem.InverseParent.Any() && subitem.Active)
                             {
                                 <a href="#">@subitem.Title</a>
                                 <ul class="subnav">
                                     @foreach (var subsubitem in subitem.InverseParent.OrderBy(d => d.Importance))
                                     {
+                                        if (subsubitem.Active)
+                                        {
                                         <li><a class="@(url==subsubitem.Url ?"active":"")" href="@subsubitem.Url" @(subsubitem.MenuType == (short)QNZ.Data.Enums.MenuType.OUTLINK ?"target='_blank'":"")>@subsubitem.Title</a></li>
+                                        }
                                     }
                                 </ul>
                             }

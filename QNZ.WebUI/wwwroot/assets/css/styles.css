@@ -4737,33 +4737,13 @@ img {
 }
 
 .site-header .langs a {
-  padding-left: .6rem;
-  padding-right: .6rem;
   padding-top: .3rem;
-  border-right: 1px #ddd solid;
   display: inline-block;
 }
 
-.site-header .langs a:last-child {
-  border: none;
-  padding-right: 0;
-  padding-left: 0;
-}
-
 @media (min-width: 992px) {
-  .site-header .langs a:last-child {
+  .site-header .langs a {
     padding-left: .6rem;
-  }
-}
-
-.site-header .langs a:first-child {
-  padding-left: 0;
-  display: none;
-}
-
-@media (min-width: 992px) {
-  .site-header .langs a:first-child {
-    display: inline-block;
   }
 }
 
@@ -5217,6 +5197,14 @@ img {
     font-size: 2.625rem;
     border-left: 14px #f66828 solid;
   }
+}
+
+.s0 .gupiao .gupiao-container .icon-xiadie {
+  color: green;
+}
+
+.s0 .gupiao .gupiao-container .icon-shangzhuang {
+  color: #c20000;
 }
 
 .s0 .gupiao .gupiao-container .val {
@@ -6998,10 +6986,18 @@ img {
   }
 }
 
-.page-news-detail article.container figure {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+.page-news-detail article.container figure.image {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.page-news-detail article.container figure.image img {
   height: auto !important;
+}
+
+.page-news-detail article.container figure.image figcaption {
+  display: block;
+  padding: .6rem;
 }
 
 .page-news-detail .prenextnav {
