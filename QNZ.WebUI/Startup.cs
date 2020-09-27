@@ -90,8 +90,8 @@ namespace QNZCMS
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
-            services.AddRazorPages();
-
+         
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
