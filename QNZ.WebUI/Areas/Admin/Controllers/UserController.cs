@@ -366,14 +366,19 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-                _userServices.SetRole(userId, roleId);
-                //if (User.Identity.Name == user.UserName)
-                //{
-                //    SetUserCookies(true, user);
-                //}
-          
+            
+                var list = _context.UserRoles.Where(d => d.UserId == userId).ToList();
+                _context.RemoveRange(list);
+
+                foreach (var item in roleId)
+                {
+                    _context.UserRoles.Add(new UserRole { UserId = userId, RoleId = item });
+                }
+                _context.SaveChanges();
+              
+
                 AR.Id = userId;
-              //  AR.Data = RenderPartialViewToString("_UserItem", user);
+                //  AR.Data = RenderPartialViewToString("_UserItem", user);
                 AR.SetSuccess(Messages.AlertActionSuccess);
                 return Json(AR);
             }

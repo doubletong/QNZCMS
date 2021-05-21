@@ -17,19 +17,14 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
 using QNZ.Infrastructure.Cache;
 using QNZ.Infrastructure.Email;
-
+using Microsoft.Extensions.WebEncoders;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace QNZCMS
 {
     public class Startup
     {
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-
         #region elFinder config
         public static string WebRootPath { get; private set; }
 
@@ -43,7 +38,16 @@ namespace QNZCMS
             path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
             return Path.Combine(basePath, path);
         }
+     
         #endregion
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+
+       
 
         public IConfiguration Configuration { get; }
 
@@ -78,6 +82,12 @@ namespace QNZCMS
                 options.AddPolicy("Permission", policy => policy.Requirements.Add(new PermissionRequirement("/errors/accessdenied")));
             });
 
+
+            services.Configure<WebEncoderOptions>(options =>
+            {
+                options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
+            });
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -90,8 +100,8 @@ namespace QNZCMS
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
-         
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
+
 
 
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
@@ -100,7 +110,7 @@ namespace QNZCMS
             services.AddTransient<IRoleServices, RoleServices>();
             services.AddTransient<IMenuServices, MenuServices>();
             services.AddTransient<IMenuCategoryServices, MenuCategoryServices>();
-            services.AddScoped<IViewRenderService, ViewRenderService>();
+            //services.AddScoped<IViewRenderService, ViewRendererService>();
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IEmailService, MimeKitService>();
             
@@ -154,7 +164,7 @@ namespace QNZCMS
                 endpoints.MapAreaControllerRoute(
                    name: "areaAdminRoute",
                    areaName: "Admin",
-                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                   pattern: "qnz-admin/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages();
             });

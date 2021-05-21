@@ -21,10 +21,10 @@ namespace QNZCMS.Areas.Admin.Models.Menu
             _roleServices = roleServices;
 
         }
-        public IViewComponentResult Invoke(int id)
+        public IViewComponentResult Invoke(int id, int cid)
         {
             var role = _roleServices.GetByIdWithRoleMenu(id);
-            var menus = _menuServices.GetMenusByCategoryId(SettingsManager.Menu.BackMenuCId);
+            var menus = _menuServices.GetMenusByCategoryId(cid);
             int[] menuIds = role.RoleMenus.Select(m => m.MenuId).ToArray();
 
             //SetRoleMenusVM vm = new SetRoleMenusVM

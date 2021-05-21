@@ -453,6 +453,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         /// <param name="files"></param>
         /// <returns></returns>
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> UploadFiles(string filePath, List<IFormFile> files)
         {
             string webRootPath = _hostingEnvironment.WebRootPath;
@@ -501,6 +502,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> DropzoneUploadFile(UploadVM vm)
         {
             string webRootPath = _hostingEnvironment.WebRootPath;

@@ -1,10 +1,5 @@
 [
-  {
-    "outputFileName": "wwwroot/plugins/SigFinder/FileManager.min.js",
-    "inputFiles": [
-      "wwwroot/plugins/SigFinder/FileManager.js"
-    ]
-  },
+
   {
     "outputFileName": "wwwroot/plugins/QNZFinder/FileManager.min.js",
     "inputFiles": [

@@ -16,23 +16,34 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using QNZ.Infrastructure.Helper;
+using QNZ.Services;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
 
 namespace QNZCMS.Controllers
 {
     public class HomeController : Controller
     {
+        //private readonly IViewRenderService _viewRenderService;
+
         private IWebHostEnvironment _hostingEnvironment;
         private readonly ICacheService _cacheService;
         private readonly YicaiyunContext _context;
         private readonly IMapper _mapper;
         private readonly IFileProvider _fileProvider;
-        public HomeController(IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context, IMapper mapper)
+        public HomeController(/*IViewRenderService viewRenderService,*/ IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context, IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
             _cacheService = cache;
             _context = context;
             _mapper = mapper;
             _fileProvider = hostingEnvironment.WebRootFileProvider;
+           // _viewRenderService = viewRenderService;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -104,6 +115,29 @@ namespace QNZCMS.Controllers
             return View();
         }
 
+        //public IActionResult Test()
+        //{
+
+        //    return new HtmlContentViewComponentResult("AllClients");
+        
+        //}
+
+        public async Task<IActionResult> Test2Async()
+        {
+            string a = "[about ab=123 cd=323]";
+            //  var a =  await  _viewRenderService.RenderAsync("Test");
+            a = a.Remove(0, 1);
+            a = a.Remove(a.Length-1, 1);
+
+            var b = a.Split(' ');
+            var c = b[1].Substring(b[1].IndexOf('='));
+            c.Contains('=');
+            return Content(b[0]);
+
+        }
+
+
+
         [Route("/image/{w}/{h}/{*url}")]
         public IActionResult ResizeImage(string url, int w, int h)
         {
@@ -119,7 +153,9 @@ namespace QNZCMS.Controllers
 
             if (thumbInfo.Exists)
             {
-                return File(thumbInfo.CreateReadStream(), "image/jpg");
+                // return File(thumbInfo.CreateReadStream(), "image/jpg");
+                return File(thumbPath, "image/jpg");
+                //return Content(thumbPath);
             }
 
 
@@ -138,20 +174,28 @@ namespace QNZCMS.Controllers
             if (originImage.Height == h && originImage.Width == w)
             {
                 imagePath = PathString.FromUriComponent("/" + url);
-                var orginInfo = _fileProvider.GetFileInfo(imagePath);
-                return File(orginInfo.CreateReadStream(), "image/jpg");
+                //var orginInfo = _fileProvider.GetFileInfo(imagePath);
+
+                //return File(orginInfo.CreateReadStream(), "image/jpg");
+                return File(imagePath, "image/jpg");
+                //return Content(imagePath);
+
             }
             else
             {
                 ImageHandler.MakeThumbnail(orginPath, outPath, w, h, "Cut", ext.ToLower());
+
+                // return Content(thumbPath);
+                return File(thumbPath, "image/jpg");
             }
 
 
-            thumbInfo = _fileProvider.GetFileInfo(thumbPath);
-            return File(thumbInfo.CreateReadStream(), "image/jpg");
+            //thumbInfo = _fileProvider.GetFileInfo(thumbPath);
+            // return File(thumbInfo.CreateReadStream(), "image/jpg");
 
 
         }
+
 
 
         //[HttpPost]

@@ -8,38 +8,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Browser</title>
-    @*<link rel="stylesheet" type="text/css" href="~/lib/jquery-ui/themes/base/all.css" />
-        <link rel="stylesheet" type="text/css" href="~/lib/elfinder/css/elfinder.min.css" />
-        <link rel="stylesheet" href="~/lib/elfinder/css/theme.css" />
-        <link rel="stylesheet" href="~/css/elfinder/themes/material/css/theme-gray.css" />*@
-    <link href="~/plugins/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    <link href="~/plugins/jquery-ui/themes/base/theme.min.css" rel="stylesheet" />
-    <link href="~/plugins/elFinder/css/elfinder.full.css" rel="stylesheet" />
-    <link href="~/plugins/elFinder/css/theme.css" rel="stylesheet" />
-    <link href="~/plugins/elfinder/themes/material/css/theme-light.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/lib/jquery-ui/themes/base/all.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/elfinder/css/elfinder.min.css" />
+    <link rel="stylesheet" href="~/lib/elfinder/css/theme.css" />
+    <link rel="stylesheet" href="~/css/elfinder/themes/material/css/theme-gray.css" />
 
 </head>
 <body>
     <div id="elfinder"></div>
 
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
-        <script src="~/lib/elfinder/js/elfinder.min.js"></script>*@
-    <script src="~/js/lib/jquery/jquery.min.js"></script>
-    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <script src="~/plugins/elFinder/js/elfinder.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/elfinder/js/elfinder.min.js"></script>
 
     <script type="text/javascript">
-
         $(function () {
             var myCommands = elFinder.prototype._options.commands;
-
             var disabled = ['extract', 'archive', 'resize', 'help', 'select']; // Not yet implemented commands in ElFinder.Net
-
             $.each(disabled, function (i, cmd) {
                 (idx = $.inArray(cmd, myCommands)) !== -1 && myCommands.splice(idx, 1);
             });
-
             var options = {
                 url: '/el-finder/file-system/connector', // Default (Local File System)
                 //url: '/el-finder/azure-storage/connector', // Microsoft Azure Connector

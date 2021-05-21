@@ -53,13 +53,13 @@ namespace QNZCMS.Areas.Admin.Controllers
             var gosort = $"{orderby}_{sort}";
             query = gosort switch
             {
-                "importance" => query.OrderBy(s => s.Importance),
+                "importance_asc" => query.OrderBy(s => s.Importance),
                 "importance_desc" => query.OrderByDescending(s => s.Importance),
-                "view" => query.OrderBy(s => s.ViewCount),
+                "view_asc" => query.OrderBy(s => s.ViewCount),
                 "view_desc" => query.OrderByDescending(s => s.ViewCount),
-                "name" => query.OrderBy(s => s.Name),
+                "name_asc" => query.OrderBy(s => s.Name),
                 "name_desc" => query.OrderByDescending(s => s.Name),
-                "date" => query.OrderBy(s => s.CreatedDate),
+                "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
               
                 _ => query.OrderByDescending(s => s.Id),

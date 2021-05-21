@@ -11,8 +11,7 @@ using QNZ.Model.Admin.ViewModel;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
-    [Area("Admin")]  
-    [Route("Admin/[controller]/[action]")]
+    [Area("Admin")] 
     [Authorize(Policy = "Permission")]
     //[Authorize]
     public class HomeController : BaseController
@@ -22,13 +21,12 @@ namespace QNZCMS.Areas.Admin.Controllers
 
         public HomeController(YicaiyunContext context)
         {
-            _context = context;
-           
+            _context = context;           
 
         }
-        [Route("/admin")]
-        [Route("/admin/home")]
-        [Route("/admin/home/index")]
+        [Route("/qnz-admin")]
+        [Route("/qnz-admin/home")]
+        [Route("/qnz-admin/home/index")]
         public async Task<IActionResult> IndexAsync()
         {
             HomePageVM vm = new HomePageVM

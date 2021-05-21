@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html
 @using QNZ.Data
 
-@model Role
+@model RoleMenusVM
 
 
 
@@ -11,14 +11,15 @@
 
 @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
+    <input type="hidden" name="id" value="@Model.Role.Id"/>
+   
 
     <!-- 添加菜单 Modal -->
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">角色（@Model.RoleName）权限设置</h5>
+                    <h5 class="modal-title" id="myModalLabel">角色（@Model.Role.RoleName）权限设置</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -26,7 +27,16 @@
                 </div>
                 <div class="modal-body" style="height:450px;overflow-y:auto;padding-left:35px;">
                     @*@ShowTree(Model.Menus.Where(m=>m.ParentId == null))*@
-                    @await Component.InvokeAsync("RoleMenus", new { id = Model.Id })
+                    <div class="row">
+                        @foreach (var item in Model.Categories)
+                        {
+                            <div class="col-md">
+                                @await Component.InvokeAsync("RoleMenus", new { id = Model.Role.Id ,cid = item.Id})
+                            </div>
+                        }
+
+                    </div>
+                  
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>

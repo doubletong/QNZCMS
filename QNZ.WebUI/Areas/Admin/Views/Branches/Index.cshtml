@@ -44,7 +44,7 @@
                                 图片
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="title" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="title">
+                                <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="name" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="name">
                                     公司名称
                                     @if (Model.OrderBy == "name")
                                     {

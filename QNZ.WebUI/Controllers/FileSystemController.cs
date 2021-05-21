@@ -4,28 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using elFinder.NetCore;
 using elFinder.NetCore.Drivers.FileSystem;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QNZCMS.Areas.Admin.Controllers
+namespace QNZCMS.Controllers
 {
-    [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
-    public class ElfinderController : Controller
+    [Route("el-finder/file-system")]
+    public class FileSystemController : Controller
     {
-        
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult FileManager()
-        {
-            return View();
-        }
-       
-        //[Route("connector")]
-
+        [Route("connector")]
         public async Task<IActionResult> Connector()
         {
             var connector = GetConnector();
@@ -48,8 +35,8 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             var root = new RootVolume(
                 Startup.MapPath("~/Uploads"),
-                $"http://{uri.Authority}/Uploads/",
-                $"http://{uri.Authority}/admin/elfinder/thumb/")
+                $"{uri.Scheme}://{uri.Authority}/Uploads/",
+                $"{uri.Scheme}://{uri.Authority}/el-finder/file-system/thumb/")
             {
                 //IsReadOnly = !User.IsInRole("Administrators")
                 IsReadOnly = false, // Can be readonly according to user's membership permission
@@ -57,11 +44,17 @@ namespace QNZCMS.Areas.Admin.Controllers
                 Alias = "Uploads", // Beautiful name given to the root/home folder
                 //MaxUploadSizeInKb = 2048, // Limit imposed to user uploaded file <= 2048 KB
                 //LockedFolders = new List<string>(new string[] { "Folder1" })
+                ThumbnailSize = 120,
+                
             };
 
             driver.AddRoot(root);
 
-            return new Connector(driver);
+            return new Connector(driver)
+            {
+                // This allows support for the "onlyMimes" option on the client.
+                MimeDetect = MimeDetectOption.Internal
+            };
         }
     }
 }

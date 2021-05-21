@@ -64,7 +64,7 @@
                 {
                     <div class="col-md-6 col-lg-4">
                         <a class="item wow fadeInUp" asp-action="CompanyNewsDetail" asp-route-id="@item.Id">
-                            <div class="pic"><img src="@item.Thumbnail"></div>
+                            <div class="pic"><img src="@($"/image/480/280{item.Thumbnail}")"></div>
                             <div class="txt">
                                 <h3>@item.Title</h3>
                                 <time>@item.Pubdate</time>

@@ -34,9 +34,9 @@ namespace QNZCMS
             CreateMap<User, ProfileIM>();
             CreateMap<Role, RoleIM>();
             CreateMap<RoleIM, Role>();
+            CreateMap<Role, RoleVM>();
+            //CreateMap<RoleVM, Role>();
 
-          
-        
             //// CreateMap<StoreVM, Store>();            
             //CreateMap<Store, StoreVM>()
             //    .ForMember(d => d.Coordinate, opt => opt.MapFrom(source => $"{source.Longitude},{source.Latitude}"));
@@ -44,7 +44,7 @@ namespace QNZCMS
             //CreateMap<StoreIM, Store>();
             //CreateMap<Store, StoreIM>();
 
-         
+
 
             CreateMap<Album, AlbumVM>();
             CreateMap<Album, AlbumBVM>();

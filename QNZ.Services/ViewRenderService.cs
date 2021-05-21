@@ -1,88 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 
 namespace QNZ.Services
 {
-    public class ViewRenderService : IViewRenderService
+    public interface IViewRenderService
     {
-        private readonly IRazorViewEngine _viewEngine;
+        Task<string> RenderToStringAsync(string viewName, object model);
+    }
+
+    public class ViewRendererService : IViewRenderService
+    {
+        private readonly IRazorViewEngine _razorViewEngine;
         private readonly ITempDataProvider _tempDataProvider;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly IActionContextAccessor _actionContext;
+        private readonly IRazorPageActivator _activator;
 
-        public ViewRenderService(
-            IRazorViewEngine viewEngine,
+
+        public ViewRendererService(IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IHttpContextAccessor httpContext,
+            IRazorPageActivator activator,
+            IActionContextAccessor actionContext)
         {
-            _viewEngine = viewEngine;
+            _razorViewEngine = razorViewEngine;
             _tempDataProvider = tempDataProvider;
             _serviceProvider = serviceProvider;
+
+            _httpContext = httpContext;
+            _actionContext = actionContext;
+            _activator = activator;
         }
 
-        public async Task<string> RenderAsync(string name)
+
+        public async Task<string> RenderToStringAsync(string pageName, object model)
         {
-            return await RenderAsync<object>(name, null);
-        }
+            var actionContext =
+                new ActionContext(
+                    _httpContext.HttpContext,
+                    _httpContext.HttpContext.GetRouteData(),
+                    _actionContext.ActionContext.ActionDescriptor
+                );
 
-        public async Task<string> RenderAsync<TModel>(string name, TModel model)
-        {
-           
-            var actionContext = GetActionContext();
-            //var viewEngineResult = _viewEngine.GetView("", "~/Areas/Admin/Views/User/_UserItem.cshtml", false);
-            var viewEngineResult = _viewEngine.FindView(actionContext, name, false);
-
-            if (!viewEngineResult.Success)
+            using (var sw = new StringWriter())
             {
-                throw new InvalidOperationException(string.Format("Couldn't find view '{0}'", name));
-            }
+                var result = _razorViewEngine.FindPage(actionContext, pageName);
 
-            var view = viewEngineResult.View;
+                if (result.Page == null)
+                {
+                    throw new ArgumentNullException($"The page {pageName} cannot be found.");
+                }
 
-            using (var output = new StringWriter())
-            {
+                var view = new RazorView(_razorViewEngine,
+                    _activator,
+                    new List<IRazorPage>(),
+                    result.Page,
+                    HtmlEncoder.Default,
+                    new DiagnosticListener("ViewRenderService"));
+
+
                 var viewContext = new ViewContext(
                     actionContext,
                     view,
-                    new ViewDataDictionary<TModel>(
-                        metadataProvider: new EmptyModelMetadataProvider(),
-                        modelState: new ModelStateDictionary())
+                    new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                     {
                         Model = model
                     },
                     new TempDataDictionary(
-                        actionContext.HttpContext,
-                        _tempDataProvider),
-                    output,
-                    new HtmlHelperOptions());
+                        _httpContext.HttpContext,
+                        _tempDataProvider
+                    ),
+                    sw,
+                    new HtmlHelperOptions()
+                );
 
-                await view.RenderAsync(viewContext);
 
-                return output.ToString();
+                var page = (Page)result.Page;
+                page.PageContext = new PageContext
+                {
+                    ViewData = viewContext.ViewData
+                };
+
+                page.ViewContext = viewContext;
+
+
+                _activator.Activate(page, viewContext);
+                await page.ExecuteAsync();
+
+                return sw.ToString();
             }
         }
 
-        private ActionContext GetActionContext()
-        {
-            var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
-            return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
-        }
-    }
-
-    public interface IViewRenderService
-    {
-        Task<string> RenderAsync(string name);
-
-        Task<string> RenderAsync<TModel>(string name, TModel model);
     }
 }

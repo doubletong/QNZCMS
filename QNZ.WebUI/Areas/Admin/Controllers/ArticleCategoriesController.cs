@@ -51,9 +51,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             if (!string.IsNullOrEmpty(keyword))
                 query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
 
-            //ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
-            //ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
-            //ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+       
             var gosort = $"{orderby}_{sort}";
 
             query = gosort switch

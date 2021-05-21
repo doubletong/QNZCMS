@@ -152,13 +152,13 @@
         </div>
     </div>
 </form>
-
+<div id="editor"></div>
 @*<partial name="../QNZFinder/_PopuFinder.cshtml" />*@
 
 @section header{
-
-
-
+    <link href="~/lib/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/lib/elfinder/css/elfinder.min.css" rel="stylesheet" />
+    <link href="~/lib/elfinder/css/theme.min.css" rel="stylesheet" />
 }
 
 @section footer {
@@ -170,9 +170,25 @@
     <script src="~/plugins/holder/holder.min.js"></script>
     @*<script src="/Plugins/webuploader/webuploader.min.js"></script>
         <script src="/Plugins/SigFinder/FileManager.js"></script>*@
-
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/elfinder/js/elfinder.min.js"></script>
+    <script src="~/lib/elfinder/js/i18n/elfinder.zh_CN.js"></script>
     <script src="~/plugins/tinymce5/tinymce.min.js"></script>
+    <script src="~/lib/tinymceElfinder.js"></script>
+
     <script>
+        // make instance
+        const mceElf = new tinymceElfinder({
+            // connector URL (Use elFinder Demo site's connector for this demo)
+            url: '/el-finder/file-system/connector',
+            // upload target folder hash for this tinyMCE
+            uploadTargetHash: 'l3_TUNFX0ltZ3M', // l3 MCE_Imgs on elFinder Demo site for this demo
+            // elFinder dialog node id
+            nodeId: 'elfinder',
+            lang: 'zh_CN',
+            title: '文件管理',
+        });
+
         var url = "@Url.Action("Index")";
 
         tinymce.init({
@@ -185,26 +201,28 @@
             valid_children : 'a[p|span|div|strong|i]',
             valid_elements : "*[*]",
             //picture manager
-            file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
-            images_upload_handler: QNZ.ImagesUploadHandler,
+            file_picker_callback: mceElf.browser,
+            images_upload_handler: mceElf.uploadHandler,
+            //file_picker_callback: QNZ.FilePickerCallback2,   //from plugin FileManager.js
+            //images_upload_handler: QNZ.ImagesUploadHandler,
             plugins: 'print preview acecode importcss  searchreplace autolink autosave save directionality  visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists  wordcount   imagetools textpattern noneditable help     charmap   quickbars  emoticons',
 
-              toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
+            toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment acecode',
 
-        autosave_ask_before_unload: true,
-              autosave_interval: "30s",
-              autosave_prefix: "{path}{query}-{id}-",
-              autosave_restore_when_empty: false,
+            autosave_ask_before_unload: true,
+            autosave_interval: "30s",
+            autosave_prefix: "{path}{query}-{id}-",
+            autosave_restore_when_empty: false,
             autosave_retention: "2m",
 
-          image_advtab: true,
-                    importcss_append: true,
-             image_caption: true,
-          templates: [
+            image_advtab: true,
+            importcss_append: true,
+            image_caption: true,
+            templates: [
                 { title: '新表格', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
-            { title: '文章样式', description: 'A cure for writers block', content: 'Once upon a time...' },
-            { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
-          ],
+                { title: '文章样式', description: 'A cure for writers block', content: 'Once upon a time...' },
+                { title: '列表样式', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+              ],
 
 
 
@@ -212,7 +230,7 @@
 
 
         function SetThumbnail(fileUrl) {
-    
+
             $('#imgThumbnail').attr("src", fileUrl);
             $('#Thumbnail').val(fileUrl);
 
@@ -255,8 +273,57 @@
         $(function () {
 
             $("#setImageUrl").on("click", function () {
-                QNZ.selectActionFunction = SetThumbnail;
-                QNZ.open();
+                //QNZ.selectActionFunction = SetThumbnail;
+                //QNZ.open();
+
+                    $('<div id="editor" />').dialogelfinder({
+                        url: '/el-finder/file-system/connector',
+                        title: '文件管理',
+                        width: '80%',
+                        height: '600px',
+                        lang: 'zh_CN',
+                        destroyOnClose: true,
+                        getFileCallback: function (file) {
+                           // var filePath = file; //file contains the relative url.
+                            console.log(file);
+                            //var imgPath = "<img src = '" + filePath + "'/>";
+                            //$('#selectedImages').append(imgPath); //add the image to a div so you can see the selected images
+                            $('#imgThumbnail').attr("src", file.url);
+                            $('#Thumbnail').val(file.url);
+                            $('#editor').remove(); //close the window after image is selected
+
+                        }
+                    }).dialogelfinder('instance');
+
+                //var elf = $('#editor').elfinder({
+                //    url: '/el-finder/file-system/connector',  // connector URL (REQUIRED)
+                //    lang: 'zh_CN',             // language (OPTIONAL)
+                //}).elfinder('instance');
+
+
+
+                //$('#editor').elfinder({
+                //    url: '/el-finder/file-system/connector',
+                //    lang: 'zh_CN',
+                //    dialog: {
+                //        width: '80%',
+                //        height: '600px',
+                //        modal: false
+                //    },
+                //    //editorCallback: function (url) {
+                //    //    document.getElementById($id).value = url;
+                //    //}
+                //    getFileCallback: function (file) {
+
+                //        console.log(file);
+
+                //        $('#imgThumbnail').attr("src", file.url);
+                //        $('#Thumbnail').val(file.url);
+                //        $('#editor').remove(); //close the window after image is selected
+
+                //    }
+                //}).elfinder('instance')
+
 
             });
 

@@ -53,6 +53,7 @@ namespace QNZ.Services.Identity
 
             var newUser = new User()
             {
+                Id = IdentityGenerator.SequentialGuid(),
                 UserName = userName,
                 RealName = realName,
                 Email = email,

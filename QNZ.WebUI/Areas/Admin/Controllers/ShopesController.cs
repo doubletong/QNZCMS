@@ -55,8 +55,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 "importance_asc" => query.OrderBy(s => s.Importance),
                 "importance_desc" => query.OrderByDescending(s => s.Importance),
-                "title_asc" => query.OrderBy(s => s.Name),
-                "title_desc" => query.OrderByDescending(s => s.Name),
+                "name_asc" => query.OrderBy(s => s.Name),
+                "name_desc" => query.OrderByDescending(s => s.Name),
                 "date_asc" => query.OrderBy(s => s.CreatedDate),
                 "date_desc" => query.OrderByDescending(s => s.CreatedDate),
               

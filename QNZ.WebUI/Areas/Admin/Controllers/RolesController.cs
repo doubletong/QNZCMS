@@ -10,6 +10,7 @@ using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Cache;
 using QNZ.Resources.Admin;
+using AutoMapper.QueryableExtensions;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -56,8 +57,19 @@ namespace QNZCMS.Areas.Admin.Controllers
         // GET: Roles/Create
         public async Task<ActionResult> SetRoleMenus(int id)
         {
+            
+            var categories = await _context.MenuCategories.OrderByDescending(d => d.Importance)
+               .ProjectTo<MenuCategoryVM>(_mapper.ConfigurationProvider).ToListAsync();
             var role = await _context.Roles.FindAsync(id);
-            return PartialView("_SetRoleMenus", role);
+            var roledto = _mapper.Map<RoleVM>(role);
+
+            var setRoleMenuVM = new RoleMenusVM
+            {
+                Categories = categories,
+                Role = roledto
+            };       
+
+            return PartialView("_SetRoleMenus", setRoleMenuVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

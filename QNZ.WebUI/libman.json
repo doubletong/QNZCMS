@@ -18,10 +18,26 @@
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/plugins/toastr"
     }
-  ,
-{
-  "library": "dropzone@5.5.1",
-  "destination": "wwwroot/lib/dropzone/"
-}
+      ,
+    {
+      "library": "dropzone@5.5.1",
+      "destination": "wwwroot/lib/dropzone/"
+    },
+    {
+      "library": "elfinder@2.1.57",
+      "destination": "wwwroot/lib/elfinder"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jquery-ui"
+    },
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery"
+    },
+    {
+      "library": "tinymce@5.5.1",
+      "destination": "wwwroot/lib/tinymce"
+    }   
 ]
 }
