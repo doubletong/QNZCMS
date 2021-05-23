@@ -25,22 +25,8 @@ namespace QNZCMS
 {
     public class Startup
     {
-        #region elFinder config
-        public static string WebRootPath { get; private set; }
-
-        public static string MapPath(string path, string basePath = null)
-        {
-            if (string.IsNullOrEmpty(basePath))
-            {
-                basePath = WebRootPath;
-            }
-
-            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
-            return Path.Combine(basePath, path);
-        }
      
-        #endregion
-
+        public static string WebRootPath { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -102,7 +88,7 @@ namespace QNZCMS
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -135,7 +121,7 @@ namespace QNZCMS
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -165,7 +151,12 @@ namespace QNZCMS
                    name: "areaAdminRoute",
                    areaName: "Admin",
                    pattern: "qnz-admin/{controller=Home}/{action=Index}/{id?}");
-
+                
+                endpoints.MapAreaControllerRoute(
+                    name: "areaElFinderRoute",
+                    areaName: "ElFinder",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapRazorPages();
             });
 

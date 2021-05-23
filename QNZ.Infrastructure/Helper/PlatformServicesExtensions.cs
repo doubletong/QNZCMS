@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.PlatformAbstractions;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Runtime.InteropServices;
+
 
 namespace QNZ.Infrastructure.Helper
 {
@@ -22,7 +22,10 @@ namespace QNZ.Infrastructure.Helper
                 {
                     result = result.Substring(1);
                 }
-                result = Path.Combine(wwwroot, result.Replace('/', '\\'));
+                if(IsWindowRunTime())
+                    result = Path.Combine(wwwroot, result.Replace('/', '\\'));
+                else
+                    result = Path.Combine(wwwroot, result.Replace('\\', '/'));
             }
 
             return result;
@@ -43,6 +46,14 @@ namespace QNZ.Infrastructure.Helper
 
             return result;
         }
+        
+        private static bool IsWindowRunTime()
+        {
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        }
+
+   
+       
 
         public static bool IsPathMapped(this PlatformServices services, string path)
         {

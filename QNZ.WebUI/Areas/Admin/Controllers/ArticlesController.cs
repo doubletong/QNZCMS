@@ -22,6 +22,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]   
+    [Route("Admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class ArticlesController : BaseController
     {

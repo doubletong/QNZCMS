@@ -124,7 +124,8 @@ namespace QNZ.Infrastructure.Configs
         {
             if (string.IsNullOrEmpty(fileName))
             {
-                fileName = PlatformServices.Default.MapPath(string.Concat("/Config/", typeof(T).Name, ".json"));
+                var filePath = string.Concat("/Config/", typeof(T).Name, ".json");
+                fileName = PlatformServices.Default.MapPath(filePath);
             }
 
             string cacheKey = fileName;

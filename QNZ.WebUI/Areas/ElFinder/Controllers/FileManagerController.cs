@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QNZCMS.Controllers
+namespace QNZCMS.Areas.ElFinder.Controllers
 {
-    [Route("file-manager")]
+    [Area("ElFinder")]
     public class FileManagerController : Controller
     {
+        // GET
         public IActionResult Index()
         {
             return View();

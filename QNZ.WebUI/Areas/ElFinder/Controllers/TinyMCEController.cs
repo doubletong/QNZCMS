@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QNZCMS.Controllers
+namespace QNZCMS.Areas.ElFinder.Controllers
 {
-    [Route("tiny-mce")]
+    [Area("ElFinder")]
     public class TinyMCEController : Controller
     {
         public IActionResult Index()
@@ -14,7 +10,7 @@ namespace QNZCMS.Controllers
             return View();
         }
 
-        [Route("browse")]
+     
         public IActionResult Browse()
         {
             return View();

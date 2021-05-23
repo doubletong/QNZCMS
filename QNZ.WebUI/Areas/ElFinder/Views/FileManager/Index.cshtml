@@ -1,5 +1,4 @@
-﻿@{
-    Layout = "_LayoutElFinder";
+@{
     ViewBag.Title = "File Manager";
 }
 
@@ -21,7 +20,7 @@
                 @*//customData: { folder: '@Model.Folder', subFolder: '@Model.SubFolder' }, // customData passed in every request to the connector as query strings. These values are used in FileController's Index method.*@
                 rememberLastDir: false, // Prevent elFinder saving in the Browser LocalStorage the last visited directory
                 commands: myCommands,
-                //lang: 'pt_BR', // elFinder supports UI and messages localization. Check the folder Content\elfinder\js\i18n for all available languages. Be sure to include the corresponding .js file(s) in the JavaScript bundle.
+                lang: 'zh_CN', // elFinder supports UI and messages localization. Check the folder Content\elfinder\js\i18n for all available languages. Be sure to include the corresponding .js file(s) in the JavaScript bundle.
                 uiOptions: { // UI buttons available to the user
                     toolbar: [
                         ['back', 'forward'],

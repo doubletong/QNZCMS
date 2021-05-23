@@ -1,11 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using elFinder.NetCore;
 using elFinder.NetCore.Drivers.FileSystem;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace QNZCMS.Areas.ElFinder.Controllers
 {
@@ -34,18 +35,36 @@ namespace QNZCMS.Areas.ElFinder.Controllers
             var uri = new Uri(absoluteUrl);
 
             var root = new RootVolume(
-                Startup.MapPath("~/Uploads"),
+                PathHelper.MapPath("~/Uploads"),
                 $"{uri.Scheme}://{uri.Authority}/Uploads/",
                 $"{uri.Scheme}://{uri.Authority}/el-finder/file-system/thumb/")
             {
                 //IsReadOnly = !User.IsInRole("Administrators")
                 IsReadOnly = false, // Can be readonly according to user's membership permission
                 IsLocked = false, // If locked, files and directories cannot be deleted, renamed or moved
-                Alias = "Uploads", // Beautiful name given to the root/home folder
+                Alias = "Files", // Beautiful name given to the root/home folder
                 //MaxUploadSizeInKb = 2048, // Limit imposed to user uploaded file <= 2048 KB
-                //LockedFolders = new List<string>(new string[] { "Folder1" })
-                ThumbnailSize = 120,
-
+                
+                AccessControlAttributes = new HashSet<NamedAccessControlAttributeSet>()
+                {
+                    new NamedAccessControlAttributeSet(PathHelper.MapPath("~/Uploads/readonly.txt"))
+                    {
+                        Write = false,
+                        Locked = true
+                    },
+                    new NamedAccessControlAttributeSet(PathHelper.MapPath("~/Uploads/Prohibited"))
+                    {
+                        Read = false,
+                        Write = false,
+                        Locked = true
+                    },
+                    new NamedAccessControlAttributeSet(PathHelper.MapPath("~/Uploads/Parent/Children"))
+                    {
+                        Read = true,
+                        Write = false,
+                        Locked = true
+                    }
+                }
             };
 
             driver.AddRoot(root);

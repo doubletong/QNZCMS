@@ -316,9 +316,9 @@ namespace QNZ.Infrastructure.Helper
                     bitmap.Save(thumbnailPath, ImageFormat.Png);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                throw ex;
             }
             finally
             {

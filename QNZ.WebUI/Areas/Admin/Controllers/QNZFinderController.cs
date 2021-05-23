@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -161,10 +162,19 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             dir = string.IsNullOrEmpty(dir) ? _rootDirectory : dir;
 
-            var subPath = _hostingEnvironment.WebRootPath + dir.Replace('/', '\\');
+            dir = IsWindowRunTime() ? dir.Replace('/', '\\') : dir.Replace('\\', '/');
+
+            var subPath = _hostingEnvironment.WebRootPath + dir;
+                          
             IEnumerable<FileVM> vm = GetFileList(subPath, dir);
             return Json(vm);
         }
+        
+        private static bool IsWindowRunTime()
+        {
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        }
+
 
         /// <summary>
         /// 下载文件
