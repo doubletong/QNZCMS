@@ -13,8 +13,8 @@ namespace QNZ.Services.Menus
 {
     public class MenuServices : IMenuServices
     {
-        private readonly YicaiyunContext _db;
-        public MenuServices(YicaiyunContext db)
+        private readonly QNZContext _db;
+        public MenuServices(QNZContext db)
         {
             _db = db;
         }

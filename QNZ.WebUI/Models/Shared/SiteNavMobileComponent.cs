@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     [ViewComponent(Name = "SiteNavMobile")]
     public class SiteNavMobileComponent : ViewComponent
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public SiteNavMobileComponent(YicaiyunContext context, ICacheService cacheService)
+        public SiteNavMobileComponent(QNZContext context, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _context = context;

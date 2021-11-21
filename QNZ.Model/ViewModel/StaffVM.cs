@@ -1,4 +1,4 @@
-﻿using QNZ.Resources.Admin;
+﻿using QNZ.Resources.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 using QNZ.Data;

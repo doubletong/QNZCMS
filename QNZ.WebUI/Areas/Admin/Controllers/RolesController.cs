@@ -9,8 +9,9 @@ using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Cache;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using AutoMapper.QueryableExtensions;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -23,8 +24,8 @@ namespace QNZCMS.Areas.Admin.Controllers
         //private readonly IMenuServices _menuServices;
         private ICacheService _cache;
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public RolesController(IMapper mapper, YicaiyunContext context, ICacheService memoryCache)
+        private readonly QNZContext _context;
+        public RolesController(IMapper mapper, QNZContext context, ICacheService memoryCache)
         {
           
             _context = context;

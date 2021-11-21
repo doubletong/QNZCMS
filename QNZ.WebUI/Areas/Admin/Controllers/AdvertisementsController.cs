@@ -13,9 +13,10 @@ using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using X.PagedList;
 using QNZ.Infrastructure.Cache;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -25,9 +26,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class AdvertisementsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public AdvertisementsController(YicaiyunContext context, IMapper mapper, ICacheService cacheService)
+        public AdvertisementsController(QNZContext context, IMapper mapper, ICacheService cacheService)
         {
             _context = context;
             _mapper = mapper;

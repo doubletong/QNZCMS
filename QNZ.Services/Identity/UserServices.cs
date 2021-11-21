@@ -13,8 +13,8 @@ namespace QNZ.Services.Identity
 {
     public class UserServices :IUserServices
     {
-        private readonly YicaiyunContext _db;
-        public UserServices(YicaiyunContext db)
+        private readonly QNZContext _db;
+        public UserServices(QNZContext db)
         {
             _db = db;
         }

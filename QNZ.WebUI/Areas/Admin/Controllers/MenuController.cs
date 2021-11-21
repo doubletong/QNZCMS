@@ -9,12 +9,13 @@ using QNZ.Services.Menus;
 using QNZ.Data.Enums;
 using QNZ.Infrastructure.Configs;
 using QNZ.Model.Admin.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Cache;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using System.Linq;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -24,19 +25,19 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class MenuController : BaseController
     {
         private ICacheService _cache;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
    
         private readonly IMenuCategoryServices _menuCategoryService;
         private readonly IMenuServices _menuService;
-        private readonly IViewRenderService _viewRenderService;
+        //private readonly IViewRenderService _viewRenderService;
         private readonly IMapper _mapper;
 
-        public MenuController(IMenuServices menuService, IMenuCategoryServices menuCategoryService, IViewRenderService viewRenderService, IMapper mapper,
-            YicaiyunContext context, ICacheService memoryCache)
+        public MenuController(IMenuServices menuService, IMenuCategoryServices menuCategoryService,  IMapper mapper,
+            QNZContext context, ICacheService memoryCache)
         {
             _menuService = menuService;
             _menuCategoryService = menuCategoryService;
-            _viewRenderService = viewRenderService;
+            //_viewRenderService = viewRenderService;
             _mapper = mapper;
             _context = context;
             _cache = memoryCache;

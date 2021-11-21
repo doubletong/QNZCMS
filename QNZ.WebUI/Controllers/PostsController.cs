@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
-using QNZ.Model.Front.ViewModel;
+using QNZ.Model.Site.ViewModel;
 
 namespace QNZCMS.Controllers
 {
@@ -14,8 +12,8 @@ namespace QNZCMS.Controllers
     {
 
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public PostsController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public PostsController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

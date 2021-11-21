@@ -11,9 +11,9 @@ namespace QNZCMS.Controllers
 {
     public class ArticlesController : Controller
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
-        public ArticlesController(YicaiyunContext context)
+        public ArticlesController(QNZContext context)
         {
             _context = context;
         }

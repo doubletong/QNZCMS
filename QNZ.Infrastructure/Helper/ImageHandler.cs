@@ -33,7 +33,7 @@ namespace QNZ.Infrastructure.Helper
         /// <returns></returns>
         public static string GetRandomFileName(string sourceFileName)
         {
-            string fileExtension = Path.GetExtension(sourceFileName).ToLower();
+            var fileExtension = Path.GetExtension(sourceFileName).ToLower();
             return GetRandomFileName(fileExtension, 100000);
         }
 

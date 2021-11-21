@@ -2,6 +2,8 @@
 using QNZ.Data;
 using QNZ.Model.ViewModel;
 using System.Linq;
+using QNZ.Model.Administrator.InputModel;
+using QNZ.Model.Administrator.ViewModel;
 
 namespace QNZCMS
 {
@@ -103,14 +105,9 @@ namespace QNZCMS
             CreateMap<Advertisement, AdvertisementIM>();
             CreateMap<AdvertisementIM, Advertisement>();
 
-            CreateMap<PostCategory, PostCategoryBVM>();
-            CreateMap<PostCategory, PostCategoryIM>();
-            CreateMap<PostCategoryIM, PostCategory>();
+        
 
-            CreateMap<Post, PostBVM>()
-                .ForMember(d => d.CategoryTitle, opt => opt.MapFrom(source => source.Category.Title));
-            CreateMap<Post, PostIM>();
-            CreateMap<PostIM, Post>();
+
 
             CreateMap<Solution, SolutionVM>();
             CreateMap<Solution, SolutionBVM>();

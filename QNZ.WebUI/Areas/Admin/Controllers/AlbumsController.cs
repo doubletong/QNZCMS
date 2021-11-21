@@ -14,11 +14,12 @@ using QNZ.Model.ViewModel;
 using QNZ.Model.Admin.InputModel;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
 using QNZ.Infrastructure.Cache;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -29,9 +30,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     {
         private IWebHostEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public AlbumsController(YicaiyunContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment, ICacheService cacheService)
+        public AlbumsController(QNZContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment, ICacheService cacheService)
         {
             _context = context;
             _mapper = mapper;

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Configs;
@@ -19,6 +19,7 @@ using QNZ.Data.Enums;
 using System.Xml.Linq;
 using Microsoft.Extensions.PlatformAbstractions;
 using QNZ.Infrastructure.Cache;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -28,9 +29,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class PhotosController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public PhotosController(YicaiyunContext context, IMapper mapper, ICacheService cacheService)
+        public PhotosController(QNZContext context, IMapper mapper, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _context = context;

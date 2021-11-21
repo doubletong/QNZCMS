@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

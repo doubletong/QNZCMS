@@ -12,7 +12,8 @@ using QNZ.Data;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Helper;
-using QNZ.Resources.Admin;
+using QNZ.Model.Administrator;
+using QNZ.Resources.Common;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -25,8 +26,8 @@ namespace QNZCMS.Areas.Admin.Controllers
 
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public MemorabiliumController(IWebHostEnvironment hostingEnvironment, YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public MemorabiliumController(IWebHostEnvironment hostingEnvironment, QNZContext context, IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
             _context = context;

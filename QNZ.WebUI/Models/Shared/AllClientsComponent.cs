@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     public class AllClientsComponent : ViewComponent
     {
 
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
-        public AllClientsComponent(YicaiyunContext context)
+        public AllClientsComponent(QNZContext context)
         {
             _context = context;
         }

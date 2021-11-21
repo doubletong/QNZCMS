@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     [ViewComponent(Name = "SocialApp")]
     public class SocialAppComponent : ViewComponent
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public SocialAppComponent(YicaiyunContext context, ICacheService cacheService)
+        public SocialAppComponent(QNZContext context, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _context = context;

@@ -13,7 +13,8 @@ using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
 using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
-using QNZ.Resources.Admin;
+using QNZ.Model.Administrator;
+using QNZ.Resources.Common;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -23,9 +24,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     [Authorize(Policy = "Permission")]
     public class AdvertisingSpacesController : BaseController
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly IMapper _mapper;
-        public AdvertisingSpacesController(YicaiyunContext context, IMapper mapper)
+        public AdvertisingSpacesController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

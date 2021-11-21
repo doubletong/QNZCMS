@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     [ViewComponent(Name = "Banner")]
     public class BannerComponent : ViewComponent
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public BannerComponent(YicaiyunContext context, ICacheService cacheService)
+        public BannerComponent(QNZContext context, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _context = context;

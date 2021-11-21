@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     public class HomeArticlesComponet : ViewComponent
     {
 
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
-        public HomeArticlesComponet(YicaiyunContext context)
+        public HomeArticlesComponet(QNZContext context)
         {
             _context = context;
         }

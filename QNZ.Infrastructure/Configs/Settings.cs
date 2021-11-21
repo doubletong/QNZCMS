@@ -421,24 +421,7 @@ namespace QNZ.Infrastructure.Configs
 
     }
 
-    /// <summary>
-    /// Page config
-    /// </summary>
-    [XmlRoot("Settings")]
-    public class PageSettings : BaseSettings
-    {
-            
-
-    }
-
-    /// <summary>
-    /// PageMeta config
-    /// </summary>
-    [XmlRoot("Settings")]
-    public class PageMetaSettings : BaseSettings
-    {
-
-    }
+ 
 
 
     /// <summary>

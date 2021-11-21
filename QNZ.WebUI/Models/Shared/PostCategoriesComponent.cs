@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Model.Front.ViewModel;
+using QNZ.Model.Site.ViewModel;
 
 
 namespace QNZCMS.Models.Shared
@@ -12,8 +13,8 @@ namespace QNZCMS.Models.Shared
     public class PostCategoriesComponent: ViewComponent
     {
       
-        private readonly YicaiyunContext _context;
-        public PostCategoriesComponent(YicaiyunContext context)
+        private readonly QNZContext _context;
+        public PostCategoriesComponent(QNZContext context)
         {
             _context = context;
         }

@@ -12,9 +12,9 @@ namespace QNZCMS.Models.Shared
     [ViewComponent(Name = "Photos")]
     public class PhotosComponent : ViewComponent
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public PhotosComponent(YicaiyunContext context, ICacheService cacheService)
+        public PhotosComponent(QNZContext context, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _context = context;

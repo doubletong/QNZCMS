@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Configs;
@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -29,9 +30,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class DocumentsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public DocumentsController(YicaiyunContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+        public DocumentsController(QNZContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _mapper = mapper;

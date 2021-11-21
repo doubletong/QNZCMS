@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Configs;
@@ -18,6 +18,7 @@ using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
 using System.Xml.Linq;
 using Microsoft.Extensions.PlatformAbstractions;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -27,8 +28,8 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class ExhibitionsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public ExhibitionsController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public ExhibitionsController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

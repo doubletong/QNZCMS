@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-QNZCMS-A6A7578C-F0DA-435B-B7E6-3829220CB4F0</UserSecretsId>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
@@ -78,6 +78,7 @@
     <Content Remove="bundleconfig.json" />
     <Content Remove="wwwroot\admin\js\App.min.js" />
     <Content Remove="wwwroot\olo_admin\js\App.min.js" />
+    <None Remove="Areas\Admin\Views\Webparts\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -132,6 +133,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.6.1" />
     <PackageReference Include="Shyjus.BrowserDetector" Version="1.1.1" />
     <PackageReference Include="X.PagedList" Version="8.0.7" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
@@ -139,14 +143,10 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Member\Controllers\" />
-    <Folder Include="Areas\Member\Data\" />
-    <Folder Include="Areas\Member\Models\" />
-    <Folder Include="Areas\Member\Views\" />
     <Folder Include="Views\ShortCode\" />
     <Folder Include="wwwroot\assets\css\" />
     <Folder Include="wwwroot\Uploads\" />
+    <Folder Include="Areas\Admin\Views\Webparts\" />
   </ItemGroup>
 
 
@@ -166,96 +166,6 @@
     <None Include="wwwroot\assets\js\libs\typed.min.js" />
     <None Include="wwwroot\assets\js\libs\velocity.min.js" />
     <None Include="wwwroot\assets\js\libs\waypoints.min.js" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-grid.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap-reboot.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\bootstrap.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_alert.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_background-variant.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_badge.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_border-radius.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_box-shadow.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_breakpoints.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_buttons.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_caret.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_clearfix.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_deprecate.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_float.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_forms.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_gradients.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_grid-framework.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_grid.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_hover.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_image.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_list-group.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_lists.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_nav-divider.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_pagination.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_reset-text.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_resize.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_screen-reader.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_size.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_table-row.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_text-emphasis.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_text-hide.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_text-truncate.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_transition.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\mixins\_visibility.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_align.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_background.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_borders.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_clearfix.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_display.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_embed.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_flex.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_float.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_overflow.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_position.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_screenreaders.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_shadows.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_sizing.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_spacing.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_stretched-link.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_text.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\utilities\_visibility.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\vendor\_rfs.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_alert.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_badge.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_breadcrumb.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_button-group.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_buttons.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_card.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_carousel.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_close.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_code.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_custom-forms.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_dropdown.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_forms.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_functions.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_grid.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_images.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_input-group.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_jumbotron.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_list-group.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_media.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_mixins.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_modal.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_nav.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_navbar.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_pagination.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_popover.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_print.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_progress.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_reboot.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_root.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_spinners.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_tables.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_toasts.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_tooltip.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_transitions.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_type.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_utilities.scss" />
-    <None Include="wwwroot\olo_admin\css\bootstrap\_variables.scss" />
-    <None Include="wwwroot\olo_admin\js\App.min.js" />
     <None Include="wwwroot\Config\AdsSettings.config" />
     <None Include="wwwroot\Config\AlbumSettings.config" />
     <None Include="wwwroot\Config\AnnouncementSettings.config" />

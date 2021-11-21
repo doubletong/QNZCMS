@@ -2,46 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QNZ.Model.Admin.ViewModel;
-using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
-using QNZ.Infrastructure.Configs;
+
 using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
 using System.Xml.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
+using QNZ.Model.Administrator;
+using QNZ.Model.Administrator.InputModel;
+using QNZ.Model.Administrator.ViewModel;
+using QNZ.Model.Settings;
+using QNZCMS.Services;
+using Serilog.Context;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class PostsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public PostsController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        private readonly IConfiguration _config;
+        private readonly IWritableOptions<AdminBlogSet> _writableLocations;
+        public PostsController(QNZContext context, IMapper mapper, IConfiguration config, IWritableOptions<AdminBlogSet> writableLocations)
         {
             _context = context;
             _mapper = mapper;
+            _config = config;
+            _writableLocations = writableLocations;
         }
         // GET: Admin/Posts
         public async Task<IActionResult> Index(string keyword, string sort, int? categoryId, int? page)
         {
             var vm = new PostListVM()
             {
-                PageIndex = page == null || page <= 0 ? 1 : page.Value,
+                PageIndex = page is null or <= 0 ? 1 : page.Value,
                 Keyword = keyword,
                 CategoryId = categoryId,
-                PageSize = SettingsManager.Blog.PageSize
+                PageSize = _config.GetValue<int>("Modules:Blog:Administrator:PageSize"),
             };
 
             //var pageSize = SettingsManager.Post.PageSize;
@@ -140,8 +150,6 @@ namespace QNZCMS.Areas.Admin.Controllers
                .OrderByDescending(d => d.Importance).ToListAsync();
             ViewData["Categories"] = new SelectList(categories, "Id", "Title");
 
-           
-
             return View(vm);
 
         }
@@ -184,7 +192,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     }
                     model = _mapper.Map(article, model);
 
-                    model.UpdatedBy = User.Identity.Name;
+                    if (User.Identity != null) model.UpdatedBy = User.Identity.Name;
                     model.UpdatedDate = DateTime.Now;
 
 
@@ -200,13 +208,13 @@ namespace QNZCMS.Areas.Admin.Controllers
                 {
                     var model = _mapper.Map<Post>(article);
 
-                    model.CreatedBy = User.Identity.Name;
+                    if (User.Identity != null) model.CreatedBy = User.Identity.Name;
                     model.CreatedDate = DateTime.Now;
 
 
                     //model.Body = WebUtility.HtmlEncode(page.Body);
 
-                    _context.Add(model);
+                    _context.Add((object)model);
                     await _context.SaveChangesAsync();
                     pm.ObjectId = model.Id.ToString();
 
@@ -240,18 +248,20 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-                var xmlFile = PlatformServices.Default.MapPath("/Config/Postsettings.config");
-                XDocument doc = XDocument.Load(xmlFile);
-
-                var item = doc.Descendants("Settings").FirstOrDefault();
-                item.Element("PageSize").SetValue(pageSize);
-                doc.Save(xmlFile);
-
-
+                _writableLocations.Update(opt => {
+                    opt.PageSize1 = pageSize;
+                });
+                
+                const string logEvent = "分页设置";
+                using (LogContext.PushProperty("LogEvent", logEvent))
+                {
+                    Serilog.Log.Information("博客文章分页设置:数量[{pageSize}]" , pageSize );
+                }
                 return Json(AR);
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex,"错误:{@error}", ex.Message);  
                 AR.Setfailure(ex.Message);
                 return Json(AR);
             }
@@ -270,7 +280,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 return Json(AR);
             }
             article.Id = 0;
-            article.CreatedBy = User.Identity.Name;
+            if (User.Identity != null) article.CreatedBy = User.Identity.Name;
             article.CreatedDate = DateTime.Now;
        
             article.Active = false;
@@ -336,7 +346,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             foreach (var item in c)
             {
-                item.Active = isLock ? false : true;
+                item.Active = !isLock;
                 _context.Entry(item).State = EntityState.Modified;
             }
 

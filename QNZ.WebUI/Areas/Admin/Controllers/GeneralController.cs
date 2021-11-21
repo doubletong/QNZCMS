@@ -11,6 +11,7 @@ using QNZ.Model.Admin.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Model.ViewModel;
 using System.Text;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {

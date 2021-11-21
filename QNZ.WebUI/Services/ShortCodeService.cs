@@ -9,7 +9,6 @@ namespace QNZCMS.Services
     {
         public dynamic GetModel(string shortCode)
         {
-
             return shortCode;
         }
     }

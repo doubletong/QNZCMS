@@ -1,4 +1,4 @@
-﻿using QNZ.Resources.Admin;
+﻿using QNZ.Resources.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace QNZ.Model.Admin.InputModel

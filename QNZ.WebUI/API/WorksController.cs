@@ -17,8 +17,8 @@ namespace QNZCMS.API
     public class WorksController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public WorksController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public WorksController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

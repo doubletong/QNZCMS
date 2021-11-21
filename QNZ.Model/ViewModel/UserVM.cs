@@ -6,7 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using QNZ.Data;
 using QNZ.Data.Enums;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using X.PagedList;
 
 namespace QNZ.Model.ViewModel

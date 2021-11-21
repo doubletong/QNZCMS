@@ -17,8 +17,8 @@ namespace QNZCMS.Controllers
     public class NewsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public NewsController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public NewsController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

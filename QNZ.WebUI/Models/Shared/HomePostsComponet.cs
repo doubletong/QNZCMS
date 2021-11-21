@@ -11,9 +11,9 @@ namespace QNZCMS.Models.Shared
     [ViewComponent(Name = "HomePosts")]
     public class HomePostsComponet : ViewComponent
     {
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
-        public HomePostsComponet(YicaiyunContext context)
+        public HomePostsComponet(QNZContext context)
         {
             _context = context;
         }

@@ -19,9 +19,9 @@ namespace QNZCMS.Controllers
     public class ContactController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly IEmailService _emailService;
-        public ContactController(YicaiyunContext context, IMapper mapper, IEmailService emailService)
+        public ContactController(QNZContext context, IMapper mapper, IEmailService emailService)
         {
             _context = context;
             _mapper = mapper;

@@ -18,10 +18,10 @@ namespace QNZCMS.Controllers
     public class ProductsController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public ProductsController(YicaiyunContext context, IMapper mapper, ICacheService cacheService, IWebHostEnvironment hostingEnvironment)
+        public ProductsController(QNZContext context, IMapper mapper, ICacheService cacheService, IWebHostEnvironment hostingEnvironment)
         {
             _mapper = mapper;
             _context = context;

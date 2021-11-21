@@ -33,8 +33,7 @@
         public static ProductSettings Product => SettingLoader.LoadConfig<ProductSettings>();
 
         public static ArticleSettings Article => SettingLoader.LoadConfig<ArticleSettings>();
-        public static PageSettings Page => SettingLoader.LoadConfig<PageSettings>();
-        public static PageMetaSettings PageMeta => SettingLoader.LoadConfig<PageMetaSettings>();
+     
 
         public static AdsSettings Ads => SettingLoader.LoadConfig<AdsSettings>();
 
@@ -47,7 +46,6 @@
         public static ContactSettings Contact => SettingLoader.LoadConfig<ContactSettings>();
 
         public static SocialSettings Social => SettingLoader.LoadConfig<SocialSettings>();
-
 
         public static RoleSettings Role => SettingLoader.LoadConfig<RoleSettings>();
 

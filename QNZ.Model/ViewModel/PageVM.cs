@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +16,7 @@ namespace QNZ.Model.ViewModel
         public string Title { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "SeoName")]
         public string SeoName { get; set; }
+        
         [Display(ResourceType = typeof(Labels), Name = "Importance")]
         public int Importance { get; set; }
         [Display(ResourceType = typeof(Labels), Name = "ViewCount")]

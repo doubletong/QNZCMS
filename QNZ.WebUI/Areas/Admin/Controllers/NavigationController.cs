@@ -12,11 +12,12 @@ using QNZ.Model.Admin.ViewModel;
 using QNZ.Services;
 using QNZ.Services.Menus;
 using QNZ.Data;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model;
 using QNZ.Infrastructure.Cache;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -26,7 +27,7 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class NavigationController : BaseController
     {
         private ICacheService _cache;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
    
         private readonly IMenuServices _menuService;
@@ -34,7 +35,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         private readonly IMapper _mapper;
 
         public NavigationController(IMenuServices menuService, IViewRenderService viewRenderService, IMapper mapper,
-            YicaiyunContext context, ICacheService memoryCache)
+            QNZContext context, ICacheService memoryCache)
         {
             _menuService = menuService;         
             _viewRenderService = viewRenderService;

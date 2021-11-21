@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
 using QNZ.Data.Enums;
 using QNZ.Model.Admin.ViewModel;
+using QNZ.Model.Administrator;
+using QNZ.Model.ViewModel;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -23,7 +25,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             return validationErrors;
         }
 
-        protected async Task CreatedUpdatedPageMetaAsync(YicaiyunContext db, PageMeta pm)
+        protected async Task CreatedUpdatedPageMetaAsync(QNZContext db, PageMeta pm)
         {
             var origin = await db.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == pm.ModuleType && d.ObjectId == pm.ObjectId);
             if (origin != null)

@@ -15,8 +15,8 @@ namespace QNZCMS.Areas.Admin.Models.Menu
     public class MenusComponent : ViewComponent
     {
         private ICacheService _cache;
-        private readonly YicaiyunContext _context;
-        public MenusComponent(YicaiyunContext context, ICacheService memoryCache)
+        private readonly QNZContext _context;
+        public MenusComponent(QNZContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;

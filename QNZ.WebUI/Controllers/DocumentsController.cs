@@ -11,10 +11,10 @@ namespace QNZCMS.Controllers
     public class DocumentsController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public DocumentsController(YicaiyunContext context, IMapper mapper, ICacheService cacheService, IWebHostEnvironment hostingEnvironment)
+        public DocumentsController(QNZContext context, IMapper mapper, ICacheService cacheService, IWebHostEnvironment hostingEnvironment)
         {
             _mapper = mapper;
             _context = context;

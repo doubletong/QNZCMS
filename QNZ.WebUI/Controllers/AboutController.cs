@@ -19,9 +19,9 @@ namespace QNZCMS.Controllers
     public class AboutController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public AboutController(YicaiyunContext context, IMapper mapper, ICacheService cacheService)
+        public AboutController(QNZContext context, IMapper mapper, ICacheService cacheService)
         {
             _mapper = mapper;
             _context = context;

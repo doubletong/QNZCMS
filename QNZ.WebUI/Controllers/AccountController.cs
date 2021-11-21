@@ -23,16 +23,12 @@ namespace QNZCMS.Controllers
 
         private readonly ILogger<AccountController> _logger;
         private readonly TokenOptions _tokenOptions;
-        private readonly YicaiyunContext _context;
-        public AccountController(IOptions<TokenOptions> tokens, ILogger<AccountController> logger, YicaiyunContext context)
+        private readonly QNZContext _context;
+        public AccountController(IOptions<TokenOptions> tokens, ILogger<AccountController> logger, QNZContext context)
         {
-
-
             _tokenOptions = tokens.Value;
             _logger = logger;
             _context = context;
-
-
         }
 
         public IActionResult Register()
@@ -113,10 +109,8 @@ namespace QNZCMS.Controllers
                 return Json(AR);
             };
 
-
-
             // create claims
-            List<Claim> claims = new List<Claim>
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim("RealName", user.RealName??"无"),
@@ -137,7 +131,7 @@ namespace QNZCMS.Controllers
             }
 
             // create principal
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
             {

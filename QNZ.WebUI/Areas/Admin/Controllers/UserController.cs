@@ -22,7 +22,8 @@ using QNZ.Services;
 using QNZ.Services.Identity;
 using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
-using QNZ.Resources.Admin;
+using QNZ.Model.Administrator;
+using QNZ.Resources.Common;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -35,16 +36,14 @@ namespace QNZCMS.Areas.Admin.Controllers
 
         private readonly IUserServices _userServices;
         private readonly IRoleServices _roleServices;
-        private readonly IViewRenderService _viewRenderService;
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
         public UserController(IUserServices userServices, IRoleServices roleServices,
-            IViewRenderService viewRenderService, IMapper mapper, YicaiyunContext context)
+             IMapper mapper, QNZContext context)
         {
             _userServices = userServices;
             _roleServices = roleServices;
-            _viewRenderService = viewRenderService;
             _mapper = mapper;
             _context = context;
 

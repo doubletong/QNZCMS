@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Data;
-using QNZ.Infrastructure.Extensions;
 using QNZ.Model.Admin.ViewModel;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -17,9 +16,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class HomeController : BaseController
     {
      
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
 
-        public HomeController(YicaiyunContext context)
+        public HomeController(QNZContext context)
         {
             _context = context;           
 
@@ -51,7 +50,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
         public async Task<IActionResult> PluginsAsync()
         {
-            PluginsPageVM vm = new PluginsPageVM
+            var vm = new PluginsPageVM
             {
                 NavCount = await _context.Navigations.CountAsync(),
                 AdvertCount = await _context.Advertisements.CountAsync(),

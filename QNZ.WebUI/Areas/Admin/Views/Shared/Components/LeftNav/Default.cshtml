@@ -21,12 +21,12 @@
                     string url = string.IsNullOrEmpty(item.Url) ? "#" : item.Url;
                     string hasChilds = string.IsNullOrEmpty(item.Url) ? "down-nav" : "";
 
-              
+
 
                     var childMenus = Model.Menus.Where(d => d.ParentId == item.Id && d.Active).OrderBy(d => d.Importance).ToList();
 
-                    string openav = Model.CurrentMenu.ParentId == item.Id && item.Id != 3 && childMenus.Any() ? "open" : "";
-                    string linkActive = item.Id == Model.CurrentMenu.Id || (Model.CurrentMenu.ParentId == item.Id && !childMenus.Any()) ? "active" : "";
+                    string openav = (Model.CurrentMenu!=null && Model.CurrentMenu.ParentId == item.Id && item.Id != 3 && childMenus.Any()) ? "open" : "";
+                    string linkActive = Model.CurrentMenu != null && (item.Id == Model.CurrentMenu.Id || (Model.CurrentMenu.ParentId == item.Id && !childMenus.Any())) ? "active" : "";
 
                     <li class="@hasChilds @string.Format("level{0}", item.LayoutLevel) @openav" data-parent="@(item.ParentId??0)">
                         <a href="@url" class="@linkActive" data-id="@item.Id">
@@ -42,9 +42,9 @@
                             <ul class="submenu">
                                 @foreach (var sub in childMenus)
                                 {
-                                  
 
-                                    string subLinkActive = (sub.Id == Model.CurrentMenu.Id || sub.Id == Model.CurrentMenu.ParentId) ? "active" : "";
+
+                                    string subLinkActive = (Model.CurrentMenu != null && (sub.Id == Model.CurrentMenu.Id || sub.Id == Model.CurrentMenu.ParentId)) ? "active" : "";
                                     <li class="@string.Format("level{0}", sub.LayoutLevel)" data-parent="@(sub.ParentId ?? 0)">
                                         <a href="@sub.Url" data-id="@sub.Id" class="@subLinkActive">
                                             <i class="@sub.Iconfont"></i>@sub.Title

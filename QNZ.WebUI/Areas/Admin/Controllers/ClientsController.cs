@@ -14,11 +14,12 @@ using QNZ.Model.ViewModel;
 using QNZ.Model.Admin.InputModel;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
 using QNZ.Infrastructure.Configs;
+using QNZ.Model.Administrator;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
@@ -31,8 +32,8 @@ namespace QNZCMS.Areas.Admin.Controllers
         private IWebHostEnvironment _hostingEnvironment;
 
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public ClientsController(YicaiyunContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+        private readonly QNZContext _context;
+        public ClientsController(QNZContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _mapper = mapper;

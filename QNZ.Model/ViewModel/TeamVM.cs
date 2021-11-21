@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using PagedList.Core;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 
 namespace QNZ.Model.ViewModel
 {

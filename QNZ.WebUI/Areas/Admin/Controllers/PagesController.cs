@@ -1,88 +1,106 @@
 ﻿using System;
-using System.IO;
+
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.Configuration;
+
 using QNZ.Data;
 using QNZ.Data.Enums;
-using QNZ.Model.Admin.ViewModel;
+
 using QNZ.Model.ViewModel;
-using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
-using QNZ.Resources.Admin;
+using QNZ.Model.Administrator;
+using QNZ.Model.Settings;
+using QNZ.Resources.Common;
+using QNZCMS.Services;
+using Serilog.Context;
 using X.PagedList;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class PagesController : BaseController
     {
 
-        private readonly IWebHostEnvironment _hostingEnvironment;
+       
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public PagesController(IWebHostEnvironment hostingEnvironment, YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        private readonly IConfiguration _config;
+        private readonly IWritableOptions<AdminPageSet> _writableLocations;
+        public PagesController(QNZContext context, 
+            IMapper mapper,IConfiguration config, IWritableOptions<AdminPageSet> writableLocations)
         {
-            _hostingEnvironment = hostingEnvironment;
+            
             _context = context;
-            _mapper = mapper;      
+            _mapper = mapper;
+            _config = config;
+            _writableLocations = writableLocations;
         }
 
         // GET: Admin/Pages
         public async Task<IActionResult> Index(string keyword, int? page, string orderby = "importance", string sort = "desc")
         {
-           PageListVM vm = new PageListVM()
+            try
             {
-                PageIndex = page??1,
-                PageSize = SettingsManager.Page.PageSize,
-                Keyword = keyword,
-                OrderBy = orderby,
-                Sort = sort
-            };
-        
+                var vm = new PageListVM()
+                {
+                    PageIndex = page??1,
+                    PageSize = _config.GetValue<int>("Modules:Page:Administrator:PageSize"),
+                    Keyword = keyword,
+                    OrderBy = orderby,
+                    Sort = sort
+                };
 
-            var query = _context.Pages.AsNoTracking().AsQueryable();
-            if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(d => d.Title.Contains(keyword) || d.Body.Contains(keyword));        
+                var query = _context.Pages.AsNoTracking().AsQueryable();
+                if (!string.IsNullOrEmpty(keyword))
+                    query = query.Where(d => d.Title.Contains(keyword) || d.Body.Contains(keyword));        
 
 
-            vm.TotalCount = await query.CountAsync();
-            var gosort = $"{orderby}_{sort}";         
+                vm.TotalCount = await query.CountAsync();
+                var goSort = $"{orderby}_{sort}";         
 
-            query = gosort switch
-            {
-                "view_asc" => query.OrderBy(s => s.ViewCount),
-                "view_desc" => query.OrderByDescending(s => s.ViewCount),
-                "title_asc" => query.OrderBy(s => s.Title),
-                "title_desc" => query.OrderByDescending(s => s.Title),
-                "date_asc" => query.OrderBy(s => s.CreatedDate),
-                "date_desc" => query.OrderByDescending(s => s.CreatedDate),
-                "importance_asc" => query.OrderBy(s => s.Importance),
-                "importance_desc" => query.OrderByDescending(s => s.Importance),
-                _ => query.OrderByDescending(s => s.Id),
-            };
+                query = goSort switch
+                {
+                    "view_asc" => query.OrderBy(s => s.ViewCount),
+                    "view_desc" => query.OrderByDescending(s => s.ViewCount),
+                    "title_asc" => query.OrderBy(s => s.Title),
+                    "title_desc" => query.OrderByDescending(s => s.Title),
+                    "date_asc" => query.OrderBy(s => s.CreatedDate),
+                    "date_desc" => query.OrderByDescending(s => s.CreatedDate),
+                    "importance_asc" => query.OrderBy(s => s.Importance),
+                    "importance_desc" => query.OrderByDescending(s => s.Importance),
+                    _ => query.OrderByDescending(s => s.Id),
+                };
 
-            var pages = await query
-                .Skip((vm.PageIndex - 1) * vm.PageSize)
-                .Take(vm.PageSize).ProjectTo<PageVM>(_mapper.ConfigurationProvider).ToListAsync();
+                var pages = await query
+                    .Skip((vm.PageIndex - 1) * vm.PageSize)
+                    .Take(vm.PageSize).ProjectTo<PageVM>(_mapper.ConfigurationProvider).ToListAsync();
           
 
-            vm.Pages = new StaticPagedList<PageVM>(pages, vm.PageIndex, vm.PageSize, vm.TotalCount);
+                vm.Pages = new StaticPagedList<PageVM>(pages, vm.PageIndex, vm.PageSize, vm.TotalCount);
 
-            ViewBag.PageSizes = new SelectList(Site.PageSizes());
+                ViewBag.PageSizes = new SelectList(Site.PageSizes());
 
-            return View(vm);
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex,"页面列表读取错误:{@error}", ex.Message);  
+                // return null;  
+                throw;
+            }
+           
         }
 
 
@@ -101,8 +119,6 @@ namespace QNZCMS.Areas.Admin.Controllers
                 return NotFound();
             }
             page.Body = WebUtility.HtmlDecode(page.Body);
-
-         
 
             return View(page);
         }
@@ -132,13 +148,12 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.PAGE && d.ObjectId == vm.SeoName);
 
-            if (pm != null)
-            {
-                vm.SEOTitle = pm.Title;
-                vm.SEOKeywords = pm.Keywords;
-                vm.SEODescription = pm.Description;
-            }
-           
+            if (pm == null) return View(vm);
+            
+            vm.SEOTitle = pm.Title;
+            vm.SEOKeywords = pm.Keywords;
+            vm.SEODescription = pm.Description;
+
 
             return View(vm);
         }
@@ -169,7 +184,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     model.SeoName = model.SeoName.ToLower();
                     model.Body = WebUtility.HtmlEncode(page.Body);
                     model.UpdatedDate = DateTime.Now;
-                    model.UpdatedBy = User.Identity.Name;
+                    if (User.Identity != null) model.UpdatedBy = User.Identity.Name;
 
                     _context.Update(model);
                     await _context.SaveChangesAsync();                 
@@ -184,7 +199,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                     model.SeoName = model.SeoName.ToLower();
                     model.Body = WebUtility.HtmlEncode(page.Body);
                     model.CreatedDate = DateTime.Now;
-                    model.CreatedBy = User.Identity.Name;
+                    if (User.Identity != null) model.CreatedBy = User.Identity.Name;
 
                     _context.Add(model);
                     await _context.SaveChangesAsync();                
@@ -231,18 +246,20 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-                var xmlFile = PlatformServices.Default.MapPath("/Config/PageSettings.config");
-                XDocument doc = XDocument.Load(xmlFile);
-
-                var item = doc.Descendants("Settings").FirstOrDefault();
-                item.Element("PageSize").SetValue(pageSize);
-                doc.Save(xmlFile);
-
-
+                _writableLocations.Update(opt => {
+                    opt.PageSize = pageSize;
+                });
+                
+                const string logEvent = "分页设置";
+                using (LogContext.PushProperty("LogEvent", logEvent))
+                {
+                    Serilog.Log.Information("页面分页设置:数量[{pageSize}]" , pageSize );
+                }
                 return Json(AR);
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex,"错误:{@error}", ex.Message);  
                 AR.Setfailure(ex.Message);
                 return Json(AR);
             }
@@ -294,7 +311,6 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
 
             var c = await _context.Pages.Where(d => ids.Contains(d.Id)).ToListAsync();
-
             if (c == null)
             {
                 AR.Setfailure(Messages.HttpNotFound);
@@ -302,11 +318,14 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             foreach (var item in c)
             {
-                item.Active = isLock ? false : true;
+                item.Active = !isLock;
                 _context.Entry(item).State = EntityState.Modified;
             }
     
             await _context.SaveChangesAsync();
+
+            var logEvent = isLock ? "锁定" : "激活";
+            Serilog.Log.Information("{@action}页面:ID[{pageIds}]" , logEvent , string.Join(',',ids));
 
             return Json(AR);
         }

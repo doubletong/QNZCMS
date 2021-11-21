@@ -16,8 +16,8 @@ namespace QNZCMS.Areas.Admin.Models.Shared
     public class CrumbsComponent : ViewComponent
     {
         private IMemoryCache _cache;
-        private readonly YicaiyunContext _context;
-        public CrumbsComponent(YicaiyunContext context, IMemoryCache memoryCache)
+        private readonly QNZContext _context;
+        public CrumbsComponent(QNZContext context, IMemoryCache memoryCache)
         {
             _context = context;
             _cache = memoryCache;

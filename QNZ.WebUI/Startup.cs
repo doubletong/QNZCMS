@@ -15,11 +15,18 @@ using QNZ.Services.Menus;
 using QNZ.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using QNZ.Infrastructure.Cache;
 using QNZ.Infrastructure.Email;
 using Microsoft.Extensions.WebEncoders;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using QNZ.Model.Administrator;
+using QNZ.Model.Settings;
+using QNZ.Model.Site;
+using QNZCMS.Services;
+using Serilog.Context;
 
 namespace QNZCMS
 {
@@ -40,7 +47,7 @@ namespace QNZCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<YicaiyunContext>(options =>
+            services.AddDbContext<QNZContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                      b => b.MigrationsAssembly("QNZCMS")));
 
@@ -77,9 +84,11 @@ namespace QNZCMS
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new AdminMappingProfile());
+                mc.AddProfile(new SiteMappingProfile());
             });
 
-            IMapper mapper = mappingConfig.CreateMapper();
+            var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
             services.AddBrowserDetection();
@@ -100,6 +109,11 @@ namespace QNZCMS
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IEmailService, MimeKitService>();
             
+            services.ConfigureWritable<AdminProductSet>(Configuration.GetSection("Modules:Product:Administrator"));
+            services.ConfigureWritable<AdminPageSet>(Configuration.GetSection("Modules:Page:Administrator"));
+            services.ConfigureWritable<AdminLogSet>(Configuration.GetSection("Modules:Log:Administrator"));
+            services.ConfigureWritable<SiteLogSet>(Configuration.GetSection("Modules:Log:Site"));
+            
             // If using Kestrel:
             services.Configure<KestrelServerOptions>(options =>
             {
@@ -118,18 +132,18 @@ namespace QNZCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-
-                //app.UseHsts();
-                app.UseStatusCodePagesWithRedirects("/errors/{0}");
-
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseMigrationsEndPoint();
+            // }
+            // else
+            // {
+            //
+            //     //app.UseHsts();
+            //     app.UseStatusCodePagesWithRedirects("/errors/{0}");
+            //
+            // }
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -137,12 +151,20 @@ namespace QNZCMS
 
             app.UseAuthentication();
             app.UseAuthorization();
-          
+        
+            // below code is needed to get User name for Log             
+            app.Use(async (httpContext, next) =>  
+                {
+                    var ip = httpContext.Connection.RemoteIpAddress;
+                    var userName = httpContext.User.Identity is { IsAuthenticated: true } ? httpContext.User.Identity.Name : "游客"; //Gets user Name from user Identity  
+                    LogContext.PushProperty("UserName", userName); //Push user in LogContext;  
+                    LogContext.PushProperty("IP", ip);
+                    await next.Invoke();  
+                }  
+            );  
 
             app.UseEndpoints(endpoints =>
             {
-              
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

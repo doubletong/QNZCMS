@@ -109,16 +109,17 @@ namespace QNZCMS.Areas.Admin.Controllers
         public IEnumerable<DirectoryVM> GetCurrentDirectories(string targetPath, string fullPath)
         {
             //   !Directory.EnumerateFiles(filePath).Any() && !Directory.EnumerateDirectories(filePath).Any();
-            var rootPath = _hostingEnvironment.WebRootPath + targetPath.Replace('/', '\\');
+            var currentPath = IsWindowRunTime() ? targetPath.Replace('/', '\\') : targetPath.Replace('\\', '/');
+            var rootPath = _hostingEnvironment.WebRootPath + currentPath;
 
             return new DirectoryInfo(rootPath).GetDirectories()
                  .Where(dir => !dir.Name.StartsWith("_")).Select(dir => new DirectoryVM
                  {
                      Name = dir.Name,
-                     DirPath = string.Format("{0}/{1}", targetPath, dir.Name),
+                     DirPath = $"{targetPath}/{dir.Name}",
                      HasChildren = Directory.EnumerateDirectories(Path.Combine(rootPath, dir.Name)).Any(),
-                     Children = GetCurrentDirectories(string.Format("{0}/{1}", targetPath, dir.Name), fullPath),
-                     IsOpen = fullPath.StartsWith(string.Format("{0}/{1}", targetPath, dir.Name))
+                     Children = GetCurrentDirectories($"{targetPath}/{dir.Name}", fullPath),
+                     IsOpen = fullPath.StartsWith($"{targetPath}/{dir.Name}")
                  });
            
         }
@@ -189,15 +190,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 return  Content("路径不能为空");
             }
-          //  filePath = filePath.ToLower();
-
-
-            var path = _hostingEnvironment.WebRootPath + filePath.Replace('/', '\\');          
-
-            //var path = Path.Combine(
-            //               Directory.GetCurrentDirectory(),
-            //               "wwwroot", filename);
-
+            var path = _hostingEnvironment.WebRootPath + filePath.Replace('/', Path.DirectorySeparatorChar);          
+            
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
             {
@@ -220,10 +214,13 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-                var downPath = _hostingEnvironment.WebRootPath + filePath.Replace('/','\\');
-                System.IO.File.Delete(downPath);
-
-            
+                var delPath = _hostingEnvironment.WebRootPath + filePath.Replace('/',Path.DirectorySeparatorChar);
+                if (!System.IO.File.Exists(delPath))
+                {
+                    return Json(new { status = 2,message ="目标文件不存在！"});
+                }
+                
+                System.IO.File.Delete(delPath);
                 return Json(new { status = 1,message ="已成功删除文件"});
             }
             catch (Exception er)
@@ -249,17 +246,15 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 newFilePath = newFilePath.Replace(" ", "_");
 
-                filePath = _hostingEnvironment.WebRootPath + filePath.Replace('/', '\\'); ;
-                newFilePath = _hostingEnvironment.WebRootPath + newFilePath.Replace('/', '\\'); ;
+                filePath = _hostingEnvironment.WebRootPath + filePath.Replace('/', Path.DirectorySeparatorChar); ;
+                newFilePath = _hostingEnvironment.WebRootPath + newFilePath.Replace('/', Path.DirectorySeparatorChar); ;
 
                 if (System.IO.File.Exists(newFilePath))
                 {
                     // File.Delete(newFilePath);
-               
                     return Json(new { status = 2, message = "此文件名已经存在"});
                 }
                 System.IO.File.Move(filePath, newFilePath);
-
                 return Json(new { status = 1, message = "已经成功重命名" }); 
             }
             catch (Exception er)
@@ -280,10 +275,8 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
                 dir = dir.Replace(" ", "_");
 
-                var newDir = $"{_hostingEnvironment.WebRootPath}{filePath.Replace('/', '\\')}\\{dir}";
-                //newDir = _hostingEnvironment.WebRootPath,  newDir.Replace('/','\\'));
-                //var response = Request.CreateResponse(HttpStatusCode.OK, "OK");
-
+                var newDir = $"{_hostingEnvironment.WebRootPath}{filePath.Replace('/', Path.DirectorySeparatorChar)}{Path.DirectorySeparatorChar}{dir}";
+                
                 if (Directory.Exists(newDir))
                 {
                     // File.Delete(newFilePath);
@@ -407,7 +400,7 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             var orgWebPath = "wwwroot" + webPath;
             var oldstr = "wwwroot" + _rootDirectory;    
-            string _thumbPath = orgWebPath.Replace(oldstr, _tempDirectory);
+            var thumbPath = orgWebPath.Replace(oldstr, _tempDirectory);
 
 
             var vm = new DirectoryInfo(rootPath).GetFiles()
@@ -419,16 +412,20 @@ namespace QNZCMS.Areas.Admin.Controllers
                     FilePath = string.Format("{0}/{1}", webPath, f.Name),
                     FileSize = f.Length / 1024,
                    // ImgUrl = ".jpg.png.gif.svg.webp".Contains(f.Extension.Replace(".", "").ToLower()) ? string.Format("{0}/{1}", _thumbPath, f.Name) : string.Format("{0}/{1}.png", _extensionDir, f.Extension.Replace(".", ""))
-                    ImgUrl = GetFilePath(f.Extension,f.Name,_thumbPath,webPath)
+                    ImgUrl = GetFilePath(f.Extension,f.Name,thumbPath,webPath)
                 });
 
             foreach(var item in vm)
             {
                 if (!item.ImgUrl.StartsWith(_extensionDir)){
-                    var thumbFile = _hostingEnvironment.WebRootPath + item.ImgUrl.Replace('/', '\\');
+                    var tmpUrl = IsWindowRunTime() ? item.ImgUrl.Replace('/', '\\') : item.ImgUrl.Replace('\\', '/');
+                    var thumbFile = _hostingEnvironment.WebRootPath + tmpUrl;
                     if (!System.IO.File.Exists(thumbFile))
                     {
-                        var orgImage = _hostingEnvironment.WebRootPath + item.FilePath.Replace('/', '\\');
+                        var tmpFilePath = IsWindowRunTime()
+                            ? item.FilePath.Replace('/', '\\')
+                            : item.FilePath.Replace('\\', '/');
+                        var orgImage = _hostingEnvironment.WebRootPath + tmpFilePath;
                         ImageHandler.MakeThumbnail2(orgImage, thumbFile, _thumbWidth, _thumbHeight);
                     }
                 }
@@ -515,7 +512,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> DropzoneUploadFile(UploadVM vm)
         {
-            string webRootPath = _hostingEnvironment.WebRootPath;
+            var webRootPath = _hostingEnvironment.WebRootPath;
           
             try
             {
@@ -523,35 +520,46 @@ namespace QNZCMS.Areas.Admin.Controllers
                 {
                     var orgFileName = Path.GetFileNameWithoutExtension(vm.file.FileName);
                     var ex = Path.GetExtension(vm.file.FileName);
-                    //string filename = ImageHandler.GetRandomFileName(Path.GetExtension(iFormFile.FileName), 10000);
-                    string localPath = webRootPath + (string.IsNullOrEmpty(vm.filePath) ? _rootDirectory.Replace('/', '\\') : vm.filePath.Replace('/', '\\'));
+
+                    var rootDir = IsWindowRunTime()
+                        ? _rootDirectory.Replace('/', '\\')
+                        : _rootDirectory.Replace('\\', '/');
+                    var filePath = IsWindowRunTime() 
+                        ? vm.filePath.Replace('/', '\\') 
+                        : vm.filePath.Replace('\\', '/');
+                    
+                    var localPath = webRootPath + (string.IsNullOrEmpty(vm.filePath) ? rootDir : filePath);
 
                     if (!Directory.Exists(localPath))
                     {
                         Directory.CreateDirectory(localPath);
                     }
-                    string fileName = FileHelper.GetFileName(orgFileName, localPath, ex);
+                    var fileName = FileHelper.GetFileName(orgFileName, localPath, ex);
+                    var saveFilePath = Path.Combine(localPath, fileName);
+   
+                    var oldStr = "wwwroot" + (IsWindowRunTime() ? _rootDirectory.Replace('/', '\\'): _rootDirectory.Replace('\\', '/'));
+                    var newStr = "wwwroot" +  (IsWindowRunTime() ? _tempDirectory.Replace('/', '\\'):_tempDirectory.Replace('\\', '/'));
+                    var thumbPath = saveFilePath.Replace(oldStr, newStr);
 
-                    string saveFilePath = Path.Combine(localPath, fileName);
-
-                    var oldstr = "wwwroot" + _rootDirectory.Replace('/', '\\');
-                    var newstr = "wwwroot" + _tempDirectory.Replace('/', '\\');
-                    string _thumbPath = saveFilePath.Replace(oldstr, newstr);
-
-                    using (var stream = new FileStream(saveFilePath, FileMode.Create))
+                    await using (var stream = new FileStream(saveFilePath, FileMode.Create))
                     {
                         await vm.file.CopyToAsync(stream);
                     }
                     //   ImageHandler.MakeThumbnail2(saveFilePath, _thumbPath, 120, 90, "DB", ex.ToLower());
-                    if (ex.ToLower() == ".jpg" || ex.ToLower() == ".png" || ex.ToLower() == ".gif")
+                    if (ex.ToLower() == ".jpg" || ex.ToLower() == ".jpeg" || ex.ToLower() == ".png" || ex.ToLower() == ".gif")
                     {
-                        ImageHandler.MakeThumbnail2(saveFilePath, _thumbPath, _thumbWidth, _thumbHeight);
+                        ImageHandler.MakeThumbnail2(saveFilePath, thumbPath, _thumbWidth, _thumbHeight);
                     }
-
+                    
+                    return StatusCode(StatusCodes.Status200OK, "文件成功上传！ ");
                 
                 }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "请选择上传文件！ ");
+                }
           
-                return StatusCode(StatusCodes.Status200OK, "文件成功上传！ ");
+                
             }
             catch (Exception er)
             {

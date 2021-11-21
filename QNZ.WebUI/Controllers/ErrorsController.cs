@@ -15,10 +15,10 @@ namespace QNZCMS.Controllers
     public class ErrorsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
      
       
-        public ErrorsController(YicaiyunContext context, IMapper mapper)
+        public ErrorsController(QNZContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;     

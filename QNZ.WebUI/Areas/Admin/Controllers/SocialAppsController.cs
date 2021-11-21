@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
 using QNZ.Infrastructure.Cache;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -24,9 +25,9 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class SocialAppsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly ICacheService _cacheService;
-        public SocialAppsController(YicaiyunContext context, IMapper mapper, ICacheService cacheService)
+        public SocialAppsController(QNZContext context, IMapper mapper, ICacheService cacheService)
         {
             _context = context;
             _mapper = mapper;

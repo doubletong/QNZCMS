@@ -1,6 +1,6 @@
 ﻿using QNZ.Data.Enums;
 
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 
 namespace QNZ.Model.Front.ViewModel
 {

@@ -1,0 +1,167 @@
+@model LogListVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    ViewData["Title"] = "错误跟跑踪";
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="/admin/fonts/iconfont.css" rel="stylesheet" />
+    <style>
+            body{
+                padding: 2rem;
+            }
+            table th{
+            white-space: nowrap;
+            }
+            .pagination{
+            margin-bottom: 0;
+            }
+        </style>
+</head>
+<body>
+<div class="card">
+        <header class="card-header">
+            <div class="row">
+                <div class="col">
+                    <div class="card-title-v1"><i class="iconfont icon-barcode"></i>日志查看</div>
+                </div>
+                <div class="col-auto">
+                    <div class="control"><a class="expand" href="#"><i class="iconfont icon-fullscreen"></i></a><a class="compress" href="#" style="display: none;"><i class="iconfont icon-shrink"></i></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-vmiddle">
+                        <thead class="thead-primary">
+                            <tr>
+                              
+                                <th>
+                                    消息
+                                </th>
+                                <th>
+                                    <a asp-action="Index" asp-route-sort="@((Model.OrderBy=="date" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="date">
+                                        创建日期
+                                        @if (Model.OrderBy == "date")
+                                        {
+                                            if (Model.Sort == "asc")
+                                            {
+                                                <i class="iconfont icon-order-up"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="iconfont icon-order-down"></i>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-orderby"></i>
+                                        }
+                                    </a>
+                                </th>
+                                
+                                <th>
+                                    <a asp-action="Index" asp-route-sort="@((Model.OrderBy=="username" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="username">
+                                        用户名
+                                        @if (Model.OrderBy == "username")
+                                        {
+                                            if (Model.Sort == "asc")
+                                            {
+                                                <i class="iconfont icon-order-up"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="iconfont icon-order-down"></i>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <i class="iconfont icon-orderby"></i>
+                                        }
+
+                                    </a>
+                                </th>
+                                <th>
+                                    IP
+                                </th>
+                                
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbList">
+                            @foreach (var item in Model.Logs)
+                            {
+                                <tr id="@(item.Id)tr">
+                                  
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Message)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeStamp)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IP)
+                                    </td>
+                                
+                                    <td>
+                                        <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary"><i class="iconfont icon-eye-fill" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+
+                <div class="row align-items-center">
+                    <div class="col">
+                    
+                        @Html.PagedListPager(Model.Logs, page => Url.Action("Index", new { page = page, sort = Model.Sort, orderby = Model.OrderBy }), new PagedListRenderOptions
+                          {
+                              LiElementClasses = new string[] { "page-item" },
+                              PageClasses = new string[] { "page-link" }
+                          })
+                    </div>
+                    <div class="col-auto">
+                        总记录<strong>@Model.TotalCount</strong>条
+                    </div>
+                    <div class="col-auto">
+                        <select asp-for="@Model.PageSize" asp-items="(SelectList)ViewBag.PageSizes" class="form-control" style="min-width:60px;">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <script>
+        let select = document.getElementById("PageSize");
+        select.addEventListener("change", (e) => {
+         
+            var pageSize = select.value;
+            var url = "@Url.Action("PageSizeSet")" + "?pageSize=" + pageSize;
+           // var data = {pageSize: pageSize};
+            fetch(url, {
+               method: 'POST', // or 'PUT'
+            //   body: JSON.stringify(data), // data can be `string` or {object}!
+               headers:{
+                 'Content-Type': 'application/json'
+               }
+            }).then(res => res.json())
+            .then(response => location.reload())
+            .catch(error => console.error('Error:', error));
+        });       
+       
+    </script>
+
+</body>
+</html>

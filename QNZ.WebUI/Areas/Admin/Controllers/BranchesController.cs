@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
@@ -23,8 +24,8 @@ namespace QNZCMS.Areas.Admin.Controllers
     public class BranchesController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public BranchesController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public BranchesController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

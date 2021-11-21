@@ -11,10 +11,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using QNZCMS.Utilities;
-using QNZ.Infrastructure.Configs;
+
 using QNZ.Infrastructure.Helper;
 
 namespace QNZCMS.Areas.Admin.Controllers

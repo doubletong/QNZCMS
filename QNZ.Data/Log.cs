@@ -3,29 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.SqlTypes;
 
 namespace QNZ.Data
 {
-    [Table("Log")]
+    [Table("Logs")]
     public partial class Log
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        [StringLength(50)]
-        public string Application { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime Logged { get; set; }
-        [Required]
-        [StringLength(50)]
-        public string Level { get; set; }
-        [Required]
         public string Message { get; set; }
-        [StringLength(250)]
-        public string Logger { get; set; }
-        public string Callsite { get; set; }
+        public string MessageTemplate { get; set; }
+        [StringLength(128)]
+        public string Level { get; set; }
+       
+        public DateTimeOffset TimeStamp { get; set; }
         public string Exception { get; set; }
+        // public SqlXml Properties { get; set; }
+        public string LogEvent { get; set; }
+        [StringLength(200)]
+        public string UserName { get; set; }
         [StringLength(50)]
-        public string CreatedBy { get; set; }
+        public string IP { get; set; }
+
     }
 }

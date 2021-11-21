@@ -31,12 +31,12 @@ namespace QNZCMS.Controllers
     {
         //private readonly IViewRenderService _viewRenderService;
 
-        private IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ICacheService _cacheService;
-        private readonly YicaiyunContext _context;
+        private readonly QNZContext _context;
         private readonly IMapper _mapper;
         private readonly IFileProvider _fileProvider;
-        public HomeController(/*IViewRenderService viewRenderService,*/ IWebHostEnvironment hostingEnvironment, ICacheService cache, YicaiyunContext context, IMapper mapper)
+        public HomeController(/*IViewRenderService viewRenderService,*/ IWebHostEnvironment hostingEnvironment, ICacheService cache, QNZContext context, IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
             _cacheService = cache;
@@ -55,7 +55,7 @@ namespace QNZCMS.Controllers
             //string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
             //System.IO.File.WriteAllText(configFile, output);
 
-            string keyNav = $"ADVERTISEMENTS_TRUE_ALL";
+            var keyNav = $"ADVERTISEMENTS_TRUE_ALL";
 
             if (!_cacheService.IsSet(keyNav))
             {
@@ -122,20 +122,7 @@ namespace QNZCMS.Controllers
         
         //}
 
-        public async Task<IActionResult> Test2Async()
-        {
-            string a = "[about ab=123 cd=323]";
-            //  var a =  await  _viewRenderService.RenderAsync("Test");
-            a = a.Remove(0, 1);
-            a = a.Remove(a.Length-1, 1);
-
-            var b = a.Split(' ');
-            var c = b[1].Substring(b[1].IndexOf('='));
-            c.Contains('=');
-            return Content(b[0]);
-
-        }
-
+       
 
 
         [Route("/image/{w}/{h}/{*url}")]

@@ -14,24 +14,25 @@ using QNZ.Model.ViewModel;
 using QNZ.Model.Admin.InputModel;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Infrastructure.Helper;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class ProductCategoriesController : BaseController
     {
         private IWebHostEnvironment _hostingEnvironment;
 
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public ProductCategoriesController(YicaiyunContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+        private readonly QNZContext _context;
+        public ProductCategoriesController(QNZContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _mapper = mapper;

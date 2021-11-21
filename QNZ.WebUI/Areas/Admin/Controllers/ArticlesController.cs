@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
 using QNZ.Infrastructure.Configs;
@@ -18,17 +18,18 @@ using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
 using System.Xml.Linq;
 using Microsoft.Extensions.PlatformAbstractions;
+using QNZ.Model.Administrator;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]   
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class ArticlesController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public ArticlesController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public ArticlesController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

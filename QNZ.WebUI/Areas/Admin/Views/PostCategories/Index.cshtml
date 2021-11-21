@@ -1,9 +1,9 @@
 ﻿@model PostCategoryList
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery _antiforgery;
 @{
     ViewData["Title"] = "文章分类";
 
-    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var antiforgeryRequestToken = _antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
     <div class="card">
@@ -32,19 +32,70 @@
                         </th>
                    
                         <th>
-                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["TitleSortParm"]">主题</a>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="title" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="title">
+                                主题
+                                @if (Model.OrderBy == "title")
+                                {
+                                    if (Model.Sort == "asc")
+                                    {
+                                        <i class="iconfont icon-order-up"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-order-down"></i>
+                                    }
+                                }                                  
+                                else
+                                {
+                                    <i class="iconfont icon-orderby"></i>
+                                }
+
+                            </a>
                         </th>
                         <th>
                             别名
                         </th>
                         <th>
-                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["ImportanceSortParm"]">排序</a>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="importance" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="importance">
+                            排序
+                            @if (Model.OrderBy == "importance")
+                            {
+                                if (Model.Sort == "asc")
+                                {
+                                    <i class="iconfont icon-order-up"></i>
+                                }
+                                else
+                                {
+                                    <i class="iconfont icon-order-down"></i>
+                                }
+                            }
+                            else
+                            {
+                                <i class="iconfont icon-orderby"></i>
+                            }
+
+                        </a>
                         </th>
                         <th>
-                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@ViewData["DateSortParm"]">创建日期</a>
+                            <a asp-action="Index" asp-route-keyword="@Model.Keyword" asp-route-sort="@((Model.OrderBy=="date" && Model.Sort=="asc")?"desc":"asc")" asp-route-orderby="date">
+                                创建日期
+                                @if (Model.OrderBy == "date")
+                                {
+                                    if (Model.Sort == "asc")
+                                    {
+                                        <i class="iconfont icon-order-up"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="iconfont icon-order-down"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="iconfont icon-orderby"></i>
+                                }
+                            </a>
                         </th>
-
-
                         <th>
                             激活？
                         </th>

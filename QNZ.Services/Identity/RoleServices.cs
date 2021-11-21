@@ -12,8 +12,8 @@ namespace QNZ.Services.Identity
 {
     public class RoleServices:IRoleServices
     {
-        private readonly YicaiyunContext _db;
-        public RoleServices(YicaiyunContext db)
+        private readonly QNZContext _db;
+        public RoleServices(QNZContext db)
         {
             _db = db;
         }

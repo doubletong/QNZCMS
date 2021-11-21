@@ -11,8 +11,8 @@ namespace QNZCMS.Areas.Admin.Models.Navigation
     public class MoveNavComponent : ViewComponent
     {
         //private readonly IMenuServices _menuServices;
-        private readonly YicaiyunContext _context;
-        public MoveNavComponent(YicaiyunContext context)
+        private readonly QNZContext _context;
+        public MoveNavComponent(QNZContext context)
         {
             _context = context;
 

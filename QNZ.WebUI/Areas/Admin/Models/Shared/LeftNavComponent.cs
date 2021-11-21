@@ -19,8 +19,8 @@ namespace QNZCMS.Areas.Admin.Models.Shared
     {
 
         private ICacheService _cache;
-        private readonly YicaiyunContext _context;
-        public LeftNavComponent(YicaiyunContext context, ICacheService memoryCache)
+        private readonly QNZContext _context;
+        public LeftNavComponent(QNZContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;

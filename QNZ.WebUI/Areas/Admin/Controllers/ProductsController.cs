@@ -8,40 +8,45 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QNZ.Model.Admin.ViewModel;
 using QNZ.Model.ViewModel;
-using QNZ.Resources.Admin;
+using QNZ.Resources.Common;
 using QNZ.Data;
 using X.PagedList;
-using QNZ.Infrastructure.Configs;
 using QNZ.Infrastructure.Helper;
 using QNZ.Data.Enums;
-using System.Xml.Linq;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.Configuration;
+using QNZ.Model.Administrator;
+using QNZ.Model.Settings;
+using QNZCMS.Services;
+using Serilog.Context;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class ProductsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public ProductsController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        private readonly IConfiguration _config;
+        private readonly IWritableOptions<AdminProductSet> _writableLocations;
+        public ProductsController(QNZContext context, IMapper mapper,IConfiguration config, IWritableOptions<AdminProductSet> writableLocations)
         {
             _context = context;
             _mapper = mapper;
+            _config = config;
+            _writableLocations = writableLocations;
         }
         // GET: Admin/Products
         public async Task<IActionResult> Index(string keyword, string orderby, string sort, int? categoryId, int? page)
         {
             var vm = new ProductListVM()
             {
-                PageIndex = page == null || page <= 0 ? 1 : page.Value,
+                PageIndex = page is null or <= 0 ? 1 : page.Value,
                 Keyword = keyword,
                 CategoryId = categoryId,
-                PageSize = SettingsManager.Product.PageSize,
+                PageSize = _config.GetValue<int>("Modules:Product:Administrator:PageSize"),
                 OrderBy = orderby,
                 Sort = sort
             };
@@ -256,18 +261,20 @@ namespace QNZCMS.Areas.Admin.Controllers
         {
             try
             {
-                var xmlFile = PlatformServices.Default.MapPath("/Config/ProductSettings.config");
-                XDocument doc = XDocument.Load(xmlFile);
-
-                var item = doc.Descendants("Settings").FirstOrDefault();
-                item.Element("PageSize").SetValue(pageSize);
-                doc.Save(xmlFile);
-
-
+                _writableLocations.Update(opt => {
+                    opt.PageSize = pageSize;
+                });
+                
+                const string logEvent = "分页设置";
+                using (LogContext.PushProperty("LogEvent", logEvent))
+                {
+                    Serilog.Log.Information("产品分页设置:数量[{pageSize}]" , pageSize );
+                }
                 return Json(AR);
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex,"错误:{@error}", ex.Message);  
                 AR.Setfailure(ex.Message);
                 return Json(AR);
             }
@@ -286,7 +293,7 @@ namespace QNZCMS.Areas.Admin.Controllers
                 return Json(AR);
             }
             article.Id = 0;
-            article.CreatedBy = User.Identity.Name;
+            if (User.Identity != null) article.CreatedBy = User.Identity.Name;
             article.CreatedDate = DateTime.Now;
 
             article.Active = false;
@@ -353,7 +360,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             foreach (var item in c)
             {
-                item.Active = isLock ? false : true;
+                item.Active = !isLock;
                 _context.Entry(item).State = EntityState.Modified;
             }
 
@@ -378,7 +385,7 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             foreach (var item in c)
             {
-                item.Recommend = isTop ? false : true;
+                item.Recommend = !isTop;
                 _context.Entry(item).State = EntityState.Modified;
             }
 

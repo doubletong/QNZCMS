@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -8,29 +7,27 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QNZ.Model.ViewModel;
-using QNZ.Model.Admin.InputModel;
-using QNZ.Model.Admin.ViewModel;
 using QNZ.Data;
-using QNZ.Resources.Admin;
-using QNZ.Infrastructure.Helper;
+using QNZ.Resources.Common;
 using Microsoft.AspNetCore.Authorization;
 using QNZ.Data.Enums;
+using QNZ.Model.Administrator;
+using QNZ.Model.Administrator.InputModel;
+using QNZ.Model.Administrator.ViewModel;
+using Serilog.Context;
 
 namespace QNZCMS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("qnz-admin/[controller]/[action]")]
     [Authorize(Policy = "Permission")]
     public class PostCategoriesController : BaseController
     {
-        private IWebHostEnvironment _hostingEnvironment;
-
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public PostCategoriesController(YicaiyunContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+        private readonly QNZContext _context;
+        public PostCategoriesController(QNZContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _mapper = mapper;
@@ -38,35 +35,48 @@ namespace QNZCMS.Areas.Admin.Controllers
         }
 
         // GET: Admin/PostCategories
-        public async Task<IActionResult> Index(string sort,string keyword)
+        public async Task<IActionResult> Index(string keyword,string orderby = "importance", string sort = "desc")
         {
             var vm = new PostCategoryList
             {
-                Keyword = keyword
+                Keyword = keyword,
+                OrderBy = orderby,
+                Sort = sort
             };
-
-            var query = _context.PostCategories.AsNoTracking().AsQueryable();
-            if (!string.IsNullOrEmpty(keyword))
-                query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
+            try
+            {
+                var query = _context.PostCategories.AsNoTracking().AsQueryable();
+                if (!string.IsNullOrEmpty(keyword))
+                    query = query.Where(d => d.Title.Contains(keyword) || d.Description.Contains(keyword));
          
-            ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
-            ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
-            ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+                // ViewData["ImportanceSortParm"] = sort == "importance" ? "importance_desc" : "importance";
+                // ViewData["TitleSortParm"] = sort == "title" ? "title_desc" : "title";
+                // ViewData["DateSortParm"] = sort == "date" ? "date_desc" : "date";
+                
+                var goSort = $"{orderby}_{sort}";     
 
-            query = sort switch
-            {              
-                "title" => query.OrderBy(s => s.Title),
-                "title_desc" => query.OrderByDescending(s => s.Title),
-                "date" => query.OrderBy(s => s.CreatedDate),
-                "date_desc" => query.OrderByDescending(s => s.CreatedDate),
-                "importance" => query.OrderBy(s => s.CreatedDate),
-                "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
-                _ => query.OrderByDescending(s => s.Importance),
-            };
+                query = goSort switch
+                {              
+                    "title_asc" => query.OrderBy(s => s.Title),
+                    "title_desc" => query.OrderByDescending(s => s.Title),
+                    "date_asc" => query.OrderBy(s => s.CreatedDate),
+                    "date_desc" => query.OrderByDescending(s => s.CreatedDate),
+                    "importance" => query.OrderBy(s => s.CreatedDate),
+                    "importance_desc" => query.OrderByDescending(s => s.CreatedDate),
+                    _ => query.OrderByDescending(s => s.Importance),
+                };
 
-            vm.Categories = await query.ProjectTo<PostCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
+                vm.Categories = await query.ProjectTo<PostCategoryBVM>(_mapper.ConfigurationProvider).ToListAsync();
 
-            return View(vm);
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex,"页面列表读取错误:{@error}", ex.Message);
+                throw;
+            }
+
+            
         }
 
         // GET: Admin/PostCategories/Details/5
@@ -110,12 +120,11 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             var pm = await _context.PageMetas.FirstOrDefaultAsync(d => d.ModuleType == (short)ModuleType.ARTICLECATEGORY && d.ObjectId == category.Alias);
 
-            if (pm != null)
-            {
-                model.SEOTitle = pm.Title;
-                model.SEOKeywords = pm.Keywords;
-                model.SEODescription = pm.Description;
-            }
+            if (pm == null) return View(model);
+            
+            model.SEOTitle = pm.Title;
+            model.SEOKeywords = pm.Keywords;
+            model.SEODescription = pm.Description;
 
             return View(model);
           
@@ -138,65 +147,69 @@ namespace QNZCMS.Areas.Admin.Controllers
             {
              
                 var model = _mapper.Map<PostCategory>(im);
-                model.CreatedBy = User.Identity.Name;
+                if (User.Identity != null) model.CreatedBy = User.Identity.Name;
                 model.CreatedDate = DateTime.Now;
                 _context.Add(model);
 
                 await _context.SaveChangesAsync();
-                // return RedirectToAction(nameof(Index));
-
+                
+                using (LogContext.PushProperty("LogEvent", Buttons.Add))
+                {
+                    Serilog.Log.Information("添加博客分类:[{title}]", model.Title);  
+                }
                 AR.SetSuccess(string.Format(Messages.AlertCreateSuccess, EntityNames.PostCategory));
                 return Json(AR);
             }
           
-                if (id != im.Id)
+            if (id != im.Id)
+            {
+                AR.Setfailure("未发现此分类");
+                return Json(AR);
+            }
+
+
+            try
+            {
+                var model = await _context.PostCategories.FindAsync(id);
+                model = _mapper.Map(im, model);
+
+                if (User.Identity != null) model.UpdatedBy = User.Identity.Name;
+                model.UpdatedDate = DateTime.Now;
+                _context.Update(model);
+                await _context.SaveChangesAsync();
+
+                var pm = new PageMeta
+                {
+                    Title = im.SEOTitle,
+                    Description = im.SEODescription,
+                    Keywords = im.SEOKeywords,
+                    ModuleType = (short)ModuleType.ARTICLECATEGORY,
+                    ObjectId = im.Alias
+                };
+
+                await CreatedUpdatedPageMetaAsync(_context, pm);
+                
+                using (LogContext.PushProperty("LogEvent", Buttons.Update))
+                {
+                    Serilog.Log.Information("修改博客分类:[{title}]", model.Title);  
+                }
+
+                AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.PostCategory));
+                return Json(AR);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PostCategoryExists(im.Id))
                 {
                     AR.Setfailure("未发现此分类");
                     return Json(AR);
                 }
-
-
-                try
+                else
                 {
-                    var model = await _context.PostCategories.FindAsync(id);
-                    model = _mapper.Map(im, model);
-
-                    model.UpdatedBy = User.Identity.Name;
-                    model.UpdatedDate = DateTime.Now;
-                    _context.Update(model);
-                    await _context.SaveChangesAsync();
-
-                    var pm = new PageMeta
-                    {
-                        Title = im.SEOTitle,
-                        Description = im.SEODescription,
-                        Keywords = im.SEOKeywords,
-                        ModuleType = (short)ModuleType.ARTICLECATEGORY,
-                        ObjectId = im.Alias
-                    };
-
-                    await CreatedUpdatedPageMetaAsync(_context, pm);
-
-                    AR.SetSuccess(string.Format(Messages.AlertUpdateSuccess, EntityNames.PostCategory));
+                    AR.Setfailure(string.Format(Messages.AlertUpdateFailure, EntityNames.PostCategory));
                     return Json(AR);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostCategoryExists(im.Id))
-                    {
-                        AR.Setfailure("未发现此分类");
-                        return Json(AR);
-                    }
-                    else
-                    {
-                        AR.Setfailure(string.Format(Messages.AlertUpdateFailure, EntityNames.PostCategory));
-                        return Json(AR);
-                    }
-                }
-               
-              
-            
-           
+            }
         }
 
 
@@ -205,8 +218,8 @@ namespace QNZCMS.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMulti(int[] ids)
         {
-            var exitAricles = await _context.Articles.AnyAsync(d => ids.Contains(d.CategoryId));
-            if (exitAricles)
+            var exitArticles = await _context.Articles.AnyAsync(d => ids.Contains(d.CategoryId));
+            if (exitArticles)
             {
                 AR.Setfailure(Messages.HasChildCanNotDelete);
                 return Json(AR);
@@ -223,6 +236,10 @@ namespace QNZCMS.Areas.Admin.Controllers
             _context.PostCategories.RemoveRange(c);
             await _context.SaveChangesAsync();
 
+            using (LogContext.PushProperty("LogEvent", Buttons.Delete))
+            {
+                Serilog.Log.Information("删除博客分类:ID[{logIds}]", string.Join(",",ids));  
+            }
             return Json(AR);
         }
 
@@ -240,12 +257,18 @@ namespace QNZCMS.Areas.Admin.Controllers
             }
             foreach (var item in c)
             {
-                item.Active = isLock ? false : true;
+                item.Active = !isLock;
                 _context.Entry(item).State = EntityState.Modified;
             }
 
             await _context.SaveChangesAsync();
 
+            var logEvent = isLock ? "锁定" : "激活";
+            using (LogContext.PushProperty("LogEvent", logEvent))
+            {
+                Serilog.Log.Information("{action}博客分类:ID[{pageIds}]", logEvent,string.Join(",",ids));  
+            }
+            
             return Json(AR);
         }
 
@@ -257,9 +280,7 @@ namespace QNZCMS.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-
             var c = await _context.PostCategories.FirstOrDefaultAsync(d => d.Id == id);
-
             if (c == null)
             {
                 AR.Setfailure(Messages.HttpNotFound);
@@ -268,38 +289,43 @@ namespace QNZCMS.Areas.Admin.Controllers
 
             _context.PostCategories.Remove(c);
             await _context.SaveChangesAsync();
+            
+            using (LogContext.PushProperty("LogEvent", Buttons.Delete))
+            {
+                Serilog.Log.Information("删除博客分类:[{title}]",c.Title);  
+            }
 
             return Json(AR);
         }
 
 
-
-        [HttpPost]
-        public async Task<IActionResult> UploadAsync()
-        {
-            //  long size = 0;
-            var files = Request.Form.Files;
-            //foreach (var file in files)
-            //{
-            var filename = ContentDispositionHeaderValue
-                            .Parse(files[0].ContentDisposition)
-                            .FileName
-                            .Trim('"');
-            var filePath = _hostingEnvironment.WebRootPath + $@"\uploads\{filename}";
-            // size += file.Length;
-            using (FileStream fs = System.IO.File.Create(filePath))
-            {
-                await files[0].CopyToAsync(fs);
-                await fs.FlushAsync();
-            }
-
-            var imgUrl = "/Uploads/" + filename;
-            //}
-            // string message = $"{files.Count} file(s) / {size} bytes uploaded successfully!";
-            return Json(imgUrl);
-
-          
-        }
+        //
+        // [HttpPost]
+        // public async Task<IActionResult> UploadAsync()
+        // {
+        //     //  long size = 0;
+        //     var files = Request.Form.Files;
+        //     //foreach (var file in files)
+        //     //{
+        //     var filename = ContentDispositionHeaderValue
+        //                     .Parse(files[0].ContentDisposition)
+        //                     .FileName
+        //                     .Trim('"');
+        //     var filePath = _hostingEnvironment.WebRootPath + $@"\uploads\{filename}";
+        //     // size += file.Length;
+        //     using (FileStream fs = System.IO.File.Create(filePath))
+        //     {
+        //         await files[0].CopyToAsync(fs);
+        //         await fs.FlushAsync();
+        //     }
+        //
+        //     var imgUrl = "/Uploads/" + filename;
+        //     //}
+        //     // string message = $"{files.Count} file(s) / {size} bytes uploaded successfully!";
+        //     return Json(imgUrl);
+        //
+        //   
+        // }
 
 
         private bool PostCategoryExists(int id)

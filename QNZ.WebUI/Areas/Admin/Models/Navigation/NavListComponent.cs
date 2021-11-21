@@ -15,8 +15,8 @@ namespace QNZCMS.Areas.Admin.Models.Navigation
     public class NavListComponent : ViewComponent
     {
         private ICacheService _cache;
-        private readonly YicaiyunContext _context;
-        public NavListComponent(YicaiyunContext context, ICacheService memoryCache)
+        private readonly QNZContext _context;
+        public NavListComponent(QNZContext context, ICacheService memoryCache)
         {
             _context = context;
             _cache = memoryCache;

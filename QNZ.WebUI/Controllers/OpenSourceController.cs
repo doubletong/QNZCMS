@@ -12,8 +12,8 @@ namespace QNZCMS.Controllers
     public class OpenSourceController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly YicaiyunContext _context;
-        public OpenSourceController(YicaiyunContext context, IMapper mapper)
+        private readonly QNZContext _context;
+        public OpenSourceController(QNZContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
