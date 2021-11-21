@@ -49,7 +49,7 @@ namespace QNZCMS
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("http://localhost:5003/");
+                    webBuilder.UseStartup<Startup>();
                 }).UseSerilog();//serilog;  
 
        
